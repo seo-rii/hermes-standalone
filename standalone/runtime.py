@@ -43,16 +43,21 @@ def initialize_bundle(context: Mapping[str, object]) -> None:
     cache = context.get("cache_dir", str(Path(root).parent))
     if not isinstance(cache, str) or not Path(cache).is_absolute():
         raise ValueError("bundle cache directory must be absolute")
+    binding_manifest = {
+        "project": "hermes-standalone",
+        "internal_modules": tuple(manifest.get("internal_modules", ())),
+    }
+    if "build_variant" in manifest:
+        from standalone.variant import normalize_variant
+
+        binding_manifest["build_variant"] = normalize_variant(manifest["build_variant"])
     binding = {
         "root": str(Path(root).resolve()),
         "cache_dir": str(Path(cache).resolve()),
         "source_root": str(source_root),
         "artifact": str(Path(artifact).resolve()),
         "bundle_sha256": digest,
-        "manifest": MappingProxyType({
-            "project": "hermes-standalone",
-            "internal_modules": tuple(manifest.get("internal_modules", ())),
-        }),
+        "manifest": MappingProxyType(binding_manifest),
     }
     if _active_bundle is not None and dict(_active_bundle) != binding:
         raise ValueError("a process cannot switch between initialized bundles")

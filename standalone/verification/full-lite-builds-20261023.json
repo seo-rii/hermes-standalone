@@ -1,0 +1,176 @@
+{
+  "additional_ast_variant_check": {
+    "frozen_source_runs": [
+      {
+        "exit_code": 0,
+        "methods": 1,
+        "python": "311",
+        "seconds": 0.4243406589994265
+      },
+      {
+        "exit_code": 0,
+        "methods": 1,
+        "python": "314",
+        "seconds": 0.4770477340025536
+      }
+    ],
+    "frozen_source_sha256": {
+      "standalone/build.py": "92b16e987dcbb53f608722eb8f53be0ef8b49ca2ecfbc11f63266bff51b2c5b9",
+      "standalone/minify.py": "48433ebdc3b7c7db7b6cbf34e1091fb4c5112c47b6580263da45b330170094e1",
+      "standalone/tests/test_build_variants.py": "3d3c94069fda44e96c35d3fbe55de6f6c5ef6ce9d99a1486a45174d605078e5b"
+    },
+    "method": "test_build_variants.BuildVariantTests.test_ast_variants_preserve_proof_contract_and_retained_vendor_bytes",
+    "passed_on_python311_and314": true,
+    "scope": "One separate method after the 146-method runs; full/lite repeated bytes and proof hashes, AST equality and retained vendor bytes"
+  },
+  "build_input": {
+    "all_selected_files_match_superseded_manifest_except_ignored_web_assets": true,
+    "excluded_ignored_assets_reason": "Previously excluded dashboard assets are not tracked public build inputs",
+    "excluded_ignored_web_assets": {
+      "bytes": 4415054,
+      "files": 552
+    },
+    "old_input_checkpoint_replaced": true,
+    "prepared_file_count": 21800,
+    "prepared_file_inventory_sha256": "fcfac1c59a21c67b75558e5171da799e54a9abbd187663068877f272a2b4d28b",
+    "prepared_source_read_only": true,
+    "selected_app_files_match_prepared_original_hashes": true,
+    "selection": "Tracked HEAD exported with explicit reviewed source overlays and pinned oversized resources restored offline",
+    "tracked_head": "1485e42664237c830114e8a6e06d2f70c7ec6128"
+  },
+  "build_input_sha256": {
+    "README.md": "9844b7ce25233db6b5fb83b52dfce310a0476db1fcb0be4986ffb54fb895ba8f",
+    "pm/extras.py": "7fce6ddb4bb8e0e7ff9d7e786dbbdfa51d6d028d37fd0d3f5046c25df8b98978",
+    "standalone/CONTRACT.json": "abd65319b4fc80b4e7607bd06747b4cedad7156caff1c79a32bea5bc44ed0873",
+    "standalone/bootstrap.py": "1c028d936cef76fe3b8bd1067acd4a8de16fa7fe6d4cc9b44a48271aeaf07971",
+    "standalone/build.py": "92b16e987dcbb53f608722eb8f53be0ef8b49ca2ecfbc11f63266bff51b2c5b9",
+    "standalone/capabilities.json": "ea1042c24fda7c8d435c245b3a9aaf1abc8195e2b08068f01b6f77cf1e4e3304",
+    "standalone/cli.py": "511cb56267f2491275e1168aa35ae0bd4554c13558a860bc093f79afefb952ba",
+    "standalone/dictionary_pack.py": "55989c3284334044e0473c7eaf2260ed055a353bdcc11d2b67a55906ccdcda62",
+    "standalone/mecab_pack.py": "d77e761bb7f36c34e3f997855fb16b46fe8cd6dec72e2b6bed34c8b74541b2c1",
+    "standalone/model_pack.py": "3da93951245e8fa727e321be2d493dd48429f19bbed114bdbacfe43f93d47398",
+    "standalone/packages.py": "b1fea0c53e80cb378f855b3d4e761939d28a81aeaeef4eac00371a983105b909",
+    "standalone/pickle_pack.py": "3e93678bb82dc6e1ee2ca9f0bb6603395f106e335169be22bd2d73d892583326",
+    "standalone/runtime.py": "e393f68dd8e72acfa04270a85f66dc381b9fabdc765f4ff2224e45f139bf30a6",
+    "standalone/variant.py": "be3d1e2d0801326f3e04c665883fea4f2e48955f67ab4eb70cbe7e8e86439047",
+    "standalone/vendor.py": "527c1ecf64cf592cb47fee0a078f9bd4b098c9f3191547fca75ef5f4af51acec",
+    "standalone/windows_acl.py": "97105c4aee17c07514db0140163c25337cbb65d2811be7a5f9761b960be34656",
+    "tools/tts_tool.py": "d6bcc2ae31e7f48a46f4e9917d4079eeed7ea4a955e071d3e010535193ed871d"
+  },
+  "date": "2026-10-23",
+  "determinism": {
+    "ast_equivalence_and_code_fingerprint_checks_unchanged": true,
+    "each_complete_variant_payload_built_once": true,
+    "same_toolchain_and_sorted_metadata": true,
+    "source_and_zipapp_share_exact_compressed_bytes": true,
+    "synthetic_full_and_lite_repeats_identical": true
+  },
+  "excluded_lite_data": [
+    "local Piper auxiliary models and language/pronunciation resources",
+    "TLTK non-Python language data",
+    "Google static discovery catalog except chat.v1.json"
+  ],
+  "format_version": 1,
+  "generated_file_acceptance_status": "passed",
+  "limitations": [
+    "Local source tests do not prove complete feature parity or native host equivalence.",
+    "Cloud speech paths were tested with owned fixtures; no live cloud synthesis claim.",
+    "Other Google static API documents are absent from lite; explicit dynamic discovery remains available.",
+    "Original metadata/RECORD is retained with omitted vendor resources declared in provenance."
+  ],
+  "network_and_external_processes_blocked_during_build": true,
+  "preserved_initial_test_failure": {
+    "correction": "Copy variant.py into the minimum source fixture; retain assertions/deadlines",
+    "failed_each": 1,
+    "failure": "Existing AST minimum source fixture omitted the new runtime variant helper",
+    "methods_each": 146,
+    "passed_each": 145,
+    "production_code_not_changed_for_this_fixture_correction": true
+  },
+  "qualification_receipt": "full-lite-qualification-20261023.json",
+  "retained_core": [
+    "CLI",
+    "agent",
+    "gateway",
+    "managed workers",
+    "Google SDK/authentication",
+    "cloud TTS dispatch",
+    "cloud STT imports",
+    "local Whisper runtime"
+  ],
+  "retained_google_chat_document": "googleapiclient/discovery_cache/documents/chat.v1.json",
+  "scope": "Full and lite single-file distributions with unchanged retained code/resources",
+  "selection": {
+    "full_files": 26198,
+    "full_original_bytes": 830652817,
+    "generated_files": [
+      "app/standalone/capabilities.json"
+    ],
+    "google_chat_static_document_retained": true,
+    "lite_files": 25143,
+    "lite_original_bytes": 196513917,
+    "omitted_files": 1055,
+    "omitted_inventory_sha256": "53bd369f227c680c011e0406627a92dc57f16ed1a3419711b30795247ed7facb",
+    "omitted_original_bytes": 634135776,
+    "retained_metadata_and_licenses": true,
+    "retained_original_bytes_identical_except_declared_generated_config": true
+  },
+  "source_checks": {
+    "311": {
+      "exit_code": 0,
+      "methods": 146,
+      "seconds": 92.704
+    },
+    "314": {
+      "exit_code": 0,
+      "methods": 146,
+      "seconds": 90.824
+    }
+  },
+  "upstream": {
+    "commit": "bd3cbe91a90097f9804f16ea5c1768f5cbaaf0b7",
+    "repository": "https://github.com/NousResearch/hermes-agent"
+  },
+  "variants": {
+    "full": {
+      "decoded_archive_bytes": 839583296,
+      "decoded_archive_sha256": "15c41920a996e9ed02b32d62552489691b58645da726cb2fbbdf0303fb8d55b6",
+      "distributions": 136,
+      "files": 26198,
+      "payload_bytes": 249668584,
+      "payload_sha256": "af117f7f858c870326a85f52b4c6b86de846e239417ea3940c3fc8dca612e2d3",
+      "seconds_including_both_envelope_renders": 1123.0683252650015,
+      "source": {
+        "bytes": 252739809,
+        "name": "hermes-full.py",
+        "same_compressed_payload_as_zipapp": true,
+        "sha256": "eec1a33c9cabb4183e28ba180979489814868d1f7c7619d85c5ce500ad263234"
+      },
+      "zipapp": {
+        "bytes": 249724581,
+        "name": "hermes-full.pyz",
+        "sha256": "360c4fcac31cde63f666561fdc8093f41a1c6d3ebb6caa6f9be36cb9aa25c9a4"
+      }
+    },
+    "lite": {
+      "decoded_archive_bytes": 205147671,
+      "decoded_archive_sha256": "debcd2dde46087edd08bab1aa81157fa1b10565e3347b2204a09149b9ac866a7",
+      "distributions": 136,
+      "files": 25143,
+      "payload_bytes": 48055964,
+      "payload_sha256": "d7dc4bf5d89eb3c77a05bc731a1dd5ea40c6141ec0b75a570606cc14d27877c7",
+      "seconds_including_both_envelope_renders": 149.4333532339988,
+      "source": {
+        "bytes": 48689808,
+        "name": "hermes-lite.py",
+        "same_compressed_payload_as_zipapp": true,
+        "sha256": "bae5841b72489b7ff1612988d1b5b4fd684ede730de6c6c9a39c8bc2276299e3"
+      },
+      "zipapp": {
+        "bytes": 48111960,
+        "name": "hermes-lite.pyz",
+        "sha256": "02fce44b48ab11df6fe487fe6e77d9aa46d7da9d5d7717737336286510b7baa3"
+      }
+    }
+  }
+}

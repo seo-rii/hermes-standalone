@@ -90,6 +90,9 @@ _import_kittentts = _sdk_importer("kittentts", "KittenTTS")
 def _import_piper():
     from agent.sdk_boundary import bundled
     if bundled():
+        from standalone.variant import require_feature
+
+        require_feature("local-piper-model")
         from standalone.local_piper_voice import PiperVoice
         return PiperVoice
     return _sdk_importer("piper", "PiperVoice")()
@@ -227,6 +230,14 @@ def _run_edge_tts(text: str, file_str: str, tts_config: dict[str, Any]) -> None:
 def _select_builtin_engine(provider: str) -> tuple:
     """SDK check -> ``(engine, None)`` or ``(provider, error_json)``. Unknown names take the Edge
     default; without edge-tts NeuTTS is the fallback (engine != provider)."""
+    if provider == "piper":
+        from agent.sdk_boundary import bundled
+        if bundled():
+            from standalone.variant import unavailable_reason
+
+            reason = unavailable_reason("local-piper-model")
+            if reason is not None:
+                return provider, _error_json(reason)
     entry = _BUILTIN_DISPATCH.get(provider)
     if entry is not None:
         available, _label, _generator, missing_error = entry

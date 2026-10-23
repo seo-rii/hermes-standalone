@@ -11,6 +11,15 @@
     "hermes_python": "3.14"
   },
   "entrypoint": "standalone.cli:main",
+  "build_variants": {
+    "default": "full",
+    "choices": ["full", "lite"],
+    "both": "Build separately named full and lite artifacts; each remains one relocatable file",
+    "full": "Retain the complete reviewed resource selection",
+    "lite": "Omit local Piper models/dictionaries/language data and unused Google discovery documents; retain Google Chat v1, SDK/auth code, core runtime and cloud speech paths",
+    "identity": "Recorded in build_variant separately from the Hermes user profile; archive SHA256 gives each variant a distinct cache",
+    "configuration": "Lite generates its embedded capabilities.json overlay and records this exception in build_variant.generated_files; other retained source/resource bytes are unchanged"
+  },
   "archive_layout": {
     "app": "Upstream runtime sources and standalone modules",
     "vendor": "Reviewed pure Python packages and their distribution metadata",

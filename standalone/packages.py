@@ -51,11 +51,20 @@ def replacement_anchors(extra: str):
     }.get(extra)
 
 
+def extra_unavailable_reason(extra: str) -> str | None:
+    if extra == "piper":
+        from standalone.variant import unavailable_reason
+
+        return unavailable_reason("local-piper-model")
+    return None
+
+
 def refuse_install(package: str) -> None:
     from pm.package import InstallError
 
     raise InstallError(
         package,
-        "This Hermes single-file distribution embeds its dependencies; runtime package installation is disabled",
+        extra_unavailable_reason(package)
+        or "This Hermes single-file distribution embeds its dependencies; runtime package installation is disabled",
         "rebuild or replace hermes.py with a distribution containing the required feature",
     )

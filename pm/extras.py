@@ -90,9 +90,11 @@ def available(extra: str) -> bool:
     """Fast, side-effect-free: are all of this extra's anchors importable?
     A platform-gated extra whose gate excludes this machine reads as
     unavailable — the anchors are absent by design, not by accident."""
+    from standalone.packages import active, extra_unavailable_reason, replacement_anchors
+    if active() and extra_unavailable_reason(extra):
+        return False
     if not extra_supported(extra):
         return False
-    from standalone.packages import active, replacement_anchors
     anchors = replacement_anchors(extra) if active() else None
     return all(_importable(a) for a in (anchors or _anchors(extra)))
 

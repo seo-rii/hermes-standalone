@@ -75,6 +75,38 @@ GPL-3.0-or-later 원문과 출처를 포함하며, 별도로 읽는 음성 모�
 복원에는 네트워크나 추가 패키지가 필요하지 않으며, 각 조각·압축 스트림·원본 파일의
 SHA-256과 크기를 확인합니다. 원본과 다른 기존 파일은 덮어쓰지 않습니다.
 
+전체판과 경량판을 함께 만들려면 `--variant both`를 사용합니다.
+
+```sh
+python3.14 -I -S standalone/build.py --variant both
+# dist/hermes-full.py, dist/hermes-lite.py
+
+python3.14 -I -S standalone/build.py --variant both --container zipapp
+# dist/hermes-full.pyz, dist/hermes-lite.pyz
+```
+
+`full`은 기존 음성 모델·발음 사전과 전체 Google API 정의 캐시를 포함합니다.
+`lite`는 로컬 Piper용 모델·사전과 언어 데이터를 제외하며, Google API 정의는
+Hermes의 Google Chat 연동에 필요한 `chat.v1.json`만 유지합니다. 에이전트·CLI·게이트웨이,
+클라우드 음성 공급자, Google SDK·인증 및 나머지 포함 기능의 코드는 유지합니다.
+경량판에서 로컬 Piper를 선택하면 전체판이 필요하다는 안내를 표시합니다.
+다른 Google API의 내장 정적 정의는 없으며, SDK의 명시적인 온라인 discovery 옵션은 사용할 수 있습니다.
+실행 시 제외한 모델을 자동으로 내려받거나 패키지를 설치하지 않습니다.
+
+경량판만 만들 때는 대형 자산 복원 단계 없이 빌드할 수 있습니다.
+기존 인자 없는 빌드는 전체판 `dist/hermes.py`를 계속 생성합니다.
+`--output`은 한 종류를 빌드할 때 사용하고, 두 종류의 출력 디렉터리는 `--output-dir`로 정합니다.
+`--minify ast`는 두 종류 모두 기존 AST·컴파일 코드 지문 검증을 동일하게 적용합니다.
+
+```sh
+python3.14 -I -S standalone/build.py --variant lite
+python3.14 -I -S standalone/check.py --artifact dist/hermes-full.py --artifact-only
+python3.14 -I -S standalone/check.py --artifact dist/hermes-lite.py --artifact-variant lite --artifact-only
+```
+
+각 배포물의 `doctor`와 매니페스트에는 빌드 종류와 제외 기능을 기록합니다.
+이는 사용자의 Hermes 프로필과 별개이며, 두 배포물의 캐시도 각 아카이브 해시로 구분합니다.
+
 대시보드를 포함하려면 원본의 잠긴 웹 워크스페이스를 빌드한 뒤 준비된 자산을 가져옵니다.
 프런트엔드 컴파일은 별도의 빌드 준비 단계이며 파이썬 번들러는 Node나 패키지 관리자를 실행하지 않습니다.
 

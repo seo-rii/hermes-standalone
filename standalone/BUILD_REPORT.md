@@ -265,3 +265,59 @@ The default source artifact also passes ordinary launch, isolated reentry and
 bound. All six serial qualification phases complete with exit status 0.
 Portable hashes, measurements and the exact validation scope are recorded in
 [verification/lossless-resource-packing-20261023.json](verification/lossless-resource-packing-20261023.json).
+
+## Full and lite build variants
+
+The builder now accepts `--variant full`, `--variant lite` and `--variant both`.
+Default invocation remains the full `dist/hermes.py`. Both mode emits separately
+named `hermes-full.py` and `hermes-lite.py`; `--container zipapp` emits `.pyz`
+files. Each artifact remains a single relocatable file with its own archive
+identity. Build variants are independent of the user's Hermes profiles.
+
+Lite omits `standalone/assets/piper/`, Japanese pronunciation dictionaries,
+Chinese auxiliary model data and TLTK language data. Piper implementation code,
+distribution metadata, original notices and provenance remain included. Its
+provider/PM checks explain that local Piper needs the full build before reading
+missing models or entering any model-data downloader. Cloud TTS dispatch, cloud
+STT imports and the retained Whisper runtime remain available in owned local
+consumer tests; no live cloud-provider synthesis is claimed.
+
+Only `chat.v1.json` is retained from the Google static discovery catalog. This
+preserves the original Hermes Google Chat consumer and SDK/authentication code,
+without adding startup network traffic. Other static documents are absent;
+explicit online discovery remains an existing Google SDK option. Lite's
+capability overlay records these limits both in the manifest and the embedded
+capabilities file, with that generated configuration exception declared.
+
+All selected source checks pass in uninterrupted 146-method runs on both
+Python versions after adding the new runtime helper to an existing minimal
+AST test fixture. The initial runs each have one fixture `ModuleNotFoundError`;
+their other 145 methods pass. The correction preserves the test's assertions
+and deadlines. Separate unchanged full-Piper registry tests also pass on both
+interpreters, including original PCM, cache/LRU, profile and downloader contracts.
+The selected checks are not a new complete source-suite or cross-platform pass.
+
+Full builds still require restored oversized assets. Lite selection skips
+excluded app data before opening it, so lite does not require that restoration.
+All dependency archives remain hash-verified before vendor filtering. Retained
+metadata, notices and resources keep their original bytes; omissions are
+recorded in dependency provenance and the lite capability configuration.
+
+## Measured full and lite outputs
+
+| Artifact | Full bytes | Lite bytes | Saving |
+| --- | ---: | ---: | ---: |
+| source | 252,739,809 | 48,689,808 | 80.74% |
+| zipapp | 249,724,581 | 48,111,960 | 80.73% |
+
+Full retains 26,198 files and lite retains 25,143. Lite omits 1,055 data files totaling 634,135,776 original bytes. Every retained file has the same original size and SHA256 apart from the declared lite capability configuration. Metadata and notices remain.
+
+These outputs use a frozen tracked-source export plus reviewed changes and offline-restored pinned resources. The previously excluded ignored dashboard assets (552 files, 4,415,054 bytes) are absent. A preceding active-checkout build accidentally included those assets and is superseded; its results are not the release input. Every other selected file retains exactly its original declared size and hash.
+
+Builds run with network and subprocess execution blocked. Each complete variant payload is compressed once and rendered as both source and zipapp; this is not a repeated full-build reproducibility claim. Measurements and hashes are in [verification/full-lite-builds-20261023.json](verification/full-lite-builds-20261023.json).
+
+## Full and lite generated-file qualification
+
+The serial clean-input qualification passes. Every emitted file matches its declared original SHA256 and size on Python 3.11 and 3.14. Warm-cache reuse and rejection of modified caches also pass. Four focused full-artifact methods and the complete lite artifact suite keep their original assertions and deadlines; lite explicitly excludes the four local Piper resource methods. Both default source envelopes pass ordinary launch and isolated reentry. Empty owned profiles are outside all Git ancestors.
+
+Portable phase results are in [verification/full-lite-qualification-20261023.json](verification/full-lite-qualification-20261023.json). These local Linux checks do not claim live-provider, physical-device or complete cross-platform parity.

@@ -18,13 +18,18 @@ def _write_json(value: object) -> None:
 
 
 def _doctor(context: dict) -> dict:
+    from standalone.variant import excluded_feature_details, manifest_variant
+
     manifest = context["manifest"]
+    variant = manifest_variant(manifest)
     capabilities = manifest["capabilities"]
     target = tuple(int(part) for part in manifest["runtime"]["hermes_python"].split("."))
     python_supported = sys.version_info[:len(target)] >= target
     return {
         "project": manifest["project"],
         "version": manifest["version"],
+        "build_variant": dict(variant),
+        "excluded_feature_details": excluded_feature_details(variant),
         "stage": capabilities["stage"],
         "upstream": manifest["upstream"],
         "python": platform.python_version(),
@@ -49,6 +54,10 @@ def _doctor(context: dict) -> dict:
 
 def _print_doctor(report: dict) -> None:
     print(f"Hermes standalone {report['version']} ({report['stage']})")
+    print(f"Build: {report['build_variant']['name']}")
+    if report["build_variant"]["excluded_features"]:
+        for reason in report["excluded_feature_details"].values():
+            print(f"  {reason}")
     print(f"Python: {report['python']}; agent target: {report['runtime_policy']['hermes_python']}")
     print(f"Isolated interpreter: {report['isolated']}; site disabled: {report['site_disabled']}")
     print(f"Embedded: {report['embedded_files']} files, {report['embedded_distributions']} distributions")

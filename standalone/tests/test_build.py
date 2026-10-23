@@ -286,6 +286,7 @@ class BuildTests(unittest.TestCase):
         standalone = Path(build.__file__).parent
         (self.root / "standalone" / "bootstrap.py").write_bytes((standalone / "bootstrap.py").read_bytes())
         (self.root / "standalone" / "runtime.py").write_bytes((standalone / "runtime.py").read_bytes())
+        (self.root / "standalone" / "variant.py").write_bytes((standalone / "variant.py").read_bytes())
         (self.root / "standalone" / "cli.py").write_text(
             "def main(argv, context):\n    print('artifact runs without a sidecar')\n    return 0\n"
         )

@@ -11,6 +11,7 @@ import unittest
 
 
 ARTIFACT: Path | None = None
+ARTIFACT_VARIANT = "full"
 # Cold startup verifies the full embedded model/dictionary archive in the CLI
 # and each real managed child. The bound includes this measured startup cost.
 ARTIFACT_TIMEOUT = 300
@@ -38,6 +39,10 @@ class ArtifactTests(unittest.TestCase):
         command += [str(self.artifact), "--cache-dir", str(self.cache), *args]
         return subprocess.run(command, cwd=self.directory, env=self.environment,
                               capture_output=True, text=True, encoding="utf-8", timeout=ARTIFACT_TIMEOUT)
+
+    def require_full_piper(self):
+        if ARTIFACT_VARIANT == "lite":
+            self.skipTest("The lite artifact intentionally excludes local Piper model and language resources; use full")
 
     def test_relocated_distribution_exercises_actual_upstream_components(self):
         result = self.run_artifact(["selftest", "--json"])
@@ -102,6 +107,7 @@ class ArtifactTests(unittest.TestCase):
         self.assertFalse(Path(self.environment["HERMES_HOME"]).exists())
 
     def test_restored_original_piper_models_run_without_native_dependencies(self):
+        self.require_full_piper()
         driver = r'''
 import hashlib, importlib.abc, json, pathlib, runpy, sys
 artifact, cache = sys.argv[1:]
@@ -142,8 +148,10 @@ print(json.dumps({'original_models': len(expected), 'arabic': arabic, 'hebrew': 
         self.assertEqual(json.loads(result.stdout)['original_models'], 2)
         self.assertFalse(Path(self.environment['HERMES_HOME']).exists())
 
-    @unittest.skipIf(sys.version_info < (3, 14), "Original TTS tool requires Python 3.14")
     def test_copied_piper_tts_registry_cache_profiles_and_owned_model_downloader(self):
+        self.require_full_piper()
+        if sys.version_info < (3, 14):
+            self.skipTest("Original TTS tool requires Python 3.14")
         from standalone.tests.test_piper_tts_consumer import (
             PIPER_CONSUMER_WORKER, write_piper_consumer_payload,
         )
@@ -182,6 +190,7 @@ exec(compile(code,worker,'exec'),{'PIPER_CONTEXT':context,'PIPER_SCRATCH':scratc
         self.assertFalse(Path(self.environment['HERMES_HOME']).exists())
 
     def test_copied_thai_original_resources_numbers_and_piper_voice(self):
+        self.require_full_piper()
         import zlib
         fixture=json.loads(zlib.decompress((Path(__file__).parent/'fixtures/local_piper_thai.json.zlib').read_bytes()))
         cases=[next(case for case in fixture['piper']['cases']
@@ -245,6 +254,7 @@ print(json.dumps({'cases':len(fixture['cases']),'resources':len(fixture['resourc
         self.assertFalse(Path(self.environment['HERMES_HOME']).exists())
 
     def test_copied_chinese_japanese_original_resources_profiles_and_voice_pcm(self):
+        self.require_full_piper()
         from standalone.agent_probe_worker import fixture_environment
         from standalone.tests.artifact_piper_languages import WORKER, write_payload
         scratch = self.directory / 'piper languages'

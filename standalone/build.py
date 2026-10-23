@@ -51,6 +51,15 @@ EXCLUDED_STANDALONE_FILES = {
 ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 PAYLOAD_LITERAL_WIDTH = 8192
 LZMA_OPTIONS = {"preset": 8, "pb": 0, "dict_size": 48 * 1024 * 1024}
+BUILD_VARIANTS = ("full", "lite")
+LITE_DATA_PREFIXES = (
+    "app/standalone/assets/piper/",
+    "app/standalone/local_piper_japanese/data/",
+    "app/standalone/piper_chinese_data/",
+)
+GOOGLE_DISCOVERY_PREFIX = "vendor/googleapiclient/discovery_cache/documents/"
+GOOGLE_CHAT_DISCOVERY = GOOGLE_DISCOVERY_PREFIX + "chat.v1.json"
+LITE_EXCLUDED_FEATURES = ("local-piper-model", "google-static-discovery")
 # Original Piper package data, reviewed as model/character-map data rather
 # than executable payloads. Include only these exact bytes, never *.onnx.
 PIPER_RESOURCE_SHA256 = {
@@ -99,6 +108,48 @@ class BuildError(ValueError):
 
 def canonical_json(value: object) -> bytes:
     return (json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(",", ":")) + "\n").encode("utf-8")
+
+
+def _validate_variant(variant: str) -> None:
+    if variant not in BUILD_VARIANTS:
+        raise BuildError(f"Unsupported build variant: {variant}")
+
+
+def _include_variant_path(path: str, variant: str) -> bool:
+    if variant == "full":
+        return True
+    if path.startswith(LITE_DATA_PREFIXES):
+        return False
+    if path.startswith("vendor/hermes_tltk/") and not path.endswith(".py"):
+        return False
+    if path.startswith(GOOGLE_DISCOVERY_PREFIX) and path != GOOGLE_CHAT_DISCOVERY:
+        return False
+    return True
+
+
+def _variant_capabilities(capabilities: dict, variant: str) -> dict:
+    if variant == "full":
+        return capabilities
+    # This is artifact configuration. The source checkout is never rewritten.
+    capabilities = json.loads(json.dumps(capabilities))
+    features = capabilities.setdefault("features", [])
+    piper = next((item for item in features if item["id"] == "local-piper-model"), None)
+    if piper is None:
+        piper = {"id": "local-piper-model"}
+        features.append(piper)
+    piper.update(status="excluded", description=(
+        "The lite distribution omits local Piper voice resources, auxiliary models "
+        "and pronunciation dictionaries. Use the full distribution for local Piper; "
+        "cloud TTS and other retained speech paths remain available."
+    ))
+    features.append({
+        "id": "google-static-discovery", "status": "partial",
+        "description": "The lite distribution retains the Google Chat v1 discovery document "
+                       "and Google SDK/authentication code. Other preloaded Google API "
+                       "discovery documents are omitted; explicit online discovery remains "
+                       "a Google SDK option. No discovery request runs during startup.",
+    })
+    return capabilities
 
 
 def _pack_model_planes(content: bytes) -> bytes:
@@ -191,8 +242,9 @@ def _walk_sources(directory: Path):
             yield Path(current) / name
 
 
-def collect_sources(root: Path) -> dict[str, bytes]:
+def collect_sources(root: Path, *, variant: str = "full") -> dict[str, bytes]:
     """Apply the explicit distribution include list, preserving module layout."""
+    _validate_variant(variant)
     root = Path(root)
     files: dict[str, bytes] = {}
     paths = vendor.ArchivePaths()
@@ -225,6 +277,8 @@ def collect_sources(root: Path) -> dict[str, bytes]:
         sources.append(root / SUPPLEMENTAL_LOCKFILE)
     for path in sorted(set(sources)):
         relative = path.relative_to(root).as_posix()
+        if not _include_variant_path("app/" + relative, variant):
+            continue
         content = _source_file(path)
         resource = path.relative_to(standalone).as_posix() if path.is_relative_to(standalone) else None
         if resource in reviewed_resources and hashlib.sha256(content).hexdigest() != reviewed_resources[resource]:
@@ -301,9 +355,10 @@ def _validate_pin_source(root: Path, dependencies: dict, contract: dict) -> None
 
 def create_archive(
     root: Path, cache_dir: Path, *, compression: str = "lzma", minify: str = "none",
-    proof_collector: dict | None = None,
+    proof_collector: dict | None = None, variant: str = "full",
 ) -> tuple[bytes, dict]:
     """Create deterministic ZIP bytes and the manifest without writing output."""
+    _validate_variant(variant)
     if compression not in {"lzma", "deflate"}:
         raise BuildError(f"Unsupported compression: {compression}")
     if minify not in {"none", "ast"}:
@@ -319,7 +374,7 @@ def create_archive(
                              "use --minify none for packaging with an older interpreter")
     dependencies = vendor.load_dependencies(root / "standalone" / "dependencies.json")
     _validate_pin_source(root, dependencies, contract)
-    files = collect_sources(root)
+    files = collect_sources(root, variant=variant)
     paths = vendor.ArchivePaths()
     for path in files:
         paths.add(path)
@@ -330,9 +385,21 @@ def create_archive(
             if module_path + ".py" not in files and module_path + "/__init__.py" not in files:
                 raise BuildError(f"Reviewed dependency replacement is missing: {replacement['module']}")
         package_files, provenance = vendor.read_wheel(package, Path(cache_dir))
+        omitted = []
         for path, content in sorted(package_files.items()):
+            if not _include_variant_path("vendor/" + path, variant):
+                omitted.append({"path": "vendor/" + path, "size": len(content),
+                                "sha256": hashlib.sha256(content).hexdigest()})
+                continue
             _add_file(files, "vendor/" + path, content, paths)
+        if omitted:
+            provenance["variant_omitted_resources"] = omitted
         distributions.append(provenance)
+    capabilities = _variant_capabilities(
+        json.loads((root / "standalone" / "capabilities.json").read_text(encoding="utf-8")), variant,
+    )
+    if variant == "lite":
+        files["app/standalone/capabilities.json"] = canonical_json(capabilities)
     source_transform = {
         "mode": minify, "scope": "app-python-sources", "byte_exact": minify == "none",
     }
@@ -390,13 +457,17 @@ def create_archive(
             "reason_counts": reason_counts,
             "caveat": "AST equivalence does not preserve source text, line locations, or source introspection.",
         })
-    capabilities = json.loads((root / "standalone" / "capabilities.json").read_text(encoding="utf-8"))
     packed_models, data_encodings = _pack_data_files(files)
     manifest = {
         "format_version": contract["format_version"],
         "project": "hermes-standalone",
         "version": contract["version"],
         "profile": contract["profile"],
+        "build_variant": {
+            "name": variant,
+            "excluded_features": list(LITE_EXCLUDED_FEATURES) if variant == "lite" else [],
+            "generated_files": ["app/standalone/capabilities.json"] if variant == "lite" else [],
+        },
         "upstream": contract["upstream"],
         "runtime": contract["runtime"],
         "entrypoint": contract["entrypoint"],
@@ -582,8 +653,9 @@ def _render_container(template, info, payload, container, payload_encoding):
 
 def build_bundle(
     root: Path, output: Path, cache_dir: Path, *, compression: str = "lzma", minify: str = "none",
-    payload_encoding: str = "latin1-chunks", container: str = "source",
+    payload_encoding: str = "latin1-chunks", container: str = "source", variant: str = "full",
 ) -> dict:
+    _validate_variant(variant)
     root, output = Path(root), Path(output)
     if output.suffix not in {"source": (".py",), "zipapp": (".py", ".pyz")}.get(container, ()):
         raise BuildError("Source output requires .py; ZIP application output requires .py or .pyz")
@@ -600,7 +672,7 @@ def build_bundle(
         raise BuildError("Artifact output must be outside the source include set; use dist/hermes.py")
     proof = {}
     archive, manifest = create_archive(
-        root, cache_dir, compression=compression, minify=minify, proof_collector=proof
+        root, cache_dir, compression=compression, minify=minify, proof_collector=proof, variant=variant,
     )
     template = (root / "standalone" / "bootstrap.py").read_text(encoding="utf-8")
     info, payload = encode_payload(archive, manifest["version"], compression)
@@ -645,6 +717,7 @@ def build_bundle(
         "files": len(manifest["files"]),
         "distributions": len(manifest["distributions"]),
         "profile": manifest["profile"],
+        "variant": variant,
     }
     if proof:
         result.update({
@@ -657,7 +730,12 @@ def build_bundle(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=DEFAULT_ROOT / "dist" / "hermes.py")
+    parser.add_argument("--output", type=Path, help="Output file for a single variant")
+    parser.add_argument("--output-dir", type=Path, help="Directory for automatically named outputs (default: dist)")
+    parser.add_argument(
+        "--variant", choices=(*BUILD_VARIANTS, "both"), default="full",
+        help="full includes local Piper data; lite omits it and the unused Google discovery catalog",
+    )
     parser.add_argument("--cache-dir", type=Path, default=vendor.DEFAULT_CACHE)
     parser.add_argument(
         "--container", choices=("source", "zipapp"), default="source",
@@ -676,13 +754,25 @@ def main(argv: list[str] | None = None) -> int:
         help="Optional AST-verified source rewriting; changes source text and introspection",
     )
     args = parser.parse_args(argv)
+    if args.output is not None and args.output_dir is not None:
+        parser.error("--output and --output-dir cannot be combined")
+    if args.variant == "both" and args.output is not None:
+        parser.error("--variant both uses --output-dir rather than a single --output")
+    directory = args.output_dir if args.output_dir is not None else DEFAULT_ROOT / "dist"
+    variants = BUILD_VARIANTS if args.variant == "both" else (args.variant,)
+    suffix = ".pyz" if args.container == "zipapp" else ".py"
     try:
-        result = build_bundle(
-            DEFAULT_ROOT, args.output, args.cache_dir,
-            compression=args.compression, minify=args.minify, payload_encoding=args.payload_encoding,
-            container=args.container,
-        )
-        print(json.dumps(result, indent=2, sort_keys=True))
+        results = []
+        for variant in variants:
+            name = "hermes" if args.variant == "full" else "hermes-" + variant
+            output = args.output if args.output is not None else directory / (name + suffix)
+            results.append(build_bundle(
+                DEFAULT_ROOT, output, args.cache_dir,
+                compression=args.compression, minify=args.minify, payload_encoding=args.payload_encoding,
+                container=args.container, variant=variant,
+            ))
+        print(json.dumps({"variants": results} if args.variant == "both" else results[0],
+                         indent=2, sort_keys=True))
         return 0
     except (OSError, ValueError, zipfile.BadZipFile) as error:
         print(f"build: {error}", file=sys.stderr)

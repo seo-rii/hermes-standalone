@@ -12,6 +12,10 @@ import unittest
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--artifact", type=Path, help="Also test this generated single-file distribution")
+    parser.add_argument(
+        "--artifact-variant", choices=("full", "lite"), default="full",
+        help="Expected generated distribution; lite explicitly excludes local Piper resource acceptance",
+    )
     parser.add_argument("--artifact-only", action="store_true", help="Run only generated-file acceptance checks")
     args = parser.parse_args()
     if args.artifact_only and not args.artifact:
@@ -25,9 +29,11 @@ def main() -> int:
             parser.error(f"Artifact does not exist: {artifact}")
         from standalone.tests import test_artifact
         test_artifact.ARTIFACT = artifact
+        test_artifact.ARTIFACT_VARIANT = args.artifact_variant
     if args.artifact_only:
         suite = unittest.TestSuite(unittest.defaultTestLoader.loadTestsFromName(name) for name in (
             "standalone.tests.test_artifact", "standalone.tests.test_artifact_chat",
+            "standalone.tests.test_artifact_variants",
         ))
     else:
         suite = unittest.defaultTestLoader.discover(

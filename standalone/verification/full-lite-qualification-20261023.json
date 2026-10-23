@@ -1,0 +1,63 @@
+{
+  "acceptance_source_sha256": {
+    "standalone/check.py": "7871fda8da5f7fcdd9ac5c5984c3eefbb7bdc689e05dd053309b55cd2506478d",
+    "standalone/tests/test_artifact.py": "a27c44253bd87c6595b85924fb19a991fd8e1fd6002fec0af2d9aff445f8fa60",
+    "standalone/tests/test_artifact_chat.py": "d7b60cb68ba0f31852382afe59e450bfee287f2c2df5094ee8306d084d9b28f0",
+    "standalone/tests/test_artifact_variants.py": "519ede5e82fa7d792e091b776a4be0d1b27f462fdd5b0db8b20a795725e28740",
+    "standalone/tests/test_piper_tts_consumer.py": "222cf8d29847454c65d012bc1230d2d0192746e0aa90b68c4fb1dfddcba5d04b"
+  },
+  "all_passed": true,
+  "artifact_sha256": {
+    "hermes-full.py": "eec1a33c9cabb4183e28ba180979489814868d1f7c7619d85c5ce500ad263234",
+    "hermes-full.pyz": "360c4fcac31cde63f666561fdc8093f41a1c6d3ebb6caa6f9be36cb9aa25c9a4",
+    "hermes-lite.py": "bae5841b72489b7ff1612988d1b5b4fd684ede730de6c6c9a39c8bc2276299e3",
+    "hermes-lite.pyz": "02fce44b48ab11df6fe487fe6e77d9aa46d7da9d5d7717737336286510b7baa3"
+  },
+  "build_input": "Frozen tracked-source export with reviewed overlays; ignored web assets excluded",
+  "live_services_or_physical_audio_not_verified": true,
+  "original_copied_assertions_and_deadlines_unchanged": true,
+  "owned_profiles_outside_git_ancestors": true,
+  "phases": [
+    {
+      "exit_code": 0,
+      "name": "full-all-file-hashes-warm-and-corrupt-cache-python311",
+      "seconds": 46.531893954001134
+    },
+    {
+      "exit_code": 0,
+      "name": "full-all-file-hashes-warm-and-corrupt-cache-python314",
+      "seconds": 73.95266991999961
+    },
+    {
+      "exit_code": 0,
+      "name": "lite-all-file-hashes-warm-and-corrupt-cache-python311",
+      "seconds": 12.916357289002917
+    },
+    {
+      "exit_code": 0,
+      "name": "lite-all-file-hashes-warm-and-corrupt-cache-python314",
+      "seconds": 11.74824968699977
+    },
+    {
+      "exit_code": 0,
+      "name": "full-four-unchanged-copied-runtime-and-variant-methods",
+      "seconds": 312.9616765869978
+    },
+    {
+      "exit_code": 0,
+      "name": "lite-complete-copied-artifact-suite-with-four-declared-piper-exclusions",
+      "seconds": 415.3821316329995
+    },
+    {
+      "exit_code": 0,
+      "name": "full-default-source-normal-launch-and-isolated-reentry",
+      "seconds": 112.84394392799732
+    },
+    {
+      "exit_code": 0,
+      "name": "lite-default-source-normal-launch-and-isolated-reentry",
+      "seconds": 18.196607915997447
+    }
+  ],
+  "source_and_artifact_sha256_unchanged": true
+}
