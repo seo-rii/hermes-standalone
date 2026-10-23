@@ -4271,7 +4271,7 @@ def _decode_pixels(data_url: str) -> Optional[tuple]:
         _, _, data_d = data_url.partition(",")
         if not data_d or not data_url.startswith("data:"):
             return None
-        from PIL import Image
+        from hermes_platform.images import Image
         with Image.open(io.BytesIO(base64.b64decode(data_d))) as _img:
             return _img.size
     except Exception:

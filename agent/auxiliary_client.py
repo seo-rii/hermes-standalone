@@ -58,8 +58,8 @@ def _load_openai_cls() -> type:
     """Import and cache ``openai.OpenAI``."""
     global _OPENAI_CLS_CACHE
     if _OPENAI_CLS_CACHE is None:
-        from openai import OpenAI as _cls
-        _OPENAI_CLS_CACHE = _cls
+        from agent.sdk_boundary import openai_client_type
+        _OPENAI_CLS_CACHE = openai_client_type()
     return _OPENAI_CLS_CACHE
 
 
@@ -3309,8 +3309,8 @@ def _is_timeout_error(exc: Exception) -> bool:
     path doubles wall time; fast drops stay on the retry path.
     """
     with contextlib.suppress(ImportError):
-        from openai import APITimeoutError
-        if isinstance(exc, APITimeoutError):
+        from agent.sdk_boundary import openai_error_types
+        if isinstance(exc, openai_error_types("APITimeoutError")):
             return True
     return "Timeout" in type(exc).__name__ or "timed out" in str(exc).lower()
 
@@ -3318,8 +3318,8 @@ def _is_timeout_error(exc: Exception) -> bool:
 def _is_connection_error(exc: Exception) -> bool:
     """Connection/network errors (endpoint unreachable), as opposed to 4xx/5xx API errors."""
     with contextlib.suppress(ImportError):
-        from openai import APIConnectionError, APITimeoutError
-        if isinstance(exc, (APIConnectionError, APITimeoutError)):
+        from agent.sdk_boundary import openai_error_types
+        if isinstance(exc, openai_error_types("APIConnectionError", "APITimeoutError")):
             return True
     if _contains_any(type(exc).__name__, ("Connection", "Timeout", "DNS", "SSL")):
         return True
@@ -4706,7 +4706,8 @@ def _effective_provider_for_client(client: Any, fallback: str) -> str:
 
 def _to_async_client(sync_client, model: str, is_vision: bool = False):
     """Sync client → async counterpart, preserving Codex routing (``is_vision`` adds the Copilot vision header)."""
-    from openai import AsyncOpenAI
+    from agent.sdk_boundary import openai_client_type
+    AsyncOpenAI = openai_client_type(asynchronous=True)
     if isinstance(sync_client, _AuxProbeClientStub):
         return sync_client, model
     if isinstance(sync_client, CodexAuxiliaryClient):
@@ -4859,7 +4860,8 @@ def _build_vertex_client(provider: str, model: Optional[str]) -> tuple[Optional[
     final_model = _normalize_resolved_model(model or "google/gemini-3-flash-preview", provider)
     try:
         # Aliased import: a bare `from openai import OpenAI` would shadow the module-level lazy proxy.
-        from openai import OpenAI as _VertexOpenAI
+        from agent.sdk_boundary import openai_client_type
+        _VertexOpenAI = openai_client_type()
         client = _VertexOpenAI(api_key=token, base_url=base_url)
     except Exception as exc:
         logger.warning("resolve_provider_client: cannot create Vertex client: %s", exc)

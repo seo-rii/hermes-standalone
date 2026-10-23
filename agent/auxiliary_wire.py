@@ -1,6 +1,6 @@
 """Message hygiene at the resolved auxiliary client boundary."""
 
-from openai import AsyncOpenAI, OpenAI
+from agent.sdk_boundary import openai_client_type
 
 from agent.transports.chat_completions import ChatCompletionsTransport
 
@@ -12,7 +12,7 @@ def prepare_chat_messages(client, kwargs: dict) -> dict:
     transport sanitizes its copy. The resolved SDK client identifies the wire;
     native Messages/Responses adapters must retain their reasoning sidecars.
     """
-    if not isinstance(client, (OpenAI, AsyncOpenAI)) or "messages" not in kwargs:
+    if not isinstance(client, (openai_client_type(), openai_client_type(asynchronous=True))) or "messages" not in kwargs:
         return kwargs
     from agent.reasoning_carriers import shape_wire_carriers
 

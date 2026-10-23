@@ -196,7 +196,8 @@ class OpenAICompatibleVideoGenProvider(VideoGenProvider):
                 error=f"{self._env_key} is not set", error_type="missing_credentials", provider=self.name
             )
         try:
-            import openai
+            from agent.sdk_boundary import openai_clients
+            openai = openai_clients()
         except ImportError:
             return error_response(
                 error="openai Python package not installed. Run: hermes pm repair",

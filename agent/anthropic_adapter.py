@@ -43,6 +43,11 @@ def _get_anthropic_sdk():
     """Return the ``anthropic`` SDK module, importing lazily. None if not installed."""
     global _anthropic_sdk, _anthropic_install_error
     if _anthropic_sdk is ...:
+        from agent.sdk_boundary import bundled
+        if bundled():
+            from standalone import transport_messages
+            _anthropic_sdk = transport_messages
+            return _anthropic_sdk
         try:
             from pm import ensure_import
             ensure_import("anthropic")

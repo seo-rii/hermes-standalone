@@ -440,7 +440,7 @@ def _transcode_to_png(raw: bytes) -> Optional[bytes]:
     AVIF need optional Pillow plugins, registered on demand; a missing plugin just
     looks like "can't decode" so the caller skips the image and the turn proceeds."""
     try:
-        from PIL import Image
+        from hermes_platform.images import Image
     except ImportError:
         logger.info(
             "image_routing: Pillow not installed; cannot transcode "

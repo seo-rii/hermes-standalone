@@ -190,7 +190,8 @@ def openai_importable() -> bool:
 def import_openai(provider: str, aspect: str) -> tuple[Any, Optional[dict[str, Any]]]:
     """Return ``(openai_module, None)`` or ``(None, missing_dependency error)``."""
     try:
-        import openai
+        from agent.sdk_boundary import openai_clients
+        openai = openai_clients()
     except ImportError:
         return None, error_factory(provider, aspect)(OPENAI_MISSING, "missing_dependency")
     return openai, None

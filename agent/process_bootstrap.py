@@ -109,10 +109,16 @@ def enable_happy_eyeballs_on_client(client) -> None:
 
 
 def _load_openai_cls() -> type:
-    """Import and cache ``openai.OpenAI``."""
+    """Resolve the client at the verified standalone boundary, or load the SDK."""
     global _OPENAI_CLS_CACHE
     if _OPENAI_CLS_CACHE is None:
-        from openai import OpenAI as _OPENAI_CLS_CACHE
+        runtime = sys.modules.get("standalone.runtime")
+        if runtime is not None:
+            from pathlib import Path
+            if runtime.is_active_bundle(Path(__file__).resolve().parents[1]):
+                from standalone.transport_chat import OpenAI as _OPENAI_CLS_CACHE
+        if _OPENAI_CLS_CACHE is None:
+            from openai import OpenAI as _OPENAI_CLS_CACHE
     return _OPENAI_CLS_CACHE
 
 

@@ -2448,13 +2448,13 @@ def _wait_stream_retry_backoff(agent, delay: float) -> None:
 def _anthropic_connection_error_types() -> tuple:
     # An Anthropic error instance implies the SDK is already imported; never import
     # (or lazy-install) it from inside an error handler.
-    anthropic = sys.modules.get("anthropic")
+    anthropic = sys.modules.get("standalone.transport_messages") or sys.modules.get("anthropic")
     return (anthropic.APIConnectionError,) if anthropic is not None else ()
 
 
 def _is_sse_connection_error(exc: BaseException) -> bool:
-    from openai import APIError as _APIError
-    if not isinstance(exc, _APIError) or getattr(exc, "status_code", None):
+    from agent.sdk_boundary import openai_error_types
+    if not isinstance(exc, openai_error_types("APIError")) or getattr(exc, "status_code", None):
         return False
     err_lower = str(exc).lower()
     return any(phrase in err_lower for phrase in _SSE_CONN_PHRASES)
