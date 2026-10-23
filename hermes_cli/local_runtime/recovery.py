@@ -7,7 +7,9 @@ import math
 import os
 from pathlib import Path
 
-import psutil
+from hermes_platform.processes import process_api
+
+psutil = process_api()
 
 logger = logging.getLogger(__name__)
 

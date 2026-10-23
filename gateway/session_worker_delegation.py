@@ -3,6 +3,8 @@
 The caller must supply the verified registration's execution/PID/birth, never
 operation payload identity. No handler opens a database or commits independently.
 """
+
+from hermes_platform.processes import process_api
 from functools import partial
 import json
 import math
@@ -66,7 +68,7 @@ def _dispatch(db, conn, session_id, payload, *, execution_id, worker_pid, worker
         _owned(conn, session_id, execution_id, payload['delegation_id'])
         # Exact network retries are resolved by worker_receipts before this handler.
         raise RuntimeStoreError('admission_conflict')
-    import psutil
+    psutil = process_api()
     from gateway.status import get_process_start_time
     try:
         from hermes_cli.process_identity import process_birth

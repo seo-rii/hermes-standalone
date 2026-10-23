@@ -1154,7 +1154,8 @@ class ProcessRegistry(ProcessTerminationMixin, ProcessCheckpointMixin, ProcessOu
         Raises ImportError when no PTY backend is installed and re-raises any spawn
         failure; ``spawn_local`` falls back to pipe mode in both cases."""
         if _IS_WINDOWS:
-            from winpty import PtyProcess as _PtyProcessCls
+            from hermes_platform.pty import windows_pty_process
+            _PtyProcessCls = windows_pty_process()
         else:
             from ptyprocess import PtyProcess as _PtyProcessCls
         pty_argv = self._scope_argv(session, safe_command, session.id, "PTY")
@@ -1498,7 +1499,7 @@ class ProcessRegistry(ProcessTerminationMixin, ProcessCheckpointMixin, ProcessOu
         # Programs in a PTY can block waiting for replies to device-status / window-size /
         # cursor-position / DEC private-mode queries. Answer the bounded set and strip the
         # queries from captured output. POSIX only: Windows ConPTY is a real console host that
-        # answers itself (and pywinpty yields str chunks, not bytes).
+        # answers itself.
         responder = None
         if not _IS_WINDOWS:
             from tools.pty_query_responder import PtyQueryResponder
@@ -2315,8 +2316,9 @@ class ProcessRegistry(ProcessTerminationMixin, ProcessCheckpointMixin, ProcessOu
         """Send raw data to a running process's stdin (no newline appended)."""
 
         def via_pty(pty):
-            # pywinpty expects str on Windows; ptyprocess expects bytes on POSIX.
-            if _IS_WINDOWS:
+            # The original pywinpty backend expects str. Qualified ConPTY and
+            # POSIX PTYs retain raw bytes, including split UTF-8 sequences.
+            if _IS_WINDOWS and not getattr(pty, "supports_bytes", False):
                 pty.write(data.decode("utf-8") if isinstance(data, bytes) else str(data))
             else:
                 # surrogateescape: a PTY is a byte stream — round-trip the original

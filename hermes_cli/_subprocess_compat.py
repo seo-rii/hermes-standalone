@@ -695,7 +695,8 @@ def _text_names_hermes(text: str) -> bool:
 def _process_command_is_hermes(pid: int) -> bool:
     """Best-effort check that *pid* currently runs Hermes code."""
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
 
         process = psutil.Process(pid)
         command = " ".join(process.cmdline() or [])

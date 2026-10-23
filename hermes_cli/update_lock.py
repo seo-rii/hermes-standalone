@@ -226,7 +226,8 @@ def process_create_time(pid: int | None = None) -> float | None:
     """
     target = os.getpid() if pid is None else pid
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
     except ImportError:
         return _stdlib_create_time(target)
     try:
@@ -448,7 +449,8 @@ def _is_ancestor_pid(pid: int) -> bool:
     if pid == os.getppid():
         return True
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
 
         proc = psutil.Process()
         seen = {proc.pid}
@@ -506,7 +508,8 @@ def _runtime_host_below(holder_pid: int) -> bool:
     (cli §7 V9). Unreadable command lines count as not-a-host (the legacy adoption stands).
     """
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
     except ImportError:
         return False
     try:

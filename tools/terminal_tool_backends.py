@@ -279,7 +279,8 @@ def _check_vercel(config: dict[str, Any]) -> bool:
     if disk not in {0, 51200}:
         return _reject(f"Vercel Sandbox does not support custom TERMINAL_CONTAINER_DISK={disk}. "
                        "Use the default shared setting (51200 MB).")
-    if importlib.util.find_spec("vercel") is None:
+    from hermes_platform.cloud import cloud_api_available
+    if not cloud_api_available("vercel"):
 
         return _reject("vercel is required for the Vercel Sandbox terminal backend. Run hermes setup terminal and select Vercel Sandbox.")
     from agent.secret_scope import get_secret
@@ -312,7 +313,8 @@ def _ssh_pre(config: dict[str, Any]) -> bool:
 
 
 def _daytona_post(config: dict[str, Any]) -> bool:
-    from daytona import Daytona
+    from hermes_platform.cloud import cloud_api
+    cloud_api("daytona")
     from agent.secret_scope import get_secret
     return get_secret("DAYTONA_API_KEY") is not None
 

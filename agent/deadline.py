@@ -14,6 +14,8 @@ as :class:`BoundedResult`); a timeout here is OUR deadline, not the provider's (
 
 from __future__ import annotations
 
+from hermes_platform.processes import process_api
+
 import asyncio
 import contextvars
 from contextlib import contextmanager
@@ -372,7 +374,7 @@ def _process_tree_snapshot(pid: int, *, hard_kill: bool):
     stopped = []
     try:
         try:
-            import psutil
+            psutil = process_api()
             root = psutil.Process(pid)
             descendants = root.children(recursive=True)
             if hard_kill:

@@ -463,7 +463,8 @@ def _desktop_ancestor_in(desktop_dir: Path) -> Optional[int]:
     `hermes update` it spawned). On Windows it holds the exe lock the promotion rename
     needs, and it cannot be stopped without killing this process first. Never raises."""
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         release_dir = (desktop_dir / "release").resolve()
         ancestors = list(psutil.Process(os.getpid()).parents())
     except Exception:
@@ -485,7 +486,8 @@ def _stop_desktop_processes_locking_build(desktop_dir: Path, *, also_posix: bool
     if sys.platform != "win32" and not also_posix:
         return []
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         release_dir = (desktop_dir / "release").resolve()
     except Exception:
         return []
@@ -936,7 +938,8 @@ def _running_macos_app_bundles() -> set[Path]:
     """``.app`` bundles of every live Hermes Desktop process. A running bundle is never swapped
     under: Electron loads ``app.asar`` chunks and helper apps lazily, so renaming its bundle away
     and deleting the old tree crashes the live app (the detached updater waits for it to exit)."""
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     bundles: set[Path] = set()
     for proc in psutil.process_iter(["exe"]):
         exe = proc.info.get("exe") or ""

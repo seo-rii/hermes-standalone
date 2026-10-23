@@ -3,6 +3,8 @@
 The producer retains the Popen handle and holds the child's bootstrap pipe until
 this returns. Public worker.register remains idle-only for unreserved callers.
 """
+
+from hermes_platform.processes import process_api
 import os
 import secrets
 import subprocess
@@ -22,7 +24,7 @@ def verify_worker_identity(process, hello):
     birth in a ``hello`` frame; the OWNER proves that pid is alive, carries that birth,
     and descends from (or is) the reserved handle. The worker never decides equality.
     """
-    import psutil
+    psutil = process_api()
     if not isinstance(process, subprocess.Popen) or process.poll() is not None:
         raise RuntimeStoreError('worker_not_live')
     if (not isinstance(hello, dict) or hello.get('type') != 'hello' or type(hello.get('pid')) is not int

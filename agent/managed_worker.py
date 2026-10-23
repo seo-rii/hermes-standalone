@@ -437,7 +437,8 @@ def hello():
     """Identity the owner verifies before it reserves: this interpreter's pid and birth plus
     the ancestor chain it observes. Launchers (uv's venv python.exe) put the owner's Popen
     handle one or two hops above; the owner, never this process, decides whether they match."""
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     from hermes_cli.process_identity import process_birth
     me = psutil.Process()
     return {'pid': me.pid, 'birth': process_birth(me), 'ancestors': [p.pid for p in me.parents()[:3]]}

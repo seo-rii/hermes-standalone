@@ -223,7 +223,8 @@ class LlamaServerSupervisor:
 
     def _write_state(self) -> None:
         import os
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         from gateway.status import get_process_start_time
         from utils import atomic_json_write
 
@@ -311,7 +312,8 @@ class LlamaServerSupervisor:
         children: list = []
         timeouts = (subprocess.TimeoutExpired,)
         with suppress(ImportError):
-            import psutil
+            from hermes_platform.processes import process_api
+            psutil = process_api()
 
             timeouts += (psutil.TimeoutExpired,)
             if verified_root:
@@ -348,7 +350,8 @@ class LlamaServerSupervisor:
         if sys.platform == "win32":
             return  # Unrecorded processes are not ours merely because the binary matches.
         try:
-            import psutil
+            from hermes_platform.processes import process_api
+            psutil = process_api()
 
             exe = str(self.binary)
         except Exception:

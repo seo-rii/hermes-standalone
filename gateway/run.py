@@ -423,7 +423,7 @@ def _ensure_windows_gateway_venv_imports() -> None:
     """Make detached Windows gateway runs see the Hermes venv packages.
 
     Patched before MCP discovery so tool injection does not depend on launchers preserving PYTHONPATH."""
-    if sys.platform != "win32":
+    if sys.platform != "win32" or getattr(sys.modules.get("hermes_bootstrap"), "_standalone_bundle", False):
         return
 
     project_root = Path(__file__).resolve().parent.parent
@@ -2939,17 +2939,8 @@ def _resolve_hermes_bin() -> Optional[list[str]]:
     (exactly this install), else ``hermes`` on PATH, else None. The module argv must win: a
     PATH-first lookup lets an attacker-planted ``hermes`` shadow the running install when
     /update or /restart re-execs it (#111569)."""
-    try:
-        import importlib.util
-        if importlib.util.find_spec("hermes_cli") is not None:
-            return [sys.executable, "-m", "hermes_cli.main"]
-    except Exception:
-        pass
-    import shutil
-    hermes_bin = shutil.which("hermes")
-    if hermes_bin:
-        return [hermes_bin]
-    return None
+    from gateway.runtime_entry import hermes_command
+    return hermes_command()
 
 
 _PROFILE_ID_KEY_RE = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")

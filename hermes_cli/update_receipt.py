@@ -1085,7 +1085,8 @@ def _gateway_code_root(pid: int, home: Path) -> Optional[Path]:
                     return root
 
     with suppress(Exception):
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()  # type: ignore
 
         process = psutil.Process(pid)
         with suppress(Exception):

@@ -76,9 +76,14 @@ def _validated_runtime_venv(env: dict) -> Path | None:
     else VIRTUAL_ENV. The variable alone is not provenance (users carry unrelated
     venvs): require the legacy Windows base-Python producer's exact ``<repo>/venv``
     layout AND a real ``pyvenv.cfg``."""
+    root = Path(__file__).resolve().parents[2]
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(root):
+        # The verified single-file runtime has an immutable vendor tree. PM's
+        # environment generations and sealed-payload manifests do not own it.
+        return None
     from pm.environments import payload_venv, runtime_facts_path, selected_venv
 
-    root = Path(__file__).resolve().parents[2]
     if runtime_facts_path(root).is_file():
         return selected_venv(root)
     try:
@@ -103,6 +108,9 @@ def _get_hermes_site_packages(env: dict) -> list[Path]:
     """Exact site-packages dirs owned by the Hermes runtime (cached):
     ``site.getsitepackages()`` with a ``sys.prefix`` fallback, plus a validated
     Windows base-interpreter launch's ``VIRTUAL_ENV/Lib/site-packages``."""
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(Path(__file__).resolve().parents[2]):
+        return [Path(runtime.current_bundle()["root"]) / "vendor"]
     local = _state()
     if local._hermes_site_packages is None:
         result: list[Path] = []

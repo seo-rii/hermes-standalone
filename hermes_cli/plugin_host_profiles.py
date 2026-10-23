@@ -86,8 +86,9 @@ def _extract(plugin_dir: Path, module_name: str) -> dict[str, Any]:
     env.update(HOME=str(Path.home()), USERPROFILE=str(Path.home()), HERMES_HOME=str(get_hermes_home()),
                PYTHONPATH=repo_root,
                **{HOST_PROCESS_ENV: "1"})
-    argv = [*host_launcher(), sys.executable, "-m", "hermes_cli.plugin_host_child", "--extract-profiles",
-            str(plugin_dir), module_name]
+    from hermes_cli.runtime_module import python_module_command
+    arguments = ["--extract-profiles", str(plugin_dir), module_name]
+    argv = [*host_launcher(), *python_module_command("hermes_cli.plugin_host_child", arguments)]
     try:
         done = subprocess.run(argv, stdin=subprocess.DEVNULL, capture_output=True, env=env,
                               timeout=_EXTRACT_TIMEOUT_SECS, check=False)

@@ -246,7 +246,8 @@ def _check_daytona_backend(issues: list[str]) -> None:
              ("Daytona API key missing", "(needed for the 'daytona' terminal backend)"),
              "run `hermes setup terminal` (Daytona) to enter it.", issues)
     try:
-        from daytona import Daytona
+        from hermes_platform.cloud import cloud_api
+        cloud_api("daytona")
         check_ok("daytona SDK", "(installed)")
     except ImportError:
         _fail_and_issue("daytona SDK not installed", "(run hermes setup terminal)", "Run hermes setup terminal and select Daytona, then restart Hermes", issues)
@@ -261,7 +262,8 @@ def _check_vercel_backend(issues: list[str]) -> None:
     _require(os.getenv("TERMINAL_CONTAINER_DISK", "51200").strip() in {"", "0", "51200"},
              ("Vercel disk setting", "(uses platform default)"), ("Vercel custom disk unsupported", "(reset terminal.container_disk to 51200)"),
              "Vercel Sandbox does not support custom container_disk; use the shared default 51200", issues)
-    _require(importlib.util.find_spec("vercel") is not None, ("vercel SDK", "(installed)"),
+    from hermes_platform.cloud import cloud_api_available
+    _require(cloud_api_available("vercel"), ("vercel SDK", "(installed)"),
              ("vercel SDK not installed", "(run hermes setup terminal)"),
              "Run hermes setup terminal and select Vercel Sandbox, then restart Hermes", issues)
     auth_status = describe_vercel_auth()

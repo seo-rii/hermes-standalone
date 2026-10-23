@@ -11,7 +11,8 @@ from pathlib import Path
 from typing import Any, Optional
 
 try:  # Hard dependency, but tolerate scaffold-phase imports before pip install.
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
 except ImportError:  # pragma: no cover - stripped/scaffold installs only
     psutil = None  # type: ignore[assignment]
 

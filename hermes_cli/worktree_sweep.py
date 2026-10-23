@@ -115,7 +115,8 @@ def _linux_live_pids(roots: list[str], exclude: frozenset) -> dict[str, list[int
 def _psutil_live_pids(roots: list[str], exclude: frozenset) -> dict[str, list[int]]:
     hits: dict[str, list[int]] = {}
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
     except ImportError:
         return hits
     for proc in psutil.process_iter(["pid"]):

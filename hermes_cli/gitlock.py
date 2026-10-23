@@ -208,7 +208,8 @@ def _windows_git_in_checkout(root: Path) -> bool | None:
         _git_subcommand_of, git_works_in
 
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
     except ImportError:
         return None
     places = _checkout_places(root, _git_dir(Path(root)))

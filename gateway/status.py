@@ -1,6 +1,8 @@
 """Gateway runtime status helpers: PID/lock/marker files under ``{HERMES_HOME}`` (one set per
 home/profile) that tell whether the gateway daemon is running."""
 
+from hermes_platform.processes import process_api
+
 import asyncio
 import contextlib
 import copy
@@ -497,7 +499,7 @@ def _get_process_start_time(pid: int) -> Optional[int]:
     # No /proc (macOS / Windows): psutil, quantized to centiseconds for stable equality.
     # process_birth: macOS's clock-step-stable kernel start (#140580); unchanged with no step.
     try:
-        import psutil  # type: ignore
+        psutil = process_api()
         from hermes_cli.process_identity import process_birth
         return round(process_birth(psutil.Process(pid)) * 100)
     except Exception:
@@ -522,7 +524,7 @@ def _read_process_cmdline(pid: int) -> Optional[str]:
         if raw:
             return raw.replace(b"\x00", b" ").decode("utf-8", errors="ignore").strip()
     with contextlib.suppress(Exception):
-        import psutil  # type: ignore
+        psutil = process_api()
         cmdline_parts = psutil.Process(pid).cmdline()
         if cmdline_parts:
             return " ".join(cmdline_parts)
@@ -544,17 +546,11 @@ def _gateway_command_subcommand(command: str | None) -> str | None:
     Hermes entrypoint plus the ``gateway`` subcommand, or a gateway-dedicated entrypoint. Tokenizes
     quote-aware (Windows paths with spaces); ``--profile``/``-p`` selectors are stripped anywhere in
     argv since ``_apply_profile_override`` removes them before argparse."""
-    if not command:
+    from gateway.status_bundle_command import gateway_process_tokens
+    cased_tokens = gateway_process_tokens(command)
+    if not cased_tokens:
         return None
-    try:
-        raw_tokens = shlex.split(command, posix=False)
-    except ValueError:
-        raw_tokens = command.split()
-    # Strip surrounding quotes, normalize slashes + case per token.
-    cased_tokens = [t.strip("\"'").replace("\\", "/") for t in raw_tokens]
     tokens = [t.lower() for t in cased_tokens]
-    if not tokens:
-        return None
     basenames = [t.rsplit("/", 1)[-1] for t in tokens]
     # ``python -c <src> … -m hermes_cli.main gateway run``: the trailing argv belongs to the program
     # the inline source will spawn later, not to this process (#107002). Case-preserving tokens:
@@ -946,7 +942,7 @@ def _pid_exists(pid: int) -> bool:
     dead: treating one as alive makes --replace wait forever under systemd Restart=always."""
     pid = int(pid)
     try:
-        import psutil  # type: ignore
+        psutil = process_api()
         # Best-effort zombie check: status-read failures fall through to pid_exists().
         # Windows has no POSIX zombies, and this probe costs ~7 ms per call — once per
         # registry entry inside the session file lock (#115578). Skip it on Windows and
@@ -1805,7 +1801,7 @@ def _snapshot_gateway_children(pid: int) -> list:
     if _IS_WINDOWS:
         return []
     try:
-        import psutil  # type: ignore
+        psutil = process_api()
         return psutil.Process(int(pid)).children(recursive=True)
     except Exception:
         logger.debug("Could not snapshot children of gateway PID %d", pid, exc_info=True)
@@ -1823,7 +1819,7 @@ def reap_gateway_children(children: list, *, parent_pid: int, timeout: float = 5
         return 0
     reaped = 0
     try:
-        import psutil  # type: ignore
+        psutil = process_api()
         live = []
         for child in children:
             try:
@@ -2085,7 +2081,7 @@ def get_running_pid_identity_strict(pid_path: Path) -> Optional[tuple[int, float
     # Windows persists a centisecond fingerprint; SCM checks need the exact psutil epoch.
     # Re-read only after validation and prove it rounds to the same value.
     try:
-        import psutil  # type: ignore
+        psutil = process_api()
 
         exact_create_time = float(psutil.Process(pid).create_time())
     except Exception as exc:

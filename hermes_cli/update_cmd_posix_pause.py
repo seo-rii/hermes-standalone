@@ -186,7 +186,8 @@ def _supervisor_markers(pid: int) -> str | None:
     if "--external-supervisor" in (_capture_gateway_argv(pid) or []):
         return "--external-supervisor"
     try:
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()  # type: ignore
         env = psutil.Process(pid).environ()
     except Exception:  # health: allow BLE001 -- unreadable environment: no marker proven
         return None

@@ -97,7 +97,7 @@ def test_kill_returns_while_escaped_descendant_holds_the_pty(tmp_path, unscoped)
         result = _kill_within_deadline(registry, session)
     finally:
         _terminate_owned(session)
-    assert result["status"] == "killed"
+    assert result["status"] == "killed", result
     assert session.id in registry._finished
     _wait_for_reader_close(session)
 
@@ -118,7 +118,7 @@ def test_output_after_the_kill_is_not_added_to_the_killed_session(tmp_path, monk
         result = _kill_within_deadline(registry, session)
     finally:
         _terminate_owned(session)
-    assert result["status"] == "killed"
+    assert result["status"] == "killed", result
     # The reader drains what the escapee printed after the kill, but does not keep it.
     _wait_for_reader_close(session)
     assert "LATE-ESCAPEE-OUTPUT" not in session.output_buffer
@@ -153,7 +153,7 @@ def test_chunk_read_before_the_kill_is_not_added_after_it(tmp_path, unscoped):
         result = registry.kill_process(session.id)
     finally:
         release.set()
-    assert result["status"] == "killed"
+    assert result["status"] == "killed", result
     assert _wait_for(lambda: not session._reader_thread.is_alive(), 5)
     assert "RACE-MARKER" not in result.get("output", "")
     assert "RACE-MARKER" not in session.output_buffer

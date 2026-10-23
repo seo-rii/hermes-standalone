@@ -302,7 +302,8 @@ def _process_start_time(pid: int) -> Optional[float]:
     # Pair pid with create_time when psutil can read it, so a recycled pid does not
     # keep a stale lease alive indefinitely.
     try:
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         return float(psutil.Process(pid).create_time())
     except Exception:
         return None

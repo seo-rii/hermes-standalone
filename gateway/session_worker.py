@@ -3,6 +3,8 @@
 Only explicit local compute registrations are enabled here. A delegated child is reserved by
 the owner on its parent's receipt stream (gateway/session_worker_child.py), never registered.
 """
+
+from hermes_platform.processes import process_api
 import asyncio
 import hmac
 import os
@@ -17,7 +19,7 @@ _SCOPE = {'profile_id', 'session_id', 'execution_id', 'generation', 'pid', 'birt
 
 
 def _claim(connection, ref, params):
-    import psutil
+    psutil = process_api()
     authority = connection.authority
     if params.get('profile_id') != authority.profile_id or connection.actor.profile_id != authority.profile_id:
         raise RuntimeStoreError('profile_mismatch')

@@ -693,7 +693,7 @@ def _resized_hicolor_pngs(raw: bytes) -> Optional[dict[str, bytes]]:
     PNG) so the caller falls back to a copy. Pillow is imported lazily to keep the uninstaller
     import-light."""
     try:
-        from PIL import Image
+        from hermes_platform.images import Image
     except ImportError:
         return None
     try:

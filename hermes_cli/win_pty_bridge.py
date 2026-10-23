@@ -9,8 +9,10 @@ import time
 from typing import Optional, Sequence
 
 try:
-    from winpty import PtyProcess  # type: ignore
-    _PTY_AVAILABLE = sys.platform.startswith("win")
+    from hermes_platform.pty import windows_pty_process
+    PtyProcess = windows_pty_process()
+    _PTY_AVAILABLE = sys.platform.startswith("win") and (
+        not getattr(PtyProcess, "supports_bytes", False) or PtyProcess.is_available())
 except ImportError:  # pragma: no cover - non-Windows or pywinpty missing
     PtyProcess = None  # type: ignore
     _PTY_AVAILABLE = False
@@ -41,7 +43,7 @@ class PtyUnavailableError(RuntimeError):
 
 
 class WinPtyBridge:
-    """pywinpty-backed bridge with the same interface as ``PtyBridge``. ``read`` runs inside
+    """ConPTY bridge with the same interface as ``PtyBridge``. ``read`` runs inside
     ``run_in_executor``; ConPTY has no selectable fd, so reads poll and writes run in a worker
     thread to keep the same non-blocking event-loop contract as the POSIX bridge."""
 
@@ -67,7 +69,7 @@ class WinPtyBridge:
             build_subprocess_env(scrub_secrets=False, inherit_profile_home=False)
             if env is None else dict(env))
         spawn_env["TERM"] = spawn_env.get("TERM") or "xterm-256color"
-        # pywinpty mirrors ptyprocess: dimensions=(rows, cols).
+        # Both backends use dimensions=(rows, cols).
         return cls(PtyProcess.spawn(list(argv), cwd=cwd, env=spawn_env, dimensions=(rows, cols)))  # type: ignore[union-attr]
 
     @property
@@ -85,7 +87,7 @@ class WinPtyBridge:
         if self._closed:
             return None
         try:
-            data = self._proc.read(65536)  # pywinpty returns str
+            data = self._proc.read(65536)
         except Exception:
             return None
         if not data:
@@ -94,8 +96,8 @@ class WinPtyBridge:
             return b""
         if isinstance(data, bytes):
             return data
-        # pywinpty decodes internally, so a multibyte UTF-8 sequence can split across reads;
-        # xterm.js tolerates the rare replacement char (the one fidelity tradeoff vs POSIX).
+        # The original pywinpty backend yields text; the qualified ConPTY
+        # backend forwards bytes so xterm.js retains partial UTF-8 sequences.
         return data.encode("utf-8", errors="replace")
 
     def _write_blocking(self, data: bytes) -> bool:
@@ -104,7 +106,8 @@ class WinPtyBridge:
         if not data:
             return True
         try:
-            self._proc.write(data.decode("utf-8", errors="replace"))  # pywinpty wants text
+            self._proc.write(data if getattr(self._proc, "supports_bytes", False)
+                             else data.decode("utf-8", errors="replace"))
         except Exception:
             return False
         return True

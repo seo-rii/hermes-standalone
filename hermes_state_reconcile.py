@@ -174,7 +174,8 @@ def _lockless_gateway_holder(path: Path) -> str | None:
         argv = _read_proc_argv(pid)
         if argv is None:
             try:
-                import psutil
+                from hermes_platform.processes import process_api
+                psutil = process_api()
                 argv = psutil.Process(pid).cmdline() or None
             except (ImportError, OSError, psutil.Error):  # gone, denied, or no psutil: not provably ours
                 argv = None

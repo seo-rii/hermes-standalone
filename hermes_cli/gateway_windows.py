@@ -247,11 +247,12 @@ def _launch_elevated_gateway_command(command: str, extra_args: list[str] | None 
     All operator decisions are already collected in the parent shell before this point. See #54220, #56747.
     """
     _assert_windows()
-    args = ["-m", "hermes_cli.main", *_current_profile_cli_args(), "gateway", command, *(extra_args or [])]
-    params = subprocess.list2cmdline(args)
+    from hermes_cli.runtime_module import python_module_command
+    argv = python_module_command("hermes_cli.main", [*_current_profile_cli_args(), "gateway", command, *(extra_args or [])])
+    params = subprocess.list2cmdline(argv[1:])
     cwd = str(Path(__file__).resolve().parent.parent)
     try:
-        result = ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, cwd, 0)  # 0 = SW_HIDE
+        result = ctypes.windll.shell32.ShellExecuteW(None, "runas", argv[0], params, cwd, 0)  # 0 = SW_HIDE
     except Exception as exc:
         print(f"⚠ Could not launch elevated gateway {command} prompt: {exc}")
         return False
@@ -354,11 +355,12 @@ def _stable_gateway_working_dir(project_root: Path) -> str:
 
 def _gateway_run_argv(python_exe: str, profile_arg: str) -> list[str]:
     """``python -m hermes_cli.main [--profile X] gateway run`` — shared by every launcher renderer."""
-    argv = [python_exe, "-m", "hermes_cli.main"]
-    if profile_arg:
-        argv.extend(profile_arg.split())
-    argv.extend(["gateway", "run"])
-    return argv
+    from hermes_cli.gateway import PROJECT_ROOT
+    arguments = [*profile_arg.split(), "gateway", "run"]
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(PROJECT_ROOT):
+        return runtime.bundled_command(PROJECT_ROOT, "hermes_cli.main", arguments, python=python_exe)
+    return [python_exe, "-m", "hermes_cli.main", *arguments]
 
 
 def _launcher_settings(home: Path | None = None) -> tuple[str, str, str, str]:

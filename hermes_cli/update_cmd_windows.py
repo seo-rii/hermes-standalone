@@ -135,7 +135,8 @@ def _lower_dir_prefix(path: Path) -> str:
 def _psutil():
     """The ``psutil`` module, or ``None`` when it can't be imported (callers degrade, never raise)."""
     try:
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()
     except Exception:
         return None
     return psutil
@@ -666,7 +667,8 @@ def _desktop_owns_gateway_lifecycle() -> bool:
 
 def _win_service(name: str):
     """``(psutil, service)`` for the named SCM service (psutil imported here so tests can stub the module)."""
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     return psutil, psutil.win_service_get(name)
 
 
@@ -1299,7 +1301,8 @@ def _service_gateway_ready(name: str, profile: str | None, timeout_s: float | No
 
 def _service_running(name: str) -> bool:
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
     except ImportError:
         return False
     try:
@@ -1419,7 +1422,8 @@ def _unmapped_ready_filter(entry: dict, taken: set):
     included; on A's home only one gateway can run). Only an entry recorded before ``home`` was
     captured (no key: a pre-durable-pause updater's token) keeps the argv-only match; a recorded
     ``home`` that is empty proves no runtime and is never matched."""
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     from gateway.status import _looks_like_gateway_process, _same_hermes_home, get_process_start_time
     from hermes_cli.update_fleet_scope import gateway_pid_home
     tail, old = list(entry.get("argv") or [])[1:], int(entry.get("pid") or 0)

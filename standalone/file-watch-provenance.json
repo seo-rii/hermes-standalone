@@ -1,0 +1,14 @@
+{
+  "project": "watchfiles",
+  "version": "1.2.0",
+  "archive": {
+    "filename": "watchfiles-1.2.0.tar.gz",
+    "url": "https://files.pythonhosted.org/packages/cd/41/5e1a4bb12aac5f1493fa1bdc11154eca3b258ca4eba65d39c473fe19d8e9/watchfiles-1.2.0.tar.gz",
+    "sha256": "c995fba777f1ea992f090f9236e9284cf7a5d1a0130dd5a3d82c598cacd76838",
+    "size": 108252
+  },
+  "unchanged_source": "watchfiles/filters.py",
+  "source_sha256": "6d22bdb0feff009f9ed71a94ff21d42da88d3e96188fe5094f81a1d2efce4358",
+  "license": "licenses/watchfiles-LICENSE",
+  "replacement": "Only the native event-watching boundary is replaced by qualified stdlib polling. Filters are unchanged; notification timing and coalescing can differ."
+}

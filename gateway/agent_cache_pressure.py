@@ -93,7 +93,9 @@ def _total_memory_bytes() -> Optional[int]:
     except (OSError, ValueError, AttributeError):
         pass
     try:
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+
+        psutil = process_api()
 
         return int(psutil.virtual_memory().total)
     except Exception:
@@ -188,7 +190,9 @@ def read_anon_rss_mb() -> Optional[int]:
     except Exception:
         pass
     try:
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+
+        psutil = process_api()
 
         return int(psutil.Process(os.getpid()).memory_info().rss / _BYTES_PER_MB)
     except Exception:

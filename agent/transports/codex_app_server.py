@@ -53,7 +53,8 @@ _TRANSPORT_LOST_CODE = -32000
 def _snapshot_descendants(pid: int) -> list[Any]:
     """psutil handles for ``pid``'s current descendants ([] when psutil is unavailable)."""
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         return psutil.Process(int(pid)).children(recursive=True)
     except Exception:
         return []
@@ -64,7 +65,8 @@ def _reap_snapshotted(descendants: list[Any]) -> None:
     bounded wait. psutil identity checks make a recycled PID a no-op."""
     if not descendants:
         return
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     live = []
     for child in reversed(descendants):
         with contextlib.suppress(Exception):

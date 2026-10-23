@@ -9,6 +9,8 @@ root — no launcher→worker chains left holding ``.pyd`` locks.
 
 from __future__ import annotations
 
+from hermes_platform.processes import process_api
+
 import hashlib
 import json
 import logging
@@ -73,7 +75,7 @@ def process_birth(proc) -> float:
     Other platforms keep ``create_time()``: Linux and Windows apply no per-process reference.
     Raises ``psutil.Error`` like ``create_time()``.
     """
-    import psutil
+    psutil = process_api()
     if getattr(psutil, "MACOS", False):
         platform_proc = getattr(proc, "_proc", None)
         if platform_proc is not None:
@@ -87,7 +89,7 @@ def process_birth(proc) -> float:
 def _process_create_time(pid: Optional[int] = None) -> Optional[float]:
     """:func:`process_birth` of ``pid`` (default: this process); ``None`` when psutil can't say."""
     try:
-        import psutil
+        psutil = process_api()
 
         return process_birth(psutil.Process(os.getpid() if pid is None else pid))
     except Exception:
@@ -211,7 +213,7 @@ def _same_incarnation(proc, create_time: Optional[float]) -> bool:
 def _pid_alive_matches(pid: int, create_time: Optional[float], *, strict: bool = False) -> Optional[bool]:
     """True/False when provable; ``None`` when psutil can't say."""
     try:
-        import psutil
+        psutil = process_api()
     except Exception:
         return None
     try:
@@ -364,7 +366,7 @@ def register_child(pid: int, purpose: str, *, project_root: Optional[Path] = Non
         return False
     entry = _new_entry(pid, child_create, purpose, project_root, os.getpid(), _process_create_time())
     try:
-        import psutil
+        psutil = process_api()
 
         entry.argv = " ".join(psutil.Process(pid).cmdline()[:10])
     except Exception:
@@ -411,7 +413,7 @@ def spawner_is_dead(entry: dict) -> Optional[bool]:
 def _terminate_then_kill(pid: int, create_time: Optional[float]) -> bool:
     """SIGTERM, 2 s grace, then SIGKILL. False when the incarnation moved on or is already gone."""
     try:
-        import psutil
+        psutil = process_api()
 
         proc = psutil.Process(pid)
         if not _same_incarnation(proc, create_time):
@@ -444,7 +446,7 @@ def _reparented_orphan(pid: int) -> bool:
             return False
         import time as _time
 
-        import psutil
+        psutil = process_api()
         return max(0.0, _time.time() - psutil.Process(pid).create_time()) >= _REAP_MIN_AGE_SECONDS
     except Exception:
         return False  # unprovable → never touch
@@ -521,7 +523,7 @@ def reap_orphaned_mcp_helpers(*, project_root: Optional[Path] = None, kill_fn=No
             if kill_fn is not None:
                 kill_fn(pid)
             else:
-                import psutil
+                psutil = process_api()
 
                 proc = psutil.Process(pid)
                 if not _same_incarnation(proc, entry.get("create_time")):
@@ -552,7 +554,7 @@ def _kill_process_tree_windows(proc) -> None:
     """Terminate *proc* and every still-alive descendant (npx.cmd → node.exe), Windows-only
     (#61059): without a pgid there is no group-kill, and grandchildren reparent to nothing
     (ParentId=null) once the direct child exits, so they must be reached through the tree."""
-    import psutil
+    psutil = process_api()
 
     try:
         descendants = proc.children(recursive=True)

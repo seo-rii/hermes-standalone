@@ -9,7 +9,9 @@ import subprocess
 import sys
 import threading
 
-import psutil
+from hermes_platform.processes import process_api
+
+psutil = process_api()
 
 
 class _BasicLimits(ctypes.Structure):

@@ -45,6 +45,11 @@ def runtime_command(repo_root: Path, args=(), *, module: str = "hermes_cli.main"
     No selected generation or ambient PYTHONPATH is captured in the command.
     """
     root = Path(repo_root).resolve()
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(root):
+        if code is not None:
+            raise ValueError("bundled runtime re-entry requires a packaged module")
+        return runtime.bundled_command(root, module, args, home=home, python=python)
     python = python or resolve_store_python(root) or Path(sys.executable)
     entry = f"exec({_inline_string_literal(code)})" if code is not None else (
         f"runpy.run_module({_inline_string_literal(module)}, run_name='__main__', alter_sys=True)")
@@ -92,6 +97,9 @@ def installation_command(repo_root: Path, args=(), *, module: str = "hermes_cli.
     the managed Python pin changes.
     """
     root = Path(repo_root)
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(root):
+        return runtime.bundled_command(root, module, args, home=home, python=python)
     if resolve_store_python(root) is None:
         return runtime_command(root, args, module=module, python=python, home=home)
     prefix = [] if module == "hermes_cli.main" else ["--run-module", module]
@@ -123,6 +131,9 @@ def resolve_store_python(repo_root: Path, *, publication: bool = False) -> Path 
     scratch cleanup may delete, leaving the launcher to exit 127 forever
     (#131745). It still supplies the store when the tree records none.
     """
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(repo_root):
+        return None  # The caller's interpreter owns this stdlib-only distribution.
     if publication:
         own = _store_python(store_root(repo_root, honor_runtime_override=False))
         if own is not None:

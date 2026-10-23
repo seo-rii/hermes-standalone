@@ -24,7 +24,8 @@ class ProcessTerminationMixin:
     def _proc_alive(proc) -> bool:
         """True if a psutil.Process is running and not a zombie (already dead, just unreaped)."""
         try:
-            import psutil
+            from hermes_platform.processes import process_api
+            psutil = process_api()
             return proc.is_running() and proc.status() != psutil.STATUS_ZOMBIE
         except Exception:
             return False
@@ -60,7 +61,8 @@ class ProcessTerminationMixin:
             except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
                 _sigterm_quietly()
             return
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         gone = (psutil.NoSuchProcess, psutil.AccessDenied, OSError)
         try:
             parent = psutil.Process(pid)
@@ -133,7 +135,8 @@ class ProcessTerminationMixin:
     def _live_descendants(pid: int) -> list[int]:
         """PIDs of living non-zombie descendants of host PID ``pid`` (best-effort)."""
         try:
-            import psutil
+            from hermes_platform.processes import process_api
+            psutil = process_api()
             children = psutil.Process(pid).children(recursive=True)
         except Exception:
             logger.debug("Could not list descendants of pid %s", pid, exc_info=True)

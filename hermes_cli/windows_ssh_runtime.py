@@ -35,6 +35,27 @@ def _win32() -> Any:
     return SimpleNamespace(**{name: importlib.import_module(name) for name in names})
 
 
+def _bundle_runtime():
+    runtime = sys.modules.get("standalone.runtime")
+    return runtime if runtime is not None and runtime.is_active_bundle(Path(__file__).resolve().parents[1]) else None
+
+
+def _native_files():
+    if _bundle_runtime() is not None:
+        from standalone import windows_files
+        return windows_files
+    return None
+
+
+def _file_api():
+    return _native_files() or _win32().win32file
+
+
+def _constants():
+    native = _native_files()
+    return native.constants if native is not None else _win32().win32con
+
+
 def _check(pattern: re.Pattern, value: str, message: str) -> str:
     if not pattern.fullmatch(value or ""):
         raise ValueError(message)
@@ -124,6 +145,9 @@ def _verify_security(handle) -> None:
 
 
 def _open(path: Path, access: int, creation: int, flags: int, share: int = 0):
+    native = _native_files()
+    if native is not None:
+        return native.open_private(path, access, creation, flags, share)
     win32file = _win32().win32file
     handle = win32file.CreateFile(str(path), access, share, _security_attributes(), creation, flags, None)
     try:
@@ -141,32 +165,31 @@ def _open(path: Path, access: int, creation: int, flags: int, share: int = 0):
 
 def _open_existing(path: Path, access: int, extra_flags: int = 0, share: int = 0):
     """``_open`` an existing file (FILE_ATTRIBUTE_NORMAL | reparse guard); None when it is missing."""
-    w = _win32()
+    win32con = _constants()
     try:
-        return _open(path, access, w.win32con.OPEN_EXISTING,
-                     w.win32con.FILE_ATTRIBUTE_NORMAL | _OPEN_REPARSE_POINT | extra_flags, share)
-    except w.pywintypes.error as exc:
-        if exc.winerror in (2, 3):
+        return _open(path, access, win32con.OPEN_EXISTING,
+                     win32con.FILE_ATTRIBUTE_NORMAL | _OPEN_REPARSE_POINT | extra_flags, share)
+    except Exception as exc:
+        if getattr(exc, "winerror", None) in (2, 3):
             return None
         raise
 
 
 def _read_shared(path: Path, limit: int, share: int) -> bytes | None:
     """Read up to ``limit`` bytes of ``path`` opened read-only with ``share``; None when missing."""
-    w = _win32()
-    handle = _open_existing(path, w.win32con.GENERIC_READ | w.win32con.READ_CONTROL, share=share)
+    win32con, win32file = _constants(), _file_api()
+    handle = _open_existing(path, win32con.GENERIC_READ | win32con.READ_CONTROL, share=share)
     if handle is None:
         return None
     try:
-        return w.win32file.ReadFile(handle, limit)[1]
+        return win32file.ReadFile(handle, limit)[1]
     finally:
-        w.win32file.CloseHandle(handle)
+        win32file.CloseHandle(handle)
 
 
 def _write_new(path: Path, data: bytes, share: int = 0) -> None:
     """Create ``path`` (CREATE_NEW), write ``data`` and flush."""
-    w = _win32()
-    win32con, win32file = w.win32con, w.win32file
+    win32con, win32file = _constants(), _file_api()
     handle = _open(path, win32con.GENERIC_WRITE | win32con.READ_CONTROL, win32con.CREATE_NEW,
                    win32con.FILE_ATTRIBUTE_NORMAL | _OPEN_REPARSE_POINT, share)
     try:
@@ -191,6 +214,9 @@ def write_private_file(path: Path, data: bytes) -> None:
 
 
 def _ensure_directory(path: Path) -> None:
+    native = _native_files()
+    if native is not None:
+        return native.ensure_directory(path)
     w = _win32()
     pywintypes, win32con, win32file = w.pywintypes, w.win32con, w.win32file
     if path.parent not in (Path(path.anchor), path) and not path.parent.exists():
@@ -217,8 +243,8 @@ def _ensure_scope(ownership_id: str) -> Path:
 def upload_token(ownership_id: str, spawn_nonce: str, token: bytes) -> dict[str, Any]:
     if len(token) != 64 or not _HEX64.fullmatch(token.decode("ascii", errors="ignore")):
         raise ValueError("invalid session token")
-    _ensure_scope(ownership_id)
     path = _token_path(ownership_id, spawn_nonce)
+    _ensure_scope(ownership_id)
     try:
         _write_new(path, token)
     except BaseException:
@@ -228,8 +254,7 @@ def upload_token(ownership_id: str, spawn_nonce: str, token: bytes) -> dict[str,
 
 
 def read_token(path_value: str) -> str:
-    w = _win32()
-    win32con, win32file = w.win32con, w.win32file
+    win32con, win32file = _constants(), _file_api()
     path = Path(path_value)
     try:
         relative = path.relative_to(_root())
@@ -247,8 +272,11 @@ def read_token(path_value: str) -> str:
         _, data = win32file.ReadFile(handle, 65)
     finally:
         win32file.CloseHandle(handle)
-    token = data.decode("ascii", errors="ignore")
-    if len(token) != 64 or not _HEX64.fullmatch(token):
+    try:
+        token = data.decode("ascii")
+    except UnicodeDecodeError as exc:
+        raise SystemExit("--ssh-session-token-file contains an invalid token") from exc
+    if len(data) != 64 or not _HEX64.fullmatch(token):
         raise SystemExit("--ssh-session-token-file contains an invalid token")
     return token
 
@@ -264,7 +292,7 @@ def _read_json_stdin() -> dict[str, Any]:
 
 
 def read_lock(ownership_id: str) -> dict[str, Any] | None:
-    win32con = _win32().win32con
+    win32con = _constants()
     _ensure_scope(ownership_id)
     data = _read_shared(_lock_path(ownership_id), _MAX_JSON + 1, win32con.FILE_SHARE_READ)
     if data is None or len(data) > _MAX_JSON:
@@ -287,7 +315,7 @@ def _lock_record(ownership_id: str, payload: dict[str, Any]) -> bytes:
 
 
 def write_lock(ownership_id: str, payload: dict[str, Any]) -> None:
-    win32file = _win32().win32file
+    win32file = _file_api()
     directory = _ensure_scope(ownership_id)
     data = _lock_record(ownership_id, payload)
     temporary = directory / f".{os.urandom(8).hex()}.lock.tmp"
@@ -297,16 +325,17 @@ def write_lock(ownership_id: str, payload: dict[str, Any]) -> None:
 
 
 def remove_artifact(path: Path) -> bool:
-    w = _win32()
-    handle = _open_existing(path, w.win32con.DELETE | w.win32con.READ_CONTROL, _DELETE_ON_CLOSE)
+    win32con = _constants()
+    handle = _open_existing(path, win32con.DELETE | win32con.READ_CONTROL, _DELETE_ON_CLOSE)
     if handle is None:
         return False
-    w.win32file.CloseHandle(handle)
+    _file_api().CloseHandle(handle)
     return True
 
 
 def process_state(pid: int, creation_time_ns: int, hermes_path: str, spawn_nonce: str) -> dict[str, Any]:
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     _nonce(spawn_nonce)
     try:
         process = psutil.Process(pid)
@@ -331,10 +360,18 @@ def process_state(pid: int, creation_time_ns: int, hermes_path: str, spawn_nonce
         argv[1:3] == ["-m", "hermes_cli.main"]
         or (len(argv) > 2 and argv[1] == "-c" and "hermes_cli.main" in argv[2]))
     executable_match = arg0 == expected or (is_python and launches_module)
+    arguments = argv
+    runtime = _bundle_runtime()
+    if runtime is not None and expected == os.path.normcase(str(runtime.current_bundle()["artifact"])):
+        # This distribution owns only its exact isolated artifact launch. A
+        # source -m/-c launch or another .py file cannot satisfy that binding.
+        bundled = runtime.bundle_module_argv(argv)
+        executable_match = bundled is not None and bundled[0] == "hermes_cli.main"
+        arguments = bundled[1] if executable_match else []
     try:
-        serve = argv.index("serve")
-        owner = argv.index("--ssh-owner-nonce", serve + 1)
-        owned = executable_match and "--isolated" in argv[serve + 1:] and argv[owner + 1] == spawn_nonce
+        serve = arguments.index("serve")
+        owner = arguments.index("--ssh-owner-nonce", serve + 1)
+        owned = executable_match and "--isolated" in arguments[serve + 1:] and arguments[owner + 1] == spawn_nonce
     except (ValueError, IndexError):
         owned = False
     return {"alive": process.is_running(), "owned": owned, "indeterminate": False,
@@ -346,7 +383,8 @@ def terminate_owned(pid: int, creation_time_ns: int, hermes_path: str, spawn_non
     state = process_state(pid, creation_time_ns, hermes_path, spawn_nonce)
     if not state["alive"] or not state["owned"]:
         return False
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     process = psutil.Process(pid)
     if int(process.create_time() * 1_000_000_000) != creation_time_ns:
         return False
@@ -359,13 +397,26 @@ def terminate_owned(pid: int, creation_time_ns: int, hermes_path: str, spawn_non
     return True
 
 
+def _installation_command(hermes_path: str) -> list[str]:
+    runtime = _bundle_runtime()
+    if runtime is not None:
+        artifact = runtime.current_bundle()["artifact"]
+        if os.path.normcase(os.path.abspath(hermes_path)) == os.path.normcase(artifact):
+            return runtime.bundled_command(Path(__file__).resolve().parents[1], "hermes_cli.main")
+    return [hermes_path]
+
+
 def _resolve_direct_command(hermes_path: str) -> list[str]:
     """Ask the configured installation for its direct, boot-selecting command.
 
     The port owner must be the process we lock, not a console-launcher child.
     No assumption about python.exe beside an external bin launcher is valid.
     """
-    out = subprocess.run([hermes_path, "--print-runtime-command"], capture_output=True,
+    command = _installation_command(hermes_path)
+    runtime = _bundle_runtime()
+    if runtime is not None and runtime.bundle_module_argv(command) == ("hermes_cli.main", []):
+        return command
+    out = subprocess.run([*command, "--print-runtime-command"], capture_output=True,
                          text=True, encoding="utf-8", errors="replace", timeout=30, check=False)
     if out.returncode != 0:
         raise ValueError("could not resolve Hermes runtime; refresh this installation's launcher")
@@ -401,17 +452,22 @@ def spawn_backend(payload: dict[str, Any]) -> dict[str, Any]:
     env.pop("PYTHONPATH", None)
     _ensure_scope(ownership_id)
     log_path = _log_path(ownership_id, spawn_nonce)
-    win32con = _win32().win32con
+    win32con = _constants()
     log_handle = _open(log_path, win32con.GENERIC_WRITE | win32con.READ_CONTROL,
                        win32con.CREATE_NEW, win32con.FILE_ATTRIBUTE_NORMAL | _OPEN_REPARSE_POINT,
                        win32con.FILE_SHARE_READ | win32con.FILE_SHARE_WRITE)
     import msvcrt
-    log_fd = msvcrt.open_osfhandle(int(log_handle), os.O_WRONLY)
+    try:
+        log_fd = msvcrt.open_osfhandle(int(log_handle), os.O_WRONLY)
+    except BaseException:
+        _file_api().CloseHandle(log_handle)
+        raise
     with os.fdopen(log_fd, "wb", buffering=0) as log_stream:
         # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP | CREATE_BREAKAWAY_FROM_JOB
         process = subprocess.Popen(args, stdin=subprocess.DEVNULL, stdout=log_stream, stderr=log_stream,
                                    close_fds=True, creationflags=0x00000008 | 0x00000200 | 0x01000000, env=env)
-    creation_time_ns = int(__import__("psutil").Process(process.pid).create_time() * 1_000_000_000)
+    from hermes_platform.processes import process_api
+    creation_time_ns = int(process_api().Process(process.pid).create_time() * 1_000_000_000)
     return {"pid": process.pid, "creationTimeNs": str(creation_time_ns),
             "logPath": str(log_path), "tokenPath": token_path}
 
@@ -420,12 +476,14 @@ def inspect_hermes(hermes_path: str) -> dict[str, Any]:
     path = os.path.abspath(hermes_path)
     if not os.path.isabs(hermes_path) or not os.path.isfile(path):
         raise ValueError("Hermes path is not an executable file")
-    version = subprocess.run([path, "--version"], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20, check=False)
-    help_result = subprocess.run([path, "serve", "--help"], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20, check=False)
+    command = _installation_command(path)
+    version = subprocess.run([*command, "--version"], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20, check=False)
+    help_result = subprocess.run([*command, "serve", "--help"], capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=20, check=False)
     help_text = help_result.stdout + help_result.stderr
+    version_lines = (version.stdout + version.stderr).splitlines()
     return {
         "path": path,
-        "version": (version.stdout + version.stderr).splitlines()[0] if version.returncode == 0 else "",
+        "version": version_lines[0] if version.returncode == 0 and version_lines else "",
         "supported": "--ssh-session-token-file" in help_text and "--ssh-owner-nonce" in help_text}
 
 
@@ -435,7 +493,7 @@ def _probe(*_: str) -> dict[str, Any]:
 
 
 def _read_log(ownership_id: str, spawn_nonce: str) -> dict[str, Any]:
-    win32con = _win32().win32con
+    win32con = _constants()
     data = _read_shared(_log_path(ownership_id, spawn_nonce), _MAX_LOG,
                         win32con.FILE_SHARE_READ | win32con.FILE_SHARE_WRITE)
     return {"content": "" if data is None else data.decode(errors="replace")}

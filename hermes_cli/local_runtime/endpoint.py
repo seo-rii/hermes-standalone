@@ -37,7 +37,8 @@ def _pid_alive(pid: int) -> bool:
     if not pid or pid < 0:
         return False
     with suppress(Exception):
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()
 
         return psutil.pid_exists(pid)
     return True

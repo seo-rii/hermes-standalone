@@ -38,7 +38,8 @@ def _get_rss_mb() -> Optional[int]:
     except Exception:
         pass
     try:
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()
 
         return int(psutil.Process(os.getpid()).memory_info().rss / _BYTES_TO_MB)
     except Exception:

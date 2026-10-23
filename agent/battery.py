@@ -1,6 +1,6 @@
 """System-battery read-out for the CLI/TUI status bar.
 
-Reads the host battery through ``psutil`` and exposes a compact, colour-coded label. Everything
+Reads the host battery through the distribution's process API and exposes a compact, colour-coded label. Everything
 degrades to "unavailable" (no battery / read failure) so callers can render unconditionally. The
 status bar repaints on every keystroke, so :func:`read_battery` memoises the reading for a few seconds.
 """
@@ -43,7 +43,8 @@ _cache: Optional[tuple[float, BatteryStatus]] = None
 
 def _read_battery_uncached() -> BatteryStatus:
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
 
         # ``sensors_battery`` is missing on some platforms/builds of psutil.
         batt = psutil.sensors_battery()

@@ -183,7 +183,8 @@ def _pid_is_live(pid: int) -> bool:
     control event and can kill the target — so an unimportable psutil there means "cannot prove".
     """
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
 
         return bool(psutil.pid_exists(pid))
     except Exception:

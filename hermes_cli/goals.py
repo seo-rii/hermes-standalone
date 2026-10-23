@@ -727,7 +727,8 @@ def _pid_alive(pid: int) -> bool:
     except Exception:
         pass
     try:
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()
 
         return bool(psutil.pid_exists(int(pid)))
     except Exception:

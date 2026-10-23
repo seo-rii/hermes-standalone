@@ -620,7 +620,8 @@ def _pid_alive(pid: int) -> bool:
         return False
     try:
         # psutil when available: os.kill(pid, 0) on Windows is a HARD kill (bpo-14484).
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()  # type: ignore
         if not psutil.pid_exists(pid):
             return False
     except ImportError:

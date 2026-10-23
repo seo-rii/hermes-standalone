@@ -32,6 +32,8 @@ records without that fingerprint keep the old ``(pid, create_time)`` proof.
 
 from __future__ import annotations
 
+from hermes_platform.processes import process_api
+
 import contextlib
 import enum
 import hashlib
@@ -255,7 +257,7 @@ _LEGACY_BOOT_SLACK_S = 120.0
 
 def _boot_time() -> Optional[float]:
     try:
-        import psutil
+        psutil = process_api()
 
         return float(psutil.boot_time())
     except Exception:

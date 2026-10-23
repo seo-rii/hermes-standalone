@@ -1,10 +1,12 @@
 """Read-only canonical admission fences for dispatcher reclaim paths."""
+
+from hermes_platform.processes import process_api
 from contextlib import closing
 import json
 from pathlib import Path
 import sqlite3
 import time
-import psutil
+psutil = process_api()
 
 
 def owner_reclaim_paused(conn, task_id):

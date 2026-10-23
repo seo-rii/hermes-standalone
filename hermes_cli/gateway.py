@@ -21,6 +21,7 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 from hermes_cli import gateway_service_owner, setup_platforms
+from hermes_platform.processes import process_api
 
 # UV's bundled Python ships a minimal PATH; ensure launchctl/systemctl are discoverable.
 if os.name == "posix":
@@ -211,31 +212,8 @@ def _get_service_pids(all_profiles: bool = False) -> set:
 
 
 def _get_parent_pid(pid: int) -> int | None:
-    """Parent PID for ``pid``, or None. psutil first (works on Windows, where ``ps`` doesn't)."""
-    if pid <= 1:
-        return None
-    try:
-        import psutil  # type: ignore
-        return psutil.Process(pid).ppid() or None
-    except ImportError:
-        pass
-    except Exception:
-        return None
-    # ps fallback, POSIX only: Git Bash's ps.exe would flash a console from the windowless backend.
-    if is_windows() or not shutil.which("ps"):
-        return None
-    try:
-        result = subprocess.run(["ps", "-o", "ppid=", "-p", str(pid)], timeout=5, **_CAPTURE_TEXT, check=False)
-    except (FileNotFoundError, subprocess.TimeoutExpired):
-        return None
-    raw = result.stdout.strip()
-    if result.returncode != 0 or not raw:
-        return None
-    try:
-        parent_pid = int(raw.splitlines()[-1].strip())
-    except ValueError:
-        return None
-    return parent_pid if parent_pid > 0 else None
+    from hermes_cli.gateway_process_queries import _get_parent_pid as query
+    return query(pid)
 
 
 def _is_pid_ancestor_of_current_process(target_pid: int) -> bool:
@@ -735,7 +713,7 @@ def _windows_process_listing() -> str | None:
 def _filter_venv_launcher_stubs(pids: list[int]) -> list[int]:
     """Drop venv-launcher ``pythonw.exe`` stubs that parent another matched PID (see ``_scan_gateway_pids``)."""
     try:
-        import psutil  # type: ignore
+        psutil = process_api()
     except ImportError:
         return pids
 
@@ -828,7 +806,8 @@ def find_windows_gateway_services(
         return []
     try:
         if psutil_module is None:
-            import psutil as psutil_module  # type: ignore[no-redef]
+            from hermes_platform.processes import process_api
+            psutil_module = process_api()
         if profile_processes is None:
             profile_processes = find_profile_gateway_processes(strict=True)
         from hermes_cli.gateway_windows import hermes_owns_windows_service, hermes_service_roots
@@ -939,7 +918,7 @@ def _capture_gateway_argv(pid: int) -> list[str] | None:
     if pid <= 1:
         return None
     try:
-        import psutil  # type: ignore
+        psutil = process_api()
     except ImportError:
         return None
     try:
@@ -1776,7 +1755,7 @@ def _reaper_candidate_is_supervisor_owned(pid: int) -> bool:
     if not is_windows():
         return False
     try:
-        import psutil  # type: ignore
+        psutil = process_api()
         parent = psutil.Process(pid).parent()
         for _ in range(_REAPER_SUPERVISOR_WALK_LIMIT):
             if parent is None:
@@ -1921,7 +1900,7 @@ def _reaper_exclusion_pids(extra_exclude: set | None) -> set[int]:
                 continue
             own.add(recorded)
             try:
-                import psutil  # type: ignore
+                psutil = process_api()
                 parent = psutil.Process(recorded).parent()
                 while parent is not None:
                     own.add(parent.pid)

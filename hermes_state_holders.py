@@ -19,7 +19,8 @@ from typing import Callable, List, Optional, Sequence, Set, Tuple
 from hermes_state_errors import is_sqlite_lock_error
 
 try:  # Hard dependency, but tolerate scaffold-phase imports before pip install.
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
 except ImportError:  # pragma: no cover - stripped/scaffold installs only
     psutil = None  # type: ignore[assignment]
 
@@ -123,6 +124,11 @@ def _looks_like_hermes(argv: Sequence[str]) -> bool:
     """Return whether argv identifies a supported Hermes execution target."""
     if not argv:
         return False
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(Path(__file__).resolve().parent):
+        target = runtime.bundle_module_argv(argv)
+        if target is not None:
+            return target[0] in runtime.current_bundle()["manifest"]["internal_modules"]
     program = os.path.basename(argv[0]).lower().removesuffix(".exe")
     if program in _HERMES_EXECUTABLES:
         return True

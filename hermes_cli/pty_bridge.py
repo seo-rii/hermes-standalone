@@ -94,7 +94,8 @@ def _psutil_alive(proc) -> bool:
     """Best-effort 'is this psutil Process still alive' for the shutdown cadence;
     zombies count as dead and it never raises."""
     try:
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()
 
         return proc.is_running() and proc.status() != psutil.STATUS_ZOMBIE
     except Exception:
@@ -306,7 +307,8 @@ class PtyBridge:
             # take the TUI down with it. Signal the child directly instead.
             if leader_was_alive:
                 try:
-                    import psutil  # type: ignore
+                    from hermes_platform.processes import process_api
+                    psutil = process_api()
 
                     non_leader_descendants = psutil.Process(self._proc.pid).children(recursive=True)
                 except Exception:

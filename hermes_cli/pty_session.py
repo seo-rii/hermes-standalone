@@ -45,7 +45,8 @@ async def _close_ws(ws, code: int) -> None:
 
 def _process_ancestors(pid: int) -> set[int]:
     """Pids of ``pid``'s live ancestors; empty when the process is gone or unreadable."""
-    import psutil  # type: ignore
+    from hermes_platform.processes import process_api
+    psutil = process_api()
 
     try:
         return {parent.pid for parent in psutil.Process(pid).parents()}

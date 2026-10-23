@@ -90,7 +90,8 @@ def _live_system_guard(request, monkeypatch):
     # any *new* children spawned by the test are also allowlisted via
     # the live psutil walk below. Static set keeps the fast path cheap.
     try:
-        import psutil as _psutil
+        from hermes_platform.processes import process_api
+        _psutil = process_api()
         _initial_children = {
             c.pid for c in _psutil.Process(test_pid).children(recursive=True)
         }

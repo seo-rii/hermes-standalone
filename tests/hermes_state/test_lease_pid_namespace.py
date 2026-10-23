@@ -13,8 +13,10 @@ import subprocess
 import sys
 import time
 
-import psutil
 import pytest
+from hermes_platform.processes import process_api
+
+psutil = process_api()
 
 import hermes_state_common
 import hermes_state_pidns

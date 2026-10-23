@@ -1,4 +1,6 @@
 """Trusted dispatcher claims enter the ordinary owner's durable admission queue."""
+
+from hermes_platform.processes import process_api
 import asyncio
 import contextlib
 from contextlib import closing
@@ -104,7 +106,7 @@ async def run_task(connection, params):
     from hermes_cli.kanban_db_connect import connect_closing
     from hermes_cli import kanban_db as kb
     import os
-    import psutil
+    psutil = process_api()
     from hermes_cli.process_identity import process_birth
     context = json.loads(policy.kanban_json)
 

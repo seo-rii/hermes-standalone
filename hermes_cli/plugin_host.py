@@ -104,7 +104,8 @@ class PluginHost:
 
     def _argv(self) -> list:
         from hermes_cli.plugin_isolation import host_launcher
-        return [*host_launcher(), sys.executable, "-m", _HOST_MODULE]
+        from hermes_cli.runtime_module import python_module_command
+        return [*host_launcher(), *python_module_command(_HOST_MODULE)]
 
     def _env(self) -> dict[str, str]:
         from tools.environments.local import served_profile_child_env

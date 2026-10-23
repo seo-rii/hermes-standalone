@@ -1510,11 +1510,20 @@ def seed_profile_skills(profile_dir: Path, quiet: bool = False) -> Optional[dict
     still run the sync: ``sync_skills()`` detects the marker and seeds only essentials."""
     project_root = Path(__file__).parent.parent.resolve()
     try:
+        command = [sys.executable, "-c",
+                   "import json; from tools.skills_sync import sync_skills; "
+                   "r = sync_skills(quiet=True); print(json.dumps(r))"]
+        environment = {**os.environ, "HERMES_HOME": str(profile_dir)}
+        runtime = sys.modules.get("standalone.runtime")
+        if runtime is not None and runtime.is_active_bundle(project_root):
+            from hermes_cli.runtime_module import python_module_command
+            from tools.environments.local import served_profile_child_env
+
+            command = python_module_command("standalone.profile_worker")
+            environment = served_profile_child_env(target_home=profile_dir, inherit_credentials=False)
         result = subprocess.run(
-            [sys.executable, "-c",
-             "import json; from tools.skills_sync import sync_skills; "
-             "r = sync_skills(quiet=True); print(json.dumps(r))"],
-            env={**os.environ, "HERMES_HOME": str(profile_dir)},
+            command,
+            env=environment,
             cwd=str(project_root),
             capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60,
             check=False,
@@ -1607,7 +1616,8 @@ def _profile_bound_backend_pids(canon: str, profile_dir: Path) -> list[int]:
     (never an interactive ``chat``/``tui``), never this process or its ancestors. Empty when
     ``psutil`` can't inspect anything."""
     try:
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()  # type: ignore
     except Exception:
         return []
     try:

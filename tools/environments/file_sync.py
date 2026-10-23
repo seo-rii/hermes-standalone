@@ -24,7 +24,13 @@ except ImportError:
 from pathlib import Path
 from typing import Callable
 
-import psutil
+try:
+    from hermes_platform.processes import process_api
+    psutil = process_api()
+except ModuleNotFoundError as exc:
+    if exc.name != "psutil":
+        raise
+    psutil = None
 
 from hermes_constants import get_hermes_home
 from tools.environments.base import _file_mtime_key
@@ -92,7 +98,22 @@ def _temp_entry_owner_alive(name: str) -> bool:
     pid_part = name[len(_SYNC_BACK_TEMP_PREFIX):].split("-", 1)[0]
     if not pid_part.isdigit():
         return True
-    return psutil.pid_exists(int(pid_part))
+    pid = int(pid_part)
+    if psutil is not None:
+        return psutil.pid_exists(pid)
+    if os.name == "nt":
+        from hermes_cli._subprocess_compat import win32_pid_exists
+
+        return win32_pid_exists(pid)
+    # Match PID existence rather than runnable liveness: an unreaped zombie still
+    # owns its PID. Signal 0 performs only the kernel's existence/permission check.
+    try:
+        os.kill(pid, 0)
+    except PermissionError:
+        return True
+    except OSError:
+        return False
+    return True
 
 
 def _cleanup_stale_sync_back_temp(temp_dir: Path | None = None) -> int:

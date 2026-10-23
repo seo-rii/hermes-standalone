@@ -636,8 +636,15 @@ def _spawn(kernel: SessionKernel, *, child_python: str, child_cwd: str,
         child_env["HERMES_KERNEL_PARENT_DEATH_FD"] = str(death_r)
         pass_fds = (death_r,)
     try:
+        command = None
+        if os.path.realpath(child_python) == os.path.realpath(sys.executable):
+            from standalone.runtime import bundled_command
+            command = bundled_command(
+                Path(__file__).resolve().parents[1], "standalone.code_kernel_worker",
+                ["--staging", kernel.tmpdir], python=child_python,
+            )
         kernel.proc = subprocess.Popen(
-            [child_python, os.path.join(kernel.tmpdir, "hermes_kernel_runner.py")],
+            command or [child_python, os.path.join(kernel.tmpdir, "hermes_kernel_runner.py")],
             # Strict mode passes an empty cwd: the kernel's staging dir plays the per-call tmpdir's role.
             cwd=child_cwd or kernel.tmpdir, env=child_env, start_new_session=True,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE,

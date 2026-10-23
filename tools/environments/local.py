@@ -646,10 +646,11 @@ def _resolve_hermes_bin_dir() -> str | None:
     if _HERMES_BIN_DIR is not _SENTINEL:
         return _HERMES_BIN_DIR  # type: ignore[return-value]
     from pm.environments import payload_command_dir
+    from standalone.packages import active
 
     # A payload's venv also holds a `hermes`, but on Windows its redirector names the
     # build machine's interpreter, so PATH order must not decide which copy children get.
-    payload_dir = payload_command_dir(Path(__file__).resolve().parents[2])
+    payload_dir = None if active() else payload_command_dir(Path(__file__).resolve().parents[2])
     if payload_dir is not None and payload_dir.is_dir():
         _HERMES_BIN_DIR, _HERMES_BIN_DIR_IS_PAYLOAD = str(payload_dir), True
         return _HERMES_BIN_DIR
@@ -947,14 +948,16 @@ def _kill_process_group_posix(proc) -> None:
         # so we still reach escapees that are verifiably ours.
         descendants = []
         try:
-            import psutil
+            from hermes_platform.processes import process_api
+            psutil = process_api()
             descendants = psutil.Process(proc.pid).children(recursive=True)
         except Exception:
             pass
         _sweep_escaped_descendants(descendants, pgid)
         return
     try:  # psutil children snapshot; empty on any failure (must never break the kill)
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         descendants = psutil.Process(proc.pid).children(recursive=True)
     except Exception:
         descendants = []

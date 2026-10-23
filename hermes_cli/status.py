@@ -167,7 +167,8 @@ def _render_terminal(ctx):
         auth_status = describe_vercel_auth()
         _kv("Image:", os.getenv('TERMINAL_VERCEL_RUNTIME') or terminal_cfg.get('vercel_runtime')
             or os.getenv('TERMINAL_VERCEL_IMAGE') or terminal_cfg.get('vercel_image') or DEFAULT_VERCEL_IMAGE)
-        _kv_flag("SDK:", importlib.util.find_spec("vercel") is not None, "installed",
+        from hermes_platform.cloud import cloud_api_available
+        _kv_flag("SDK:", cloud_api_available("vercel"), "installed",
                  "missing (run hermes setup terminal and select Vercel Sandbox, then restart Hermes)")
         _kv("Auth:", f"{check_mark(auth_status.ok)} {auth_status.label}")
         for line in auth_status.detail_lines:

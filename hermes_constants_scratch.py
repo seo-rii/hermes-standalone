@@ -162,7 +162,8 @@ def _under(path: str, root: str) -> bool:
 
 def _own_lineage() -> set[int]:
     """This process and its ancestors: never reap the shell that is running the prune."""
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
 
     pids: set[int] = set()
     try:
@@ -180,7 +181,8 @@ def _registered_live_pids(home: Path) -> set[int]:
     point and MCP helper, ``hermes_cli.process_identity``) and the background-process checkpoint
     (``tools.process_registry``, ``processes.json``). A recorded start time that no longer
     matches is a reused pid, not ownership."""
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
 
     from hermes_cli.process_identity import spawner_is_dead
     from hermes_constants import get_default_hermes_root
@@ -223,7 +225,8 @@ def _owned_by_hermes(proc, registered: set[int]) -> bool:
     """Registered itself, or a descendant of a live registered process (a background shell's
     child). An orphan whose spawning shell is gone was reparented away from that lineage, so
     it is not owned and is still reaped."""
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
 
     try:
         # pid 1 is excluded as an ancestor: a Hermes running as a container init adopts every orphan.
@@ -243,7 +246,8 @@ def reap_processes_rooted_in(scratch_root: Path, doomed: list[Path], audit: logg
     A process Hermes owns (:func:`_owned_by_hermes`) is never signalled; each doomed entry it
     works inside is dropped from *doomed* in place and recorded as kept.
     """
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
 
     root = os.path.realpath(str(scratch_root))
     targets = [os.path.realpath(str(p)) for p in doomed]

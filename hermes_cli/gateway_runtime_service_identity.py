@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import shlex
 import stat
+import sys
 from typing import NoReturn
 
 
@@ -75,6 +76,11 @@ def _launch_module(argv: list[str], *, legacy: bool = True) -> tuple[str, list[s
     from hermes_cli import gateway
     from hermes_cli._launchers import runtime_command
     root = Path(gateway.PROJECT_ROOT).resolve()
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(root):
+        bundled = runtime.bundle_module_argv(argv)
+        if bundled is not None:
+            return bundled
     executable = Path(argv[0]).name.lower() if argv else ""
     if _PYTHON_EXECUTABLE.fullmatch(executable):
         # ``python -m`` is the legacy unwrapped plist form; no installer put it inside the osascript wrapper.

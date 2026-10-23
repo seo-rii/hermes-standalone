@@ -1,4 +1,6 @@
 """Admission-owned production exec; observers never own the worker lifetime."""
+
+from hermes_platform.processes import process_api
 import asyncio
 from contextlib import contextmanager, suppress
 from collections import deque
@@ -288,7 +290,7 @@ class ManagedWorker:
     def _signal_worker(self, kill):
         """Signal the verified interpreter, not only the handle: a launcher that exec-chained
         or exited leaves the real worker outside the Popen's reach."""
-        import psutil
+        psutil = process_api()
         if self.worker is None or self.worker[0] == self.process.pid:
             return
         try:
@@ -556,7 +558,9 @@ async def _spawn_registered_worker(authority, ref, row):
         from gateway.session_worker_spawn import acquire_process
         from gateway.session_managed_worker_log import worker_log_path
         log_path = worker_log_path(authority.profile_id)
-        process = await acquire_process(subprocess.Popen, [sys.executable, '-m', 'agent.managed_worker'],
+        from hermes_cli.runtime_module import python_module_command
+        command = python_module_command('agent.managed_worker')
+        process = await acquire_process(subprocess.Popen, command,
             cwd=cwd, stdin=subprocess.PIPE, env=env, stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL if log_path is None else subprocess.PIPE, **WORKER_POPEN)
     except asyncio.CancelledError:
