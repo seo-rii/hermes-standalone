@@ -1332,7 +1332,8 @@ def current_profile_key() -> str:
 
 def _load_nemo_relay() -> Any:
     """Load the binding only when a producer or consumer needs Relay."""
-    return importlib.import_module("nemo_relay")
+    from hermes_platform.relay import relay_api
+    return relay_api()
 
 
 def _configured_plugin_inputs() -> Path | None:

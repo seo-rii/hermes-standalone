@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "package": "nemo-relay",
+  "version": "0.10.0",
+  "source_archive": "https://files.pythonhosted.org/packages/16/e8/016a4c95429c37c456d5580d92dffb46bd7d071017fea6d751c5b73582ca/nemo_relay-0.10.0.tar.gz",
+  "source_sha256": "d3382e826d3d65551f3a307128c15116057fd7f45277f8a8d0cb51f8aca3ed68",
+  "license": "Apache-2.0",
+  "license_file": "licenses/nemo-relay-0.10.0.txt",
+  "copyright": "Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.",
+  "source_contract_sha256": {
+    "crates/core/src/observability/otel_file.rs": "3a7374702db99bf1d7406f317ba25ec1c5ab53d563d1b803032f17d8e935a4b0",
+    "crates/core/src/observability/otel.rs": "09355107d6a7f6421fb477f8d3c98f5c01d9ac67c1b8b46fffb4d8af1aafa7e4",
+    "crates/core/src/observability/private_file.rs": "6eba51a931b0dcaa7065088c8e085ac00e6adcda798d312651a5a3fcc23522b3",
+    "crates/core/src/observability/confined_fs/unix.rs": "12ec50f853accbc73b9a36fb9ef2129715c6e48f4e1ceeec6894f5fa78436100",
+    "crates/core/src/observability/confined_fs/windows.rs": "24b882e71dafff55f06bd659ee070f203f054219d99a3a29febaf63c5df9dbcf",
+    "crates/core/src/observability/header_file.rs": "f1e08f4d9ffee46be25ad4325f66710b949acf165409807768303ab696f0b285",
+    "crates/core/src/observability/otel_signal.rs": "233b6ebcf034ec0ce1aa3d59c4442e3d892131e4f1bd95a261345622186c9aa8"
+  },
+  "authoring_only_native_oracle": {
+    "name": "nemo-relay",
+    "version": "0.10.0",
+    "url": "https://files.pythonhosted.org/packages/f8/06/666fc09ec22ab62ef7bd039f4b62d2d73af1ca23b31429381a330be492bf/nemo_relay-0.10.0-cp311-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "hash": "sha256:e8825df39896dd4370803a1c14f6229a9ad6c4cc07d354554b4d856ad0f6afd1",
+    "size": 10615006,
+    "upload-time": "2026-10-08T22:01:13.136Z"
+  },
+  "runtime_source_sha256": {
+    "relay_files.py": "b3ed54cc082c82585be8aded96e291fceda33d42eabb4954efef689229cad641",
+    "relay_files_windows.py": "9c1b2c193f072e9bb447c333245863b261321d16e8ab8eb40e544d16baf2870c"
+  },
+  "fixtures": {
+    "relay_files.json": "206f4e3075462478745cba2b2abdbccae32323532d051179e918ee2bcd3f40fd",
+    "relay_headers.json": "7a839eaa4155007e149e8eef15e49566d095ba5fb04a40e562448426fb7a869e"
+  },
+  "verification": {
+    "native_file_reference": "Actual pinned native file subscribers serialize the same two original lifecycle spans to JSON lines and length-delimited protobuf. Parsed JSON values match including default fields and hex identifiers; binary frames match byte for byte.",
+    "headers": "26 actual native trace-exporter construction outcomes match the qualified header/endpoint boundary. Configuration-only validation outcomes are preserved separately because some checks occur at construction.",
+    "file_lifecycle": "Actual files cover shared handle reuse through directory aliases, conflicting mode/format refusal, append/overwrite, empty batches, private modes, confinement, symlink/directory/FIFO refusal, closed destinations and explicit flush/fsync.",
+    "actual_plugin": "An enabled file-only plugin receives original qualified scope/mark/end events and writes independently decoded JSON/protobuf records, preserving root identity and marks; validation performs no output I/O.",
+    "python": [
+      "3.11.2",
+      "3.14.7"
+    ]
+  },
+  "limits": [
+    "Full span attribute projection, native batching and metadata-resource routing remain separate contracts; verifying this file backend does not claim every NeMo Relay public API.",
+    "The configured existing directory is a trusted filesystem anchor and can contain system aliases. Newly created descendants and output files use handle-relative no-follow opens.",
+    "The Windows implementation preserves native handle-relative NtCreateFile and protected owner/SYSTEM DACL policy. Portable ABI/layout tests are not evidence of actual Windows host conformance.",
+    "Runtime file-backed header reads are bounded to 64 KiB; larger sources refuse explicitly. No native executable or extension is embedded."
+  ]
+}

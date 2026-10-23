@@ -1,0 +1,6943 @@
+{
+  "oracle": {
+    "name": "nemo-relay",
+    "version": "0.10.0",
+    "url": "https://files.pythonhosted.org/packages/f8/06/666fc09ec22ab62ef7bd039f4b62d2d73af1ca23b31429381a330be492bf/nemo_relay-0.10.0-cp311-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "hash": "sha256:e8825df39896dd4370803a1c14f6229a9ad6c4cc07d354554b4d856ad0f6afd1",
+    "size": 10615006,
+    "upload-time": "2026-10-08T22:01:13.136Z"
+  },
+  "cases": [
+    {
+      "mode": "chat",
+      "body": {},
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "extension": {
+          "nested": [
+            1,
+            null,
+            false
+          ]
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {
+          "extension": {
+            "nested": [
+              1,
+              null,
+              false
+            ]
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "id": null,
+        "model": null,
+        "usage": null,
+        "extra_null": null
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {
+          "extra_null": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": 16
+      },
+      "refused": true
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "id": true
+      },
+      "refused": true
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "usage": false
+      },
+      "refused": true
+    },
+    {
+      "mode": "responses",
+      "body": {},
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "extension": {
+          "nested": [
+            1,
+            null,
+            false
+          ]
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses"
+        },
+        "extra": {
+          "extension": {
+            "nested": [
+              1,
+              null,
+              false
+            ]
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": null,
+        "model": null,
+        "usage": null,
+        "extra_null": null
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses"
+        },
+        "extra": {
+          "extra_null": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "model": 16
+      },
+      "refused": true
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": true
+      },
+      "refused": true
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "usage": false
+      },
+      "refused": true
+    },
+    {
+      "mode": "anthropic",
+      "body": {},
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "extension": {
+          "nested": [
+            1,
+            null,
+            false
+          ]
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages"
+        },
+        "extra": {
+          "extension": {
+            "nested": [
+              1,
+              null,
+              false
+            ]
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": null,
+        "model": null,
+        "usage": null,
+        "extra_null": null
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages"
+        },
+        "extra": {
+          "extra_null": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "model": 16
+      },
+      "refused": true
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": true
+      },
+      "refused": true
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "usage": false
+      },
+      "refused": true
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": null
+            },
+            "finish_reason": null,
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": ""
+            },
+            "finish_reason": null,
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "",
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "Hello"
+            },
+            "finish_reason": null,
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "Hello",
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "한글 🦀"
+            },
+            "finish_reason": null,
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "한글 🦀",
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": null
+            },
+            "finish_reason": "stop",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": ""
+            },
+            "finish_reason": "stop",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "Hello"
+            },
+            "finish_reason": "stop",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "Hello",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "한글 🦀"
+            },
+            "finish_reason": "stop",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "한글 🦀",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": null
+            },
+            "finish_reason": "length",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "length",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": ""
+            },
+            "finish_reason": "length",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "",
+        "tool_calls": null,
+        "finish_reason": "length",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "Hello"
+            },
+            "finish_reason": "length",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "Hello",
+        "tool_calls": null,
+        "finish_reason": "length",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "한글 🦀"
+            },
+            "finish_reason": "length",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "한글 🦀",
+        "tool_calls": null,
+        "finish_reason": "length",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": null
+            },
+            "finish_reason": "tool_calls",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "tool_use",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": ""
+            },
+            "finish_reason": "tool_calls",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "",
+        "tool_calls": null,
+        "finish_reason": "tool_use",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "Hello"
+            },
+            "finish_reason": "tool_calls",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "Hello",
+        "tool_calls": null,
+        "finish_reason": "tool_use",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "한글 🦀"
+            },
+            "finish_reason": "tool_calls",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "한글 🦀",
+        "tool_calls": null,
+        "finish_reason": "tool_use",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": null
+            },
+            "finish_reason": "function_call",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "tool_use",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": ""
+            },
+            "finish_reason": "function_call",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "",
+        "tool_calls": null,
+        "finish_reason": "tool_use",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "Hello"
+            },
+            "finish_reason": "function_call",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "Hello",
+        "tool_calls": null,
+        "finish_reason": "tool_use",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "한글 🦀"
+            },
+            "finish_reason": "function_call",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "한글 🦀",
+        "tool_calls": null,
+        "finish_reason": "tool_use",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": null
+            },
+            "finish_reason": "content_filter",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "content_filter",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": ""
+            },
+            "finish_reason": "content_filter",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "",
+        "tool_calls": null,
+        "finish_reason": "content_filter",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "Hello"
+            },
+            "finish_reason": "content_filter",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "Hello",
+        "tool_calls": null,
+        "finish_reason": "content_filter",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "한글 🦀"
+            },
+            "finish_reason": "content_filter",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "한글 🦀",
+        "tool_calls": null,
+        "finish_reason": "content_filter",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": null
+            },
+            "finish_reason": "strange",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "strange",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": ""
+            },
+            "finish_reason": "strange",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "",
+        "tool_calls": null,
+        "finish_reason": "strange",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "Hello"
+            },
+            "finish_reason": "strange",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "Hello",
+        "tool_calls": null,
+        "finish_reason": "strange",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "한글 🦀"
+            },
+            "finish_reason": "strange",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "한글 🦀",
+        "tool_calls": null,
+        "finish_reason": "strange",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": null
+            },
+            "finish_reason": "",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": ""
+            },
+            "finish_reason": "",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "",
+        "tool_calls": null,
+        "finish_reason": "",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "Hello"
+            },
+            "finish_reason": "",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "Hello",
+        "tool_calls": null,
+        "finish_reason": "",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "model": "fixture",
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "한글 🦀"
+            },
+            "finish_reason": "",
+            "logprobs": {
+              "content": []
+            }
+          }
+        ],
+        "system_fingerprint": "fp_fixture",
+        "service_tier": "default",
+        "top_extension": null
+      },
+      "attributes": {
+        "id": null,
+        "model": "fixture",
+        "message": "한글 🦀",
+        "tool_calls": null,
+        "finish_reason": "",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat",
+          "logprobs": {
+            "content": []
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_fixture"
+        },
+        "extra": {
+          "top_extension": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": null
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": []
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": [],
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": [
+                {}
+              ]
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": [],
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": [
+                {
+                  "id": "partial"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": [],
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": [
+                {
+                  "function": {}
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": [],
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": [
+                {
+                  "function": {
+                    "name": "tool"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": {},
+            "id": "",
+            "name": "tool"
+          }
+        ],
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": [
+                {
+                  "id": null,
+                  "function": {
+                    "name": "tool",
+                    "arguments": null
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": {},
+            "id": "",
+            "name": "tool"
+          }
+        ],
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": [
+                {
+                  "id": "call",
+                  "function": {
+                    "name": "tool",
+                    "arguments": "{\"a\":1}"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": {
+              "a": 1
+            },
+            "id": "call",
+            "name": "tool"
+          }
+        ],
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": [
+                {
+                  "id": "call",
+                  "function": {
+                    "name": "tool",
+                    "arguments": "bad-json"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": "bad-json",
+            "id": "call",
+            "name": "tool"
+          }
+        ],
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": [
+                {
+                  "function": {
+                    "name": "tool",
+                    "arguments": "NaN"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": "NaN",
+            "id": "",
+            "name": "tool"
+          }
+        ],
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": [
+                {
+                  "function": {
+                    "name": "tool",
+                    "arguments": "[false,null,2]"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": [
+              false,
+              null,
+              2
+            ],
+            "id": "",
+            "name": "tool"
+          }
+        ],
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": [
+                {},
+                {
+                  "id": "partial"
+                },
+                {
+                  "function": {}
+                },
+                {
+                  "function": {
+                    "name": "tool"
+                  }
+                },
+                {
+                  "id": null,
+                  "function": {
+                    "name": "tool",
+                    "arguments": null
+                  }
+                },
+                {
+                  "id": "call",
+                  "function": {
+                    "name": "tool",
+                    "arguments": "{\"a\":1}"
+                  }
+                },
+                {
+                  "id": "call",
+                  "function": {
+                    "name": "tool",
+                    "arguments": "bad-json"
+                  }
+                },
+                {
+                  "function": {
+                    "name": "tool",
+                    "arguments": "NaN"
+                  }
+                },
+                {
+                  "function": {
+                    "name": "tool",
+                    "arguments": "[false,null,2]"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": {},
+            "id": "",
+            "name": "tool"
+          },
+          {
+            "arguments": {},
+            "id": "",
+            "name": "tool"
+          },
+          {
+            "arguments": {
+              "a": 1
+            },
+            "id": "call",
+            "name": "tool"
+          },
+          {
+            "arguments": "bad-json",
+            "id": "call",
+            "name": "tool"
+          },
+          {
+            "arguments": "NaN",
+            "id": "",
+            "name": "tool"
+          },
+          {
+            "arguments": [
+              false,
+              null,
+              2
+            ],
+            "id": "",
+            "name": "tool"
+          }
+        ],
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_chat"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          null
+        ]
+      },
+      "refused": true
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          []
+        ]
+      },
+      "refused": true
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          false
+        ]
+      },
+      "refused": true
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "content": []
+            }
+          }
+        ]
+      },
+      "refused": true
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": [
+          {
+            "message": {
+              "tool_calls": [
+                {
+                  "function": {
+                    "name": 4
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "refused": true
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": null,
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": null,
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          null
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            null
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          null
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            null
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          4
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            4
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          4
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            4
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {}
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {}
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {}
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {}
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "text",
+            "text": "ignored"
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "text": "ignored",
+              "type": "text"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "text",
+            "text": "ignored"
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "text": "ignored",
+              "type": "text"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "output_text",
+            "text": ""
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "text": "",
+              "type": "output_text"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "output_text",
+            "text": ""
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "text": "",
+              "type": "output_text"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "output_text",
+            "text": "one"
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "one",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "text": "one",
+              "type": "output_text"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "output_text",
+            "text": "one"
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "one",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "text": "one",
+              "type": "output_text"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "output_text",
+            "text": "two"
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "two",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "text": "two",
+              "type": "output_text"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "output_text",
+            "text": "two"
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "two",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "text": "two",
+              "type": "output_text"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "output_text",
+            "text": null
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "text": null,
+              "type": "output_text"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "output_text",
+            "text": null
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "text": null,
+              "type": "output_text"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "refusal",
+            "refusal": "ignored"
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "refusal": "ignored",
+              "type": "refusal"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "refusal",
+            "refusal": "ignored"
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "refusal": "ignored",
+              "type": "refusal"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "message",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "nested one"
+              },
+              {
+                "type": "output_text",
+                "text": "nested two"
+              }
+            ]
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "nested one\nnested two",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "content": [
+                {
+                  "text": "nested one",
+                  "type": "output_text"
+                },
+                {
+                  "text": "nested two",
+                  "type": "output_text"
+                }
+              ],
+              "type": "message"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "message",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "nested one"
+              },
+              {
+                "type": "output_text",
+                "text": "nested two"
+              }
+            ]
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "nested one\nnested two",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "content": [
+                {
+                  "text": "nested one",
+                  "type": "output_text"
+                },
+                {
+                  "text": "nested two",
+                  "type": "output_text"
+                }
+              ],
+              "type": "message"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "message",
+            "content": "ignored"
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "content": "ignored",
+              "type": "message"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "message",
+            "content": "ignored"
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "content": "ignored",
+              "type": "message"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "function_call"
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": {},
+            "id": "",
+            "name": ""
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "type": "function_call"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "function_call"
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": [
+          {
+            "arguments": {},
+            "id": "",
+            "name": ""
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "type": "function_call"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "function_call",
+            "id": "ignored",
+            "call_id": "call",
+            "name": "tool",
+            "arguments": "{\"a\":1}"
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": {
+              "a": 1
+            },
+            "id": "call",
+            "name": "tool"
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "arguments": "{\"a\":1}",
+              "call_id": "call",
+              "id": "ignored",
+              "name": "tool",
+              "type": "function_call"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "function_call",
+            "id": "ignored",
+            "call_id": "call",
+            "name": "tool",
+            "arguments": "{\"a\":1}"
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": [
+          {
+            "arguments": {
+              "a": 1
+            },
+            "id": "call",
+            "name": "tool"
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "arguments": "{\"a\":1}",
+              "call_id": "call",
+              "id": "ignored",
+              "name": "tool",
+              "type": "function_call"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "function_call",
+            "call_id": null,
+            "name": 12,
+            "arguments": {}
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": {},
+            "id": "",
+            "name": ""
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "arguments": {},
+              "call_id": null,
+              "name": 12,
+              "type": "function_call"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "function_call",
+            "call_id": null,
+            "name": 12,
+            "arguments": {}
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": [
+          {
+            "arguments": {},
+            "id": "",
+            "name": ""
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "arguments": {},
+              "call_id": null,
+              "name": 12,
+              "type": "function_call"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "function_call",
+            "call_id": "c",
+            "name": "t",
+            "arguments": "broken"
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": "broken",
+            "id": "c",
+            "name": "t"
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "arguments": "broken",
+              "call_id": "c",
+              "name": "t",
+              "type": "function_call"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          {
+            "type": "function_call",
+            "call_id": "c",
+            "name": "t",
+            "arguments": "broken"
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "fallback",
+        "tool_calls": [
+          {
+            "arguments": "broken",
+            "id": "c",
+            "name": "t"
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            {
+              "arguments": "broken",
+              "call_id": "c",
+              "name": "t",
+              "type": "function_call"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          null,
+          4,
+          {},
+          {
+            "type": "text",
+            "text": "ignored"
+          },
+          {
+            "type": "output_text",
+            "text": ""
+          },
+          {
+            "type": "output_text",
+            "text": "one"
+          },
+          {
+            "type": "output_text",
+            "text": "two"
+          },
+          {
+            "type": "output_text",
+            "text": null
+          },
+          {
+            "type": "refusal",
+            "refusal": "ignored"
+          },
+          {
+            "type": "message",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "nested one"
+              },
+              {
+                "type": "output_text",
+                "text": "nested two"
+              }
+            ]
+          },
+          {
+            "type": "message",
+            "content": "ignored"
+          },
+          {
+            "type": "function_call"
+          },
+          {
+            "type": "function_call",
+            "id": "ignored",
+            "call_id": "call",
+            "name": "tool",
+            "arguments": "{\"a\":1}"
+          },
+          {
+            "type": "function_call",
+            "call_id": null,
+            "name": 12,
+            "arguments": {}
+          },
+          {
+            "type": "function_call",
+            "call_id": "c",
+            "name": "t",
+            "arguments": "broken"
+          }
+        ],
+        "output_text": null,
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "\none\ntwo\nnested one\nnested two",
+        "tool_calls": [
+          {
+            "arguments": {},
+            "id": "",
+            "name": ""
+          },
+          {
+            "arguments": {
+              "a": 1
+            },
+            "id": "call",
+            "name": "tool"
+          },
+          {
+            "arguments": {},
+            "id": "",
+            "name": ""
+          },
+          {
+            "arguments": "broken",
+            "id": "c",
+            "name": "t"
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            null,
+            4,
+            {},
+            {
+              "text": "ignored",
+              "type": "text"
+            },
+            {
+              "text": "",
+              "type": "output_text"
+            },
+            {
+              "text": "one",
+              "type": "output_text"
+            },
+            {
+              "text": "two",
+              "type": "output_text"
+            },
+            {
+              "text": null,
+              "type": "output_text"
+            },
+            {
+              "refusal": "ignored",
+              "type": "refusal"
+            },
+            {
+              "content": [
+                {
+                  "text": "nested one",
+                  "type": "output_text"
+                },
+                {
+                  "text": "nested two",
+                  "type": "output_text"
+                }
+              ],
+              "type": "message"
+            },
+            {
+              "content": "ignored",
+              "type": "message"
+            },
+            {
+              "type": "function_call"
+            },
+            {
+              "arguments": "{\"a\":1}",
+              "call_id": "call",
+              "id": "ignored",
+              "name": "tool",
+              "type": "function_call"
+            },
+            {
+              "arguments": {},
+              "call_id": null,
+              "name": 12,
+              "type": "function_call"
+            },
+            {
+              "arguments": "broken",
+              "call_id": "c",
+              "name": "t",
+              "type": "function_call"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": null
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "id": "id",
+        "model": "fixture",
+        "status": "completed",
+        "output": [
+          null,
+          4,
+          {},
+          {
+            "type": "text",
+            "text": "ignored"
+          },
+          {
+            "type": "output_text",
+            "text": ""
+          },
+          {
+            "type": "output_text",
+            "text": "one"
+          },
+          {
+            "type": "output_text",
+            "text": "two"
+          },
+          {
+            "type": "output_text",
+            "text": null
+          },
+          {
+            "type": "refusal",
+            "refusal": "ignored"
+          },
+          {
+            "type": "message",
+            "content": [
+              {
+                "type": "output_text",
+                "text": "nested one"
+              },
+              {
+                "type": "output_text",
+                "text": "nested two"
+              }
+            ]
+          },
+          {
+            "type": "message",
+            "content": "ignored"
+          },
+          {
+            "type": "function_call"
+          },
+          {
+            "type": "function_call",
+            "id": "ignored",
+            "call_id": "call",
+            "name": "tool",
+            "arguments": "{\"a\":1}"
+          },
+          {
+            "type": "function_call",
+            "call_id": null,
+            "name": 12,
+            "arguments": {}
+          },
+          {
+            "type": "function_call",
+            "call_id": "c",
+            "name": "t",
+            "arguments": "broken"
+          }
+        ],
+        "output_text": "fallback",
+        "previous_response_id": "previous",
+        "store": false,
+        "service_tier": "priority",
+        "truncation": {
+          "type": "auto"
+        },
+        "reasoning": {
+          "summary": [
+            "detail"
+          ]
+        },
+        "extension": {
+          "a.b": 3
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "\none\ntwo\nnested one\nnested two",
+        "tool_calls": [
+          {
+            "arguments": {},
+            "id": "",
+            "name": ""
+          },
+          {
+            "arguments": {
+              "a": 1
+            },
+            "id": "call",
+            "name": "tool"
+          },
+          {
+            "arguments": {},
+            "id": "",
+            "name": ""
+          },
+          {
+            "arguments": "broken",
+            "id": "c",
+            "name": "t"
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "output_items": [
+            null,
+            4,
+            {},
+            {
+              "text": "ignored",
+              "type": "text"
+            },
+            {
+              "text": "",
+              "type": "output_text"
+            },
+            {
+              "text": "one",
+              "type": "output_text"
+            },
+            {
+              "text": "two",
+              "type": "output_text"
+            },
+            {
+              "text": null,
+              "type": "output_text"
+            },
+            {
+              "refusal": "ignored",
+              "type": "refusal"
+            },
+            {
+              "content": [
+                {
+                  "text": "nested one",
+                  "type": "output_text"
+                },
+                {
+                  "text": "nested two",
+                  "type": "output_text"
+                }
+              ],
+              "type": "message"
+            },
+            {
+              "content": "ignored",
+              "type": "message"
+            },
+            {
+              "type": "function_call"
+            },
+            {
+              "arguments": "{\"a\":1}",
+              "call_id": "call",
+              "id": "ignored",
+              "name": "tool",
+              "type": "function_call"
+            },
+            {
+              "arguments": {},
+              "call_id": null,
+              "name": 12,
+              "type": "function_call"
+            },
+            {
+              "arguments": "broken",
+              "call_id": "c",
+              "name": "t",
+              "type": "function_call"
+            }
+          ],
+          "previous_response_id": "previous",
+          "reasoning": {
+            "summary": [
+              "detail"
+            ]
+          },
+          "service_tier": "priority",
+          "status": "completed",
+          "store": false,
+          "truncation": {
+            "type": "auto"
+          }
+        },
+        "extra": {
+          "extension": {
+            "a.b": 3
+          },
+          "output_text": "fallback"
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": null,
+        "incomplete_details": {
+          "reason": null
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": null
+          }
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": null,
+        "incomplete_details": {
+          "reason": "max_output_tokens"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "max_output_tokens"
+          }
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": null,
+        "incomplete_details": {
+          "reason": "content_filter"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "content_filter"
+          }
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": null,
+        "incomplete_details": {
+          "reason": "strange"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "strange"
+          }
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": null,
+        "incomplete_details": {
+          "reason": 15
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": 15
+          }
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "completed",
+        "incomplete_details": {
+          "reason": null
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": null
+          },
+          "status": "completed"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "completed",
+        "incomplete_details": {
+          "reason": "max_output_tokens"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "max_output_tokens"
+          },
+          "status": "completed"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "completed",
+        "incomplete_details": {
+          "reason": "content_filter"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "content_filter"
+          },
+          "status": "completed"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "completed",
+        "incomplete_details": {
+          "reason": "strange"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "strange"
+          },
+          "status": "completed"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "completed",
+        "incomplete_details": {
+          "reason": 15
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": 15
+          },
+          "status": "completed"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "incomplete",
+        "incomplete_details": {
+          "reason": null
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "incomplete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": null
+          },
+          "status": "incomplete"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "incomplete",
+        "incomplete_details": {
+          "reason": "max_output_tokens"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "length",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "max_output_tokens"
+          },
+          "status": "incomplete"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "incomplete",
+        "incomplete_details": {
+          "reason": "content_filter"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "content_filter",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "content_filter"
+          },
+          "status": "incomplete"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "incomplete",
+        "incomplete_details": {
+          "reason": "strange"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "strange",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "strange"
+          },
+          "status": "incomplete"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "incomplete",
+        "incomplete_details": {
+          "reason": 15
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "incomplete",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": 15
+          },
+          "status": "incomplete"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "failed",
+        "incomplete_details": {
+          "reason": null
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "failed",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": null
+          },
+          "status": "failed"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "failed",
+        "incomplete_details": {
+          "reason": "max_output_tokens"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "failed",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "max_output_tokens"
+          },
+          "status": "failed"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "failed",
+        "incomplete_details": {
+          "reason": "content_filter"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "failed",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "content_filter"
+          },
+          "status": "failed"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "failed",
+        "incomplete_details": {
+          "reason": "strange"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "failed",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "strange"
+          },
+          "status": "failed"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "failed",
+        "incomplete_details": {
+          "reason": 15
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "failed",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": 15
+          },
+          "status": "failed"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "strange",
+        "incomplete_details": {
+          "reason": null
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "strange",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": null
+          },
+          "status": "strange"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "strange",
+        "incomplete_details": {
+          "reason": "max_output_tokens"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "strange",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "max_output_tokens"
+          },
+          "status": "strange"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "strange",
+        "incomplete_details": {
+          "reason": "content_filter"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "strange",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "content_filter"
+          },
+          "status": "strange"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "strange",
+        "incomplete_details": {
+          "reason": "strange"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "strange",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "strange"
+          },
+          "status": "strange"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "strange",
+        "incomplete_details": {
+          "reason": 15
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "strange",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": 15
+          },
+          "status": "strange"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "",
+        "incomplete_details": {
+          "reason": null
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": null
+          },
+          "status": ""
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "",
+        "incomplete_details": {
+          "reason": "max_output_tokens"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "max_output_tokens"
+          },
+          "status": ""
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "",
+        "incomplete_details": {
+          "reason": "content_filter"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "content_filter"
+          },
+          "status": ""
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "",
+        "incomplete_details": {
+          "reason": "strange"
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": "strange"
+          },
+          "status": ""
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "status": "",
+        "incomplete_details": {
+          "reason": 15
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "",
+        "usage": null,
+        "api_specific": {
+          "api": "openai_responses",
+          "incomplete_details": {
+            "reason": 15
+          },
+          "status": ""
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "usage": {
+          "input_tokens_details": {},
+          "output_tokens_details": {
+            "reasoning_tokens": null,
+            "extra": 1
+          }
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": {},
+        "api_specific": {
+          "api": "openai_responses",
+          "input_tokens_details": {},
+          "output_tokens_details": {
+            "extra": 1
+          }
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "usage": {
+          "input_tokens_details": {
+            "cached_tokens": null,
+            "custom": null
+          },
+          "output_tokens_details": {
+            "reasoning_tokens": null,
+            "extra": 1
+          }
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": {},
+        "api_specific": {
+          "api": "openai_responses",
+          "input_tokens_details": {
+            "custom": null
+          },
+          "output_tokens_details": {
+            "extra": 1
+          }
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "usage": {
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "custom": [
+              false,
+              2
+            ]
+          },
+          "output_tokens_details": {
+            "reasoning_tokens": null,
+            "extra": 1
+          }
+        }
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": {
+          "cache_read_tokens": 0
+        },
+        "api_specific": {
+          "api": "openai_responses",
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "custom": [
+              false,
+              2
+            ]
+          },
+          "output_tokens_details": {
+            "extra": 1
+          }
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "usage": {
+          "input_tokens_details": {
+            "cached_tokens": -1
+          },
+          "output_tokens_details": {
+            "reasoning_tokens": null,
+            "extra": 1
+          }
+        }
+      },
+      "refused": true
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "usage": {
+          "input_tokens_details": true,
+          "output_tokens_details": {
+            "reasoning_tokens": null,
+            "extra": 1
+          }
+        }
+      },
+      "refused": true
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": null,
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          null
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            null
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          3
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            3
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          {}
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            {}
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          {
+            "type": "text",
+            "text": ""
+          }
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            {
+              "text": "",
+              "type": "text"
+            }
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          {
+            "type": "text",
+            "text": "one"
+          }
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "one",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            {
+              "text": "one",
+              "type": "text"
+            }
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          {
+            "type": "text",
+            "text": "two"
+          }
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "two",
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            {
+              "text": "two",
+              "type": "text"
+            }
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          {
+            "type": "text",
+            "text": false
+          }
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            {
+              "text": false,
+              "type": "text"
+            }
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          {
+            "type": "thinking",
+            "thinking": "not text"
+          }
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            {
+              "thinking": "not text",
+              "type": "thinking"
+            }
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          {
+            "type": "tool_use",
+            "id": "c",
+            "name": "t",
+            "input": {
+              "a": 1
+            }
+          }
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": {
+              "a": 1
+            },
+            "id": "c",
+            "name": "t"
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            {
+              "id": "c",
+              "input": {
+                "a": 1
+              },
+              "name": "t",
+              "type": "tool_use"
+            }
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          {
+            "type": "tool_use",
+            "id": "c",
+            "name": "t",
+            "input": null
+          }
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": [
+          {
+            "arguments": null,
+            "id": "c",
+            "name": "t"
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            {
+              "id": "c",
+              "input": null,
+              "name": "t",
+              "type": "tool_use"
+            }
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          {
+            "type": "tool_use",
+            "id": "c",
+            "name": "t"
+          }
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            {
+              "id": "c",
+              "name": "t",
+              "type": "tool_use"
+            }
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          {
+            "type": "tool_use",
+            "id": null,
+            "name": "t",
+            "input": {}
+          }
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            {
+              "id": null,
+              "input": {},
+              "name": "t",
+              "type": "tool_use"
+            }
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          {
+            "type": "server_tool_use",
+            "id": "c",
+            "name": "t",
+            "input": {}
+          }
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            {
+              "id": "c",
+              "input": {},
+              "name": "t",
+              "type": "server_tool_use"
+            }
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "id": "id",
+        "type": "message",
+        "role": "assistant",
+        "model": "fixture",
+        "content": [
+          null,
+          3,
+          {},
+          {
+            "type": "text",
+            "text": ""
+          },
+          {
+            "type": "text",
+            "text": "one"
+          },
+          {
+            "type": "text",
+            "text": "two"
+          },
+          {
+            "type": "text",
+            "text": false
+          },
+          {
+            "type": "thinking",
+            "thinking": "not text"
+          },
+          {
+            "type": "tool_use",
+            "id": "c",
+            "name": "t",
+            "input": {
+              "a": 1
+            }
+          },
+          {
+            "type": "tool_use",
+            "id": "c",
+            "name": "t",
+            "input": null
+          },
+          {
+            "type": "tool_use",
+            "id": "c",
+            "name": "t"
+          },
+          {
+            "type": "tool_use",
+            "id": null,
+            "name": "t",
+            "input": {}
+          },
+          {
+            "type": "server_tool_use",
+            "id": "c",
+            "name": "t",
+            "input": {}
+          }
+        ],
+        "stop_reason": "end_turn",
+        "stop_sequence": "STOP",
+        "service_tier": "standard",
+        "container": {
+          "id": "container"
+        },
+        "extension": {
+          "original": true
+        }
+      },
+      "attributes": {
+        "id": "id",
+        "model": "fixture",
+        "message": "\none\ntwo",
+        "tool_calls": [
+          {
+            "arguments": {
+              "a": 1
+            },
+            "id": "c",
+            "name": "t"
+          },
+          {
+            "arguments": null,
+            "id": "c",
+            "name": "t"
+          }
+        ],
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "container": {
+            "id": "container"
+          },
+          "content_blocks": [
+            null,
+            3,
+            {},
+            {
+              "text": "",
+              "type": "text"
+            },
+            {
+              "text": "one",
+              "type": "text"
+            },
+            {
+              "text": "two",
+              "type": "text"
+            },
+            {
+              "text": false,
+              "type": "text"
+            },
+            {
+              "thinking": "not text",
+              "type": "thinking"
+            },
+            {
+              "id": "c",
+              "input": {
+                "a": 1
+              },
+              "name": "t",
+              "type": "tool_use"
+            },
+            {
+              "id": "c",
+              "input": null,
+              "name": "t",
+              "type": "tool_use"
+            },
+            {
+              "id": "c",
+              "name": "t",
+              "type": "tool_use"
+            },
+            {
+              "id": null,
+              "input": {},
+              "name": "t",
+              "type": "tool_use"
+            },
+            {
+              "id": "c",
+              "input": {},
+              "name": "t",
+              "type": "server_tool_use"
+            }
+          ],
+          "object_type": "message",
+          "role": "assistant",
+          "service_tier": "standard",
+          "stop_reason": "end_turn",
+          "stop_sequence": "STOP"
+        },
+        "extra": {
+          "extension": {
+            "original": true
+          }
+        },
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "stop_reason": null
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": null,
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "stop_reason": "end_turn"
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "complete",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "stop_reason": "end_turn"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "stop_reason": "max_tokens"
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "length",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "stop_reason": "max_tokens"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "stop_reason": "tool_use"
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "tool_use",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "stop_reason": "tool_use"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "stop_reason": "refusal"
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "refusal",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "stop_reason": "refusal"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "stop_reason": "pause_turn"
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "pause_turn",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "stop_reason": "pause_turn"
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "stop_reason": ""
+      },
+      "attributes": {
+        "id": null,
+        "model": null,
+        "message": null,
+        "tool_calls": null,
+        "finish_reason": "",
+        "usage": null,
+        "api_specific": {
+          "api": "anthropic_messages",
+          "stop_reason": ""
+        },
+        "extra": {},
+        "optimization_summary": null
+      }
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": 1
+      },
+      "refused": true
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": true
+      },
+      "refused": true
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": {}
+      },
+      "refused": true
+    },
+    {
+      "mode": "chat",
+      "body": {
+        "choices": "invalid"
+      },
+      "refused": true
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "output": 1
+      },
+      "refused": true
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "output": true
+      },
+      "refused": true
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "output": {}
+      },
+      "refused": true
+    },
+    {
+      "mode": "responses",
+      "body": {
+        "output": "invalid"
+      },
+      "refused": true
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "content": 1
+      },
+      "refused": true
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "content": true
+      },
+      "refused": true
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "content": {}
+      },
+      "refused": true
+    },
+    {
+      "mode": "anthropic",
+      "body": {
+        "content": "invalid"
+      },
+      "refused": true
+    }
+  ]
+}

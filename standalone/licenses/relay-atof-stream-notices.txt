@@ -1,0 +1,13 @@
+Relay ATOF streaming transport source notices
+
+Original source: NeMo Relay 0.10.0
+Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+SPDX-License-Identifier: Apache-2.0
+
+standalone/relay_atof_stream.py implements the pinned ATOF WebSocket and
+long-lived HTTP NDJSON transport contracts in Python. Source hashes and the
+independent native wire fixture receipt are in relay-atof-stream-provenance.json.
+The existing embedded aiohttp and websockets distributions retain their own
+original license and distribution metadata.
+
+The full Apache License 2.0 is in nemo-relay-0.10.0.txt in this directory.

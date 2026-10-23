@@ -1,0 +1,96 @@
+{
+  "package": "nemo-relay",
+  "version": "0.10.0",
+  "original_source_sha256": "d3382e826d3d65551f3a307128c15116057fd7f45277f8a8d0cb51f8aca3ed68",
+  "original_native_wheel_sha256": "e8825df39896dd4370803a1c14f6229a9ad6c4cc07d354554b4d856ad0f6afd1",
+  "native_fixture_authoring_only": true,
+  "original_source_files": {
+    "crates/core/src/stream.rs": "db1c1961e9fee5ad579ed2dd2a724aec96389be728ab67ca0f39482479128f4e",
+    "crates/core/src/api/llm.rs": "6952d804fd4dcc9a711166ae71ac31b4e5c1313670b7d3121aa49c3b2fea89a4",
+    "crates/python/src/py_callable.rs": "b19573c44e65d6bd8054863c593bd22f03d37c110f8ecd3a1b4fbcbb77af0893",
+    "crates/python/src/py_api/mod.rs": "000b5b10fb2bf37520976a5e9225ebb19230ce60081629ecc7177922c028bf8b",
+    "crates/python/src/py_types/core.rs": "bb463fb9567628db24cbc2cdeef85016308bed7d31cdae08b2918fcd4c6c84e6",
+    "crates/python/src/py_types/events.rs": "6a364348b0163a86eac5bb3617e6034ba643e68d5e2c6d6e59bd8aa5829de17b",
+    "crates/types/src/api/event.rs": "97afde53a624b03b20df91b04d25b1a02238dbead5766d315ea18e7c83b92d06",
+    "crates/types/src/codec/response.rs": "fd8f16d1950801c6982940bbbd083a5f480f66e4a1ba3d8dc443c78d0d9aeca4",
+    "crates/types/src/codec/request.rs": "fd5684f47fa26725933711282184119d6e96fcb2d8daa8162024ba5cf61dee36"
+  },
+  "qualified_runtime": {
+    "standalone/relay_stream.py": "2e953f21c227a697cd990043513f17712f504de6873ff684a2eca7131df2a166",
+    "standalone/relay.py": "5d3de718465a445259325c6280d32787278fcf3e580338d7f4c8f8902d77df7a"
+  },
+  "common_source_patch": {
+    "base": {
+      "path": "standalone/relay.py",
+      "sha256": "f4ca44ad37566ff00fbc7ac31b0d962b6b49776c26e732f13277277abb5b9d00"
+    },
+    "patch_sha256": "07e8792039cb0885547a13798a6af6126778b9773ff83a5781b0d8f8943628f0",
+    "candidate_sha256": "5d3de718465a445259325c6280d32787278fcf3e580338d7f4c8f8902d77df7a"
+  },
+  "fixtures": {
+    "standalone/tests/fixtures/relay_stream_receipts.json": {
+      "sha256": "1262aeab0b190a76de2eea9a8b39b2e019a674a1516c12842c2c8ef03183170a",
+      "bytes": 6244
+    },
+    "standalone/tests/fixtures/relay_stream_native.json": {
+      "sha256": "aa4e768196c1948054b487fc86980fb1c2275082b146ffe2345d15025de71b51",
+      "bytes": 52765
+    }
+  },
+  "coverage": {
+    "native_lifecycle_privacy_cases": 42,
+    "native_chunk_receipt_cases": 31,
+    "public_methods": 3
+  },
+  "preserved": [
+    "Two independent 32-item producer and public-consumer channels; native bounded idle produces 66 chunks and collects 33.",
+    "First chunk observation starts before execution middleware and provider invocation, independent of public consumer polling.",
+    "Compact receipt precedes collector; raw text and deltas remain outside receipt events for Chat/Responses/Anthropic/unknown chunks.",
+    "Exactly one synchronous finalizer on exhaustion, source/collector error, explicit close or live-loop receiver drop; finalizer exceptions suppress their payload.",
+    "Owned original exception delivered to the public receiver; source cleanup failure retained across repeated closes; natural exhaustion does not call aclose again.",
+    "Null finalizer uses owned handle data fallback; sanitized response precedes response codec; known authoritative usage/finish upgrades early-close status only.",
+    "Unknown finish reason uses the native externally tagged JSON enum; malformed normalized-key collisions fail closed through event sanitizer return validation.",
+    "Reserved publication sequence and captured origin loop/context permit nonblocking termination with async response/end sanitizers while flush_async waits for END.",
+    "Lifecycle subscriber snapshot survives later registration/removal; removed profiles cannot leak through Event.annotated_response."
+  ],
+  "comparison_boundaries": [
+    "Absolute timestamps and measured elapsed durations are scheduling-dependent; event presence, first-observation boundary, queue occupancy, numeric fields, finalizer counts, payloads and error messages are compared.",
+    "The common qualified request/intercept/stack/optimization/pricing engines remain separately owned. This unit does not claim the full dynamic native SDK or all arbitrary request/optimization schema mutations.",
+    "Receiver-drop cleanup is verified while the owning asyncio loop is running. Explicit aclose is the deterministic cleanup boundary."
+  ],
+  "license_files": [
+    "standalone/licenses/nemo-relay-0.10.0.txt",
+    "standalone/licenses/relay-stream-notices.txt"
+  ],
+  "validation": {
+    "private_candidate": {
+      "311": {
+        "exit_code": 0,
+        "methods": 3,
+        "seconds": 1.2708635330200195,
+        "log": "validation-logs/hermes-relay-stream-candidate-ready-311-bwc61ry4.log"
+      },
+      "314": {
+        "exit_code": 0,
+        "methods": 3,
+        "seconds": 1.2684550285339355,
+        "log": "validation-logs/hermes-relay-stream-candidate-ready-314-gyxkys0d.log"
+      }
+    },
+    "public_consumer_pending_common_patch": false,
+    "public_consumer": {
+      "311": {
+        "exit_code": 0,
+        "methods": 3,
+        "log": "validation-logs/hermes-relay-stream-public-311-m1orecbd.log",
+        "seconds": 1.2483100891113281
+      },
+      "314": {
+        "exit_code": 0,
+        "methods": 3,
+        "log": "validation-logs/hermes-relay-stream-public-314-3jrfwogh.log",
+        "seconds": 1.246196985244751
+      }
+    }
+  }
+}

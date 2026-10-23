@@ -58,7 +58,8 @@ def record_startup_latency(*, surface: str, elapsed_ms: Any) -> None:
 def process_started_at() -> float | None:
     """Epoch seconds at which the OS created this process, or ``None`` when unreadable."""
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
 
         return float(psutil.Process(os.getpid()).create_time())
     except Exception:

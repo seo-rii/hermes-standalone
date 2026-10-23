@@ -1,0 +1,4 @@
+Qualified Python translation of NeMo Relay 0.10.0 managed stream.rs and its Python iterator bridge.
+Original copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+NeMo Relay is distributed under Apache-2.0; see nemo-relay-0.10.0.txt.
+The qualified implementation preserves two bounded channels and publication ownership using Python's standard library.

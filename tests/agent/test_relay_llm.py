@@ -10,7 +10,8 @@ from types import SimpleNamespace
 
 import pytest
 
-pytest.importorskip("nemo_relay")
+from tests._fixtures.relay import relay_or_skip
+relay_or_skip()
 
 from agent import relay_llm, relay_runtime
 

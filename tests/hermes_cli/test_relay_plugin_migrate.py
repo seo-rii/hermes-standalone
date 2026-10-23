@@ -13,7 +13,8 @@ from hermes_cli.relay_plugin_migrate import (
     validate_relay_plugin_payload)
 from hermes_cli.relay_plugin_cutover import RELAY_PLUGINS_CONFIG_ENV, configured_legacy_relay_env_vars
 
-nemo_relay = pytest.importorskip("nemo_relay")
+from tests._fixtures.relay import relay_or_skip
+nemo_relay = relay_or_skip()
 
 LEGACY_ENV = """OPENAI_API_KEY=sk-test
 HERMES_NEMO_RELAY_ATOF_ENABLED=1

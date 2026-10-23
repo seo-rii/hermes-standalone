@@ -1,0 +1,82 @@
+{
+  "package": "nemo-relay",
+  "version": "0.10.0",
+  "source_archive_sha256": "d3382e826d3d65551f3a307128c15116057fd7f45277f8a8d0cb51f8aca3ed68",
+  "license": "Apache-2.0",
+  "license_file": "standalone/licenses/nemo-relay-0.10.0.txt",
+  "native_wheel_authoring_only": {
+    "sha256": "e8825df39896dd4370803a1c14f6229a9ad6c4cc07d354554b4d856ad0f6afd1",
+    "runtime_use": false
+  },
+  "source_contract_hashes": {
+    "crates/core/src/codec/model_pricing.rs": "ff1d445af5e2c7e3b6e5641e0a44a701d05dabdabeb6fdfd247296287ed59ef5",
+    "crates/core/src/plugins/model_pricing.rs": "0326eab6ddcaa51d2891775b6008975ed8529b5e5930766e27d042fa9b20de4d",
+    "crates/core/src/codec/response.rs": "91406d166dfffad16c8ea470118f0f9cd6b5a89d2d1202e3706416c5d559c7a3",
+    "crates/types/src/codec/response.rs": "fd8f16d1950801c6982940bbbd083a5f480f66e4a1ba3d8dc443c78d0d9aeca4",
+    "crates/core/src/codec/openai_chat.rs": "5a2f29bc515c0b7d880471498413b823cd85832067956afdcb947b69ffcb126c",
+    "crates/core/src/codec/openai_responses.rs": "3529fe29da8050743d936e5b562c7e7e16e52c691db46b4d488a4e86c3d5a97c",
+    "crates/core/src/codec/anthropic.rs": "99b569b30b416601eb934d77bddab6fe0719f01865e416edc6bcf10d4c7a86d9"
+  },
+  "copies": [
+    {
+      "source": "python/nemo_relay/model_pricing.py",
+      "target": "standalone/relay_model_pricing.py",
+      "source_sha256": "e7b976af6135985c84cae9d29f0e72ed1d42b3b02eb1032b1b9a38a06a97fca4",
+      "patched_sha256": "f5bc5914a994bac06471f57849ab1d45f0fcb77e8fe0dc455faccb2c873ab6bd",
+      "patches": [
+        {
+          "before": "from nemo_relay import Json, JsonObject",
+          "after": "from standalone.relay_types import Json, JsonObject",
+          "count": 1
+        },
+        {
+          "before": "from nemo_relay import plugin as plugin_module",
+          "after": "from standalone import relay_plugin as plugin_module",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "qualified_runtime": {
+    "standalone/relay_pricing.py": "3dd8211ebad9051e9f95daa7dc5b770758664e166aa62fd98f5945c24587798a",
+    "standalone/relay_response.py": "d3a504aefc2dc7bf48f9369940be22bc1c7407137236bccc7af5328a3c3669ff"
+  },
+  "fixture": {
+    "path": "standalone/tests/fixtures/relay_pricing.json",
+    "sha256": "684e45557df7633dc757e57975a04da683176261e45ac0d4299b93e6fb2f132c",
+    "native_catalog_validation_cases": 100,
+    "native_activation_scenarios": 10,
+    "native_decoded_provider_usage_cost_cases": 750
+  },
+  "preserved": [
+    "Strict catalog/config/rate/tier schemas; per-provider alias uniqueness and ASCII case normalization",
+    "Inline/file snapshots in source precedence order; response paths never read files or contact pricing services",
+    "Explicit/default provider routing, terminal model fallback and ordered full-request inclusive threshold tiers",
+    "Included/separate prompt-cache accounting, unpriced cache components without fabricated totals, zero usage and reserved non-token units",
+    "f64 arithmetic with Rust half-away rounding to twelve decimal places and native provider-reported currency/cost precedence",
+    "OpenAI Chat/Responses and Anthropic canonical prompt/completion/cache/uncached usage, saturating iteration sums and cross-model iteration refusal",
+    "Activation owns a single process-wide resolver and removes it when closed; existing model data and provider usage are unmodified"
+  ],
+  "limitations": [
+    "No implicit pricing catalog, live-price discovery or currency conversion is supplied by the original component or this port.",
+    "Native lock poisoning has no corresponding normal Python runtime failure; the qualified resolver uses an owned RLock.",
+    "Complete provider response normalization, adaptive cost projection and all trace/ATIF exporter attributes remain separately tracked; these fixtures establish catalog/usage/cost equality for the consumed provider surfaces."
+  ],
+  "verification": {
+    "python311": {
+      "exit_code": 0,
+      "test_methods": 14
+    },
+    "python314": {
+      "exit_code": 0,
+      "test_methods": 15,
+      "includes_original_hermes_http_consumer": true
+    }
+  },
+  "response_fixture": {
+    "path": "standalone/tests/fixtures/relay_response.json",
+    "sha256": "4ddf0f8d38d3487e856fd9c25af22864f807d1a1a098cbd3e64ed255defea1d1",
+    "native_cases": 173,
+    "native_refusals": 28
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "package": "nemo-relay",
+  "version": "0.10.0",
+  "source_archive_sha256": "d3382e826d3d65551f3a307128c15116057fd7f45277f8a8d0cb51f8aca3ed68",
+  "license": "Apache-2.0",
+  "license_file": "standalone/licenses/nemo-relay-0.10.0.txt",
+  "license_notice": "standalone/licenses/relay-atif-storage-notices.txt",
+  "source_contract_hashes": {
+    "crates/core/src/observability/plugin_component.rs": "6097dc985306319514d48187f0e5ddb62c50c784d86977f44223b4b5544cae30",
+    "crates/core/src/observability/private_file.rs": "6eba51a931b0dcaa7065088c8e085ac00e6adcda798d312651a5a3fcc23522b3",
+    "crates/core/src/observability/confined_fs/unix.rs": "12ec50f853accbc73b9a36fb9ef2129715c6e48f4e1ceeec6894f5fa78436100",
+    "crates/core/src/observability/confined_fs/windows.rs": "24b882e71dafff55f06bd659ee070f203f054219d99a3a29febaf63c5df9dbcf"
+  },
+  "object_store": {
+    "version": "0.14.1",
+    "archive_url": "https://static.crates.io/crates/object_store/object_store-0.14.1.crate",
+    "archive_sha256": "d354792e39fa5f0009e47623cf8b15b099bf9a652fa55c6f817fe28ac84fea50",
+    "license_file": "standalone/licenses/object-store-0.14.1.txt",
+    "source_contract_hashes": {
+      "src/path/mod.rs": "c06669274202915113c67005033a59be2bf52de8f063b32e6dfbb306e5f59430",
+      "src/path/parts.rs": "ebce60fb7959069bc79d9ec9841dbd8fd106b658d960dd348a5f9a72ab92f8ed",
+      "src/aws/builder.rs": "3883103f648fa3275fb794d1eedee15ded81549e8789e1fff44831cc159cd166",
+      "src/aws/client.rs": "3fccd6d5ff271df5236d6832794a6549923cee6fd5dddc87f146edb74116b2b0",
+      "src/aws/credential.rs": "bc0c05e174be87320117415daf61566e14552c9243bd1c667679eba08bf78c6f",
+      "src/client/retry.rs": "8e7fbc67ade68db0504c76e6991eb00b79e6648555e7840085056d5ddde24c03",
+      "src/client/backoff.rs": "b4aeafd6106baa2e3b3f9671beacfecbc5e4cc1217bf7ddb19f56bdd041dca64"
+    }
+  },
+  "native_wheel_authoring_only": {
+    "name": "nemo-relay",
+    "version": "0.10.0",
+    "url": "https://files.pythonhosted.org/packages/f8/06/666fc09ec22ab62ef7bd039f4b62d2d73af1ca23b31429381a330be492bf/nemo_relay-0.10.0-cp311-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "hash": "sha256:e8825df39896dd4370803a1c14f6229a9ad6c4cc07d354554b4d856ad0f6afd1",
+    "size": 10615006,
+    "upload-time": "2026-10-08T22:01:13.136Z",
+    "runtime_use": false
+  },
+  "qualified_runtime": {
+    "standalone/relay_atif_storage.py": "6952091ccbbba588b8f88e5f2d8553e9b01a65b45d12e64341469c049cc6413b",
+    "standalone/relay_atif_windows.py": "7c460b73c9e216492d44a0293caa2c57f24468f8977f13225a78bee1d395b163"
+  },
+  "fixture": {
+    "path": "standalone/tests/fixtures/relay_atif_storage.json",
+    "sha256": "867b85a5551cecd37c191773d5703954150d23309b5b72994743257b4a66b2f4",
+    "native_filename_validations": 24,
+    "native_metadata_render_cases": 30,
+    "native_storage_scenarios": 10,
+    "native_wire_requests": 34,
+    "native_sigv4_golden_requests": 26
+  },
+  "preserved": [
+    "Required trajectory scope session_id, nested metadata selectors, null/missing fallback, string sanitization, empty/nonstring/traversal refusal and relative subdirectories.",
+    "Literal/environment HTTP headers freeze at activation; regular-file headers rotate on every upload; native reserved filename/session/content headers override configured values.",
+    "HTTP POST and actual SigV4 S3 PUT, independent static/environment credentials, region, session token, endpoint, HTTP opt-in and normalized key prefix.",
+    "Native object_store two-stage escaped keys, explicit endpoint base paths, retryable 5xx/408/429, ten retry limit, three-minute retry budget and randomized backoff with one frozen signature per upload.",
+    "Every configured remote target is attempted for each trajectory, including previously failed targets, as observed in the pinned implementation. Remote success suppresses local writes; failure of every remote stores a private local fallback.",
+    "Historical diagnostic fields/count/session ownership and inactive repeated-error plugin shutdown; original Hermes managed consumer validates actual remote export and absence of local duplication.",
+    "POSIX handle-relative private subdirectories, no-follow regular-file targets, exclusive temporary file, complete write/fsync, atomic replacement and failure cleanup preserve old data.",
+    "Qualified Windows handle-relative NT create/rename, protected owner/SYSTEM DACL and no reparse descendants; portable ABI/policy checks are distinct from real OS proof."
+  ],
+  "limits": [
+    "These storage fixtures replay actual native trajectory payloads byte for byte. They do not establish equality of every generated ATIF trajectory projection, nested subagent lineage, deduplication or adaptive optimization/cost extension; those remain separately tracked.",
+    "Error text is sanitized rather than copying endpoint/credential-bearing native errors; stable diagnostic code/component/field/count/session_id and shutdown behavior are verified.",
+    "The documented ATIF S3 fields and static/environment credentials have independent native wire coverage. All additional object_store AWS environment controls, S3 Express/encryption options and every refreshable credential discovery provider are not claimed equivalent; fallback discovery uses the embedded original botocore SDK.",
+    "Real Windows kernel/ACL execution remains pending; portable ABI tests are not represented as a native host result.",
+    "S3 retry jitter preserves the pinned distribution and limits, not the native random generator sequence. HTTP stack user-agent/default headers and byte-for-byte warning wording are not claimed identical."
+  ],
+  "verification": {
+    "python311": {
+      "exit_code": 0,
+      "methods": 20,
+      "skipped_native_host": 1,
+      "seconds": 13.9193
+    },
+    "python314": {
+      "exit_code": 0,
+      "methods": 20,
+      "skipped_native_host": 1,
+      "seconds": 14.5657
+    }
+  }
+}

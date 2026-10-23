@@ -1,0 +1,316 @@
+{
+  "oracle": {
+    "name": "nemo-relay",
+    "version": "0.10.0",
+    "url": "https://files.pythonhosted.org/packages/f8/06/666fc09ec22ab62ef7bd039f4b62d2d73af1ca23b31429381a330be492bf/nemo_relay-0.10.0-cp311-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "hash": "sha256:e8825df39896dd4370803a1c14f6229a9ad6c4cc07d354554b4d856ad0f6afd1",
+    "size": 10615006,
+    "upload-time": "2026-10-08T22:01:13.136Z"
+  },
+  "environment": {
+    "RELAY_OWNED_HEADER": "fixture-token"
+  },
+  "cases": [
+    {
+      "endpoint": "http://remote.invalid",
+      "options": {},
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "http://remote.invalid",
+      "options": {
+        "headers": {
+          "Authorization": "fixture-token"
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {},
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          "Authorization": "fixture-token"
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "http://localhost:1",
+      "options": {},
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "http://localhost:1",
+      "options": {
+        "headers": {
+          "Authorization": "fixture-token"
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "http://127.0.0.1:1",
+      "options": {},
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "http://127.0.0.1:1",
+      "options": {
+        "headers": {
+          "Authorization": "fixture-token"
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "http://[::1]:1",
+      "options": {},
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "http://[::1]:1",
+      "options": {
+        "headers": {
+          "Authorization": "fixture-token"
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          "X-Key": "fixture"
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          "x-key": " fixture"
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          "x-key": "fixture "
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          "x-key": ""
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          "x-key": "\n"
+        }
+      },
+      "validation_accepted": false,
+      "native_codes": [
+        "observability.unsupported_value"
+      ],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          "x-key": "a\u0000b"
+        }
+      },
+      "validation_accepted": false,
+      "native_codes": [
+        "observability.unsupported_value"
+      ],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          " padded": "fixture"
+        }
+      },
+      "validation_accepted": false,
+      "native_codes": [
+        "observability.unsupported_value"
+      ],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          "x:key": "fixture"
+        }
+      },
+      "validation_accepted": false,
+      "native_codes": [
+        "observability.unsupported_value"
+      ],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          "": "fixture"
+        }
+      },
+      "validation_accepted": false,
+      "native_codes": [
+        "observability.unsupported_value"
+      ],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          "X-Key": "first",
+          "x-key": "second"
+        }
+      },
+      "validation_accepted": false,
+      "native_codes": [
+        "observability.unsupported_value"
+      ],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "header_env": {
+          "x-key": "RELAY_OWNED_HEADER"
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": true
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "header_env": {
+          "x-key": "MISSING_FIXTURE_HEADER"
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "header_env": {
+          "x-key": " padded"
+        }
+      },
+      "validation_accepted": false,
+      "native_codes": [
+        "observability.unsupported_value"
+      ],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "header_env": {
+          "x-key": "="
+        }
+      },
+      "validation_accepted": true,
+      "native_codes": [],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "header_env": {
+          "x-key": ""
+        }
+      },
+      "validation_accepted": false,
+      "native_codes": [
+        "observability.unsupported_value"
+      ],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    },
+    {
+      "endpoint": "https://remote.invalid",
+      "options": {
+        "headers": {
+          "X-Key": "first"
+        },
+        "header_env": {
+          "x-key": "RELAY_OWNED_HEADER"
+        }
+      },
+      "validation_accepted": false,
+      "native_codes": [
+        "observability.unsupported_value"
+      ],
+      "accepted": false,
+      "activation_error_kind": "RuntimeError"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+ATIF filename and storage port
+
+NeMo Relay 0.10.0: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES.
+Derived from observability/plugin_component.rs and private-file confinement.
+License: Apache-2.0; the full license is nemo-relay-0.10.0.txt.
+
+The S3 key encoding and retry contracts derive from Apache object_store 0.14.1.
+License: Apache-2.0; the full license is object-store-0.14.1.txt.
+Original object_store NOTICE follows:
+
+Apache Arrow Object Store
+Copyright 2020-2026 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).

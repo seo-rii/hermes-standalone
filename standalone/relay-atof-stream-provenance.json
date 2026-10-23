@@ -1,0 +1,53 @@
+{
+  "package": "nemo-relay",
+  "version": "0.10.0",
+  "source_archive_sha256": "d3382e826d3d65551f3a307128c15116057fd7f45277f8a8d0cb51f8aca3ed68",
+  "license": "Apache-2.0",
+  "license_file": "standalone/licenses/nemo-relay-0.10.0.txt",
+  "license_notice": "standalone/licenses/relay-atof-stream-notices.txt",
+  "source_contract_hashes": {
+    "crates/core/src/observability/atof.rs": "8bd0c48d0f46cff14f7cd4c2f01f418399c93ba755d52ff7940f33ce617085f8",
+    "crates/core/src/observability/header_file.rs": "f1e08f4d9ffee46be25ad4325f66710b949acf165409807768303ab696f0b285",
+    "crates/core/src/observability/plugin_component.rs": "6097dc985306319514d48187f0e5ddb62c50c784d86977f44223b4b5544cae30"
+  },
+  "native_wheel_authoring_only": {
+    "sha256": "e8825df39896dd4370803a1c14f6229a9ad6c4cc07d354554b4d856ad0f6afd1",
+    "runtime_use": false
+  },
+  "qualified_runtime": {
+    "standalone/relay_atof_stream.py": "eefbff3d71fe6b897d859ddda5e8fa6f8b3a5ecb564d9621b4f400be44c112aa"
+  },
+  "fixture": {
+    "path": "standalone/tests/fixtures/relay_atof_stream.json",
+    "sha256": "79d1c29e6749abf4460bd96cf5162c69fc1ff042952a7d4616e7013c1159171f",
+    "actual_native_wire_scenarios": 6,
+    "actual_native_wire_records": 24,
+    "actual_native_reconnection_handshakes": 4
+  },
+  "preserved": [
+    "One canonical JSON event per WebSocket text message; native retained-message reconnection, 50ms delay and per-endpoint deadlines",
+    "One long-lived NDJSON HTTP upload, newline records, transport handoff flush barrier and completion on close",
+    "Literal/environment headers freeze at activation; file headers refresh on every WS connection or once at NDJSON startup",
+    "Dotted-key collision preservation, Unicode and 70KB records match actual native ATOF source-file/wire output",
+    "Loopback plaintext/protected remote credentials, URL scheme and timeout validation; no credential-bearing redirect",
+    "Actual TLS WS/NDJSON, original plugin lifecycle, rotating private file headers and failed/recovered native peer scenarios"
+  ],
+  "limits": [
+    "Flush is a transport handoff, not remote application persistence; native stream timeouts are logged without inventing application acknowledgements.",
+    "The native corpus replays entire original source ATOF records through the qualified transports. Core scope identity/timestamp generation and every native public exporter binding remain separate contracts.",
+    "NDJSON preserves one-upload failure behavior and is not silently replaced with per-event HTTP requests.",
+    "The existing common header-file bound is 64KiB. Native warning wording/frequency and every proxy/environment discovery rule are not claimed identical."
+  ],
+  "verification": {
+    "python311": {
+      "exit_code": 0,
+      "test_methods": 4,
+      "seconds": 12.4988
+    },
+    "python314": {
+      "exit_code": 0,
+      "test_methods": 4,
+      "seconds": 12.3277
+    }
+  }
+}

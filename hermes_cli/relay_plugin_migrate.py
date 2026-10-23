@@ -51,7 +51,8 @@ def relay_plugin_payload_from_legacy_env(env: Mapping[str, Any]) -> dict[str, An
     mirror the removed ``plugins/observability/nemo_relay`` plugin so a migrated user keeps the
     same files in the same places. Built through ``nemo_relay.observability`` so the sink
     discriminator (``type = "file"``) and every field name are the ones Relay validates."""
-    from nemo_relay import observability as obs
+    from hermes_platform.relay import relay_api
+    obs = relay_api().observability
 
     atif = atof = None
     if _truthy(env.get("HERMES_NEMO_RELAY_ATIF_ENABLED")):
@@ -128,7 +129,8 @@ def dumps_toml(document: Mapping[str, Any]) -> str:
 def validate_relay_plugin_payload(payload: Mapping[str, Any]) -> list:
     """Run the payload through Relay's own validator; returns the warnings (empty = clean).
     Raises when Relay rejects the document, including by error-level diagnostics."""
-    from nemo_relay import plugin
+    from hermes_platform.relay import relay_api
+    plugin = relay_api().plugin
 
     # validate() would layer the payload over the ambient user config; the runtime never does.
     diagnostics = list(plugin.validate_exact(dict(payload))["config"]["diagnostics"])

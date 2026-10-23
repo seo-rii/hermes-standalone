@@ -1,0 +1,13 @@
+Relay model pricing and normalized usage/cost contracts
+
+Original source: NeMo Relay 0.10.0
+Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+SPDX-License-Identifier: Apache-2.0
+
+standalone/relay_model_pricing.py preserves the original configuration helpers
+with the two qualified import relocations recorded in relay-pricing-provenance.json.
+standalone/relay_pricing.py implements the pinned Rust catalog, routing,
+arithmetic and provider usage/cost contracts in Python. The source hashes and
+independent native fixture receipt are recorded in that same provenance file.
+
+The full Apache License 2.0 is in nemo-relay-0.10.0.txt in this directory.

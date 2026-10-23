@@ -7,7 +7,8 @@ import json
 
 import pytest
 
-pytest.importorskip("nemo_relay")
+from tests._fixtures.relay import relay_or_skip
+relay_or_skip()
 
 from agent import relay_runtime, relay_tools
 

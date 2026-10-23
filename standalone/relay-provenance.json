@@ -1,0 +1,183 @@
+{
+  "package": "nemo-relay",
+  "version": "0.10.0",
+  "source_archive": "https://files.pythonhosted.org/packages/16/e8/016a4c95429c37c456d5580d92dffb46bd7d071017fea6d751c5b73582ca/nemo_relay-0.10.0.tar.gz",
+  "sha256": "d3382e826d3d65551f3a307128c15116057fd7f45277f8a8d0cb51f8aca3ed68",
+  "license": "Apache-2.0",
+  "license_file": "standalone/licenses/nemo-relay-0.10.0.txt",
+  "copies": [
+    {
+      "source": "python/nemo_relay/observability.py",
+      "target": "standalone/relay_observability.py",
+      "source_sha256": "396ae3d8abeb4b718e175d049f859ae171171ea96b06ddea723701f4d80c17a8",
+      "patched_sha256": "7531ed50372d6eba84b5dbaf051f2117a92e154894f1ce8996062f1017e450f5",
+      "patches": [
+        {
+          "before": "from nemo_relay import Json, JsonObject, UnsupportedBehavior",
+          "after": "from standalone.relay_types import Json, JsonObject, UnsupportedBehavior",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "source": "python/nemo_relay/model_pricing.py",
+      "target": "standalone/relay_model_pricing.py",
+      "source_sha256": "e7b976af6135985c84cae9d29f0e72ed1d42b3b02eb1032b1b9a38a06a97fca4",
+      "patched_sha256": "f5bc5914a994bac06471f57849ab1d45f0fcb77e8fe0dc455faccb2c873ab6bd",
+      "patches": [
+        {
+          "before": "from nemo_relay import Json, JsonObject",
+          "after": "from standalone.relay_types import Json, JsonObject",
+          "count": 1
+        },
+        {
+          "before": "from nemo_relay import plugin as plugin_module",
+          "after": "from standalone import relay_plugin as plugin_module",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "reimplementations": {
+    "standalone/relay.py": [
+      "crates/core/src/api/scope.rs",
+      "crates/core/src/api/tool.rs",
+      "crates/core/src/api/llm.rs",
+      "crates/types/src/api/event.rs",
+      "python/nemo_relay/_native.pyi"
+    ],
+    "standalone/relay_plugin.py": [
+      "crates/core/src/plugin.rs",
+      "crates/core/src/plugin/dynamic/configuration.rs"
+    ],
+    "standalone/relay_codecs.py": [
+      "crates/core/src/codec/openai_chat.rs",
+      "crates/core/src/codec/openai_responses.rs",
+      "crates/core/src/codec/anthropic.rs"
+    ],
+    "standalone/relay_otlp.py": [
+      "crates/core/src/observability/otel.rs",
+      "crates/core/src/observability/otel_logs.rs"
+    ],
+    "standalone/relay_grpc.py": [
+      "crates/core/src/observability/otel_signal.rs"
+    ],
+    "standalone/relay_files.py": [
+      "crates/core/src/observability/otel_file.rs",
+      "crates/core/src/observability/otel.rs",
+      "crates/core/src/observability/private_file.rs",
+      "crates/core/src/observability/confined_fs/unix.rs"
+    ],
+    "standalone/relay_files_windows.py": [
+      "crates/core/src/observability/confined_fs/windows.rs"
+    ],
+    "standalone/relay_pricing.py": [
+      "crates/core/src/codec/model_pricing.rs",
+      "crates/core/src/plugins/model_pricing.rs",
+      "crates/core/src/codec/response.rs",
+      "crates/types/src/codec/response.rs",
+      "crates/core/src/codec/openai_chat.rs",
+      "crates/core/src/codec/openai_responses.rs",
+      "crates/core/src/codec/anthropic.rs"
+    ],
+    "standalone/relay_response.py": [
+      "crates/core/src/codec/openai_chat.rs",
+      "crates/core/src/codec/openai_responses.rs",
+      "crates/core/src/codec/anthropic.rs",
+      "crates/types/src/codec/response.rs"
+    ],
+    "standalone/relay_atof_stream.py": [
+      "crates/core/src/observability/atof.rs",
+      "crates/core/src/observability/header_file.rs"
+    ],
+    "standalone/relay_stream.py": [
+      "crates/core/src/stream.rs",
+      "crates/core/src/api/llm.rs",
+      "crates/python/src/py_callable.rs",
+      "crates/python/src/py_api/mod.rs"
+    ],
+    "standalone/relay_atif_storage.py": [
+      "crates/core/src/observability/plugin_component.rs",
+      "crates/core/src/observability/private_file.rs",
+      "crates/core/src/observability/confined_fs/unix.rs"
+    ],
+    "standalone/relay_atif_windows.py": [
+      "crates/core/src/observability/confined_fs/windows.rs"
+    ]
+  },
+  "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+  "source_contract_hashes": {
+    "crates/core/src/api/llm.rs": "6952d804fd4dcc9a711166ae71ac31b4e5c1313670b7d3121aa49c3b2fea89a4",
+    "crates/core/src/api/scope.rs": "a5e4794f1b503e80c785cb040c30ffeea43840d01bffd82df81b20c6e92548fa",
+    "crates/core/src/api/shared.rs": "845e5b1d7029a74025c0645c80d07cfb04b11ada821e0b0c940a7451aa69fd4b",
+    "crates/core/src/api/tool.rs": "42220e6faf14036f33ef9579967b92d1a8f784cf46a9d31b332dd4b8bc5a32e6",
+    "crates/core/src/codec/anthropic.rs": "99b569b30b416601eb934d77bddab6fe0719f01865e416edc6bcf10d4c7a86d9",
+    "crates/core/src/codec/openai_chat.rs": "5a2f29bc515c0b7d880471498413b823cd85832067956afdcb947b69ffcb126c",
+    "crates/core/src/codec/openai_responses.rs": "3529fe29da8050743d936e5b562c7e7e16e52c691db46b4d488a4e86c3d5a97c",
+    "crates/core/src/observability/atif.rs": "a0eef943b040ffb7dbdabdecb896c101e1a7c43d6fa4e18354585f2931cd94a1",
+    "crates/core/src/observability/atof.rs": "8bd0c48d0f46cff14f7cd4c2f01f418399c93ba755d52ff7940f33ce617085f8",
+    "crates/core/src/observability/plugin_component.rs": "6097dc985306319514d48187f0e5ddb62c50c784d86977f44223b4b5544cae30",
+    "crates/core/src/plugin.rs": "31abac81fdc315025bb93dac22b3b0fc5a5a9c998555ee7107a852c1daa4fcbc",
+    "crates/core/src/plugin/dynamic/configuration.rs": "5a905363804f2a3e2456d24acc1213e660805840c7cbf36a21b1e5d2e5bc9a23",
+    "crates/types/src/api/event.rs": "97afde53a624b03b20df91b04d25b1a02238dbead5766d315ea18e7c83b92d06",
+    "python/nemo_relay/_native.pyi": "1a30ae66cf089eb5cc1c64154ed90d26345726847a04a37e266afa26a294c8ee",
+    "crates/core/src/observability/otel.rs": "09355107d6a7f6421fb477f8d3c98f5c01d9ac67c1b8b46fffb4d8af1aafa7e4",
+    "crates/core/src/observability/otel_logs.rs": "4b47554a2ac7b4a2df6545dfb01293f21dabbd41ac9b76a39e0b7629639e3e8e",
+    "crates/core/src/observability/otel_signal.rs": "233b6ebcf034ec0ce1aa3d59c4442e3d892131e4f1bd95a261345622186c9aa8",
+    "crates/core/src/observability/otel_file.rs": "3a7374702db99bf1d7406f317ba25ec1c5ab53d563d1b803032f17d8e935a4b0",
+    "crates/core/src/observability/private_file.rs": "6eba51a931b0dcaa7065088c8e085ac00e6adcda798d312651a5a3fcc23522b3",
+    "crates/core/src/observability/confined_fs/unix.rs": "12ec50f853accbc73b9a36fb9ef2129715c6e48f4e1ceeec6894f5fa78436100",
+    "crates/core/src/observability/confined_fs/windows.rs": "24b882e71dafff55f06bd659ee070f203f054219d99a3a29febaf63c5df9dbcf",
+    "crates/core/src/observability/header_file.rs": "f1e08f4d9ffee46be25ad4325f66710b949acf165409807768303ab696f0b285",
+    "crates/core/src/codec/model_pricing.rs": "ff1d445af5e2c7e3b6e5641e0a44a701d05dabdabeb6fdfd247296287ed59ef5",
+    "crates/core/src/plugins/model_pricing.rs": "0326eab6ddcaa51d2891775b6008975ed8529b5e5930766e27d042fa9b20de4d",
+    "crates/core/src/codec/response.rs": "91406d166dfffad16c8ea470118f0f9cd6b5a89d2d1202e3706416c5d559c7a3",
+    "crates/types/src/codec/response.rs": "fd8f16d1950801c6982940bbbd083a5f480f66e4a1ba3d8dc443c78d0d9aeca4"
+  },
+  "qualified_selection": "Only verified standalone runtime/source-root binding selects standalone.relay; ordinary checkouts import the original nemo_relay SDK. No global SDK namespace is injected.",
+  "implemented": [
+    "ContextVar-owned mutable scope stacks, lifecycle hierarchy, UUID/W3C provider trace correlation and compaction freshness",
+    "Ordered daemon subscriber delivery with synchronous/asynchronous flush barriers",
+    "Managed tool and sync/async/stream LLM callbacks, intercept chains, continuation revocation and fail-closed observability sanitizers",
+    "Original observability dataclasses, legacy exporter migration, explicit/user/system config layering and source-derived list precedence",
+    "Actual private ATOF files, HTTP NDJSON sinks, retry retention and collision-safe dotted-key replacement",
+    "ATIF v1.7 user/agent steps, tool-call observations, token accounting and private file/HTTP output",
+    "OTLP HTTP/protobuf and TLS HTTP/2 gRPC trace/log messages using embedded official generated message classes and grpclib",
+    "Original Hermes shared-metrics consent, runtime isolation, closed payload/metadata allowlists and durable SQLite counters",
+    "OTLP private JSON lines and big-endian length-delimited protobuf file destinations, shared handle/mode contracts and explicit flush/fsync",
+    "Original pricing component helpers, strict inline/file catalog snapshots, ordered provider/model/cache/tier cost estimation and canonical provider-reported costs; 100 native validation and 750 decoded response cases",
+    "Original metric typed/schema/aggregation/resource-lifecycle and periodic HTTP/gRPC providers with delta reset, cardinality, shutdown and historical delivery diagnostics; relay-metrics-provenance.json",
+    "Three selected provider response projections preserve API-specific fields, unknown extensions, partial calls, text joining, finish-reason getter/wire distinctions and typed refusals; 173 pinned native cases",
+    "Actual ATOF WebSocket text/reconnect and long-lived HTTP NDJSON, activation-frozen environment headers and connection-time file headers; native six-scenario/24-record wire replay plus real TLS/plugin consumers",
+    "Native two-stage 32-item stream backpressure, compact chunk receipts, finalize-once termination and ordered async sanitizer/publication barriers; 42 lifecycle/privacy and 31 receipt cases in relay-stream-provenance.json",
+    "ATIF metadata filename rendering, HTTP/S3 storage, native SigV4 key/retry contracts, remote-only success/local fallback and confined atomic files; relay-atif-storage-provenance.json"
+  ],
+  "unported_explicit_refusals": [
+    "Selected dynamic native/worker plugins, native adaptive, PII, resource-metrics and NeMo guardrail engines"
+  ],
+  "fidelity_limits": [
+    "Provider codecs implement the three request surfaces Hermes consumes and preserve unchanged provider JSON; this is not a complete public NeMo codec API replacement.",
+    "ATIF exports the consumed lifecycle steps and observations; complete native nested-subagent lineage, adaptive optimization/cost projections and every native ATIF extension are not claimed.",
+    "OTLP exports traces/logs directly at lifecycle boundaries; native batching/queue scheduling, every attribute mapping/mark projection and implicit OTEL environment discovery are not claimed."
+  ],
+  "verification": {
+    "runtime": "CPython 3.14, isolated -I -S, private homes, PATH empty, audited loopback peer only",
+    "original_consumer_cases": [
+      "agent.relay_runtime session/turn coordinator",
+      "agent.relay_llm sync provider and SSE stream",
+      "agent.relay_tools callback and argument rewriting",
+      "hermes_cli.relay_plugin_migrate legacy .env to plugins.toml",
+      "original SharedMetricsSubscriber allowlist/consent and SQLite counter persistence"
+    ],
+    "wire": [
+      "model/tool JSON POST",
+      "provider SSE",
+      "ATOF HTTP NDJSON",
+      "ATIF JSON HTTP",
+      "OTLP trace/log protobuf HTTP decoded with original generated protobuf classes",
+      "OTLP TLS HTTP/2 gRPC trace/log services, dynamic literal/env/file metadata, deadlines and failed status refusal; actual plugin events, parentage, sanitizers and retained publication retry",
+      "Actual pinned native JSON/protobuf file records and 26 native trace exporter header/endpoint construction outcomes; real file-only plugin activation and lifecycle",
+      "ATOF WebSocket/NDJSON native 6 scenarios and 24 complete records, reconnection, private file-header rotation, real TLS and plugin lifecycle on Python 3.11/3.14"
+    ]
+  }
+}

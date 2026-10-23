@@ -1,0 +1,143 @@
+{
+  "package": "nemo-relay",
+  "version": "0.10.0",
+  "original_source_archive": "https://files.pythonhosted.org/packages/16/e8/016a4c95429c37c456d5580d92dffb46bd7d071017fea6d751c5b73582ca/nemo_relay-0.10.0.tar.gz",
+  "original_source_sha256": "d3382e826d3d65551f3a307128c15116057fd7f45277f8a8d0cb51f8aca3ed68",
+  "original_native_wheel": {
+    "sha256": "e8825df39896dd4370803a1c14f6229a9ad6c4cc07d354554b4d856ad0f6afd1",
+    "runtime_use": false,
+    "fixture_authoring_only": true
+  },
+  "qualified_runtime": {
+    "standalone/relay_metrics.py": "dc94394f549e53caad1fd1ed8d7bf6498800959b9569476635ab147231c73578",
+    "standalone/relay_metrics_aggregate.py": "b8796095d2486dfb64df305d4a3144d934f2ff49762dec51196872f695182765",
+    "standalone/relay_metrics_route.py": "7a3eda24b493ded55d0d6598d1604c9fb45c6d004c0a029508c638e8729957c1",
+    "standalone/relay_metrics_otlp.py": "1b292dcd437f3b4bad02ac5079e42e15467cd1fbf718c60350b72f4a102b0ed0"
+  },
+  "original_source_files": {
+    "crates/types/src/api/event.rs": "97afde53a624b03b20df91b04d25b1a02238dbead5766d315ea18e7c83b92d06",
+    "crates/python/src/convert.rs": "ce0715cfbf57f9c3d5d4fbefd7e9c685b4fdbf49a957328408d300bc503afbde",
+    "crates/core/src/observability/otel_metrics.rs": "6c0f9c93a6994590abae327ce81c6da2283dc3635fb283cca474283a15800d0e",
+    "crates/core/src/observability/otel_signal.rs": "233b6ebcf034ec0ce1aa3d59c4442e3d892131e4f1bd95a261345622186c9aa8",
+    "crates/core/src/observability/otel_genai.rs": "c28a3c5732be36c8a9ae40c1ed0780c4bf1b24154c7aca4cb0f082cf40090522",
+    "crates/core/src/observability/mod.rs": "1dd75a454f7fe229bd2f08670ad697136ac75be7376f24f0b98db3c187dcee37",
+    "crates/core/src/observability/plugin_component.rs": "6097dc985306319514d48187f0e5ddb62c50c784d86977f44223b4b5544cae30"
+  },
+  "original_rust_components": [
+    {
+      "name": "opentelemetry_sdk",
+      "version": "0.32.1",
+      "crate_sha256": "9b59f80e1ac4d5ff7a2db8fb6c80badb7f0f3f858211fba08dd9aaec750894f9"
+    },
+    {
+      "name": "opentelemetry",
+      "version": "0.32.0",
+      "crate_sha256": "b0142c63252a9e054e68a4c61a5778f7b14f576274d593f8ce883d191a099682"
+    },
+    {
+      "name": "opentelemetry-proto",
+      "version": "0.32.0",
+      "crate_sha256": "56d658ba1faf63f7b9c492cfbe6e0ec365440a16132d3270c1065f7b33f1b638"
+    }
+  ],
+  "license_files": [
+    "standalone/licenses/nemo-relay-0.10.0.txt",
+    "standalone/licenses/relay-metrics-notices.txt"
+  ],
+  "license_receipt": {
+    "url": "https://raw.githubusercontent.com/open-telemetry/opentelemetry-rust/284a37d93b3856e1975c2807ba3af1421ebd9b52/LICENSE",
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "bytes": 11357
+  },
+  "fixtures": {
+    "standalone/tests/fixtures/relay_metrics_export.json": {
+      "sha256": "5d3644070a019834075e2a13b6ad2820476f58b2a8e667dc311364b6d595a708",
+      "bytes": 168596
+    },
+    "standalone/tests/fixtures/relay_metrics_failure.json": {
+      "sha256": "7e0eab6d84f5bc11f6c4b1c0c731ab3289168f35b0a9c29dd86654ba532d4da3",
+      "bytes": 4686
+    },
+    "standalone/tests/fixtures/relay_metrics_lifecycle.json": {
+      "sha256": "3e1325f3e59b251aa788abbc2c005c8b5cb58a612612d2b31199b3690b71a571",
+      "bytes": 69250
+    },
+    "standalone/tests/fixtures/relay_metrics_raw.json": {
+      "sha256": "58618800287e29111eca044b8cee1f3781a97dc91c41b7a8ef8758cc1d8824b9",
+      "bytes": 21037
+    },
+    "standalone/tests/fixtures/relay_metrics_resolution.json": {
+      "sha256": "45c87cf95da2b34fcb8682233675266e90fb8e9f90d6c317fb71395c6db52a9e",
+      "bytes": 10786
+    },
+    "standalone/tests/fixtures/relay_metrics_schema.json": {
+      "sha256": "9e369135b191c3abb935e46e8ac6aa24830e656d161ffd44b3beffe2688b0ba1",
+      "bytes": 118537
+    },
+    "standalone/tests/fixtures/relay_metrics_plugin_failure.json": {
+      "sha256": "d61252a339e08aaef9c3242d1173b501d27ec08eb76882150ae62143cc2353e0",
+      "bytes": 2118
+    }
+  },
+  "coverage": {
+    "typed_constructor_publication_cases": 261,
+    "raw_serde_reserved_mark_cases": 67,
+    "native_export_scenarios": 12,
+    "native_collections": 57,
+    "actual_native_http_requests": 51,
+    "native_resource_scenarios": 2,
+    "native_stream_projection_scenarios": 10,
+    "native_endpoint_construction_cases": 21,
+    "native_failure_collection_cases": 9,
+    "native_plugin_delivery_only_cleanup_reactivation_cases": 1
+  },
+  "preserved": [
+    "Counter/UpDownCounter/Gauge/Histogram typed integer and IEEE double values; exact numeric data and typed arrays compared with decoded original OTLP messages",
+    "Atomic whole-mark schema, descriptor and maximum-instrument refusal; first descriptor supplies advisory fields",
+    "SDK cardinality overflow, free no-attribute series, typed fingerprints including signed zero, historical diagnostic cardinality, delta idle-series eviction",
+    "Cumulative/delta/low_memory selection, UpDownCounter cumulative temporality, delta resets before failed export and final shutdown collection",
+    "Original explicit/inherited endpoint routing and canonical duplicate detection for pinned vectors; independently owned periodic workers for every resource provider",
+    "Typed root metadata promotion, child and late-mark inheritance, strict greater-than-60-second expiry, dynamic-provider limit 16 and active-scope budget 4096",
+    "GenAI first-chunk histogram projection from sanitized LLM end events; actual stream timing is owned by the separate stream consumer patch",
+    "Official embedded protobuf messages, TLS HTTP and HTTP/2 gRPC peers, rotating common header policy, HTTP redirects disabled, concurrent updates and idempotent close"
+  ],
+  "deliberate_runtime_metadata_difference": "Resource telemetry.sdk.name=hermes-standalone, telemetry.sdk.language=python, telemetry.sdk.version=0.10.0-stdlib report the actual qualified implementation; they do not impersonate the Rust SDK. SDK namespace environment overrides are not used to forge implementation identity.",
+  "comparison_boundaries": [
+    "Absolute wall-clock timestamps and randomized native HashMap ordering are excluded from frozen numeric equality; native timestamps are retained in fixtures, and portable delta clock transitions are separately tested.",
+    "Trace/log projection, files, automatic plugin environment selection, pricing and native dynamic-plugin hosts are owned by their separate implementations. This slice does not claim full NeMo Relay SDK parity.",
+    "MetricMeasurement JSON conversion accepts the JSON primitives and owned containers exercised by the canonical consumer; arbitrary Python extension objects are not presented as a general Pythonize implementation."
+  ],
+  "validation": {
+    "pending_public_final_results": false,
+    "completed_metrics_python314": {
+      "exit_code": 0,
+      "methods": 10,
+      "log": "validation-logs/hermes-relay-metrics-public-last-314-u2yawh53.log"
+    },
+    "completed_metrics_python311": {
+      "exit_code": 0,
+      "methods": 10,
+      "skipped": 1,
+      "log": "validation-logs/hermes-relay-metrics-public-last-311-iwj_op80.log"
+    },
+    "completed_plugin_python314": {
+      "exit_code": 0,
+      "methods": 2,
+      "log": "validation-logs/hermes-relay-metrics-public-plugin2-314-2wzxd115.log"
+    },
+    "completed_combined_python311": {
+      "exit_code": 0,
+      "methods": 12,
+      "skipped": 3,
+      "log": "validation-logs/hermes-relay-metrics-all-public-311-wbjbo4uv.log",
+      "seconds": 0.232649564743042
+    },
+    "completed_combined_python314": {
+      "exit_code": 0,
+      "methods": 12,
+      "skipped": 0,
+      "log": "validation-logs/hermes-relay-metrics-all-public-314-z5c6ck4l.log",
+      "seconds": 19.777000188827515
+    }
+  }
+}

@@ -1,0 +1,3199 @@
+{
+  "oracle": {
+    "name": "nemo-relay",
+    "version": "0.10.0",
+    "url": "https://files.pythonhosted.org/packages/f8/06/666fc09ec22ab62ef7bd039f4b62d2d73af1ca23b31429381a330be492bf/nemo_relay-0.10.0-cp311-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "hash": "sha256:e8825df39896dd4370803a1c14f6229a9ad6c4cc07d354554b4d856ad0f6afd1",
+    "size": 10615006,
+    "upload-time": "2026-10-08T22:01:13.136Z"
+  },
+  "validations": [
+    {
+      "template": "nemo-{session_id}.json",
+      "accepted": true,
+      "errors": []
+    },
+    {
+      "template": "no-session.json",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template must contain '{session_id}'"
+        }
+      ]
+    },
+    {
+      "template": "",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template must contain '{session_id}'"
+        }
+      ]
+    },
+    {
+      "template": "/{session_id}.json",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template must be a path-safe relative path"
+        }
+      ]
+    },
+    {
+      "template": "../{session_id}.json",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template must be a path-safe relative path"
+        }
+      ]
+    },
+    {
+      "template": "./{session_id}.json",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template must be a path-safe relative path"
+        }
+      ]
+    },
+    {
+      "template": "a/./{session_id}.json",
+      "accepted": true,
+      "errors": []
+    },
+    {
+      "template": "a//{session_id}.json",
+      "accepted": true,
+      "errors": []
+    },
+    {
+      "template": "a/{session_id}/",
+      "accepted": true,
+      "errors": []
+    },
+    {
+      "template": "{other}-{session_id}.json",
+      "accepted": true,
+      "errors": []
+    },
+    {
+      "template": "{metadata.x}-{session_id}.json",
+      "accepted": true,
+      "errors": []
+    },
+    {
+      "template": "{metadata.x:-fallback}/{session_id}.json",
+      "accepted": true,
+      "errors": []
+    },
+    {
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "accepted": true,
+      "errors": []
+    },
+    {
+      "template": "{metadata.x:-../bad}/{session_id}",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template fallback '../bad' must be a path-safe relative fragment"
+        }
+      ]
+    },
+    {
+      "template": "{metadata.x:-a//b}/{session_id}",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template fallback 'a//b' must be a path-safe relative fragment"
+        }
+      ]
+    },
+    {
+      "template": "{metadata.x:-.}/{session_id}",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template fallback '.' must be a path-safe relative fragment"
+        }
+      ]
+    },
+    {
+      "template": "{metadata.x:-}/{session_id}",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template fallback '' must be a path-safe relative fragment"
+        }
+      ]
+    },
+    {
+      "template": "{metadata.x:-한글}/{session_id}",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template fallback '한글' must be a path-safe relative fragment"
+        }
+      ]
+    },
+    {
+      "template": "{metadata.x..y}/{session_id}",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template metadata placeholder '{metadata.x..y}' must contain a dot-separated path of ASCII letters, digits, '-' or '_'"
+        }
+      ]
+    },
+    {
+      "template": "{metadata.x:y}/{session_id}",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template metadata placeholder '{metadata.x:y}' must contain a dot-separated path of ASCII letters, digits, '-' or '_'"
+        }
+      ]
+    },
+    {
+      "template": "{metadata.}/{session_id}",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template metadata placeholder '{metadata.}' must contain a dot-separated path of ASCII letters, digits, '-' or '_'"
+        }
+      ]
+    },
+    {
+      "template": "{metadata.x/{session_id}",
+      "accepted": false,
+      "errors": [
+        {
+          "code": "observability.unsupported_value",
+          "component": "atif",
+          "field": "filename_template",
+          "level": "error",
+          "message": "ATIF filename_template metadata placeholder '{metadata.x/{session_id}' must contain a dot-separated path of ASCII letters, digits, '-' or '_'"
+        }
+      ]
+    },
+    {
+      "template": "한글/{session_id}.json",
+      "accepted": true,
+      "errors": []
+    },
+    {
+      "template": "a\\b-{session_id}.json",
+      "accepted": true,
+      "errors": []
+    }
+  ],
+  "renders": [
+    {
+      "name": "simple",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": {
+        "x": "Alpha-09_~.done"
+      },
+      "files": [
+        "Alpha-09_~.done/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "simple",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": "Alpha-09_~.done"
+      },
+      "files": [
+        "Alpha-09_~.done/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "unsafe",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": {
+        "x": " 한글/..🦀\\% :?  "
+      },
+      "files": [
+        "-/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "unsafe",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": " 한글/..🦀\\% :?  "
+      },
+      "files": [
+        "-/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "dots",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": {
+        "x": ".a..b...c."
+      },
+      "files": [
+        ".a-b-c./$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "dots",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": ".a..b...c."
+      },
+      "files": [
+        ".a-b-c./$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "dot",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": {
+        "x": "."
+      },
+      "files": [
+        "-/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "dot",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": "."
+      },
+      "files": [
+        "-/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "only-dots",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": {
+        "x": "...."
+      },
+      "files": [
+        "-/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "only-dots",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": "...."
+      },
+      "files": [
+        "-/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "empty",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": {
+        "x": ""
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "empty",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": ""
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "missing",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": {},
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "missing",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": {},
+      "files": [
+        "nested/fallback/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "null",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": {
+        "x": null
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "null",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": null
+      },
+      "files": [
+        "nested/fallback/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "number",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": {
+        "x": 17
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "number",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": 17
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "array",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": {
+        "x": [
+          "a"
+        ]
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "array",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": [
+          "a"
+        ]
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "object",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": {
+        "x": {
+          "y": "nested"
+        }
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "object",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": {
+          "y": "nested"
+        }
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "nested",
+      "template": "{metadata.x.y}/{session_id}.json",
+      "metadata": {
+        "x": {
+          "y": "A/B"
+        }
+      },
+      "files": [
+        "A-B/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "nested",
+      "template": "{metadata.x.y:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": {
+          "y": "A/B"
+        }
+      },
+      "files": [
+        "A-B/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "nested-null",
+      "template": "{metadata.x.y}/{session_id}.json",
+      "metadata": {
+        "x": {
+          "y": null
+        }
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "nested-null",
+      "template": "{metadata.x.y:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": {
+          "y": null
+        }
+      },
+      "files": [
+        "nested/fallback/$SESSION.json"
+      ],
+      "close_error": null
+    },
+    {
+      "name": "traversed-number",
+      "template": "{metadata.x.y}/{session_id}.json",
+      "metadata": {
+        "x": 17
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "traversed-number",
+      "template": "{metadata.x.y:-nested/fallback}/{session_id}.json",
+      "metadata": {
+        "x": 17
+      },
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "no-metadata",
+      "template": "{metadata.x}/{session_id}.json",
+      "metadata": null,
+      "files": [],
+      "close_error": "RuntimeError"
+    },
+    {
+      "name": "no-metadata",
+      "template": "{metadata.x:-nested/fallback}/{session_id}.json",
+      "metadata": null,
+      "files": [
+        "nested/fallback/$SESSION.json"
+      ],
+      "close_error": null
+    }
+  ],
+  "storage_scenarios": [
+    {
+      "name": "http-success",
+      "storage": [
+        {
+          "type": "http",
+          "endpoint": "http://127.0.0.1:41377/http",
+          "headers": {
+            "X-Literal": "literal"
+          },
+          "header_env": {
+            "X-From-Env": "ATIF_OWNED_HEADER"
+          },
+          "header_file": {
+            "X-From-File": "/tmp/hermes-atif-native-vqut_ihc/http-header"
+          }
+        }
+      ],
+      "records": [
+        {
+          "method": "POST",
+          "path": "/http",
+          "headers": {
+            "x-from-env": "env-one",
+            "x-literal": "literal",
+            "x-from-file": "file-one",
+            "content-type": "application/json",
+            "x-nemo-relay-atif-filename": "owned-team/01a15e4e-a1c8-7963-b16f-d68ed2090c5b.json",
+            "x-nemo-relay-atif-session-id": "01a15e4e-a1c8-7963-b16f-d68ed2090c5b",
+            "accept": "*/*",
+            "host": "127.0.0.1:41377",
+            "content-length": "1636"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a1c8-7963-b16f-d68ed2090c5b"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1c8-7963-b16f-d68ed2090c5b",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:53.960116685+00:00",
+                  "uuid": "01a15e4e-a1c8-7963-b16f-d68ed2090c5b"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1c8-7963-b16f-d68ed2090c5b",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:53.960213085+00:00",
+                  "uuid": "01a15e4e-a1c8-7963-b16f-d68ed2090c5b"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a1c8-7963-b16f-d68ed2090c5b",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a1c8-7963-b16f-d68ed2090c5b"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a1c8-7963-b16f-d68ed2090c5b\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1c8-7963-b16f-d68ed2090c5b\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:53.960116685+00:00\",\n        \"uuid\": \"01a15e4e-a1c8-7963-b16f-d68ed2090c5b\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1c8-7963-b16f-d68ed2090c5b\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:53.960213085+00:00\",\n        \"uuid\": \"01a15e4e-a1c8-7963-b16f-d68ed2090c5b\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a1c8-7963-b16f-d68ed2090c5b\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a1c8-7963-b16f-d68ed2090c5b\"\n}"
+        },
+        {
+          "method": "POST",
+          "path": "/http",
+          "headers": {
+            "x-from-env": "env-one",
+            "x-literal": "literal",
+            "x-from-file": "file-two",
+            "content-type": "application/json",
+            "x-nemo-relay-atif-filename": "owned-team/01a15e4e-a1ce-7f43-baad-3a78cf598a6d.json",
+            "x-nemo-relay-atif-session-id": "01a15e4e-a1ce-7f43-baad-3a78cf598a6d",
+            "accept": "*/*",
+            "host": "127.0.0.1:41377",
+            "content-length": "1636"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a1ce-7f43-baad-3a78cf598a6d"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1ce-7f43-baad-3a78cf598a6d",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:53.966582624+00:00",
+                  "uuid": "01a15e4e-a1ce-7f43-baad-3a78cf598a6d"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1ce-7f43-baad-3a78cf598a6d",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:53.966668593+00:00",
+                  "uuid": "01a15e4e-a1ce-7f43-baad-3a78cf598a6d"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a1ce-7f43-baad-3a78cf598a6d",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a1ce-7f43-baad-3a78cf598a6d"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a1ce-7f43-baad-3a78cf598a6d\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1ce-7f43-baad-3a78cf598a6d\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:53.966582624+00:00\",\n        \"uuid\": \"01a15e4e-a1ce-7f43-baad-3a78cf598a6d\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1ce-7f43-baad-3a78cf598a6d\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:53.966668593+00:00\",\n        \"uuid\": \"01a15e4e-a1ce-7f43-baad-3a78cf598a6d\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a1ce-7f43-baad-3a78cf598a6d\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a1ce-7f43-baad-3a78cf598a6d\"\n}"
+        }
+      ],
+      "local_files": 0,
+      "close_error": null,
+      "active_after_close": false,
+      "diagnostics": []
+    },
+    {
+      "name": "http-partial",
+      "storage": [
+        {
+          "type": "http",
+          "endpoint": "http://127.0.0.1:41377/failed"
+        },
+        {
+          "type": "http",
+          "endpoint": "http://127.0.0.1:41377/http"
+        }
+      ],
+      "records": [
+        {
+          "method": "POST",
+          "path": "/failed",
+          "headers": {
+            "content-type": "application/json",
+            "x-nemo-relay-atif-filename": "owned-team/01a15e4e-a1e5-7cd2-b0ba-5bd5be454421.json",
+            "x-nemo-relay-atif-session-id": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421",
+            "accept": "*/*",
+            "host": "127.0.0.1:41377",
+            "content-length": "1636"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:53.989008750+00:00",
+                  "uuid": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:53.989110960+00:00",
+                  "uuid": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:53.989008750+00:00\",\n        \"uuid\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:53.989110960+00:00\",\n        \"uuid\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\"\n}"
+        },
+        {
+          "method": "POST",
+          "path": "/http",
+          "headers": {
+            "content-type": "application/json",
+            "x-nemo-relay-atif-filename": "owned-team/01a15e4e-a1e5-7cd2-b0ba-5bd5be454421.json",
+            "x-nemo-relay-atif-session-id": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421",
+            "accept": "*/*",
+            "host": "127.0.0.1:41377",
+            "content-length": "1636"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:53.989008750+00:00",
+                  "uuid": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:53.989110960+00:00",
+                  "uuid": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a1e5-7cd2-b0ba-5bd5be454421"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:53.989008750+00:00\",\n        \"uuid\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:53.989110960+00:00\",\n        \"uuid\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a1e5-7cd2-b0ba-5bd5be454421\"\n}"
+        },
+        {
+          "method": "POST",
+          "path": "/failed",
+          "headers": {
+            "content-type": "application/json",
+            "x-nemo-relay-atif-filename": "owned-team/01a15e4e-a1e8-7353-a484-1cc000b1e80b.json",
+            "x-nemo-relay-atif-session-id": "01a15e4e-a1e8-7353-a484-1cc000b1e80b",
+            "accept": "*/*",
+            "host": "127.0.0.1:41377",
+            "content-length": "1636"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a1e8-7353-a484-1cc000b1e80b"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1e8-7353-a484-1cc000b1e80b",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:53.992884249+00:00",
+                  "uuid": "01a15e4e-a1e8-7353-a484-1cc000b1e80b"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1e8-7353-a484-1cc000b1e80b",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:53.992956129+00:00",
+                  "uuid": "01a15e4e-a1e8-7353-a484-1cc000b1e80b"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a1e8-7353-a484-1cc000b1e80b",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a1e8-7353-a484-1cc000b1e80b"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:53.992884249+00:00\",\n        \"uuid\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:53.992956129+00:00\",\n        \"uuid\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\"\n}"
+        },
+        {
+          "method": "POST",
+          "path": "/http",
+          "headers": {
+            "content-type": "application/json",
+            "x-nemo-relay-atif-filename": "owned-team/01a15e4e-a1e8-7353-a484-1cc000b1e80b.json",
+            "x-nemo-relay-atif-session-id": "01a15e4e-a1e8-7353-a484-1cc000b1e80b",
+            "accept": "*/*",
+            "host": "127.0.0.1:41377",
+            "content-length": "1636"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a1e8-7353-a484-1cc000b1e80b"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1e8-7353-a484-1cc000b1e80b",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:53.992884249+00:00",
+                  "uuid": "01a15e4e-a1e8-7353-a484-1cc000b1e80b"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1e8-7353-a484-1cc000b1e80b",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:53.992956129+00:00",
+                  "uuid": "01a15e4e-a1e8-7353-a484-1cc000b1e80b"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a1e8-7353-a484-1cc000b1e80b",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a1e8-7353-a484-1cc000b1e80b"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:53.992884249+00:00\",\n        \"uuid\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:53.992956129+00:00\",\n        \"uuid\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a1e8-7353-a484-1cc000b1e80b\"\n}"
+        }
+      ],
+      "local_files": 0,
+      "close_error": "RuntimeError",
+      "active_after_close": false,
+      "diagnostics": [
+        {
+          "code": "atif.remote_delivery_failed",
+          "component": "observability",
+          "count": 2,
+          "field": "storage[0]",
+          "message": "HTTP ATIF upload to 'http://127.0.0.1:41377/failed' for 'owned-team/01a15e4e-a1e8-7353-a484-1cc000b1e80b.json' failed with status 400 Bad Request",
+          "session_id": "01a15e4e-a1e8-7353-a484-1cc000b1e80b"
+        }
+      ]
+    },
+    {
+      "name": "http-all-failed",
+      "storage": [
+        {
+          "type": "http",
+          "endpoint": "http://127.0.0.1:41377/failed"
+        }
+      ],
+      "records": [
+        {
+          "method": "POST",
+          "path": "/failed",
+          "headers": {
+            "content-type": "application/json",
+            "x-nemo-relay-atif-filename": "owned-team/01a15e4e-a1f7-7402-abcc-80490efc3474.json",
+            "x-nemo-relay-atif-session-id": "01a15e4e-a1f7-7402-abcc-80490efc3474",
+            "accept": "*/*",
+            "host": "127.0.0.1:41377",
+            "content-length": "1636"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a1f7-7402-abcc-80490efc3474"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1f7-7402-abcc-80490efc3474",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.007732786+00:00",
+                  "uuid": "01a15e4e-a1f7-7402-abcc-80490efc3474"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1f7-7402-abcc-80490efc3474",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.007818946+00:00",
+                  "uuid": "01a15e4e-a1f7-7402-abcc-80490efc3474"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a1f7-7402-abcc-80490efc3474",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a1f7-7402-abcc-80490efc3474"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a1f7-7402-abcc-80490efc3474\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1f7-7402-abcc-80490efc3474\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.007732786+00:00\",\n        \"uuid\": \"01a15e4e-a1f7-7402-abcc-80490efc3474\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1f7-7402-abcc-80490efc3474\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.007818946+00:00\",\n        \"uuid\": \"01a15e4e-a1f7-7402-abcc-80490efc3474\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a1f7-7402-abcc-80490efc3474\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a1f7-7402-abcc-80490efc3474\"\n}"
+        },
+        {
+          "method": "POST",
+          "path": "/failed",
+          "headers": {
+            "content-type": "application/json",
+            "x-nemo-relay-atif-filename": "owned-team/01a15e4e-a1ff-7120-9954-9bd49d325fc8.json",
+            "x-nemo-relay-atif-session-id": "01a15e4e-a1ff-7120-9954-9bd49d325fc8",
+            "accept": "*/*",
+            "host": "127.0.0.1:41377",
+            "content-length": "1636"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a1ff-7120-9954-9bd49d325fc8"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1ff-7120-9954-9bd49d325fc8",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.015145525+00:00",
+                  "uuid": "01a15e4e-a1ff-7120-9954-9bd49d325fc8"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a1ff-7120-9954-9bd49d325fc8",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.015216465+00:00",
+                  "uuid": "01a15e4e-a1ff-7120-9954-9bd49d325fc8"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a1ff-7120-9954-9bd49d325fc8",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a1ff-7120-9954-9bd49d325fc8"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a1ff-7120-9954-9bd49d325fc8\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1ff-7120-9954-9bd49d325fc8\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.015145525+00:00\",\n        \"uuid\": \"01a15e4e-a1ff-7120-9954-9bd49d325fc8\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a1ff-7120-9954-9bd49d325fc8\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.015216465+00:00\",\n        \"uuid\": \"01a15e4e-a1ff-7120-9954-9bd49d325fc8\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a1ff-7120-9954-9bd49d325fc8\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a1ff-7120-9954-9bd49d325fc8\"\n}"
+        }
+      ],
+      "local_files": 2,
+      "close_error": "RuntimeError",
+      "active_after_close": false,
+      "diagnostics": [
+        {
+          "code": "atif.remote_delivery_failed",
+          "component": "observability",
+          "count": 2,
+          "field": "storage[0]",
+          "message": "HTTP ATIF upload to 'http://127.0.0.1:41377/failed' for 'owned-team/01a15e4e-a1ff-7120-9954-9bd49d325fc8.json' failed with status 400 Bad Request",
+          "session_id": "01a15e4e-a1ff-7120-9954-9bd49d325fc8"
+        }
+      ]
+    },
+    {
+      "name": "s3-explicit",
+      "storage": [
+        {
+          "type": "s3",
+          "bucket": "owned-bucket",
+          "key_prefix": "  first/prefix  ",
+          "endpoint_url": "http://127.0.0.1:41377",
+          "allow_http": true,
+          "region": "ap-northeast-2",
+          "access_key_id": "fixture-explicit-key",
+          "secret_access_key_var": "HERMES_ATIF_SECRET",
+          "session_token_var": "HERMES_ATIF_TOKEN"
+        }
+      ],
+      "records": [
+        {
+          "method": "PUT",
+          "path": "/owned-bucket/first/prefix/owned-team/01a15e4e-a20f-7792-88e2-9eca726129f5.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-explicit-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "b06a60c569390b149809f06667ca8d70e5a545708c3d24f841829981f82fac5d",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-explicit-key/20261021/ap-northeast-2/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=b15e3e752244d940fa5a271f9f23680f841bef7a28d97b5a20c172d7ebbbc19a",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a20f-7792-88e2-9eca726129f5"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a20f-7792-88e2-9eca726129f5",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.031491272+00:00",
+                  "uuid": "01a15e4e-a20f-7792-88e2-9eca726129f5"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a20f-7792-88e2-9eca726129f5",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.031553942+00:00",
+                  "uuid": "01a15e4e-a20f-7792-88e2-9eca726129f5"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a20f-7792-88e2-9eca726129f5",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a20f-7792-88e2-9eca726129f5"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a20f-7792-88e2-9eca726129f5\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a20f-7792-88e2-9eca726129f5\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.031491272+00:00\",\n        \"uuid\": \"01a15e4e-a20f-7792-88e2-9eca726129f5\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a20f-7792-88e2-9eca726129f5\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.031553942+00:00\",\n        \"uuid\": \"01a15e4e-a20f-7792-88e2-9eca726129f5\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a20f-7792-88e2-9eca726129f5\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a20f-7792-88e2-9eca726129f5\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/owned-bucket/first/prefix/owned-team/01a15e4e-a211-71f2-988c-c7c83a4a81e1.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-explicit-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "d796d7b3a14987acb21d3ef5f6e2d0e660a0713dc161a2aa4102245b00f0300c",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-explicit-key/20261021/ap-northeast-2/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=0872f4d702c4ef7f6976c5cae6ed1d5dec6dfa2527f6ffda425950f2c3ae9f48",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a211-71f2-988c-c7c83a4a81e1"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a211-71f2-988c-c7c83a4a81e1",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.033783732+00:00",
+                  "uuid": "01a15e4e-a211-71f2-988c-c7c83a4a81e1"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a211-71f2-988c-c7c83a4a81e1",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.033837712+00:00",
+                  "uuid": "01a15e4e-a211-71f2-988c-c7c83a4a81e1"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a211-71f2-988c-c7c83a4a81e1",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a211-71f2-988c-c7c83a4a81e1"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a211-71f2-988c-c7c83a4a81e1\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a211-71f2-988c-c7c83a4a81e1\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.033783732+00:00\",\n        \"uuid\": \"01a15e4e-a211-71f2-988c-c7c83a4a81e1\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a211-71f2-988c-c7c83a4a81e1\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.033837712+00:00\",\n        \"uuid\": \"01a15e4e-a211-71f2-988c-c7c83a4a81e1\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a211-71f2-988c-c7c83a4a81e1\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a211-71f2-988c-c7c83a4a81e1\"\n}"
+        }
+      ],
+      "local_files": 0,
+      "close_error": null,
+      "active_after_close": false,
+      "diagnostics": []
+    },
+    {
+      "name": "s3-env",
+      "storage": [
+        {
+          "type": "s3",
+          "bucket": "env-bucket",
+          "key_prefix": "/already/"
+        }
+      ],
+      "records": [
+        {
+          "method": "PUT",
+          "path": "/env-bucket/already/owned-team/01a15e4e-a220-7321-8ec9-1edf95834c50.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "e26f17d9ca2fad765dc8200804d013663a71947e627c02fa5427bf166d89685f",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=2e2605bd0848eb4c24f0a89d337355832810160959f30e196a48b1056ee6d48e",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a220-7321-8ec9-1edf95834c50"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a220-7321-8ec9-1edf95834c50",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.048638749+00:00",
+                  "uuid": "01a15e4e-a220-7321-8ec9-1edf95834c50"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a220-7321-8ec9-1edf95834c50",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.048737109+00:00",
+                  "uuid": "01a15e4e-a220-7321-8ec9-1edf95834c50"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a220-7321-8ec9-1edf95834c50",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a220-7321-8ec9-1edf95834c50"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a220-7321-8ec9-1edf95834c50\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a220-7321-8ec9-1edf95834c50\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.048638749+00:00\",\n        \"uuid\": \"01a15e4e-a220-7321-8ec9-1edf95834c50\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a220-7321-8ec9-1edf95834c50\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.048737109+00:00\",\n        \"uuid\": \"01a15e4e-a220-7321-8ec9-1edf95834c50\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a220-7321-8ec9-1edf95834c50\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a220-7321-8ec9-1edf95834c50\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/env-bucket/already/owned-team/01a15e4e-a224-7472-a0ec-6ce3d8975be0.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "a1240f3d21e0a5282acacdb68ad39d254660472300151b5b9a95f23c3523a09e",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=5de347b1ae226a0fb90334a540123a235e95b17290f9589abef41e30f751752f",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a224-7472-a0ec-6ce3d8975be0"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a224-7472-a0ec-6ce3d8975be0",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.052534198+00:00",
+                  "uuid": "01a15e4e-a224-7472-a0ec-6ce3d8975be0"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a224-7472-a0ec-6ce3d8975be0",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.052652878+00:00",
+                  "uuid": "01a15e4e-a224-7472-a0ec-6ce3d8975be0"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a224-7472-a0ec-6ce3d8975be0",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a224-7472-a0ec-6ce3d8975be0"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a224-7472-a0ec-6ce3d8975be0\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a224-7472-a0ec-6ce3d8975be0\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.052534198+00:00\",\n        \"uuid\": \"01a15e4e-a224-7472-a0ec-6ce3d8975be0\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a224-7472-a0ec-6ce3d8975be0\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.052652878+00:00\",\n        \"uuid\": \"01a15e4e-a224-7472-a0ec-6ce3d8975be0\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a224-7472-a0ec-6ce3d8975be0\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a224-7472-a0ec-6ce3d8975be0\"\n}"
+        }
+      ],
+      "local_files": 0,
+      "close_error": null,
+      "active_after_close": false,
+      "diagnostics": []
+    },
+    {
+      "name": "s3-two-creds",
+      "storage": [
+        {
+          "type": "s3",
+          "bucket": "env-bucket"
+        },
+        {
+          "type": "s3",
+          "bucket": "explicit-bucket",
+          "endpoint_url": "http://127.0.0.1:41377",
+          "allow_http": true,
+          "region": "us-east-1",
+          "access_key_id": "fixture-explicit-key",
+          "secret_access_key_var": "HERMES_ATIF_SECRET",
+          "session_token_var": "HERMES_ATIF_TOKEN"
+        }
+      ],
+      "records": [
+        {
+          "method": "PUT",
+          "path": "/env-bucket/owned-team/01a15e4e-a241-7172-b815-a66514ae029b.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "e390a17514ce1e4082a277774558ca63c6f86b59ac4dd3f093894d801ef572ec",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=efcfd8b7c9247c41b8668db0064c00c0419b224e0864e3ae9a529f530206751f",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a241-7172-b815-a66514ae029b"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a241-7172-b815-a66514ae029b",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.081238664+00:00",
+                  "uuid": "01a15e4e-a241-7172-b815-a66514ae029b"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a241-7172-b815-a66514ae029b",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.081331574+00:00",
+                  "uuid": "01a15e4e-a241-7172-b815-a66514ae029b"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a241-7172-b815-a66514ae029b",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a241-7172-b815-a66514ae029b"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a241-7172-b815-a66514ae029b\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a241-7172-b815-a66514ae029b\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.081238664+00:00\",\n        \"uuid\": \"01a15e4e-a241-7172-b815-a66514ae029b\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a241-7172-b815-a66514ae029b\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.081331574+00:00\",\n        \"uuid\": \"01a15e4e-a241-7172-b815-a66514ae029b\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a241-7172-b815-a66514ae029b\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a241-7172-b815-a66514ae029b\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/explicit-bucket/owned-team/01a15e4e-a241-7172-b815-a66514ae029b.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-explicit-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "e390a17514ce1e4082a277774558ca63c6f86b59ac4dd3f093894d801ef572ec",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-explicit-key/20261021/us-east-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=4b688e8468b45132eaef699ad3bf997e0ce2f85e8f4c06478ce1a95a148e042e",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a241-7172-b815-a66514ae029b"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a241-7172-b815-a66514ae029b",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.081238664+00:00",
+                  "uuid": "01a15e4e-a241-7172-b815-a66514ae029b"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a241-7172-b815-a66514ae029b",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.081331574+00:00",
+                  "uuid": "01a15e4e-a241-7172-b815-a66514ae029b"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a241-7172-b815-a66514ae029b",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a241-7172-b815-a66514ae029b"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a241-7172-b815-a66514ae029b\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a241-7172-b815-a66514ae029b\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.081238664+00:00\",\n        \"uuid\": \"01a15e4e-a241-7172-b815-a66514ae029b\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a241-7172-b815-a66514ae029b\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.081331574+00:00\",\n        \"uuid\": \"01a15e4e-a241-7172-b815-a66514ae029b\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a241-7172-b815-a66514ae029b\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a241-7172-b815-a66514ae029b\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/env-bucket/owned-team/01a15e4e-a245-7952-a3a5-16fc3c84f6fe.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "4c205a1fb8943b0a2d91cb717a335c922e6934be368627d4167ca23a1aa2a74e",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=113f124ca0f25850233aea12f747e12fd00141add31d5b349c9734cd9faa18e5",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.085038223+00:00",
+                  "uuid": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.085194143+00:00",
+                  "uuid": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.085038223+00:00\",\n        \"uuid\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.085194143+00:00\",\n        \"uuid\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/explicit-bucket/owned-team/01a15e4e-a245-7952-a3a5-16fc3c84f6fe.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-explicit-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "4c205a1fb8943b0a2d91cb717a335c922e6934be368627d4167ca23a1aa2a74e",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-explicit-key/20261021/us-east-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=a9e5db0834b8df7566e3f818e2eb452a4a7bccf55458291397f4596ba8c02b0e",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.085038223+00:00",
+                  "uuid": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.085194143+00:00",
+                  "uuid": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a245-7952-a3a5-16fc3c84f6fe"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.085038223+00:00\",\n        \"uuid\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.085194143+00:00\",\n        \"uuid\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a245-7952-a3a5-16fc3c84f6fe\"\n}"
+        }
+      ],
+      "local_files": 0,
+      "close_error": null,
+      "active_after_close": false,
+      "diagnostics": []
+    },
+    {
+      "name": "s3-unicode",
+      "storage": [
+        {
+          "type": "s3",
+          "bucket": "unicode-bucket",
+          "key_prefix": "prefix space/한글%/#/~[]?\\|^`*{}/./../"
+        }
+      ],
+      "records": [
+        {
+          "method": "PUT",
+          "path": "/unicode-bucket/prefix%20space/%25ED%2595%259C%25EA%25B8%2580%2525/%2523/%257E%255B%255D%253F%255C%257C%255E%2560%252A%257B%257D/%252E/%252E%252E/owned-team/01a15e4e-a258-7821-81ae-443eeef3cb53.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "aa33294843c3291743b739d4c7beab4b205ae59b8fe089d9a78decd1351a2344",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=9e63d4728fac93c759417731b10645c943b69c874844c5aaaf5a73080078f2dd",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a258-7821-81ae-443eeef3cb53"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a258-7821-81ae-443eeef3cb53",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.104551409+00:00",
+                  "uuid": "01a15e4e-a258-7821-81ae-443eeef3cb53"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a258-7821-81ae-443eeef3cb53",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.104648569+00:00",
+                  "uuid": "01a15e4e-a258-7821-81ae-443eeef3cb53"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a258-7821-81ae-443eeef3cb53",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a258-7821-81ae-443eeef3cb53"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a258-7821-81ae-443eeef3cb53\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a258-7821-81ae-443eeef3cb53\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.104551409+00:00\",\n        \"uuid\": \"01a15e4e-a258-7821-81ae-443eeef3cb53\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a258-7821-81ae-443eeef3cb53\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.104648569+00:00\",\n        \"uuid\": \"01a15e4e-a258-7821-81ae-443eeef3cb53\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a258-7821-81ae-443eeef3cb53\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a258-7821-81ae-443eeef3cb53\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/unicode-bucket/prefix%20space/%25ED%2595%259C%25EA%25B8%2580%2525/%2523/%257E%255B%255D%253F%255C%257C%255E%2560%252A%257B%257D/%252E/%252E%252E/owned-team/01a15e4e-a25a-77c3-8947-9356184968f3.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "62cc6e84f6a339ae72f6584f8300b5b58f4d5a49bfdf13e1f90259b3ff240702",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=ba3bc843ad1ed768d2aad8e9137433924abedc0a367bc5aa857a03d0e6697388",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a25a-77c3-8947-9356184968f3"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a25a-77c3-8947-9356184968f3",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.106986989+00:00",
+                  "uuid": "01a15e4e-a25a-77c3-8947-9356184968f3"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a25a-77c3-8947-9356184968f3",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.107111349+00:00",
+                  "uuid": "01a15e4e-a25a-77c3-8947-9356184968f3"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a25a-77c3-8947-9356184968f3",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a25a-77c3-8947-9356184968f3"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a25a-77c3-8947-9356184968f3\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a25a-77c3-8947-9356184968f3\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.106986989+00:00\",\n        \"uuid\": \"01a15e4e-a25a-77c3-8947-9356184968f3\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a25a-77c3-8947-9356184968f3\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.107111349+00:00\",\n        \"uuid\": \"01a15e4e-a25a-77c3-8947-9356184968f3\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a25a-77c3-8947-9356184968f3\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a25a-77c3-8947-9356184968f3\"\n}"
+        }
+      ],
+      "local_files": 0,
+      "close_error": null,
+      "active_after_close": false,
+      "diagnostics": []
+    },
+    {
+      "name": "s3-endpoint-path",
+      "storage": [
+        {
+          "type": "s3",
+          "bucket": "prefix-bucket",
+          "endpoint_url": "http://127.0.0.1:41377/api/root/",
+          "allow_http": true
+        }
+      ],
+      "records": [
+        {
+          "method": "PUT",
+          "path": "/api/root/prefix-bucket/owned-team/01a15e4e-a268-7572-ab1d-1bff95b152a3.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "23cdf236fbe7e29de20568e87f691c4269c37a9232bd87a365c4b0311531ce22",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=b61ec0abd538632d422a27e032390991d5ef827cb026329fc16a3f19b621395a",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a268-7572-ab1d-1bff95b152a3"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a268-7572-ab1d-1bff95b152a3",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.120984116+00:00",
+                  "uuid": "01a15e4e-a268-7572-ab1d-1bff95b152a3"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a268-7572-ab1d-1bff95b152a3",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.121047116+00:00",
+                  "uuid": "01a15e4e-a268-7572-ab1d-1bff95b152a3"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a268-7572-ab1d-1bff95b152a3",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a268-7572-ab1d-1bff95b152a3"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a268-7572-ab1d-1bff95b152a3\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a268-7572-ab1d-1bff95b152a3\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.120984116+00:00\",\n        \"uuid\": \"01a15e4e-a268-7572-ab1d-1bff95b152a3\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a268-7572-ab1d-1bff95b152a3\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.121047116+00:00\",\n        \"uuid\": \"01a15e4e-a268-7572-ab1d-1bff95b152a3\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a268-7572-ab1d-1bff95b152a3\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a268-7572-ab1d-1bff95b152a3\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/api/root/prefix-bucket/owned-team/01a15e4e-a26b-7873-af71-a8e41a84c1f8.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "72630ac6d56993c50d1a7c42935cee1c7ae8d067b67a2109e57962ed77e64ce5",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=8d3fff2c6ed9babaf05bdff9249c28a1213f5d3fe9e790c0e583346ddd364dcf",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a26b-7873-af71-a8e41a84c1f8"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a26b-7873-af71-a8e41a84c1f8",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.123358176+00:00",
+                  "uuid": "01a15e4e-a26b-7873-af71-a8e41a84c1f8"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a26b-7873-af71-a8e41a84c1f8",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.123416606+00:00",
+                  "uuid": "01a15e4e-a26b-7873-af71-a8e41a84c1f8"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a26b-7873-af71-a8e41a84c1f8",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a26b-7873-af71-a8e41a84c1f8"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a26b-7873-af71-a8e41a84c1f8\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a26b-7873-af71-a8e41a84c1f8\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.123358176+00:00\",\n        \"uuid\": \"01a15e4e-a26b-7873-af71-a8e41a84c1f8\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a26b-7873-af71-a8e41a84c1f8\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.123416606+00:00\",\n        \"uuid\": \"01a15e4e-a26b-7873-af71-a8e41a84c1f8\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a26b-7873-af71-a8e41a84c1f8\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a26b-7873-af71-a8e41a84c1f8\"\n}"
+        }
+      ],
+      "local_files": 0,
+      "close_error": null,
+      "active_after_close": false,
+      "diagnostics": []
+    },
+    {
+      "name": "s3-retry500",
+      "storage": [
+        {
+          "type": "s3",
+          "bucket": "retry500-bucket"
+        }
+      ],
+      "records": [
+        {
+          "method": "PUT",
+          "path": "/retry500-bucket/owned-team/01a15e4e-a27b-7890-91bf-b8cfe4df6723.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "2b198a109845d6ec84f3b2427f8f66cdb13c2f24a0d763d0a4bd5fc43103f288",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=28baf98a7501e76385b6a731e43be1a527253c52418324b8e0c527005fbdf52b",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.139873733+00:00",
+                  "uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.139960763+00:00",
+                  "uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.139873733+00:00\",\n        \"uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.139960763+00:00\",\n        \"uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry500-bucket/owned-team/01a15e4e-a27b-7890-91bf-b8cfe4df6723.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "2b198a109845d6ec84f3b2427f8f66cdb13c2f24a0d763d0a4bd5fc43103f288",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=28baf98a7501e76385b6a731e43be1a527253c52418324b8e0c527005fbdf52b",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.139873733+00:00",
+                  "uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.139960763+00:00",
+                  "uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.139873733+00:00\",\n        \"uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.139960763+00:00\",\n        \"uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry500-bucket/owned-team/01a15e4e-a27b-7890-91bf-b8cfe4df6723.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "2b198a109845d6ec84f3b2427f8f66cdb13c2f24a0d763d0a4bd5fc43103f288",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=28baf98a7501e76385b6a731e43be1a527253c52418324b8e0c527005fbdf52b",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.139873733+00:00",
+                  "uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.139960763+00:00",
+                  "uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.139873733+00:00\",\n        \"uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.139960763+00:00\",\n        \"uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry500-bucket/owned-team/01a15e4e-a27b-7890-91bf-b8cfe4df6723.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "2b198a109845d6ec84f3b2427f8f66cdb13c2f24a0d763d0a4bd5fc43103f288",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=28baf98a7501e76385b6a731e43be1a527253c52418324b8e0c527005fbdf52b",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.139873733+00:00",
+                  "uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.139960763+00:00",
+                  "uuid": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a27b-7890-91bf-b8cfe4df6723"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.139873733+00:00\",\n        \"uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.139960763+00:00\",\n        \"uuid\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a27b-7890-91bf-b8cfe4df6723\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry500-bucket/owned-team/01a15e4e-a497-7cb0-9090-dccf98257ae0.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "603b5006c54e42b91aa1cc788dee2e7ff5cd6d624a29f1cd890f64c37dac405b",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=5a3be0e90bed21a7a317b009655526c8c0268a12fa2871a6af7c9daf4d02c690",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.679911518+00:00",
+                  "uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.680005848+00:00",
+                  "uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.679911518+00:00\",\n        \"uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.680005848+00:00\",\n        \"uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry500-bucket/owned-team/01a15e4e-a497-7cb0-9090-dccf98257ae0.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "603b5006c54e42b91aa1cc788dee2e7ff5cd6d624a29f1cd890f64c37dac405b",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=5a3be0e90bed21a7a317b009655526c8c0268a12fa2871a6af7c9daf4d02c690",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.679911518+00:00",
+                  "uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.680005848+00:00",
+                  "uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.679911518+00:00\",\n        \"uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.680005848+00:00\",\n        \"uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry500-bucket/owned-team/01a15e4e-a497-7cb0-9090-dccf98257ae0.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "603b5006c54e42b91aa1cc788dee2e7ff5cd6d624a29f1cd890f64c37dac405b",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=5a3be0e90bed21a7a317b009655526c8c0268a12fa2871a6af7c9daf4d02c690",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.679911518+00:00",
+                  "uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.680005848+00:00",
+                  "uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.679911518+00:00\",\n        \"uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.680005848+00:00\",\n        \"uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry500-bucket/owned-team/01a15e4e-a497-7cb0-9090-dccf98257ae0.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115254Z",
+            "x-amz-content-sha256": "603b5006c54e42b91aa1cc788dee2e7ff5cd6d624a29f1cd890f64c37dac405b",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=5a3be0e90bed21a7a317b009655526c8c0268a12fa2871a6af7c9daf4d02c690",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:54.679911518+00:00",
+                  "uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:54.680005848+00:00",
+                  "uuid": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a497-7cb0-9090-dccf98257ae0"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:54.679911518+00:00\",\n        \"uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:54.680005848+00:00\",\n        \"uuid\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a497-7cb0-9090-dccf98257ae0\"\n}"
+        }
+      ],
+      "local_files": 0,
+      "close_error": null,
+      "active_after_close": false,
+      "diagnostics": []
+    },
+    {
+      "name": "s3-retry429",
+      "storage": [
+        {
+          "type": "s3",
+          "bucket": "retry429-bucket"
+        }
+      ],
+      "records": [
+        {
+          "method": "PUT",
+          "path": "/retry429-bucket/owned-team/01a15e4e-a63a-7f53-a209-d022c6301103.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115255Z",
+            "x-amz-content-sha256": "753c416b9a1417560936950a0175390f87107a2393ccc901ae1a38acded2affe",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=25e1d2cdc1ee97b8aeff26d75ad838fc8e618c192fa375f219ed20f5cb19f28d",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a63a-7f53-a209-d022c6301103"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a63a-7f53-a209-d022c6301103",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:55.098125045+00:00",
+                  "uuid": "01a15e4e-a63a-7f53-a209-d022c6301103"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a63a-7f53-a209-d022c6301103",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:55.098307115+00:00",
+                  "uuid": "01a15e4e-a63a-7f53-a209-d022c6301103"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a63a-7f53-a209-d022c6301103",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a63a-7f53-a209-d022c6301103"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:55.098125045+00:00\",\n        \"uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:55.098307115+00:00\",\n        \"uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a63a-7f53-a209-d022c6301103\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry429-bucket/owned-team/01a15e4e-a63a-7f53-a209-d022c6301103.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115255Z",
+            "x-amz-content-sha256": "753c416b9a1417560936950a0175390f87107a2393ccc901ae1a38acded2affe",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=25e1d2cdc1ee97b8aeff26d75ad838fc8e618c192fa375f219ed20f5cb19f28d",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a63a-7f53-a209-d022c6301103"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a63a-7f53-a209-d022c6301103",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:55.098125045+00:00",
+                  "uuid": "01a15e4e-a63a-7f53-a209-d022c6301103"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a63a-7f53-a209-d022c6301103",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:55.098307115+00:00",
+                  "uuid": "01a15e4e-a63a-7f53-a209-d022c6301103"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a63a-7f53-a209-d022c6301103",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a63a-7f53-a209-d022c6301103"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:55.098125045+00:00\",\n        \"uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:55.098307115+00:00\",\n        \"uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a63a-7f53-a209-d022c6301103\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry429-bucket/owned-team/01a15e4e-a63a-7f53-a209-d022c6301103.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115255Z",
+            "x-amz-content-sha256": "753c416b9a1417560936950a0175390f87107a2393ccc901ae1a38acded2affe",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=25e1d2cdc1ee97b8aeff26d75ad838fc8e618c192fa375f219ed20f5cb19f28d",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a63a-7f53-a209-d022c6301103"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a63a-7f53-a209-d022c6301103",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:55.098125045+00:00",
+                  "uuid": "01a15e4e-a63a-7f53-a209-d022c6301103"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a63a-7f53-a209-d022c6301103",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:55.098307115+00:00",
+                  "uuid": "01a15e4e-a63a-7f53-a209-d022c6301103"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a63a-7f53-a209-d022c6301103",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a63a-7f53-a209-d022c6301103"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:55.098125045+00:00\",\n        \"uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:55.098307115+00:00\",\n        \"uuid\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a63a-7f53-a209-d022c6301103\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a63a-7f53-a209-d022c6301103\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry429-bucket/owned-team/01a15e4e-a753-7c20-8758-dd53c549178d.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115255Z",
+            "x-amz-content-sha256": "bf7e7011f322cca01d17857b65c097abf7b0666978b119dc90d12905a46c39f6",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=1defb06f70a1285994573226dddb8f1582d5a86911a6df016fcb8961e3a69321",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a753-7c20-8758-dd53c549178d"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a753-7c20-8758-dd53c549178d",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:55.379608505+00:00",
+                  "uuid": "01a15e4e-a753-7c20-8758-dd53c549178d"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a753-7c20-8758-dd53c549178d",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:55.379691715+00:00",
+                  "uuid": "01a15e4e-a753-7c20-8758-dd53c549178d"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a753-7c20-8758-dd53c549178d",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a753-7c20-8758-dd53c549178d"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:55.379608505+00:00\",\n        \"uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:55.379691715+00:00\",\n        \"uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a753-7c20-8758-dd53c549178d\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry429-bucket/owned-team/01a15e4e-a753-7c20-8758-dd53c549178d.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115255Z",
+            "x-amz-content-sha256": "bf7e7011f322cca01d17857b65c097abf7b0666978b119dc90d12905a46c39f6",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=1defb06f70a1285994573226dddb8f1582d5a86911a6df016fcb8961e3a69321",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a753-7c20-8758-dd53c549178d"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a753-7c20-8758-dd53c549178d",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:55.379608505+00:00",
+                  "uuid": "01a15e4e-a753-7c20-8758-dd53c549178d"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a753-7c20-8758-dd53c549178d",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:55.379691715+00:00",
+                  "uuid": "01a15e4e-a753-7c20-8758-dd53c549178d"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a753-7c20-8758-dd53c549178d",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a753-7c20-8758-dd53c549178d"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:55.379608505+00:00\",\n        \"uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:55.379691715+00:00\",\n        \"uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a753-7c20-8758-dd53c549178d\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n}"
+        },
+        {
+          "method": "PUT",
+          "path": "/retry429-bucket/owned-team/01a15e4e-a753-7c20-8758-dd53c549178d.json",
+          "headers": {
+            "content-length": "1636",
+            "x-amz-security-token": "fixture-env-token",
+            "x-amz-date": "20261021T115255Z",
+            "x-amz-content-sha256": "bf7e7011f322cca01d17857b65c097abf7b0666978b119dc90d12905a46c39f6",
+            "authorization": "AWS4-HMAC-SHA256 Credential=fixture-env-key/20261021/eu-west-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date;x-amz-security-token, Signature=1defb06f70a1285994573226dddb8f1582d5a86911a6df016fcb8961e3a69321",
+            "accept": "*/*",
+            "user-agent": "object_store/0.14.1",
+            "host": "127.0.0.1:41377"
+          },
+          "payload": {
+            "agent": {
+              "model_name": "unknown",
+              "name": "NeMo Relay",
+              "version": "0.10.0"
+            },
+            "extra": {
+              "nemo_relay": {
+                "session_instance_id": "01a15e4e-a753-7c20-8758-dd53c549178d"
+              },
+              "observed_events": [
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a753-7c20-8758-dd53c549178d",
+                  "scope_category": "start",
+                  "timestamp": "2026-10-21T11:52:55.379608505+00:00",
+                  "uuid": "01a15e4e-a753-7c20-8758-dd53c549178d"
+                },
+                {
+                  "atof_version": "0.1",
+                  "attributes": [],
+                  "category": "agent",
+                  "category_profile": null,
+                  "data": null,
+                  "data_schema": null,
+                  "kind": "scope",
+                  "metadata": {
+                    "team": "owned/team"
+                  },
+                  "name": "owned-atif",
+                  "parent_uuid": "01a15e4e-a125-78c1-8b00-0b8dbaa034d4",
+                  "propagation_root_uuid": "01a15e4e-a753-7c20-8758-dd53c549178d",
+                  "scope_category": "end",
+                  "timestamp": "2026-10-21T11:52:55.379691715+00:00",
+                  "uuid": "01a15e4e-a753-7c20-8758-dd53c549178d"
+                }
+              ]
+            },
+            "final_metrics": {
+              "total_steps": 0
+            },
+            "schema_version": "ATIF-v1.7",
+            "session_id": "01a15e4e-a753-7c20-8758-dd53c549178d",
+            "steps": [],
+            "trajectory_id": "01a15e4e-a753-7c20-8758-dd53c549178d"
+          },
+          "body": "{\n  \"agent\": {\n    \"model_name\": \"unknown\",\n    \"name\": \"NeMo Relay\",\n    \"version\": \"0.10.0\"\n  },\n  \"extra\": {\n    \"nemo_relay\": {\n      \"session_instance_id\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n    },\n    \"observed_events\": [\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\",\n        \"scope_category\": \"start\",\n        \"timestamp\": \"2026-10-21T11:52:55.379608505+00:00\",\n        \"uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n      },\n      {\n        \"atof_version\": \"0.1\",\n        \"attributes\": [],\n        \"category\": \"agent\",\n        \"category_profile\": null,\n        \"data\": null,\n        \"data_schema\": null,\n        \"kind\": \"scope\",\n        \"metadata\": {\n          \"team\": \"owned/team\"\n        },\n        \"name\": \"owned-atif\",\n        \"parent_uuid\": \"01a15e4e-a125-78c1-8b00-0b8dbaa034d4\",\n        \"propagation_root_uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\",\n        \"scope_category\": \"end\",\n        \"timestamp\": \"2026-10-21T11:52:55.379691715+00:00\",\n        \"uuid\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n      }\n    ]\n  },\n  \"final_metrics\": {\n    \"total_steps\": 0\n  },\n  \"schema_version\": \"ATIF-v1.7\",\n  \"session_id\": \"01a15e4e-a753-7c20-8758-dd53c549178d\",\n  \"steps\": [],\n  \"trajectory_id\": \"01a15e4e-a753-7c20-8758-dd53c549178d\"\n}"
+        }
+      ],
+      "local_files": 0,
+      "close_error": null,
+      "active_after_close": false,
+      "diagnostics": []
+    }
+  ],
+  "origin": "http://127.0.0.1:41377"
+}
