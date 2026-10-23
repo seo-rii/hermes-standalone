@@ -66,6 +66,10 @@ def _anydoc() -> Optional[Any]:
     """Lazily import the optional anydoc converter (None when unavailable; failures retried after
     ANYDOC_RETRY_SECONDS so one transient pip/network blip does not stick)."""
     global _anydoc_module, _anydoc_failed_at
+    from agent.sdk_boundary import bundled
+    if bundled():
+        from standalone import documents
+        return documents
     if _anydoc_module is not _ANYDOC_UNSET:
         return _anydoc_module
     with _anydoc_lock:
@@ -252,6 +256,13 @@ _GAP_CONTEXT_CHARS = 60
 
 def _pdf_page_texts(path: str) -> Optional[list[str]]:
     """Per-page extracted text, or None when undeterminable."""
+    from agent.sdk_boundary import bundled
+    if bundled():
+        from standalone.documents import pdf_page_texts
+        try:
+            return pdf_page_texts(Path(path).read_bytes())
+        except Exception:
+            return None
     if shutil.which("pdftotext") is None:
         return None
     try:

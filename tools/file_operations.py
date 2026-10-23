@@ -1278,6 +1278,37 @@ class ShellFileOperations(LintMixin, SearchMixin, FileOperations):
     def read_file_bytes(self, path: str, max_bytes: Optional[int] = None) -> ReadResult:
         """Read binary-safe bytes (as base64) from any shell-backed environment."""
         path = self._expand_path(path)
+        from standalone.packages import active as standalone_active
+        if standalone_active() and self._native_read_enabled():
+            # Local document extraction must not need a shell or the base64
+            # executable. Check the opened descriptor so a path replacement
+            # cannot turn the regular-file check into a blocking FIFO read.
+            import stat
+
+            try:
+                fd = os.open(self._native_path(path), os.O_RDONLY | os.O_NONBLOCK)
+            except (FileNotFoundError, NotADirectoryError):
+                if os.path.islink(self._native_path(path)):
+                    return self._not_regular_error(path)
+                return ReadResult(error=f"File not found: {path}", not_found=True)
+            except OSError as exc:
+                return ReadResult(error=f"Failed to read binary file: {exc}")
+            try:
+                with os.fdopen(fd, "rb") as stream:
+                    info = os.fstat(stream.fileno())
+                    if not stat.S_ISREG(info.st_mode):
+                        return self._not_regular_error(path)
+                    if max_bytes is not None and info.st_size > max_bytes:
+                        return ReadResult(file_size=info.st_size, error=(
+                            f"File is too large ({info.st_size:,} bytes, limit is {max_bytes:,})"))
+                    data = stream.read() if max_bytes is None else stream.read(max_bytes + 1)
+                    if max_bytes is not None and len(data) > max_bytes:
+                        return ReadResult(file_size=max(len(data), os.fstat(stream.fileno()).st_size),
+                                          error=f"File exceeds the {max_bytes:,} byte limit while reading")
+            except OSError as exc:
+                return ReadResult(error=f"Failed to read binary file: {exc}")
+            return ReadResult(base64_content=base64.b64encode(data).decode("ascii"),
+                              file_size=len(data), is_binary=True)
         file_size, status = self._probe_regular_file(path)
         if status == "missing":
             return ReadResult(error=f"File not found: {path}", not_found=True)
