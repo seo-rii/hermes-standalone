@@ -232,7 +232,8 @@ def _verify_reapable_browser_daemon(daemon_pid: int, socket_dir: str,
         return False
 
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
     except ImportError:  # psutil is a hard dep; defensive only
         return refuse("psutil unavailable for identity verification")
 
@@ -549,7 +550,8 @@ def _legacy_kill_process_tree(proc: subprocess.Popen) -> None:
         # the parent kill: once the parent exits, children reparent and psutil
         # can no longer find them (process_registry._terminate_host_pid).
         try:
-            import psutil
+            from hermes_platform.processes import process_api
+            psutil = process_api()
 
             descendants = psutil.Process(proc.pid).children(recursive=True)
         except Exception:

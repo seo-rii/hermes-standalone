@@ -288,7 +288,8 @@ def stop_all_lightpanda() -> None:
 def _is_lightpanda_process(pid: int, port, start_time) -> bool:
     """True only when ``pid`` is verifiably the ``lightpanda serve`` we recorded."""
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         proc = psutil.Process(pid)
         if "lightpanda" not in proc.name().lower():
             return False

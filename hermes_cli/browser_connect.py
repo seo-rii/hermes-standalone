@@ -580,7 +580,8 @@ def _processes_holding_profile(src: str):
     cmdline references THIS user-data-dir — never an unrelated same-PID process. An unreadable
     cmdline is skipped."""
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
     except ImportError:  # hard dep; defensive
         return
     norm = os.path.normcase(os.path.normpath(src))
@@ -607,7 +608,8 @@ def close_browser_holding_profile(src: str, timeout: float = 15.0) -> tuple[bool
     """Terminate the browser process tree holding ``src`` and wait for release. CONSENTED,
     DESTRUCTIVE (unsaved tab/form state is lost): only call after the user agreed."""
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
     except ImportError:
         return False, "psutil unavailable — cannot close the browser automatically."
     procs = list(_processes_holding_profile(src))

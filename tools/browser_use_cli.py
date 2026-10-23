@@ -306,7 +306,8 @@ def _find_cli() -> Optional[list[str]]:
     so every install, the Desktop bundle included, runs it on the current interpreter."""
     if _harness_site_dir() is None:
         return None
-    return [sys.executable, "-m", "browser_harness.run"]
+    from hermes_cli.runtime_module import python_module_command
+    return python_module_command("browser_harness.run")
 
 
 def _workspace_dir(task_id: Optional[str]) -> Optional[str]:
