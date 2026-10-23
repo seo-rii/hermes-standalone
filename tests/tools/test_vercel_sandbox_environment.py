@@ -231,6 +231,7 @@ def vercel_module(vercel_sdk, monkeypatch):
     # in CI while passing on dev boxes that happened to have vercel==0.7.2
     # installed.
     monkeypatch.setattr(module, "_ensure_vercel_sdk", lambda: None)
+    monkeypatch.setattr(module, "cloud_api", lambda name: sys.modules["vercel.sandbox"])
     return module
 
 

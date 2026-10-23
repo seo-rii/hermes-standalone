@@ -21,6 +21,7 @@ from typing import TYPE_CHECKING, Any
 
 import httpx
 
+from hermes_platform.cloud import bundled_cloud_api, cloud_api
 from hermes_cli.config_defaults import DEFAULT_VERCEL_IMAGE
 from hermes_constants import get_hermes_home
 from tools.environments.base import BaseEnvironment, _load_json_store, _update_json_store
@@ -44,6 +45,8 @@ def _ensure_vercel_sdk() -> None:
     # The SDK (>=0.7) ships default-on telemetry; Hermes policy is opt-in only, so disable it
     # before the SDK is imported. setdefault: an explicit user value is never overridden.
     os.environ.setdefault("VERCEL_TELEMETRY_DISABLED", "1")
+    if bundled_cloud_api("vercel") is not None:
+        return
     try:
         from pm import ensure_import as _lazy_ensure
     except ImportError:
@@ -152,8 +155,7 @@ def _extract_snapshot_id(snapshot: Any) -> str | None:
 @cache
 def _sandbox_status_type() -> type[SandboxStatus]:
     _ensure_vercel_sdk()
-    from vercel.sandbox import SandboxStatus
-    return SandboxStatus
+    return cloud_api("vercel").SandboxStatus
 
 
 def _is_terminal(status: Any) -> bool:
@@ -162,7 +164,13 @@ def _is_terminal(status: Any) -> bool:
 
 
 class VercelSandboxEnvironment(BaseEnvironment):
-    """Vercel cloud sandbox backend."""
+    """Vercel cloud sandbox backend.
+
+    The pinned Vercel 0.7.2 resource contract requires ``memory == cpu * 2048``
+    when both requests are positive: one CPU needs 2048 MB. Hermes' shared
+    5120 MB container default is not a valid explicit request for this backend.
+    Resource requests are validated rather than silently reduced.
+    """
 
     _stdin_mode = "payload"
 
@@ -181,7 +189,7 @@ class VercelSandboxEnvironment(BaseEnvironment):
         self._workspace_root = self._remote_home = DEFAULT_VERCEL_CWD
         self._sync_manager: FileSyncManager | None = None
         _ensure_vercel_sdk()
-        from vercel.sandbox import Resources
+        Resources = cloud_api("vercel").Resources
         vcpus, memory_mb = (math.floor(cpu) if cpu > 0 else None), (memory if memory > 0 else None)
         # Vercel rejects runtime+image together; runtimes are deprecated (Aug 2026), so a runtime is
         # only sent when the user still pins one, and then the image is dropped.
@@ -207,7 +215,7 @@ class VercelSandboxEnvironment(BaseEnvironment):
 
     def _create_sandbox(self) -> Sandbox:
         _ensure_vercel_sdk()
-        from vercel.sandbox import Sandbox
+        Sandbox = cloud_api("vercel").Sandbox
         snapshot_id = _load_snapshots().get(self._task_id) if self._persistent and self._task_id else None
         if isinstance(snapshot_id, str) and snapshot_id:
             try:

@@ -12,6 +12,7 @@ import shlex
 import threading
 from pathlib import Path, PurePosixPath
 
+from hermes_platform.cloud import bundled_cloud_api, cloud_api
 from tools.environments.base import BaseEnvironment
 from tools.environments.base_output import _ThreadedProcessHandle
 from tools.environments.file_sync import (
@@ -34,8 +35,11 @@ class DaytonaEnvironment(BaseEnvironment):
                  memory: int = 5120, disk: int = 10240, persistent_filesystem: bool = True,
                  task_id: str = "default"):
         super().__init__(cwd=cwd, timeout=timeout)
-        ensure_lazy_dep("daytona")
-        from daytona import Daytona, CreateSandboxFromImageParams, DaytonaError, Resources, SandboxState
+        if bundled_cloud_api("daytona") is None:
+            ensure_lazy_dep("daytona")
+        api = cloud_api("daytona")
+        Daytona, CreateSandboxFromImageParams = api.Daytona, api.CreateSandboxFromImageParams
+        DaytonaError, Resources, SandboxState = api.DaytonaError, api.Resources, api.SandboxState
 
         self._persistent, self._task_id, self._SandboxState = persistent_filesystem, task_id, SandboxState
         self._daytona = Daytona()
@@ -100,7 +104,7 @@ class DaytonaEnvironment(BaseEnvironment):
 
     def _daytona_bulk_upload(self, files: list[tuple[str, str]]) -> None:
         """Upload many files in one multipart POST via ``sandbox.fs.upload_files()``."""
-        from daytona.common.filesystem import FileUpload
+        FileUpload = cloud_api("daytona").FileUpload
 
         if not files:
             return
@@ -205,3 +209,5 @@ class DaytonaEnvironment(BaseEnvironment):
             except Exception as e:
                 logger.warning("Daytona: cleanup failed: %s", e)
             self._sandbox = None
+            if bundled_cloud_api("daytona") is not None:
+                self._daytona.close()

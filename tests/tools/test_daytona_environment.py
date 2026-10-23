@@ -55,7 +55,12 @@ def daytona_sdk(monkeypatch):
     """Provide a mock daytona SDK module and return it for assertions."""
     # The SDK itself is faked below; bypass the PM install while exercising it.
     monkeypatch.setattr("tools.environments.daytona.ensure_lazy_dep", lambda extra: None)
-    return _patch_daytona_imports(monkeypatch)
+    api = _patch_daytona_imports(monkeypatch)
+    # Keep these environment-policy tests on the mock API even when their
+    # interpreter is bound to the standalone runtime.
+    monkeypatch.setattr("tools.environments.daytona.bundled_cloud_api", lambda name: None)
+    monkeypatch.setattr("tools.environments.daytona.cloud_api", lambda name: api)
+    return api
 
 
 @pytest.fixture()
