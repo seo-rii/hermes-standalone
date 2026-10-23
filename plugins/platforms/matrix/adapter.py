@@ -490,19 +490,18 @@ def _create_matrix_session(proxy_url: str | None):
 
 
 def _check_e2ee_deps() -> bool:
-    """True if all four E2EE deps import: olm, PgCryptoStore (also drives sqlite), asyncpg, aiosqlite.
-    Without all four, encrypted rooms fail at connect with ``No module named 'asyncpg'``.
+    """Check the actual Olm machine and SQLite crypto-store import closure.
 
-    Verifies python-olm (via mautrix.crypto.OlmMachine), the SQLite crypto store backend
-    (mautrix.crypto.store.asyncpg.PgCryptoStore — yes, the PgCryptoStore class also drives the sqlite
-    backend in mautrix 0.21), and the database drivers actually used at connect time (``asyncpg`` for the
-    underlying upgrade_table machinery, ``aiosqlite`` for the ``sqlite:///`` URL we pass to
-    ``Database.create``). See #31116.
+    The standalone source patches select a qualified pure Olm implementation
+    and remove the unused PostgreSQL driver from mautrix's SQLite path. The
+    original installation still requires python-olm and asyncpg. See #31116.
     """
     try:
         from mautrix.crypto import OlmMachine
         from mautrix.crypto.store.asyncpg import PgCryptoStore
-        import asyncpg
+        from standalone.packages import active as standalone_active
+        if not standalone_active():
+            import asyncpg
         import aiosqlite
         return True
     except (ImportError, AttributeError):
@@ -1036,7 +1035,11 @@ class MatrixAdapter(BasePlatformAdapter):
 
     async def _repickle_crypto_sessions(self, crypto_db: Any, acct_id: str, legacy_key: str, pickle_key: str) -> None:
         """Re-pickle olm/megolm sessions too — they share the key; account-only breaks key sharing."""
-        import olm as olm_lib
+        from standalone.packages import active as standalone_active
+        if standalone_active():
+            from standalone import matrix_olm as olm_lib
+        else:
+            import olm as olm_lib
         tables = {
             "crypto_olm_session": olm_lib.Session, "crypto_megolm_inbound_session": olm_lib.InboundGroupSession,
             "crypto_megolm_outbound_session": olm_lib.OutboundGroupSession}

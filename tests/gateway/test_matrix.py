@@ -729,7 +729,8 @@ class TestMatrixRequirements:
                 raise ImportError("blocked for test")
             return real_import(name, *args, **kwargs)
 
-        with patch.object(builtins, "__import__", _blocking_import):
+        with patch.object(builtins, "__import__", _blocking_import), \
+                patch("standalone.packages.active", return_value=False):
             assert _check_e2ee_deps() is False
 
     def test_check_e2ee_deps_requires_aiosqlite(self):
@@ -3054,7 +3055,7 @@ class TestCryptoPickleKeyMigration:
                 # fake it so this test does not require libolm.
                 "olm": self._fake_olm_module(),
             },
-        ), caplog.at_level(logging.INFO):
+        ), patch("standalone.matrix_olm", self._fake_olm_module(), create=True), caplog.at_level(logging.INFO):
             result = await adapter._migrate_legacy_crypto_pickle(
                 store, crypto_db, "@bot:example.org", "@bot:example.org:NEWDEV"
             )
@@ -3136,7 +3137,8 @@ class TestCryptoPickleKeyMigration:
         )
         crypto_db.execute = AsyncMock()
 
-        with patch.dict(sys.modules, {"olm": self._fake_olm_module()}):
+        with patch.dict(sys.modules, {"olm": self._fake_olm_module()}), \
+                patch("standalone.matrix_olm", self._fake_olm_module(), create=True):
             await adapter._repickle_crypto_sessions(
                 crypto_db, "@bot:example.org", legacy, current
             )
@@ -3158,7 +3160,8 @@ class TestCryptoPickleKeyMigration:
         )
         crypto_db.execute = AsyncMock()
 
-        with patch.dict(sys.modules, {"olm": self._fake_olm_module()}):
+        with patch.dict(sys.modules, {"olm": self._fake_olm_module()}), \
+                patch("standalone.matrix_olm", self._fake_olm_module(), create=True):
             await adapter._repickle_crypto_sessions(
                 crypto_db, "@bot:example.org", "@bot:example.org:default", current
             )
@@ -3181,6 +3184,7 @@ class TestCryptoPickleKeyMigration:
         crypto_db.execute = AsyncMock()
 
         with patch.dict(sys.modules, {"olm": self._fake_olm_module()}), \
+                patch("standalone.matrix_olm", self._fake_olm_module(), create=True), \
                 caplog.at_level(logging.WARNING):
             await adapter._repickle_crypto_sessions(
                 crypto_db,
@@ -3233,7 +3237,7 @@ class TestCryptoPickleKeyMigration:
                 "mautrix.crypto.store.asyncpg": fake_mod,
                 "olm": self._fake_olm_module(),
             },
-        ), caplog.at_level(logging.ERROR):
+        ), patch("standalone.matrix_olm", self._fake_olm_module(), create=True), caplog.at_level(logging.ERROR):
             result = await adapter._migrate_legacy_crypto_pickle(
                 store, crypto_db, "@bot:example.org", "@bot:example.org:NEWDEV"
             )

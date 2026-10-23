@@ -1,0 +1,52 @@
+{
+  "implementation": "Qualified Python adaptation of the libolm account, Olm double-ratchet, Megolm group ratchet, signing and native encrypted pickle formats consumed by mautrix 0.21.1. No native executable or extension is embedded.",
+  "upstream": {
+    "name": "python-olm",
+    "version": "3.2.16",
+    "filename": "python-olm-3.2.16.tar.gz",
+    "url": "https://files.pythonhosted.org/packages/b8/eb/23ca73cbdc8c7466a774e515dfd917d9fbe747c1257059246fdc63093f04/python-olm-3.2.16.tar.gz",
+    "sha256": "a1c47fce2505b7a16841e17694cbed4ed484519646ede96ee9e89545a49643c9",
+    "license": "Apache-2.0",
+    "copyright": "2015-2016 OpenMarket Ltd; additional upstream source notices retained in the pinned archive"
+  },
+  "upstream_libolm_files_sha256": {
+    "src/account.cpp": "feef8d145977a7850905133dbc17f887eb22d9cdfe5fc6c609078b6a1adfe888",
+    "src/session.cpp": "21947793fa3663d0d88eb7df450fa0b572892f14bb2406c55ed674530c0d83a4",
+    "src/ratchet.cpp": "afd2f080b2a9a45a784a31707058a7b76d73273b190bb6da9f8ffd31a01c6cf7",
+    "src/megolm.c": "8b7fa1279dddf152c354e09e8d58b77483805ce5f2e15b64c5bb5be67e5ec1d8",
+    "src/cipher.cpp": "074ff6b747c3eb6aa1cad022d75041bee7a23262965c8679d34bc9b25763ca4a",
+    "src/crypto.cpp": "df0bced852d28b95bf8e996a949d555d9e1b3d784abb8599970c6c3bc6f4d2bf",
+    "src/pickle.cpp": "ea9ceaeb9d404f76e0537294e0add2c79a7930d6c9d633424e864c658cfa0e62",
+    "src/pickle_encoding.c": "512bd64894109198f7e96a98ef70b5572a4b7476f210b3f6e9084d29204de9d8",
+    "src/message.cpp": "96c731181d0bc9e0bf7fffc1cf09ec2e87cb095e2d86f6871263cb610e4dfd7d",
+    "src/inbound_group_session.c": "1cf2c218fb36ea9962761e31ba5b281499c3649c576747da6c600c5da5a0baa2",
+    "src/outbound_group_session.c": "e70382518b196724e84ee471936105b2b3959dac7c96616a39104e1b58953d3f",
+    "lib/ed25519/src/keypair.c": "a9fd88cc4558f52d5fabf03b1b54c1c38a105a03753dd7ca4e0249687be0ebcc",
+    "lib/ed25519/src/sign.c": "af693a4a59430cc06d4b07f82e30bf266897ecc9c75265c7fa49cfa4159cf5ec",
+    "tests/test_megolm.cpp": "5ad5d470ae90cc7e8125d1b137b5e7037dfd219297c6e9932c451038a9be702e",
+    "tests/test_group_session.cpp": "d553d93640fc71deb7dc5a6de5e3d65885eb399aa9c4191eccc9aa6f3d677d00",
+    "tests/test_session.cpp": "e4a9566fefc5988e12b472e30b5afc527632ae6c39bd45b09031dbc0ffe42a44",
+    "tests/test_olm.cpp": "47b8151d600f1e065d248d4546875689254c8b63f25e30bdfa39db3bc7522cc8"
+  },
+  "primitive_sources": [
+    "RFC 7748 X25519 section 5 and independent Alice/Bob vector in section 6.1",
+    "RFC 8032 Ed25519, including independent test 1 in section 7.1",
+    "Reviewed embedded ecdsa Edwards arithmetic and tlslite-ng AES, stdlib HMAC/SHA-256/SHA-512, existing RFC5869 HKDF"
+  ],
+  "protocol_references": [
+    "https://spec.matrix.org/v1.17/olm-megolm/olm/",
+    "https://spec.matrix.org/v1.17/olm-megolm/megolm/",
+    "https://www.rfc-editor.org/rfc/rfc7748",
+    "https://www.rfc-editor.org/rfc/rfc8032"
+  ],
+  "license_text": {
+    "path": "licenses/libolm-LICENSE",
+    "source": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "note": "The pinned python-olm sdist includes Apache-2.0 notices in libolm sources but omits the top-level license document; the canonical Apache-2.0 text is retained here."
+  },
+  "limits": [
+    "Python integer and AES implementations do not claim constant-time execution.",
+    "This private boundary implements the actual mautrix consumed Olm/Megolm/signing surface; unused python-olm public-key backup and SAS helper APIs are not exposed."
+  ]
+}
