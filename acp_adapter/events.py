@@ -12,8 +12,8 @@ import uuid
 from collections import deque
 from typing import Any, Callable, Deque, Dict
 
-import acp
-from acp.schema import AgentPlanUpdate, PlanEntry
+from acp_adapter.protocol import sdk as acp
+from acp_adapter.protocol import AgentPlanUpdate, PlanEntry
 
 from .tools import (
     _json_loads_maybe, build_tool_abandoned, build_tool_complete, build_tool_start, coerce_tool_args,

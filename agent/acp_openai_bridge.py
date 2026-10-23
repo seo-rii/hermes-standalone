@@ -15,7 +15,12 @@ import re
 from types import SimpleNamespace
 from typing import Any, Iterable
 
-from openai.types.chat.chat_completion_message_tool_call import ChatCompletionMessageToolCall, Function
+from agent.sdk_boundary import bundled
+
+if bundled():
+    from standalone.transport_types import WireObject as ChatCompletionMessageToolCall, WireObject as Function
+else:
+    from openai.types.chat.chat_completion_message_tool_call import ChatCompletionMessageToolCall, Function
 
 TOOL_CALL_BLOCK_RE = re.compile(r"<tool_call>\s*(\{.*?\})\s*</tool_call>", re.DOTALL)
 TOOL_CALL_JSON_RE = re.compile(

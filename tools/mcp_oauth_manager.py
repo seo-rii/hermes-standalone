@@ -21,7 +21,8 @@ from tools.mcp_oauth_provider import HermesProviderMixin
 logger = logging.getLogger(__name__)
 
 try:
-    from mcp.client.auth.oauth2 import OAuthClientProvider as _SDKOAuthClientProvider
+    from tools.mcp_oauth_boundary import oauth_provider
+    _SDKOAuthClientProvider = oauth_provider().OAuthClientProvider
     _SDK_BASES: tuple = (_SDKOAuthClientProvider,)
 except ImportError:  # pragma: no cover — SDK required in CI; module must still import
     _SDK_BASES = ()
@@ -106,10 +107,13 @@ class HermesMCPOAuthProvider(HermesProviderMixin, *_SDK_BASES):
         httpx = sdk_httpx()
         if httpx is None:  # pragma: no cover — SDK import would have failed
             return
-        from mcp.client.auth.utils import (
-            build_oauth_authorization_server_metadata_discovery_urls,
-            build_protected_resource_metadata_discovery_urls, create_oauth_metadata_request,
-            handle_auth_metadata_response, handle_protected_resource_response)
+        from tools.mcp_oauth_boundary import oauth_utils
+        _auth_utils = oauth_utils()
+        build_oauth_authorization_server_metadata_discovery_urls = _auth_utils.build_oauth_authorization_server_metadata_discovery_urls
+        build_protected_resource_metadata_discovery_urls = _auth_utils.build_protected_resource_metadata_discovery_urls
+        create_oauth_metadata_request = _auth_utils.create_oauth_metadata_request
+        handle_auth_metadata_response = _auth_utils.handle_auth_metadata_response
+        handle_protected_resource_response = _auth_utils.handle_protected_resource_response
         from tools.mcp_oauth_provider import stamp_default_user_agent
         server_url = self.context.server_url
 
@@ -229,7 +233,8 @@ class HermesMCPOAuthProvider(HermesProviderMixin, *_SDK_BASES):
         expected = type(url)(urljoin(self.context.get_authorization_base_url(self.context.server_url), "/register"))
         if (url.scheme, url.host, url.port, url.path) != (expected.scheme, expected.host, expected.port, expected.path):
             return
-        from mcp.client.auth.oauth2 import OAuthRegistrationError
+        from tools.mcp_oauth_boundary import oauth_provider
+        OAuthRegistrationError = oauth_provider().OAuthRegistrationError
         name = self._hermes_server_name
         raise OAuthRegistrationError(
             f"MCP OAuth '{name}': this provider does not support automatic client registration (its authorization "
@@ -292,12 +297,18 @@ class HermesMCPOAuthProvider(HermesProviderMixin, *_SDK_BASES):
         except StopAsyncIteration:
             self._persist_oauth_metadata_if_changed()  # metadata discovered lazily in the 401 branch
         finally:
+            import anyio
             if resource_lock_released:
                 # Balance the SDK's surrounding ``async with`` even when HTTPX cancels/closes the
                 # flow mid-request; shield only this local bookkeeping.
-                import anyio
                 with anyio.CancelScope(shield=True):
                     await self.context.lock.acquire()
+            # HTTPX may close this outer generator while a token request is in
+            # flight (timeout, cancellation, refused redirect). Close the
+            # delegated flow now so its refresh fence is released before the
+            # next request; async-generator garbage collection is too late.
+            with anyio.CancelScope(shield=True):
+                await inner.aclose()
         if retry_after_concurrent_auth:
             yield request
             self._persist_oauth_metadata_if_changed()

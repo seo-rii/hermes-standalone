@@ -34,7 +34,7 @@ def build_auth_methods() -> list[Any]:
     handshake. A fresh Zed install may have no Hermes credentials yet, so the
     terminal setup method is always advertised; when credentials resolve, the
     provider is also advertised as the default agent-managed runtime method."""
-    from acp.schema import AuthMethodAgent, TerminalAuthMethod
+    from acp_adapter.protocol import AuthMethodAgent, TerminalAuthMethod
 
     methods: list[Any] = []
     provider = detect_provider()

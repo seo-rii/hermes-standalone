@@ -7,8 +7,8 @@ import logging
 import os
 import uuid
 
-import acp
-from acp.schema import (
+from acp_adapter.protocol import sdk as acp
+from acp_adapter.protocol import (
     AgentCapabilities, Implementation, InitializeResponse, LoadSessionResponse,
     NewSessionResponse, PromptCapabilities, PromptResponse, ResumeSessionResponse,
     SessionCapabilities, SessionForkCapabilities, SessionListCapabilities, SessionResumeCapabilities,
@@ -449,7 +449,7 @@ class GatewayACPAgent(GatewayReplyMixin, acp.Agent):
         await self._cancel_admission(session_id, admission_id)
 
     async def fork_session(self, cwd, session_id, mcp_servers=None, **kwargs):
-        from acp.schema import ForkSessionResponse
+        from acp_adapter.protocol import ForkSessionResponse
         session_id = self._aliases.get(session_id, session_id)
         client = await self._client()
         info = await client.rpc('session.info', session_id=session_id)
@@ -470,7 +470,7 @@ class GatewayACPAgent(GatewayReplyMixin, acp.Agent):
         return ForkSessionResponse(session_id=child, **await self._session_fields(child, info, child))
 
     async def set_session_model(self, model_id, session_id, **kwargs):
-        from acp.schema import SetSessionModelResponse
+        from acp_adapter.protocol import SetSessionModelResponse
         session_id = self._aliases.get(session_id, session_id)
         client = await self._client()
         from hermes_cli.models import parse_model_input
@@ -538,7 +538,7 @@ class GatewayACPAgent(GatewayReplyMixin, acp.Agent):
             return None
 
         async def confirm(refusal):
-            from acp.schema import AllowedOutcome, PermissionOption
+            from acp_adapter.protocol import AllowedOutcome, PermissionOption
             from agent.i18n import t
             from hermes_cli.gateway_mutations import confirmation_title
             title = confirmation_title(refusal)
@@ -564,7 +564,7 @@ class GatewayACPAgent(GatewayReplyMixin, acp.Agent):
 
     async def set_session_mode(self, mode_id, session_id, **kwargs):
         """Main's Default / Accept Edits / Don't Ask: the session's edit approval policy on the owner."""
-        from acp.schema import SetSessionModeResponse
+        from acp_adapter.protocol import SetSessionModeResponse
         from acp_adapter.modes import MODE_TO_EDIT_APPROVAL_POLICY
         if mode_id not in MODE_TO_EDIT_APPROVAL_POLICY:
             raise GatewayClientError("invalid_params")
@@ -574,7 +574,7 @@ class GatewayACPAgent(GatewayReplyMixin, acp.Agent):
     async def set_config_option(self, config_id, session_id, value=None, **kwargs):
         """Accepted so editors do not fail on their own config writes, as main did; only the edit
         approval policy has a meaning here, and it is the same owner setting the modes select."""
-        from acp.schema import SetSessionConfigOptionResponse
+        from acp_adapter.protocol import SetSessionConfigOptionResponse
         from acp_adapter.modes import EDIT_APPROVAL_POLICY_CONFIG_ID, EDIT_APPROVAL_POLICY_TO_MODE
         session_id = self._held_session(session_id)
         if config_id == EDIT_APPROVAL_POLICY_CONFIG_ID:
@@ -608,7 +608,7 @@ class GatewayACPAgent(GatewayReplyMixin, acp.Agent):
         self._modes[session_id] = EDIT_APPROVAL_POLICY_TO_MODE[policy]
 
     async def list_sessions(self, cursor=None, cwd=None, **kwargs):
-        from acp.schema import ListSessionsResponse, SessionInfo
+        from acp_adapter.protocol import ListSessionsResponse, SessionInfo
         from acp_adapter.catalog import catalog_sessions
         rows = await asyncio.to_thread(catalog_sessions, self._home / "state.db", cwd)
         if cursor:
@@ -1057,7 +1057,7 @@ class GatewayACPAgent(GatewayReplyMixin, acp.Agent):
             return
         self._modes[sid] = mode
         if self._conn:
-            from acp.schema import CurrentModeUpdate  # ``acp`` does not re-export ``update_current_mode``
+            from acp_adapter.protocol import CurrentModeUpdate  # ``acp`` does not re-export ``update_current_mode``
             await self._conn.session_update(session_id=editor_id, update=CurrentModeUpdate(
                 session_update="current_mode_update", current_mode_id=mode))
 
@@ -1098,7 +1098,7 @@ class GatewayACPAgent(GatewayReplyMixin, acp.Agent):
             del self._permissions[key]
 
     async def _answer_clarify(self, session_id, prompt):
-        from acp.schema import AllowedOutcome
+        from acp_adapter.protocol import AllowedOutcome
         from acp_adapter.elicitation import (
             ELICITATION_METHOD, SKIP_OPTION, build_clarify_elicitation, build_clarify_permission,
             elicited_answer,
@@ -1129,7 +1129,7 @@ class GatewayACPAgent(GatewayReplyMixin, acp.Agent):
             return False
 
     async def _answer_permission(self, session_id, prompt):
-        from acp.schema import AllowedOutcome
+        from acp_adapter.protocol import AllowedOutcome
         from acp_adapter.permissions import (
             _build_permission_options, _build_permission_tool_call, _OPTION_ID_TO_HERMES,
         )

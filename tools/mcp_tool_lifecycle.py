@@ -70,7 +70,8 @@ def _snapshot_child_pids() -> set:
     except (FileNotFoundError, OSError, ValueError):
         pass
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         return {c.pid for c in psutil.Process(my_pid).children()}
     except Exception:
         return set()
@@ -92,7 +93,8 @@ def _filter_mcp_children(pids: set) -> set:
     if not pids:
         return pids
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
     except ImportError:
         return pids  # keep all PIDs (prior behavior)
     kept = set()
@@ -323,7 +325,8 @@ def _kill_windows_process_tree(pid: int, sig: int) -> None:
     orphans reparented with ParentId=null. Best-effort, per-descendant; never raises."""
     import signal as _signal
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
     except ImportError:
         return
     try:

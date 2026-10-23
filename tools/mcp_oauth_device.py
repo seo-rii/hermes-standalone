@@ -10,8 +10,9 @@ import math
 import sys
 import time
 
-from mcp.shared.auth import OAuthMetadata
-from pydantic import AnyHttpUrl
+from tools.mcp_oauth_boundary import http_url, oauth_provider, oauth_types, oauth_utils
+
+OAuthMetadata, AnyHttpUrl = oauth_types().OAuthMetadata, http_url()
 
 DEVICE_GRANT = "urn:ietf:params:oauth:grant-type:device_code"
 
@@ -23,12 +24,11 @@ class DeviceOAuthMetadata(OAuthMetadata):
 
 
 async def _discover(client, provider):
-    from mcp.client.auth.exceptions import OAuthFlowError
-    from mcp.client.auth.utils import (
-        build_protected_resource_metadata_discovery_urls,
-        extract_resource_metadata_from_www_auth,
-        handle_protected_resource_response,
-    )
+    OAuthFlowError = oauth_provider().OAuthFlowError
+    _utils = oauth_utils()
+    build_protected_resource_metadata_discovery_urls = _utils.build_protected_resource_metadata_discovery_urls
+    extract_resource_metadata_from_www_auth = _utils.extract_resource_metadata_from_www_auth
+    handle_protected_resource_response = _utils.handle_protected_resource_response
     context = provider.context
     response = await client.get(context.server_url)
     challenge = extract_resource_metadata_from_www_auth(response)
@@ -61,7 +61,7 @@ async def _discover(client, provider):
 
 async def _device_metadata(client, server_url, auth_server_url):
     """Issuer-bound device metadata of one authorization server; raises when it is unusable."""
-    from mcp.client.auth.utils import build_oauth_authorization_server_metadata_discovery_urls
+    build_oauth_authorization_server_metadata_discovery_urls = oauth_utils().build_oauth_authorization_server_metadata_discovery_urls
 
     from tools.mcp_oauth_provider import metadata_issued_by_origin
 
@@ -82,7 +82,7 @@ async def _device_metadata(client, server_url, auth_server_url):
         expected = auth_server_url.rstrip("/") if auth_server_url else auth_server_url
         if expected and not metadata_issued_by_origin(metadata, expected, response):
             if str(metadata.issuer).rstrip("/") != expected:
-                from mcp.client.auth.exceptions import OAuthFlowError
+                OAuthFlowError = oauth_provider().OAuthFlowError
                 raise OAuthFlowError(f"Authorization server metadata issuer mismatch: {metadata.issuer} != {expected}")
         grants = metadata.grant_types_supported
         if grants is not None and DEVICE_GRANT not in grants:
@@ -105,8 +105,8 @@ def _payload(response, label):
 
 
 async def _register(client, provider, cfg):
-    from mcp.shared.auth import OAuthClientInformationFull
-    from mcp.client.auth.oauth2 import OAuthRegistrationError, check_registration_usable
+    OAuthClientInformationFull = oauth_types().OAuthClientInformationFull
+    OAuthRegistrationError, check_registration_usable = oauth_provider().OAuthRegistrationError, oauth_provider().check_registration_usable
 
     context = provider.context
     metadata = context.client_metadata.model_dump(mode="json", exclude_none=True)
@@ -181,7 +181,7 @@ async def _authorize(client, provider, cfg):
             interval *= 2
             continue
         if 200 <= response.status_code < 300:
-            from mcp.shared.auth import OAuthToken
+            OAuthToken = oauth_types().OAuthToken
             tokens = OAuthToken.model_validate(_payload(response, "Device token"))
             if not tokens.access_token:
                 raise RuntimeError("Device token response has no access token")

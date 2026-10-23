@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import unquote, urlparse
 
-from acp.schema import (
+from acp_adapter.protocol import (
     AudioContentBlock, BlobResourceContents, EmbeddedResourceContentBlock, ImageContentBlock,
     ResourceContentBlock, TextContentBlock, TextResourceContents,
 )

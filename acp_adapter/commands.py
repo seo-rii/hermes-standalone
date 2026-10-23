@@ -7,7 +7,7 @@ import logging
 from collections import Counter
 from typing import Any
 
-from acp.schema import AvailableCommand, AvailableCommandsUpdate, UnstructuredCommandInput
+from acp_adapter.protocol import AvailableCommand, AvailableCommandsUpdate, UnstructuredCommandInput
 
 from acp_adapter.session import SessionState, _expand_acp_enabled_toolsets
 

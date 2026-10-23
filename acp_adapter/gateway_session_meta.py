@@ -11,7 +11,7 @@ import logging
 from pathlib import Path
 import sqlite3
 
-from acp.schema import (
+from acp_adapter.protocol import (
     AvailableCommand, AvailableCommandsUpdate, ModelInfo, SessionInfoUpdate, SessionMode, SessionModeState,
     SessionModelState, UnstructuredCommandInput, Usage, UsageUpdate,
 )

@@ -305,6 +305,10 @@ def _make_redirect_header_stripper(httpx_mod, original_url, *, strict: bool = Fa
         base_build = getattr(type(client), "_build_redirect_request", None)
 
         def _build_redirect_request(request, response):
+            if request.extensions.get("hermes_oauth_no_redirect"):
+                # A 307/308 would forward authorization codes or refresh/client
+                # secrets in the POST body even after header stripping.
+                raise httpx_mod.RequestError("OAuth credential requests cannot follow redirects", request=request)
             next_request = base_build(client, request, response)
             target = next_request.url
             if (target.scheme, target.host, target.port) != origin:

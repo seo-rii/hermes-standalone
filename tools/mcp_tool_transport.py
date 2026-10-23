@@ -232,6 +232,9 @@ class MCPServerTransportMixin:
         keeps later requests legacy-shaped (envelope and MCP-Protocol-Version header), the form the
         handshake itself just proved the server accepts. The returned result keeps the server's own
         version for logging/diagnostics."""
+        from agent.sdk_boundary import bundled
+        if bundled():
+            return await session.complete_handshake_at_offered_version()
         from mcp import types  # late: keeps the SDK import lazy
         offered = _core.LATEST_HANDSHAKE_VERSION
         build_caps = getattr(session, "_build_capabilities", None)
@@ -274,7 +277,22 @@ class MCPServerTransportMixin:
         # recovery isn't gated on a stale consecutive-failure count (#16788).
         # Unproven until keepalive/tool-call success (#62212).
         self._session_proven = False
-        reason = await self._wait_for_lifecycle_event()
+        from agent.sdk_boundary import bundled
+        if bundled():
+            lifecycle = asyncio.create_task(self._wait_for_lifecycle_event())
+            transport_closed = asyncio.create_task(session.wait_closed())
+            try:
+                done, _ = await asyncio.wait((lifecycle, transport_closed), return_when=asyncio.FIRST_COMPLETED)
+                if transport_closed in done:
+                    await transport_closed  # propagate the original transport failure
+                    raise ConnectionError("MCP session closed")
+                reason = await lifecycle
+            finally:
+                lifecycle.cancel()
+                transport_closed.cancel()
+                await asyncio.gather(lifecycle, transport_closed, return_exceptions=True)
+        else:
+            reason = await self._wait_for_lifecycle_event()
         if label and reason == "reconnect":
             logger.info("MCP server '%s': reconnect requested — tearing down %s session", self.name, label)
         return reason
@@ -459,7 +477,11 @@ class MCPServerTransportMixin:
                     **_present(mounts=_mcp_proxy_mounts(_httpx, url, ssl_verify, client_cert, self.name))) as client:
                 resp = await client.head(url, headers=probe_headers)  # cheapest; GET on 405/501
                 if resp.status_code in (405, 501):
-                    resp = await client.get(url, headers=probe_headers)
+                    # GET can itself be a healthy, indefinite notification SSE
+                    # stream. This preflight only needs its headers; waiting for
+                    # the body would consume the entire connection deadline.
+                    async with client.stream("GET", url, headers=probe_headers) as probe_response:
+                        resp = probe_response
                 # Non-MCP content type on HEAD/GET: try a JSON-RPC POST so POST-only servers pass.
                 if _non_mcp_2xx(resp):
                     post_resp = await client.post(
@@ -539,7 +561,9 @@ class MCPServerTransportMixin:
         _httpx_mod = _core.sdk_httpx()
         def _sse_client_factory(headers=None, timeout=None, auth=None):
             inner_transport = _httpx_mod.AsyncHTTPTransport(verify=ssl_verify, **_present(cert=client_cert))
-            return _httpx_mod.AsyncClient(
+            client_factory = (_make_redirect_header_stripper(_httpx_mod, _httpx_mod.URL(url))
+                              if _core._bundled_runtime() else _httpx_mod.AsyncClient)
+            return client_factory(
                 follow_redirects=True,
                 timeout=timeout if timeout is not None else _httpx_mod.Timeout(30.0, read=300.0),
                 transport=_make_mcp_body_cap_transport(_httpx_mod, inner_transport),

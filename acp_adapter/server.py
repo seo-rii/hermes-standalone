@@ -14,8 +14,8 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 from typing import Any, Callable, Deque, Optional
 
-import acp
-from acp.schema import (
+from acp_adapter.protocol import sdk as acp
+from acp_adapter.protocol import (
     AgentCapabilities, AgentMessageChunk, AuthenticateResponse, ClientCapabilities, ForkSessionResponse,
     Implementation, InitializeResponse, ListSessionsResponse, LoadSessionResponse, McpServerHttp, McpServerSse,
     McpServerStdio, ModelInfo, NewSessionResponse, PromptCapabilities, PromptResponse, ResumeSessionResponse,
@@ -1040,7 +1040,7 @@ class HermesACPAgent(SlashCommandsMixin, acp.Agent):
                 # internal error (-32603): the client attributes it to the request, not to Hermes (#72439).
                 # Only the switch_model rejection maps here; a ValueError from the rebuild itself
                 # (disabled provider, context window below the floor) stays on the -32603 path.
-                from acp.exceptions import RequestError
+                from acp_adapter.protocol import RequestError
                 raise RequestError.invalid_params({"details": str(exc)}) from exc
         finally:
             with state.runtime_lock:

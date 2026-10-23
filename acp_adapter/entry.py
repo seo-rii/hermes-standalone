@@ -52,7 +52,7 @@ class _BenignProbeMethodFilter(logging.Filter):
             return True
         # Lazy import keeps this module importable without ``agent-client-protocol``.
         try:
-            from acp.exceptions import RequestError
+            from acp_adapter.protocol import RequestError
         except ImportError:
             return True
         exc = record.exc_info[1]
@@ -111,7 +111,7 @@ def _print_version() -> None:
 
 
 def _run_check() -> None:
-    import acp
+    from acp_adapter.protocol import sdk as acp
     from acp_adapter.server import HermesACPAgent
 
     print("Hermes ACP check OK")
@@ -189,7 +189,7 @@ def main(argv: list[str] | None = None) -> None:
 
     install_truststore()
 
-    import acp
+    from acp_adapter.protocol import sdk as acp
     from .server import HermesACPAgent
 
     # Windows: import the configured memory provider (and numpy) on the main thread before

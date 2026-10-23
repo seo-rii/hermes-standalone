@@ -1,0 +1,205 @@
+{
+  "changes": [
+    "Relocate absolute ACP imports to the private package namespace.",
+    "Replace explicit Pydantic validation imports with standalone.web_schema."
+  ],
+  "files": [
+    {
+      "path": "__init__.py",
+      "retained_original": "upstream_sources/__init__.py.original",
+      "sha256": "0c1456027fbc3b0a415ffd8e8a305458444e66f76f6ee0b38318d113f7dacd38",
+      "upstream": "acp/__init__.py",
+      "upstream_sha256": "d93acd94e0d1a46c6e170b14ffa6f8d5d1c581a73c4ef6772f4cc21ee79dc84a"
+    },
+    {
+      "path": "agent/__init__.py",
+      "sha256": "500c25f8662f0989f91cb5aca607c3a69047612926d5193483aad819374fc188",
+      "upstream": "acp/agent/__init__.py",
+      "upstream_sha256": "500c25f8662f0989f91cb5aca607c3a69047612926d5193483aad819374fc188"
+    },
+    {
+      "path": "agent/connection.py",
+      "sha256": "42a1af6523074d088224192e23ffed65145884fbc3f996803322c002d3075035",
+      "upstream": "acp/agent/connection.py",
+      "upstream_sha256": "42a1af6523074d088224192e23ffed65145884fbc3f996803322c002d3075035"
+    },
+    {
+      "path": "agent/router.py",
+      "retained_original": "upstream_sources/agent/router.py.original",
+      "sha256": "a22194750828e3bb66167d465b032aaf3ffad2431c4907a3cd507c6aca49660d",
+      "upstream": "acp/agent/router.py",
+      "upstream_sha256": "4f1fbc1c702884acae6227f678f5bd3d778fcb0ef3926defcf8ca593d3a34c12"
+    },
+    {
+      "path": "client/__init__.py",
+      "sha256": "4cc9ae4539f5c8d914ffb96d41dfc95fc4f2f4fd988490dd1c0ea01a7dd07eea",
+      "upstream": "acp/client/__init__.py",
+      "upstream_sha256": "4cc9ae4539f5c8d914ffb96d41dfc95fc4f2f4fd988490dd1c0ea01a7dd07eea"
+    },
+    {
+      "path": "client/connection.py",
+      "sha256": "35927c719e5036dd1df909bcb0d0b8bdbd010d75c1b6a99dde3adb97ab949912",
+      "upstream": "acp/client/connection.py",
+      "upstream_sha256": "35927c719e5036dd1df909bcb0d0b8bdbd010d75c1b6a99dde3adb97ab949912"
+    },
+    {
+      "path": "client/router.py",
+      "sha256": "3a6339b77a243213897eef31ea29b1b7f0e4e8fc49435db38449a1c89761ce9f",
+      "upstream": "acp/client/router.py",
+      "upstream_sha256": "3a6339b77a243213897eef31ea29b1b7f0e4e8fc49435db38449a1c89761ce9f"
+    },
+    {
+      "path": "connection.py",
+      "retained_original": "upstream_sources/connection.py.original",
+      "sha256": "dd8c9a073ab0610e1c1cc5dab243e9c5ac6b682c56388c19ed98bc49bf88fc79",
+      "upstream": "acp/connection.py",
+      "upstream_sha256": "e261425e0ba793ab49cb1d697a2a66731102ed23e0bdf3e4034c11e2b34a221c"
+    },
+    {
+      "path": "contrib/__init__.py",
+      "sha256": "0c87748b378303ec5f9fc2496b13d9f62ea2a9a56f46a4f338482df47873d629",
+      "upstream": "acp/contrib/__init__.py",
+      "upstream_sha256": "0c87748b378303ec5f9fc2496b13d9f62ea2a9a56f46a4f338482df47873d629"
+    },
+    {
+      "path": "contrib/permissions.py",
+      "sha256": "b21f3c42d750e3d6af98f31141c54425be86449d66267e8ab678398c5794c7a3",
+      "upstream": "acp/contrib/permissions.py",
+      "upstream_sha256": "b21f3c42d750e3d6af98f31141c54425be86449d66267e8ab678398c5794c7a3"
+    },
+    {
+      "path": "contrib/session_state.py",
+      "retained_original": "upstream_sources/contrib/session_state.py.original",
+      "sha256": "6e6678dd184df4bf2f5add4ba37d06e9c18a4d57efa2b1033838d91529c464f2",
+      "upstream": "acp/contrib/session_state.py",
+      "upstream_sha256": "7eaf980f8b2157337898478bccf7adbc6efe0fcd41a77ce96f61672c5a910086"
+    },
+    {
+      "path": "contrib/tool_calls.py",
+      "retained_original": "upstream_sources/contrib/tool_calls.py.original",
+      "sha256": "eaa607ca9de13ff907deb26aab5e440c6733cac6b43fdf1c63a86f9d01076d62",
+      "upstream": "acp/contrib/tool_calls.py",
+      "upstream_sha256": "084c6f4f8d592d7cd59983ec824329c69b64d593f744e447302658a3ec2af334"
+    },
+    {
+      "path": "core.py",
+      "sha256": "b55dc32b80002e6728b777c709f403f4e04c2fe41f2400b4f143d17bd7bbcd80",
+      "upstream": "acp/core.py",
+      "upstream_sha256": "b55dc32b80002e6728b777c709f403f4e04c2fe41f2400b4f143d17bd7bbcd80"
+    },
+    {
+      "path": "exceptions.py",
+      "sha256": "da380ab81ec533bf72133dfe05bd9b45577ab344e95d64d31de69e27b2fdc065",
+      "upstream": "acp/exceptions.py",
+      "upstream_sha256": "da380ab81ec533bf72133dfe05bd9b45577ab344e95d64d31de69e27b2fdc065"
+    },
+    {
+      "path": "helpers.py",
+      "sha256": "48b12a959116f041f07685471d828267c3e2ac126a9ae78e40298a813ef8e43a",
+      "upstream": "acp/helpers.py",
+      "upstream_sha256": "48b12a959116f041f07685471d828267c3e2ac126a9ae78e40298a813ef8e43a"
+    },
+    {
+      "path": "interfaces.py",
+      "sha256": "55e666f5525033787bcc39ad025a96d57605a7af081cc25bedcac7d4ce763372",
+      "upstream": "acp/interfaces.py",
+      "upstream_sha256": "55e666f5525033787bcc39ad025a96d57605a7af081cc25bedcac7d4ce763372"
+    },
+    {
+      "path": "meta.py",
+      "sha256": "1ef21d5171a2ab4f33f043bec92243fd20abde7310ca9fa4a91619ca03add099",
+      "upstream": "acp/meta.py",
+      "upstream_sha256": "1ef21d5171a2ab4f33f043bec92243fd20abde7310ca9fa4a91619ca03add099"
+    },
+    {
+      "path": "py.typed",
+      "sha256": "159b8a557ec760020209c8c51141ca12abcd13a40327e78b74642901d44a5ce1",
+      "upstream": "acp/py.typed",
+      "upstream_sha256": "159b8a557ec760020209c8c51141ca12abcd13a40327e78b74642901d44a5ce1"
+    },
+    {
+      "path": "router.py",
+      "retained_original": "upstream_sources/router.py.original",
+      "sha256": "abd9a1ea6dfbd38be0712043b1ced0efa561722b4b4ce4929eae39700809bd72",
+      "upstream": "acp/router.py",
+      "upstream_sha256": "9cf0700c009a6bd6918317a238558859e2f2c190198b36c66142827a6245c16a"
+    },
+    {
+      "path": "schema.py",
+      "retained_original": "upstream_sources/schema.py.original",
+      "sha256": "71844f49d0bb26dc87ef1153c97588d06260a24ff62e740caef3e0a4569671f3",
+      "upstream": "acp/schema.py",
+      "upstream_sha256": "a01630ca56505a42401d365cadea38ac59d0da9048843a52e7a9bb306a481bcd"
+    },
+    {
+      "path": "stdio.py",
+      "sha256": "f353aa5f65d2cf25f35489c698ccb56adb7284b7af12a8d0e8dd85ed958aa023",
+      "upstream": "acp/stdio.py",
+      "upstream_sha256": "f353aa5f65d2cf25f35489c698ccb56adb7284b7af12a8d0e8dd85ed958aa023"
+    },
+    {
+      "path": "task/__init__.py",
+      "sha256": "ce64fe5093c777b5a804026d4b4ba31675d15738f69deb7830a077199b35d4e5",
+      "upstream": "acp/task/__init__.py",
+      "upstream_sha256": "ce64fe5093c777b5a804026d4b4ba31675d15738f69deb7830a077199b35d4e5"
+    },
+    {
+      "path": "task/dispatcher.py",
+      "sha256": "efb2b1122665c4ece2228a5fcfc1caf23e21d9461f50240319d7efe12fbb3659",
+      "upstream": "acp/task/dispatcher.py",
+      "upstream_sha256": "efb2b1122665c4ece2228a5fcfc1caf23e21d9461f50240319d7efe12fbb3659"
+    },
+    {
+      "path": "task/queue.py",
+      "sha256": "bc2cb93a0133ddb176845d368d949e14fec2957165fefaae7acc372634f9348b",
+      "upstream": "acp/task/queue.py",
+      "upstream_sha256": "bc2cb93a0133ddb176845d368d949e14fec2957165fefaae7acc372634f9348b"
+    },
+    {
+      "path": "task/sender.py",
+      "sha256": "0cb1a6c578d9aa1eb193d10c1cfefa27106cfb9325511b1dfafff1fd305a48d6",
+      "upstream": "acp/task/sender.py",
+      "upstream_sha256": "0cb1a6c578d9aa1eb193d10c1cfefa27106cfb9325511b1dfafff1fd305a48d6"
+    },
+    {
+      "path": "task/state.py",
+      "sha256": "a5d975d4ff5e8dbb06b825e6c94498d4fa4dc2413ff58aabcb8e01f54d642b93",
+      "upstream": "acp/task/state.py",
+      "upstream_sha256": "a5d975d4ff5e8dbb06b825e6c94498d4fa4dc2413ff58aabcb8e01f54d642b93"
+    },
+    {
+      "path": "task/supervisor.py",
+      "sha256": "ae289178c0e8c7cff62cc62aa8d5b255b80fd52bf2546319b9bc1effb78bd91e",
+      "upstream": "acp/task/supervisor.py",
+      "upstream_sha256": "ae289178c0e8c7cff62cc62aa8d5b255b80fd52bf2546319b9bc1effb78bd91e"
+    },
+    {
+      "path": "telemetry.py",
+      "sha256": "1e6417fcd15fe21cdd68212516a3ad4fbac7ec69b530318afc9bca7f80745677",
+      "upstream": "acp/telemetry.py",
+      "upstream_sha256": "1e6417fcd15fe21cdd68212516a3ad4fbac7ec69b530318afc9bca7f80745677"
+    },
+    {
+      "path": "transports.py",
+      "sha256": "9d672d1ef12c8a55e8771150b691a2d985264de4a94ddab46e3dd8f6896c8360",
+      "upstream": "acp/transports.py",
+      "upstream_sha256": "9d672d1ef12c8a55e8771150b691a2d985264de4a94ddab46e3dd8f6896c8360"
+    },
+    {
+      "path": "utils.py",
+      "retained_original": "upstream_sources/utils.py.original",
+      "sha256": "2122fbd677aa1103e937465398ca917ed78b801671160210124ff8b19eca9b78",
+      "upstream": "acp/utils.py",
+      "upstream_sha256": "95a43903c2835c893d6dfbb4dc20c44ffda796e7715f1ea60046f66a33108449"
+    }
+  ],
+  "format_version": 1,
+  "private_package": "acp_adapter._protocol",
+  "source": {
+    "filename": "agent_client_protocol-0.9.0-py3-none-any.whl",
+    "name": "agent-client-protocol",
+    "sha256": "06911500b51d8cb69112544e2be01fc5e7db39ef88fecbc3848c5c6f194798ee",
+    "url": "https://files.pythonhosted.org/packages/8f/ed/c284543c08aa443a4ef2c8bd120be51da8433dd174c01749b5d87c333f22/agent_client_protocol-0.9.0-py3-none-any.whl",
+    "version": "0.9.0"
+  }
+}

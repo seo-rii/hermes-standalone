@@ -45,6 +45,7 @@ from urllib.parse import parse_qs, urlparse
 from hermes_constants import secure_parent_dir
 from utils import atomic_json_write
 from tools.mcp_dashboard_oauth import contextvar_set as _contextvar_set, get_dashboard_oauth_flow
+from agent.sdk_boundary import bundled as _bundled_runtime
 
 if TYPE_CHECKING:  # annotations only; the SDK is imported lazily at runtime
     from mcp.client.auth import OAuthClientProvider
@@ -171,7 +172,7 @@ def release_refresh_fence(fd: int) -> None:
 # ---------------------------------------------------------------------------
 
 # SDK availability is detected WITHOUT importing mcp (~170 ms); classes bind lazily via _sdk_class().
-_OAUTH_AVAILABLE = _importlib_util.find_spec("mcp") is not None
+_OAUTH_AVAILABLE = _bundled_runtime() or _importlib_util.find_spec("mcp") is not None
 if not _OAUTH_AVAILABLE:
     logger.debug("MCP OAuth types not available -- OAuth MCP auth disabled")
 
@@ -184,8 +185,8 @@ def _sdk_class(name: str) -> Any:
     global _OAUTH_AVAILABLE
     if not _SDK_CLASSES:
         try:
-            from mcp.client import auth as _client_auth
-            from mcp.shared import auth as _shared_auth
+            from tools.mcp_oauth_boundary import oauth_provider, oauth_types
+            _client_auth, _shared_auth = oauth_provider(), oauth_types()
 
             _SDK_CLASSES["OAuthClientProvider"] = _client_auth.OAuthClientProvider
             for _name in _SDK_CLASS_NAMES[1:]:
@@ -197,10 +198,13 @@ def _sdk_class(name: str) -> Any:
     return _SDK_CLASSES.get(name)
 
 
-try:
-    from pydantic import AnyUrl
-except ImportError:
-    AnyUrl = None  # type: ignore[assignment, misc]
+if _bundled_runtime():
+    from standalone.mcp_oauth_types import oauth_url as AnyUrl
+else:
+    try:
+        from pydantic import AnyUrl
+    except ImportError:
+        AnyUrl = None  # type: ignore[assignment, misc]
 
 
 class OAuthNonInteractiveError(RuntimeError):
@@ -666,8 +670,9 @@ def _authorization_code_result(code: str, state: str | None, iss: str | None = N
     """Redirect parameters in the shape the installed SDK expects: mcp 2.0's ``callback_handler``
     returns an ``AuthorizationCodeResult`` (the SDK reads ``.state``/``.iss`` off it); older SDKs take a tuple."""
     try:
-        from mcp.shared.auth import AuthorizationCodeResult
-    except ImportError:  # mcp < 2.0
+        from tools.mcp_oauth_boundary import oauth_types
+        AuthorizationCodeResult = oauth_types().AuthorizationCodeResult
+    except (ImportError, AttributeError):  # mcp < 2.0
         return code, state
     return AuthorizationCodeResult(code=code, state=state, iss=iss)
 
@@ -948,8 +953,8 @@ def _is_valid_cimd_url(url: str) -> bool:
     CIMD → DCR only). The SDK checks only https + non-root path; userinfo, fragments and dot segments
     are rejected here because they fail mid-browser-flow as an opaque invalid-client page."""
     try:
-        from mcp.client.auth.utils import is_valid_client_metadata_url
-        if not is_valid_client_metadata_url(url):
+        from tools.mcp_oauth_boundary import oauth_utils
+        if not oauth_utils().is_valid_client_metadata_url(url):
             return False
         parsed = urlparse(url)
         has_userinfo = bool(parsed.username or parsed.password)  # netloc parse can raise

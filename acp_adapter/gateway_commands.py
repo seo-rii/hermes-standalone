@@ -90,7 +90,7 @@ async def _discard_unknown(agent, session_id, _command, admission_id):
 async def _forward(agent, client, session_id, command, arg):
     """The owner's ``slash.exec`` answer: its report, a turn to submit (a skill body or the turn a
     command built, after its notice), or the shared refusal for a command it does not serve."""
-    import acp
+    from acp_adapter.protocol import sdk as acp
     from hermes_cli.gateway_chat_commands import refusal
     try:
         reply = await client.rpc('slash.exec', session_id=session_id, command=f'/{command} {arg}'.strip())

@@ -7,8 +7,8 @@ import logging
 import uuid
 from typing import Any, Callable, Dict, List, Optional
 
-import acp
-from acp.schema import ToolCallLocation, ToolCallProgress, ToolCallStart, ToolKind
+from acp_adapter.protocol import sdk as acp
+from acp_adapter.protocol import ToolCallLocation, ToolCallProgress, ToolCallStart, ToolKind
 
 from agent.display import build_tool_preview
 

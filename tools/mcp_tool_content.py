@@ -136,7 +136,7 @@ def _mcp_native_image_part(path: str) -> Optional[tuple[dict[str, Any], Optional
     to a provider-accepted format (BMP and friends → PNG). None when the file cannot be embedded safely. The
     note maps embedded coordinates back to the original image (a screenshot's pixels are the screen's)."""
     from pathlib import Path
-    from PIL import Image
+    from hermes_platform.images import Image
     from tools.vision_tools import (_EMBED_MAX_DIMENSION, _MAX_BASE64_BYTES, _build_scale_note,
                                     _resize_image_for_vision)
     from tools.vision_tools_history_budget import resolve_embed_target_bytes

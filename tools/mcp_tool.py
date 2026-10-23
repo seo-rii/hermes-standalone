@@ -20,6 +20,7 @@ import sys
 import threading
 import time
 from typing import Any, Callable, Dict, List, Optional, Set
+from agent.sdk_boundary import bundled as _bundled_runtime
 
 logger = logging.getLogger(__name__)
 
@@ -87,7 +88,7 @@ LATEST_HANDSHAKE_VERSION = LATEST_PROTOCOL_VERSION
 # Importing ``mcp`` costs ~260ms, so it is deferred to first use (_ensure_mcp_sdk); availability
 # is decided now via find_spec so every ``if not _MCP_AVAILABLE`` gate / patch / skipif holds.
 try:
-    _MCP_AVAILABLE = importlib.util.find_spec("mcp") is not None
+    _MCP_AVAILABLE = _bundled_runtime() or importlib.util.find_spec("mcp") is not None
 except Exception:
     _MCP_AVAILABLE = False
 if not _MCP_AVAILABLE:
@@ -156,6 +157,23 @@ def _ensure_mcp_sdk() -> bool:
     with _MCP_SDK_IMPORT_LOCK:
         if _MCP_SDK_IMPORT_ATTEMPTED or ClientSession is not None:
             return _MCP_AVAILABLE
+        if _bundled_runtime():
+            from standalone import mcp_client, mcp_transport, mcp_types
+            globals().update(ClientSession=mcp_client.ClientSession,
+                             StdioServerParameters=mcp_types.StdioServerParameters,
+                             stdio_client=mcp_transport.stdio_client,
+                             streamable_http_client=mcp_transport.streamable_http_client,
+                             sse_client=mcp_transport.sse_client,
+                             LATEST_PROTOCOL_VERSION=mcp_types.LATEST_PROTOCOL_VERSION)
+            for _module, names, _message in _OPTIONAL_TYPE_FAMILIES:
+                globals().update({name: getattr(mcp_types, name) for name in names})
+            LATEST_HANDSHAKE_VERSION = mcp_types.LATEST_HANDSHAKE_VERSION
+            _MCP_HTTP_AVAILABLE = _MCP_NEW_HTTP = True
+            _MCP_LEGACY_HTTP = False
+            _MCP_SAMPLING_TYPES = _MCP_NOTIFICATION_TYPES = _MCP_ELICITATION_TYPES = True
+            _MCP_MESSAGE_HANDLER_SUPPORTED = _MCP_LOGGING_CALLBACK_SUPPORTED = True
+            _MCP_SDK_IMPORT_ATTEMPTED = True
+            return True
         if (_import_sdk_names("mcp", ("ClientSession", "StdioServerParameters"))
                 and _import_sdk_names("mcp.client.stdio", ("stdio_client",))):
             _MCP_AVAILABLE = True
@@ -586,10 +604,16 @@ def _spawn_death_supervisor():
     import subprocess
     supervisor = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mcp_death_supervisor.py")
     try:
+        from standalone.runtime import bundled_command
+        arguments = ["--parent-pgid", str(os.getpgid(0))]
+        command = bundled_command(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "tools.mcp_death_supervisor", arguments,
+        ) or [sys.executable, supervisor, *arguments]
         # start_new_session=True is load-bearing: shutdown paths killpg this process's own group,
         # which would kill the supervisor before it could reap anything.
         return subprocess.Popen(
-            [sys.executable, supervisor, "--parent-pgid", str(os.getpgid(0))],
+            command,
             stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=_get_mcp_stderr_log(),
             start_new_session=True, close_fds=True, text=True)
     except Exception:

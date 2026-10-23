@@ -176,8 +176,8 @@ class HermesProviderMixin:
                    for base in _ASM_DISCOVERY_PATHS):
             return response
 
-        from mcp.shared.auth import OAuthMetadata
-        from pydantic import ValidationError
+        from tools.mcp_oauth_boundary import oauth_types, validation_error
+        OAuthMetadata, ValidationError = oauth_types().OAuthMetadata, validation_error()
         try:
             metadata = OAuthMetadata.model_validate_json(await response.aread())
         except ValidationError:
@@ -198,6 +198,9 @@ class HermesProviderMixin:
         without a stamp the POST leaves with NO ``User-Agent`` at all and a WAF-fronted authorization
         server answers 403 (#115329)."""
         ua = getattr(self, "_hermes_token_user_agent", None)  # tests build via __new__
+        from agent.sdk_boundary import bundled
+        if bundled():
+            request.extensions["hermes_oauth_no_redirect"] = True
         if ua:
             request.headers["User-Agent"] = ua
         return stamp_default_user_agent(request)
@@ -208,7 +211,8 @@ class HermesProviderMixin:
         info = self.context.client_info
         if not info:
             return
-        from mcp.shared.auth import OAuthClientInformationFull
+        from tools.mcp_oauth_boundary import oauth_types
+        OAuthClientInformationFull = oauth_types().OAuthClientInformationFull
         from tools.mcp_oauth import HermesTokenStorage
         data = info.model_dump(mode="json", exclude_none=True)
         if HermesTokenStorage._coerce_secret_auth_method(data):
@@ -256,7 +260,8 @@ class HermesProviderMixin:
                     except _RefreshCompletedByPeer:
                         break
                     except Exception as exc:
-                        from mcp.client.auth.oauth2 import OAuthRegistrationError
+                        from tools.mcp_oauth_boundary import oauth_provider
+                        OAuthRegistrationError = oauth_provider().OAuthRegistrationError
                         if (isinstance(exc, OAuthRegistrationError) and discovery_failures
                                 and self.context.oauth_metadata is None):
                             raise _with_discovery_context(exc, discovery_failures) from exc
@@ -422,13 +427,15 @@ class HermesProviderMixin:
         A non-2xx body carries no tokens and is the only clue to WHY the exchange failed — a WAF's
         HTML "Request blocked" page vs the issuer's ``invalid_grant`` JSON (#115329) — so a short,
         tag-stripped, redacted excerpt rides along with the status."""
-        from mcp.client.auth.oauth2 import OAuthTokenError
+        from tools.mcp_oauth_boundary import oauth_provider
+        OAuthTokenError = oauth_provider().OAuthTokenError
         if not (200 <= response.status_code < 300):
             from tools.mcp_tool_common import _sanitize_error
             excerpt = " ".join(re.sub(r"<[^>]+>", " ", response.text).split())[:200]
             raise OAuthTokenError(f"Token exchange failed ({response.status_code}): {_sanitize_error(excerpt)}".rstrip(": "))
         from httpx import HTTPError
-        from mcp.client.auth.utils import handle_token_response_scopes
+        from tools.mcp_oauth_boundary import oauth_utils
+        handle_token_response_scopes = oauth_utils().handle_token_response_scopes
         try:
             token_response = await handle_token_response_scopes(response)
         except (HTTPError, OAuthTokenError):
@@ -462,8 +469,8 @@ class HermesProviderMixin:
             self.context.clear_tokens()
             return False
         from httpx import HTTPError
-        from mcp.shared.auth import OAuthToken
-        from pydantic import ValidationError
+        from tools.mcp_oauth_boundary import oauth_types, validation_error
+        OAuthToken, ValidationError = oauth_types().OAuthToken, validation_error()
         try:
             token_response = OAuthToken.model_validate_json(await response.aread())
         except (HTTPError, ValidationError):

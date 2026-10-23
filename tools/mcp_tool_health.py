@@ -282,7 +282,8 @@ class MCPServerHealthMixin:
         if not pids or self._is_http():
             return False
         try:
-            import psutil
+            from hermes_platform.processes import process_api
+            psutil = process_api()
             return not any(psutil.pid_exists(pid) for pid in pids)  # Windows-safe, no signal noise
         except Exception:  # missing psutil or failed probe → unknown → don't fail fast
             return False

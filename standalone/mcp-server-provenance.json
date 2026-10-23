@@ -1,0 +1,15 @@
+{
+  "implementation": "Application-owned standard-library stdio tools server, paired with the qualified Hermes MCP client",
+  "primary_specifications": [
+    "https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning",
+    "https://modelcontextprotocol.io/specification/2026-07-28/basic/index",
+    "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/stdio",
+    "https://modelcontextprotocol.io/specification/2026-07-28/server/discover",
+    "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+    "https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle"
+  ],
+  "modern_protocol": "2026-07-28 required per-request version/capabilities, optional client identity, stateless discovery/tool operations, complete result types, server identity metadata, unsupported-version errors, cancellation and EOF shutdown",
+  "legacy_protocols": ["2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05"],
+  "capabilities": "Static typed tools only. Resources, prompts, server-initiated inputs and subscriptions are not advertised. Browser tools preserve their original authorization and navigation boundaries.",
+  "tests": "Actual isolated subprocess pairs using standalone.mcp_client and standalone.mcp_server for both eras; original browser_harness MCP entry through its real daemon and independent CDP wire fixture; invalid metadata, unsupported versions, schema errors, cancellation, EOF and unnegotiated result variants. No protocol SDK namespace replacement."
+}

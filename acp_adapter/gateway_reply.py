@@ -5,8 +5,7 @@ from __future__ import annotations
 
 import logging
 
-import acp
-
+from acp_adapter.protocol import sdk as acp
 logger = logging.getLogger(__name__)
 
 

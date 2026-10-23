@@ -39,8 +39,7 @@ def fingerprint(servers):
 
 
 def validate_servers(servers):
-    from acp.schema import McpServerStdio, McpServerHttp, McpServerSse
-    from pydantic import ValidationError
+    from acp_adapter.protocol import McpServerStdio, McpServerHttp, McpServerSse, ValidationError
     kinds = {'stdio': McpServerStdio, 'http': McpServerHttp, 'sse': McpServerSse}
     if not isinstance(servers, list):
         raise RuntimeStoreError('invalid_params', field='editor.mcp_servers',

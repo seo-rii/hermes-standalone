@@ -7,7 +7,7 @@ import os
 from dataclasses import dataclass, field
 from typing import Callable
 
-from acp.schema import ModelInfo, SessionModelState
+from acp_adapter.protocol import ModelInfo, SessionModelState
 
 logger = logging.getLogger("acp_adapter.server")
 

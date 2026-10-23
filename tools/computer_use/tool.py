@@ -872,7 +872,7 @@ def _shrink_capture_for_vision(raw: bytes, ext: str, max_dim: int = _MAX_VISION_
     coordinates map back to the real screen instead of being silently wrong."""
     try:
         from io import BytesIO
-        from PIL import Image
+        from hermes_platform.images import Image
         img = Image.open(BytesIO(raw))
         if max(img.size) <= max_dim:
             return raw, None
