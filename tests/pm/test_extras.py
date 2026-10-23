@@ -14,6 +14,12 @@ from pm import client
 from pm import extras
 
 
+@pytest.fixture(autouse=True)
+def source_package_manager_context(monkeypatch):
+    """These contracts exercise upstream SDK markers and mocked installers."""
+    monkeypatch.setattr("standalone.packages.active", lambda: False)
+
+
 # ---- per-extra platform gates ([tool.hermes.extras-platforms]) ----
 
 

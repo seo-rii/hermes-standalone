@@ -268,6 +268,10 @@ def _skip_background_prefetch() -> bool:
     ``PYTEST_CURRENT_TEST`` is only set while a test runs, not during
     collection-time imports, hence the ``sys.modules`` check as well.
     """
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(Path(__file__).resolve().parents[1]):
+        # The verified artifact has no mutable source checkout or package updater.
+        return True
     return "PYTEST_CURRENT_TEST" in os.environ or "pytest" in sys.modules
 
 

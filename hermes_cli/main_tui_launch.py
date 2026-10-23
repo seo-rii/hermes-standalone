@@ -642,6 +642,12 @@ def _resolve_use_tui(args) -> bool:
     """
     if getattr(args, "cli", False):
         return False
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(Path(__file__).resolve().parents[1]):
+        if getattr(args, "tui", False) or getattr(args, "tui_native", False):
+            print("The standalone distribution uses Hermes' Python interface. Run hermes chat --cli.", file=sys.stderr)
+            raise SystemExit(2)
+        return False
     if getattr(args, "tui", False) or getattr(args, "tui_native", False):
         return True
     try:

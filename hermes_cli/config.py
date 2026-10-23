@@ -278,6 +278,9 @@ def detect_install_method(project_root: Optional[Path] = None) -> str:
     # The stamp is a property of the running code tree (parent of hermes_cli/), NOT of $HERMES_HOME,
     # so it survives two installs sharing a home.
     root = project_root if project_root is not None else get_project_root()
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(root):
+        return "standalone"
     method = _install_method_stamp(root / ".install_method")
     if method:
         return method
@@ -326,6 +329,7 @@ def is_nix_install_method(method: str) -> bool:
 _UPDATE_COMMAND_BY_METHOD = {
     "docker": "docker pull nousresearch/hermes-agent:latest",
     "apt": "pkg upgrade hermes-agent",  # "apt" == Termux APT by contract; uses Termux's `pkg`.
+    "standalone": "Replace hermes.py with a newly built standalone artifact",
 }
 
 
@@ -340,6 +344,9 @@ def recommended_update_command() -> str:
     """Return the best update command for the current installation.
     Managed state wins over the code-scoped stamp: a managed install can carry a stale stamp
     naming an update path the managed guard refuses."""
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(get_project_root()):
+        return recommended_update_command_for_method("standalone")
     return get_managed_update_command() or recommended_update_command_for_method(
         detect_install_method(get_project_root()))
 

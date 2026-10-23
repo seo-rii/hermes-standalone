@@ -92,7 +92,9 @@ def available(extra: str) -> bool:
     unavailable — the anchors are absent by design, not by accident."""
     if not extra_supported(extra):
         return False
-    return all(_importable(a) for a in _anchors(extra))
+    from standalone.packages import active, replacement_anchors
+    anchors = replacement_anchors(extra) if active() else None
+    return all(_importable(a) for a in (anchors or _anchors(extra)))
 
 
 def _platform_gates() -> dict[str, str]:
@@ -128,6 +130,9 @@ def extra_supported(extra: str, *, environment: dict[str, str] | None = None,
     extra that IS present on this machine (anchors importable) is always
     supported — an installed override beats the table (dev machines,
     hand-synced venvs)."""
+    from standalone.packages import active, PORTABLE_EXTRAS
+    if active() and extra in PORTABLE_EXTRAS:
+        return True
     if all((importable or _importable)(a) for a in _anchors(extra)):
         return True
     marker = _platform_gates().get(extra)
@@ -178,6 +183,9 @@ def _evaluate_in_runtime(marker: str, environment: dict[str, str]) -> bool:
 
 def install_hint(extra: str) -> str:
     """The one command users are told to run for a missing extra."""
+    from standalone.packages import active
+    if active():
+        return f"rebuild hermes.py with the {extra!r} feature"
     return f"hermes pm install --extra {extra}"
 
 
@@ -187,6 +195,9 @@ def ensure_import(extra: str) -> None:
     — including when a platform gate excludes this machine."""
     if available(extra):
         return
+    from standalone.packages import active, refuse_install
+    if active():
+        refuse_install(extra)
     if not extra_supported(extra):
         from pm.package import InstallError
 
@@ -258,7 +269,9 @@ def ensure_and_bind(extra, importer, target_globals) -> bool:
 
 
 def missing(extra: str) -> tuple[str, ...]:
-    return tuple(a for a in _anchors(extra) if not _importable(a))
+    from standalone.packages import active, replacement_anchors
+    anchors = replacement_anchors(extra) if active() else None
+    return tuple(a for a in (anchors or _anchors(extra)) if not _importable(a))
 
 
 def _installed_in(site_packages: Path, anchor: str) -> bool:

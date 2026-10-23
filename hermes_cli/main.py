@@ -18,6 +18,8 @@ except ModuleNotFoundError as exc:
     if exc.name != "hermes_bootstrap":
         raise  # the bootstrap exists but cannot load: skipping it would skip PM activation
 
+_standalone_bundle = bool(getattr(globals().get("hermes_bootstrap"), "_standalone_bundle", False))
+
 # A `hermes update` killed while git was writing the new tree leaves a mix of old and new files that
 # fails at the next import, whichever it is — put the old tree back before importing anything else
 # from the checkout, then rerun the command (this module may itself be one of the new files).
@@ -25,7 +27,7 @@ except ModuleNotFoundError as exc:
 # dir, so if IT can't import nothing in hermes_cli can.
 from hermes_cli import _early_recovery as _early_recovery_mod
 
-if _early_recovery_mod.restore_interrupted_pull():
+if not _standalone_bundle and _early_recovery_mod.restore_interrupted_pull():
     _early_recovery_mod.relaunch_after_restore()
 
 # Windows: neutralize CPython's ``platform._syscmd_ver`` before anything else
@@ -695,7 +697,7 @@ if sys.argv[1:2] == ["pm"]:
 # resolving in every new terminal (venv\Scripts itself must stay off PATH — it shadows the user's
 # ``python``, #83797). Costs a few stat calls when healthy; gates fail toward inaction so source checkouts
 # are untouched.
-if sys.platform == "win32":
+if sys.platform == "win32" and not _standalone_bundle:
     try:
         from hermes_cli import _install_repair as _install_repair_mod
 
@@ -945,6 +947,9 @@ def _read_packed_ref(common_dir: Path, ref: str) -> str | None:
 
 def _read_git_revision_fingerprint(repo_root: Path) -> str | None:
     """Return a cheap checkout fingerprint without spawning git."""
+    runtime = sys.modules.get("standalone.runtime")
+    if runtime is not None and runtime.is_active_bundle(repo_root):
+        return "bundle:" + runtime.current_bundle()["bundle_sha256"]
     git_dir = repo_root / ".git"
     try:
         if git_dir.is_file():
@@ -3492,36 +3497,8 @@ def main():
 
     install_truststore()
 
-    # Sweep stale ``hermes.exe.old.*`` quarantine files from previous Windows
-    # updates. No-op elsewhere.
-    try:
-        _cleanup_quarantined_exes()
-    except Exception:
-        pass
-
-    # Checkout changed since last launch → sweep stale __pycache__ once so no
-    # process resolves fresh source against old bytecode. Never raises.
-    _sweep_stale_bytecode_if_checkout_changed()
-
-    _recover_update_debts_on_startup()  # owed fleet restarts, gateways a killed update paused
-
-    if _first_positional_argv() != "update":
-        from hermes_cli.boot_bootstrap import maybe_run_boot_bootstrap
-        from pm.paths import install_root
-        maybe_run_boot_bootstrap(install_root())
-
-    # Every dispatch, including fast chat/serve, gets one passive PM verdict.
-    try:
-        from hermes_cli.venv_sync import check_runtime
-        from pm.paths import install_root
-
-        problem = check_runtime(install_root())
-        if problem:
-            print(f"⚠ {problem}", file=sys.stderr)
-    except Exception:
-        import logging
-
-        logging.getLogger(__name__).debug("pm startup check failed", exc_info=True)
+    from hermes_cli.main_install_repair import prepare_installation_startup
+    prepare_installation_startup()
 
     if _try_termux_fast_tui_launch():
         return

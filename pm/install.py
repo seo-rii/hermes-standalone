@@ -121,6 +121,10 @@ def installed_package(name: str, *, allow_outdated: bool = False) -> InstalledPa
     package = get_package(name)
     if package.internal:
         raise ValueError(f"{name} is internal PM tooling, not an application package")
+    from standalone.packages import active
+    if active():
+        # Embedded Python modules are not PM store entries or executables.
+        return None
     target = current_target()
     location = _installed_location(package, _lockfile(), target, allow_outdated=allow_outdated)
     if location is None:
@@ -140,6 +144,9 @@ def uv_launcher(name: str) -> Path | None:
     work still goes through PM operations, not this executable."""
     if name not in ("uv", "uvx"):
         raise ValueError(f"{name!r} is not a uv launcher")
+    from standalone.packages import active
+    if active():
+        return None
     package = get_package("uv")
     target = current_target()
     location = _installed_location(package, _lockfile(), target)
@@ -172,6 +179,10 @@ def lazy_installs_allowed() -> bool:
     """
     import os
 
+    from standalone.packages import active
+    if active():
+        return False
+
     if os.environ.get("HERMES_DISABLE_LAZY_INSTALLS", "").strip().lower() in (
         "1",
         "true",
@@ -200,6 +211,10 @@ def enabled_extras() -> list[str]:
 
 
 def is_installed(name: str) -> bool:
+    from standalone.packages import active
+    if active():
+        get_package(name)  # Preserve rejection of unknown package names.
+        return False
     return _installed_location(get_package(name), _lockfile(), current_target()) is not None
 
 
@@ -578,6 +593,9 @@ def ensure(
 def env_for(*names: str, base_env: Optional[dict] = None) -> dict[str, str]:
     """Composed env of already-installed packages only. Never installs,
     never raises on missing packages — they contribute nothing."""
+    from standalone.packages import active
+    if active():
+        return compose_env([], base=base_env)
     lockfile = _lockfile()
     target = current_target()
     diffs: list[dict] = []
@@ -1003,6 +1021,10 @@ def store_first_path(path: str) -> str:
     """``path`` with the installed store's tool dirs moved to the front, for
     Hermes's own children whose PATH gets other dirs prepended after activate."""
     import os
+
+    from standalone.packages import active
+    if active():
+        return path
 
     dirs = _store_path_dirs()
     if not dirs:

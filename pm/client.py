@@ -98,6 +98,9 @@ def _raise_worker_error(error: dict):
 
 
 def _request(operation, arguments, *, callbacks=None, pause_event=None, project_root=None):
+    from standalone.packages import active, refuse_install
+    if active():
+        refuse_install("pm")
     from pm import receipt
     from pm.registry import package_definitions
 
@@ -189,6 +192,9 @@ def _request(operation, arguments, *, callbacks=None, pause_event=None, project_
 
 def ensure(name, *, base_env=None, explicit=False, verify=True, progress=None, pause_event=None,
            download_progress=None) -> Runner:
+    from standalone.packages import active, refuse_install
+    if active():
+        refuse_install(name)
     from pm.install import env_for
     from pm.registry import get_package
 

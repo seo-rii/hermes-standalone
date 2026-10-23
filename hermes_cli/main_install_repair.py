@@ -14,6 +14,33 @@ from hermes_cli import _early_recovery as _early_recovery_mod
 logger = logging.getLogger("hermes_cli.main")
 
 
+def prepare_installation_startup() -> None:
+    """Maintain mutable source installations; verified bundles already own their runtime."""
+    from hermes_cli import main
+
+    if main._standalone_bundle:
+        return
+    try:
+        main._cleanup_quarantined_exes()
+    except Exception:
+        pass
+    main._sweep_stale_bytecode_if_checkout_changed()
+    main._recover_update_debts_on_startup()
+    if main._first_positional_argv() != "update":
+        from hermes_cli.boot_bootstrap import maybe_run_boot_bootstrap
+        from pm.paths import install_root
+        maybe_run_boot_bootstrap(install_root())
+    try:
+        from hermes_cli.venv_sync import check_runtime
+        from pm.paths import install_root
+
+        problem = check_runtime(install_root())
+        if problem:
+            print(f"⚠ {problem}", file=sys.stderr)
+    except Exception:
+        logger.debug("pm startup check failed", exc_info=True)
+
+
 def _pyproject_project(debug_fmt: str | None = None) -> dict | None:
     """``[project]`` table of pyproject.toml, or ``None`` when absent/unreadable."""
     from hermes_cli.main import PROJECT_ROOT
