@@ -13,6 +13,8 @@ import pytest
 
 @pytest.fixture(autouse=True)
 def _isolate_home(tmp_path, monkeypatch):
+    # These cases exercise the preserved source install's external-tool branch.
+    monkeypatch.setattr("agent.sdk_boundary.bundled", lambda: False)
     hermes_home = tmp_path / ".hermes"
     hermes_home.mkdir()
     monkeypatch.setenv("HERMES_HOME", str(hermes_home))

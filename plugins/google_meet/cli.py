@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import argparse
 import contextlib
-import importlib.util
 import json
 import platform
 import shutil
@@ -99,16 +98,21 @@ def _cmd_setup() -> int:
     system = platform.system()
     system_ok = system in {"Linux", "Darwin"}
     print(f"  platform       : {system}  [{'ok' if system_ok else 'unsupported'}]")
-    pw_ok = importlib.util.find_spec("playwright") is not None
-    print("  playwright     : " + ("installed" if pw_ok else "NOT installed — run: hermes meet install"))
-    chromium_ok, chromium_msg = False, "unknown"
+    from agent.sdk_boundary import bundled
+    from plugins.google_meet.browser_boundary import chromium, available
+    pw_ok = available()
+    if bundled():
+        print("  browser driver : bundled CDP pipe")
+    else:
+        print("  playwright     : " + ("installed" if pw_ok else "NOT installed — run: hermes meet install"))
+    chromium_ok = False
+    chromium_msg = "select an existing Chromium with AGENT_BROWSER_EXECUTABLE_PATH" if bundled() else "unknown"
     if pw_ok:
         try:
-            from playwright.sync_api import sync_playwright
-            with sync_playwright() as p:
-                exe = chromium_executable() or p.chromium.executable_path
+            with chromium() as engine:
+                exe = chromium_executable() or engine.executable_path
             chromium_ok = bool(exe and Path(exe).exists())
-            chromium_msg = f"ok ({exe})" if chromium_ok else "not installed — run: hermes meet install"
+            chromium_msg = f"ok ({exe})" if chromium_ok else "select an existing Chromium with AGENT_BROWSER_EXECUTABLE_PATH" if bundled() else "not installed — run: hermes meet install"
         except Exception as e:
             chromium_msg = f"probe failed: {e}"
     print(f"  chromium       : {chromium_msg}")
@@ -128,6 +132,13 @@ def _cmd_install(*, realtime: bool, assume_yes: bool) -> int:
     if system not in {"Linux", "Darwin"}:
         print(f"google_meet install: {system} is not supported (linux/macos only)")
         return 1
+    from agent.sdk_boundary import bundled
+    if bundled():
+        print("The standalone Meet browser driver is embedded. Select an existing Chromium "
+              "with AGENT_BROWSER_EXECUTABLE_PATH. Runtime dependency downloads are disabled.")
+        if realtime:
+            print("Realtime uses the host's existing virtual audio routing; no system packages are installed.")
+        return _cmd_setup()
 
     def _install_pkgs(prompt: str, cmd: list[str], fail_msg: str) -> None:
         """Confirm (unless --yes) then run a package-manager command, reporting failure."""
@@ -195,7 +206,8 @@ def _cmd_install(*, realtime: bool, assume_yes: bool) -> int:
 def _cmd_auth() -> int:
     """Open a headed Chromium, let the user sign in, save storage_state."""
     try:
-        from playwright.sync_api import sync_playwright
+        from plugins.google_meet.browser_boundary import chromium
+        engine = chromium()
     except ImportError:
         print("playwright is not installed. Run: hermes meet install")
         return 1
@@ -204,8 +216,8 @@ def _cmd_auth() -> int:
     print("opening Chromium — sign in to Google, then return here and press Enter.\n"
           f"saving storage state to: {path}")
     try:
-        with sync_playwright() as pw:
-            browser = pw.chromium.launch(
+        with engine as chromium_browser:
+            browser = chromium_browser.launch(
                 channel="chromium", executable_path=chromium_executable(), headless=False,
             )
             context = browser.new_context()

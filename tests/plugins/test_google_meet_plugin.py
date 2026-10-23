@@ -329,6 +329,8 @@ def test_pcm_pump_receives_audio_appended_after_start(tmp_path, monkeypatch):
     import time
 
     from plugins.google_meet import meet_bot
+    # This canonical case covers the source install's paplay stdin transport.
+    monkeypatch.setattr("agent.sdk_boundary.bundled", lambda: False)
 
     pcm, sink = tmp_path / "speaker.pcm", tmp_path / "device.bin"
     pcm.write_bytes(b"")
@@ -398,6 +400,7 @@ def test_realtime_session_cancel_response_when_disconnected():
 @pytest.mark.platforms("linux", "macos")
 def test_cmd_install_uses_declared_dependencies_and_pm_chromium(monkeypatch, capsys):
     import pm
+    monkeypatch.setattr("agent.sdk_boundary.bundled", lambda: False)
 
     calls = []
     monkeypatch.setattr(pm, "sync_venv", lambda extras, **kwargs: calls.append(("sync", extras, kwargs)))
@@ -416,6 +419,7 @@ def test_cmd_install_uses_declared_dependencies_and_pm_chromium(monkeypatch, cap
 @pytest.mark.platforms("linux", "macos")
 def test_cmd_install_reports_dependency_failure(monkeypatch, capsys):
     import pm
+    monkeypatch.setattr("agent.sdk_boundary.bundled", lambda: False)
 
     def fail(*args, **kwargs):
         raise RuntimeError("dependency resolution failed")

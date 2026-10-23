@@ -16,12 +16,12 @@ from plugins.google_meet import process_manager as pm
 
 
 def check_meet_requirements() -> bool:
-    """True when the plugin can run LOCALLY: Linux/macOS + importable ``playwright``.
+    """True when the plugin can run locally with its selected browser boundary.
     Remote-node operation only needs ``websockets``; handlers relax this gate when a node is addressed."""
-    import importlib.util
     import platform as _p
+    from plugins.google_meet.browser_boundary import available
     return (_p.system().lower() in {"linux", "darwin"}
-            and importlib.util.find_spec("playwright") is not None)
+            and available())
 
 
 def resolve_node(node: str):

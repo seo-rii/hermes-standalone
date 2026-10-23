@@ -30,6 +30,7 @@ class AudioBridge:
         self._device_name: Optional[str] = None
         self._write_target: Optional[str] = None
         self._module_ids: list[int] = []
+        self._native = None
 
     def _ready(self, value: Optional[str]) -> str:
         if not value:
@@ -41,6 +42,13 @@ class AudioBridge:
 
     def setup(self) -> dict:
         """Provision the device; raises RuntimeError on unsupported platforms or missing tools."""
+        from agent.sdk_boundary import bundled
+        if bundled():
+            from standalone.meet_audio import NativeBridge
+            self._native = NativeBridge(self._name_prefix)
+            info = self._native.setup()
+            self._finish(info["platform"], info["device_name"], info["write_target"], info["module_ids"])
+            return info
         system = platform.system()
         impl = {"Linux": self._setup_linux, "Darwin": self._setup_darwin}.get(system)
         if impl is None:
@@ -50,6 +58,12 @@ class AudioBridge:
 
     def teardown(self) -> None:
         """Release the virtual audio device. Idempotent; never raises."""
+        if self._native is not None:
+            native, self._native = self._native, None
+            with contextlib.suppress(OSError):
+                native.close()
+            self._module_ids = []
+            return
         for mod_id in reversed(self._module_ids):  # linux only; virtual-source before null-sink
             with contextlib.suppress(Exception):
                 _pactl("unload-module", str(mod_id), check=False)

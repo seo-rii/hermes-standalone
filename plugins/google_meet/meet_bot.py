@@ -223,6 +223,15 @@ def _start_pcm_pump(rt: dict, bridge_info: dict, pcm_path: Path, state: _BotStat
     """Stream the growing ``speaker.pcm`` (24kHz s16le mono) into the device Chrome's fake mic reads.
     The pump reads raw PCM from stdin (``-``) so audio appended after start-up is still played —
     pointed at the file it would read the empty sink to EOF and exit before Realtime spoke."""
+    from agent.sdk_boundary import bundled
+    if bundled():
+        from standalone.meet_audio import NativePump
+        try:
+            rt["native_pcm_pump"] = NativePump(bridge_info or {}, pcm_path, state, stop_flag)
+        except (OSError, ValueError) as error:
+            state.set(error="native Meet PCM pump failed to start: " + str(error), realtime_ready=False)
+            return False
+        return True
     bridge_info = bridge_info or {}
     platform_tag = bridge_info.get("platform")
     target = bridge_info.get("write_target")
@@ -285,8 +294,12 @@ def _start_realtime_speaker(rt: dict, cfg: _BotConfig, stop_flag: dict, state: _
 
     rt["speaker_thread"] = threading.Thread(target=_speaker_loop, name="meet-speaker", daemon=True)
     rt["speaker_thread"].start()
-    _start_pcm_pump(rt, rt["bridge_info"], pcm_path, state, stop_flag)
+    # A native worker can report a device error as soon as it starts. Publish
+    # readiness first so that asynchronous failure cannot be overwritten here.
     state.set(realtime_ready=True)
+    if _start_pcm_pump(rt, rt["bridge_info"], pcm_path, state, stop_flag) is False:
+        state.set(realtime_ready=False)
+        return
 
 
 def _mac_audio_device_index(device_name: str) -> str:
@@ -319,11 +332,14 @@ def _setup_realtime(rt: dict, api_key: str, state: _BotState) -> None:
 
 
 def _teardown_realtime(rt: dict) -> None:
+    if rt.get("native_pcm_pump"):
+        _quiet(rt["native_pcm_pump"].terminate)
+        _quiet(rt["native_pcm_pump"].wait, timeout=3)
     if rt.get("pcm_pump"):
         _quiet(rt["pcm_pump"].terminate)
         _quiet(rt["pcm_pump"].wait, timeout=3)
-    for key, method, kw in (("pcm_tail_thread", "join", {"timeout": 1.0}),
-                            ("speaker_thread", "join", {"timeout": 5.0}), ("session", "close", {}),
+    for key, method, kw in (("session", "close", {}), ("pcm_tail_thread", "join", {"timeout": 1.0}),
+                            ("speaker_thread", "join", {"timeout": 5.0}),
                             ("bridge", "teardown", {})):
         if rt.get(key) is not None:
             _quiet(getattr(rt[key], method), **kw)
@@ -454,7 +470,8 @@ def run_bot() -> int:
     if rt["enabled"]:
         _setup_realtime(rt, cfg.realtime_api_key, state)
     try:
-        from playwright.sync_api import sync_playwright
+        from plugins.google_meet.browser_boundary import chromium
+        engine = chromium()
     except ImportError as e:
         state.set(error=f"playwright not installed: {e}", exited=True)
         sys.stderr.write("google_meet bot: playwright is not installed. Run "
@@ -472,8 +489,8 @@ def run_bot() -> int:
     if cfg.auth_state and Path(cfg.auth_state).is_file():
         context_args["storage_state"] = cfg.auth_state
     try:
-        with sync_playwright() as pw:
-            browser = pw.chromium.launch(
+        with engine as chromium_browser:
+            browser = chromium_browser.launch(
                 channel="chromium", executable_path=chromium_executable(),
                 headless=not cfg.headed, args=chrome_args,
             )
@@ -499,12 +516,14 @@ def run_bot() -> int:
             _quiet(page.evaluate, _LEAVE_CALL_JS)
             context.close()
             browser.close()
-            _teardown_realtime(rt)
             state.set(in_call=False, captioning=False, exited=True)
             return 0
     except Exception as e:
         state.set(error=f"unhandled: {e}", exited=True)
         return 1
+    finally:
+        stop_flag["stop"] = True
+        _teardown_realtime(rt)
 
 
 def _looks_like_human_speaker(speaker: str, bot_guest_name: str) -> bool:
