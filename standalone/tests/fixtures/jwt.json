@@ -1,0 +1,261 @@
+{
+  "oracle": "cryptography 38.0.4 using public tlslite test RSA key and deterministic EC/Ed keys; fixture generation only",
+  "cases": [
+    {
+      "algorithm": "RS256",
+      "jwk": {
+        "kty": "RSA",
+        "n": "5jP7Zqv9vzdGMqgW9gbtl9_s3QFPupZ1LM_qTTevZzNtGjT4vUB-HpMsbP8fro9-2ZcNoQ8AOaYnwOOJBbTl5MNXseJUtccbVgrhrtWF0w4MUtSNXXDWuKnWL8JYARssdk9BnSA3ht7FjVjsdjlwXlusJtEUcalIciPUl2jfMkFrAmmoz2ccPPTidV2kkoVq3w9sausZkGFemD-inCDkZUBttWugbw23sBN4jNjhgJpRL_2uzsnSpXq1q3N6BQQaDpoJ2y7gWsZAUDb9FEK0QXwfkDqA93BN7HgI5H5FVdtpZSeXDJ9NGMBUXbEWJYDRZKEt5NuWLEzG_japRmJ0dQ",
+        "e": "AQAB",
+        "kid": "fixture-RS256",
+        "alg": "RS256",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZpeHR1cmUtUlMyNTYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.HRixskmVlxCHPmGJ1Q2Fc2_qHr75bldEUNA8yLhZTXxhJt1SD8QO3l1e_1fqyNPwm8cInD9DIm94VcDp1jb6MRXAB9dmsX6moOCUcGEwHMLIyUPbL6yu8EZVrP7rfy0IICpC4BR2eCUlPAczPP4aPmVuXVibb6o88-GmD0aM8V7-3Ex3UIuH4YeFAJQf7PcsVkdD6S3d5H8Dpo7NRMxBZiW6k9emTPM7JFzb4YQ2oNfXg1Z0qEDsXes70luYAQWILu-fQHAHrLq-zvSEOJ4Y6RS7x1CtaoeT17vKBje-qSEjXb86v0fPGxa6Nk0Ds0d90nUfWIJ3x_InlCPcaDaBMg",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    },
+    {
+      "algorithm": "PS256",
+      "jwk": {
+        "kty": "RSA",
+        "n": "5jP7Zqv9vzdGMqgW9gbtl9_s3QFPupZ1LM_qTTevZzNtGjT4vUB-HpMsbP8fro9-2ZcNoQ8AOaYnwOOJBbTl5MNXseJUtccbVgrhrtWF0w4MUtSNXXDWuKnWL8JYARssdk9BnSA3ht7FjVjsdjlwXlusJtEUcalIciPUl2jfMkFrAmmoz2ccPPTidV2kkoVq3w9sausZkGFemD-inCDkZUBttWugbw23sBN4jNjhgJpRL_2uzsnSpXq1q3N6BQQaDpoJ2y7gWsZAUDb9FEK0QXwfkDqA93BN7HgI5H5FVdtpZSeXDJ9NGMBUXbEWJYDRZKEt5NuWLEzG_japRmJ0dQ",
+        "e": "AQAB",
+        "kid": "fixture-PS256",
+        "alg": "PS256",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJQUzI1NiIsImtpZCI6ImZpeHR1cmUtUFMyNTYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.09mYC2qGlzHLQSjGBdsa00vpNVY_3_po2kNwUl2lTzNE6WcOA9ycyU4UeDLQNnZCqSK4b8DbQtMG175z2RFxooabZS-9_ErXcr1V4XJbGRZI3vIyEDX7K_VwWTgubEaW7LVhlxAKb4W3e22ZRVRvBOC2zzCGGoGtkvhAb9wy840Af-oYv48qnJRRq012v8KtuW81d37MpOpEUa3g1QRIb6WTyzj-YqjpSagkps7unq5bhE1Rh2KmvRN-M3QtoTqBphQNxKLKCy6j9PqSakRxbOGpWgWynobIbOuHyzO_jqlxQLd04rrhZKslws9MyedA3fgdgs7dxE9_bvGk863AMA",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    },
+    {
+      "algorithm": "RS384",
+      "jwk": {
+        "kty": "RSA",
+        "n": "5jP7Zqv9vzdGMqgW9gbtl9_s3QFPupZ1LM_qTTevZzNtGjT4vUB-HpMsbP8fro9-2ZcNoQ8AOaYnwOOJBbTl5MNXseJUtccbVgrhrtWF0w4MUtSNXXDWuKnWL8JYARssdk9BnSA3ht7FjVjsdjlwXlusJtEUcalIciPUl2jfMkFrAmmoz2ccPPTidV2kkoVq3w9sausZkGFemD-inCDkZUBttWugbw23sBN4jNjhgJpRL_2uzsnSpXq1q3N6BQQaDpoJ2y7gWsZAUDb9FEK0QXwfkDqA93BN7HgI5H5FVdtpZSeXDJ9NGMBUXbEWJYDRZKEt5NuWLEzG_japRmJ0dQ",
+        "e": "AQAB",
+        "kid": "fixture-RS384",
+        "alg": "RS384",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJSUzM4NCIsImtpZCI6ImZpeHR1cmUtUlMzODQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.rvYDcu0ajTkt7KW5ulGFnpIl4CLzTMj8twgr9io2AW6KJxNu3XciGAti5Q-F94hZEIWhX-FMarvvQoviS08LUfPzxImMJamVhdE3TRkn4rnaMqQAKbDF-QoK4wAsn2rAAclheaVFB8JMhOXzDEDaRGPml4FiCrM8ioiPv4icVPxBO1dFcK-bCi3JIxuO4dgg_vZFPHMONgiDWyeskaO2XQZb_zKFhL3YKcX6K1Ky4ajSsViXUp8rUo2Qi5QfohkpqwDG9RyrasDkwscRKhVzMveZDd8ZLXZTaiTgAyqzsRiPGlGOYc1znKD6RKos048z0uUpq8iTZCFTTQLZzj4qUQ",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    },
+    {
+      "algorithm": "PS384",
+      "jwk": {
+        "kty": "RSA",
+        "n": "5jP7Zqv9vzdGMqgW9gbtl9_s3QFPupZ1LM_qTTevZzNtGjT4vUB-HpMsbP8fro9-2ZcNoQ8AOaYnwOOJBbTl5MNXseJUtccbVgrhrtWF0w4MUtSNXXDWuKnWL8JYARssdk9BnSA3ht7FjVjsdjlwXlusJtEUcalIciPUl2jfMkFrAmmoz2ccPPTidV2kkoVq3w9sausZkGFemD-inCDkZUBttWugbw23sBN4jNjhgJpRL_2uzsnSpXq1q3N6BQQaDpoJ2y7gWsZAUDb9FEK0QXwfkDqA93BN7HgI5H5FVdtpZSeXDJ9NGMBUXbEWJYDRZKEt5NuWLEzG_japRmJ0dQ",
+        "e": "AQAB",
+        "kid": "fixture-PS384",
+        "alg": "PS384",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJQUzM4NCIsImtpZCI6ImZpeHR1cmUtUFMzODQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.d7FAEGrslwj5L3xf0goNV8_9EzhVk2AhWXk6uA4urZQGLIaDSia4wfneahPcr5-NwDjhz94-BaxL7CBSZgsaETq85Cx32oT3yQrHWmbNp_gL1bKqV2fbluLP4RrcnjqnJv1mcuhEJvswjzIs6mJvLZdQojtW97IH1zpccj75D4JqjfZQ9jn0o-mi-JQEJR-oPGflUFw6T2sGKiiYdrHzKmjN5JuB6KBosEvU6Yi6yo8mVlyrvpFPuodsmt13bJoy_PTUliKT_4bbAFpTZnOUPJofXXL754dRdBRpggaioxEXqG6nm76qxEfsx8AXX4Lt2qizB3417LyWG2aSH_o1_g",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    },
+    {
+      "algorithm": "RS512",
+      "jwk": {
+        "kty": "RSA",
+        "n": "5jP7Zqv9vzdGMqgW9gbtl9_s3QFPupZ1LM_qTTevZzNtGjT4vUB-HpMsbP8fro9-2ZcNoQ8AOaYnwOOJBbTl5MNXseJUtccbVgrhrtWF0w4MUtSNXXDWuKnWL8JYARssdk9BnSA3ht7FjVjsdjlwXlusJtEUcalIciPUl2jfMkFrAmmoz2ccPPTidV2kkoVq3w9sausZkGFemD-inCDkZUBttWugbw23sBN4jNjhgJpRL_2uzsnSpXq1q3N6BQQaDpoJ2y7gWsZAUDb9FEK0QXwfkDqA93BN7HgI5H5FVdtpZSeXDJ9NGMBUXbEWJYDRZKEt5NuWLEzG_japRmJ0dQ",
+        "e": "AQAB",
+        "kid": "fixture-RS512",
+        "alg": "RS512",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJSUzUxMiIsImtpZCI6ImZpeHR1cmUtUlM1MTIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.zRW4VCaPnrtg7o0nxUJ9OCwta9R3tPMSOe5Nog-JS_f4oZszjZCpvBIClx1ZB9XyCyG7Sox4jEs_gomVUotyaoVm5nwfXbGKffwIOBbSawHLaaCDRgNC0IN9TP5qwXr0XixJBq5Rvopmg4sqFUW7O-GbRUFn3KozrmvvQby_pj6TROlXy7XpR9aJka_W28fcM1zb33TvOOnyUwq_xSTrAvXRwL5NGMxhapNOce5J-JY4PLPO8oYzX9HwV-FGX0wpFk3Y0m1FGBcbRrufZb8WGA8xqLQQVGX-SlrkDjOS0a-gr-m418SDdEuiWed7J1DufCeRDUmNrTMy4brWz1ofIQ",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    },
+    {
+      "algorithm": "PS512",
+      "jwk": {
+        "kty": "RSA",
+        "n": "5jP7Zqv9vzdGMqgW9gbtl9_s3QFPupZ1LM_qTTevZzNtGjT4vUB-HpMsbP8fro9-2ZcNoQ8AOaYnwOOJBbTl5MNXseJUtccbVgrhrtWF0w4MUtSNXXDWuKnWL8JYARssdk9BnSA3ht7FjVjsdjlwXlusJtEUcalIciPUl2jfMkFrAmmoz2ccPPTidV2kkoVq3w9sausZkGFemD-inCDkZUBttWugbw23sBN4jNjhgJpRL_2uzsnSpXq1q3N6BQQaDpoJ2y7gWsZAUDb9FEK0QXwfkDqA93BN7HgI5H5FVdtpZSeXDJ9NGMBUXbEWJYDRZKEt5NuWLEzG_japRmJ0dQ",
+        "e": "AQAB",
+        "kid": "fixture-PS512",
+        "alg": "PS512",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJQUzUxMiIsImtpZCI6ImZpeHR1cmUtUFM1MTIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.4zMJTr5KccmH2_iyDmXGSokuVjmQ-aTRodW8DLzCT6b2UipbXrK9K43dBGyL9GKF69-31MV5ZQSEj-caZyJJBUmna60cft6I_kd3rKTgEovVcZRqTn7zy27GhKNYmo4t3nS3ogLJl-DU7wYvxDNnbq3u9BjCvtf5zJ1QXHB1ZndSFqUqO02vJgZpZjOdU1q2E4qnDqmSPH6XjufU5ruiSZNPyTW_L129zWQyam5oDhFr0YHVM4IvUsWMg7JGNXvxZIsCk1ZXgrXfMBvChBCfCpdAztVVo5umvL06mLhjXNPNWOl6DLC-NjCYk0Ir8rxqG_VqPy_BgLrHsHdcvUDHBg",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    },
+    {
+      "algorithm": "ES256",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-256",
+        "x": "jlM7b6C_e0YluzBmfAH7YH75-LioD-9bMAYocDGHsqM",
+        "y": "c-sdveAzGDZtBp-DpvWQAFPHNjPLBBshxV4ahsH0ALQ",
+        "kid": "fixture-ES256",
+        "alg": "ES256",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImZpeHR1cmUtRVMyNTYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.zHtr7aKNbqbIKp8x21Crcc2OZMvF1ge9UgcY3WZTnZ97H9lvd9Dv2w8hsellz5CodsWhoH20LhP_UmfltQyYYA",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    },
+    {
+      "algorithm": "ES384",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-384",
+        "x": "KDwdc2XOR4jyn46_I07f_q1v6Zf76l_6LVjMnfp7HFCLBVJvVbnrsgQPBbSPttDh",
+        "y": "lHXJkGHkG4i6Uu_bjBaQRxph2GfteZcp2cks0B29IlYw2E7eMqePnmRmTNrFEu-M",
+        "kid": "fixture-ES384",
+        "alg": "ES384",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJFUzM4NCIsImtpZCI6ImZpeHR1cmUtRVMzODQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.tAeuaBqoplAa3jo9AYMn0TMFc0B2kQLZ-7AVOsb6Urwo6Zqohey_3zjp5bUVX6oUBOp-QZ9RdFXX1y45vG_RJXFpFBAw_MGctU5WoOulX-znBHEKDBW5-UW5nzXBX0dW",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    },
+    {
+      "algorithm": "ES512",
+      "jwk": {
+        "kty": "EC",
+        "crv": "P-521",
+        "x": "AFbV0dmdW39jRu62X9oLBzoMXyLg6PVIMijwGNLC9xFMXYwwjQq_xpjYyabfMNzju8RvlT9Q_cJhmgHOrYgoFuzU",
+        "y": "AD0tG32bqqKhENHYMXo51oR4tcWC0Cgk8N1x29mKJsveVWvQ8pPN7J4rlSOjRZHOGl-ednEqXd78e1xri8kFJSUb",
+        "kid": "fixture-ES512",
+        "alg": "ES512",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJFUzUxMiIsImtpZCI6ImZpeHR1cmUtRVM1MTIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.Aap5f8oFCFsmCF4pOt4L9pcoECt4sp-GNhlDqpMEg3VCh1nC6j9chsqilNcAhdDSwq0Ia2dBStn-0kNA4xf-xsSBAfrr9x7cQjB98q1D3k8bkLMTKBfRipfxYrxUW-JwfQCUwGDtt24ct-dZNVH7H9VirDck00-JLuMn-mnnvIUX7fEc",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    },
+    {
+      "algorithm": "ES256K",
+      "jwk": {
+        "kty": "EC",
+        "crv": "secp256k1",
+        "x": "XL3wZG5dtOqjmPNl8up6Dj1Bm34DMOOc6Svd7crE-bw",
+        "y": "auvKQLolWWCjF41thhpU26gT0LgT_ee1pQgmKAhyZNo",
+        "kid": "fixture-ES256K",
+        "alg": "ES256K",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJFUzI1NksiLCJraWQiOiJmaXh0dXJlLUVTMjU2SyIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.dYaV8cFoy44H4E55L55Aq0etteKT-41vplSC_1EQMnp8HE_LswbR1AaMF_UvtIFUtFxlhLBkb8-HUcYh1Ha9Zw",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    },
+    {
+      "algorithm": "EdDSA",
+      "jwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "kid": "fixture-EdDSA",
+        "alg": "EdDSA",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6ImZpeHR1cmUtRWREU0EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.Gp2P-sMH58BbxOd-omFBNI7goLJMsspn5lCbxN85SyXJlPLa9LrbvQ11vEIyd808GU2Ss01I3U5rhmIf5o_jDA",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    },
+    {
+      "algorithm": "EdDSA",
+      "jwk": {
+        "kty": "OKP",
+        "crv": "Ed448",
+        "x": "GNCnDkKnQt-1YSeYkzhQYde02tj2_u1HkeqrZrL0pPAvwJRiqL-xhC0LrGDoobPlW6JAfzMibzgA",
+        "kid": "fixture-EdDSA",
+        "alg": "EdDSA",
+        "use": "sig"
+      },
+      "token": "eyJhbGciOiJFZERTQSIsImtpZCI6ImZpeHR1cmUtRWREU0EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJmaXh0dXJlLWlzc3VlciIsImF1ZCI6ImZpeHR1cmUtYXVkaWVuY2UiLCJzdWIiOiJmaXh0dXJlLXN1YmplY3QiLCJpYXQiOjAsIm5iZiI6MCwiZXhwIjo0MTAyNDQ0ODAwLCJwdXJwb3NlIjoiY3Jvbl9maXJlIn0.u2EPrraqsAsG07eJl8WV9zPC6wnSIzVzPPV_dvkKGJrVsKgZ5lqUMhSQfdpCZBqicaj6Z71BqmAA2lJBe8chQfdDcVcpAFGc7HbVgA4ax402af9c-IAferWG7ttLR_-M7idFokQsRKm6Z0IGY6XPFRYA",
+      "claims": {
+        "iss": "fixture-issuer",
+        "aud": "fixture-audience",
+        "sub": "fixture-subject",
+        "iat": 0,
+        "nbf": 0,
+        "exp": 4102444800,
+        "purpose": "cron_fire"
+      }
+    }
+  ]
+}

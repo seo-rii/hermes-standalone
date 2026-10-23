@@ -111,15 +111,11 @@ def _b64e(raw: bytes) -> str:
 
 
 def _derive_encrypted_cache_key(access_token: str, salt: bytes) -> bytes:
-    """HKDF the local cache key from the bootstrap BWS token. cryptography is imported
-    lazily: eagerly mapping ``_rust.pyd`` on Windows blocks the updater replacing it."""
-    # Keep the native cryptography extension lazy. Most CLI commands import this module while building
-    # argparse, even though only encrypted-cache reads/writes need it. See #73381.
-    from cryptography.hazmat.primitives import hashes
-    from cryptography.hazmat.primitives.kdf.hkdf import HKDF
+    """Derive the unchanged cache key lazily, preserving normal-install DLL lifetime."""
+    from standalone.crypto_backend import hkdf_sha256
 
-    return HKDF(algorithm=hashes.SHA256(), length=32, salt=salt,
-                info=_ENCRYPTED_CACHE_INFO).derive(access_token.encode("utf-8"))
+    return hkdf_sha256(access_token.encode("utf-8"), length=32, salt=salt,
+                       info=_ENCRYPTED_CACHE_INFO)
 
 
 def _write_encrypted_disk_cache(*, cache_key: _CacheKey, access_token: str, entry: _CachedFetch,
@@ -127,7 +123,9 @@ def _write_encrypted_disk_cache(*, cache_key: _CacheKey, access_token: str, entr
     """Persist an AES-GCM encrypted last-good entry atomically (best-effort). The raw
     token only derives the key; a successful write removes the legacy plaintext cache."""
     try:
-        from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        from standalone.crypto_backend import aes_gcm_type
+
+        AESGCM = aes_gcm_type()
 
         salt = os.urandom(16)
         nonce = os.urandom(12)
@@ -151,7 +149,9 @@ def _read_encrypted_disk_cache(*, cache_key: _CacheKey, access_token: str, max_a
     if max_age_seconds <= 0:
         return None
     try:
-        from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        from standalone.crypto_backend import aes_gcm_type
+
+        AESGCM = aes_gcm_type()
 
         payload = json.loads(_encrypted_disk_cache_path(home_path).read_text(encoding="utf-8-sig"))
         serialized_key = _cache_key_str(cache_key)

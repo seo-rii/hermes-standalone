@@ -246,7 +246,9 @@ class VaultStore:
                             msvcrt.locking(fd.fileno(), msvcrt.LK_UNLCK, 1)
 
     def _fernet(self):
-        from cryptography.fernet import Fernet
+        from standalone.crypto_backend import fernet_types
+
+        Fernet, _ = fernet_types()
 
         self._ensure_dir()
         if not self._key_path.exists():
@@ -274,7 +276,9 @@ class VaultStore:
         blob = self._vault_path.read_bytes()
         if not blob:
             return []
-        from cryptography.fernet import InvalidToken
+        from standalone.crypto_backend import fernet_types
+
+        _, InvalidToken = fernet_types()
 
         try:
             raw = self._fernet().decrypt(blob)

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import hmac
 import os
 import secrets
 import socket
@@ -11,8 +12,7 @@ import struct
 from typing import Optional
 from xml.etree import ElementTree as ET
 
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from standalone.crypto_backend import aes_cbc_decrypt, aes_cbc_encrypt
 
 
 class WeComCryptoError(Exception):
@@ -66,22 +66,20 @@ class WXBizMsgCrypt:
         self.key = base64.b64decode(encoding_aes_key + "=")
         self.iv = self.key[:16]
 
-    def _cipher(self) -> Cipher:
-        return Cipher(algorithms.AES(self.key), modes.CBC(self.iv), backend=default_backend())
-
     def verify_url(self, msg_signature: str, timestamp: str, nonce: str, echostr: str) -> str:
         return self.decrypt(msg_signature, timestamp, nonce, echostr).decode("utf-8")
 
     def decrypt(self, msg_signature: str, timestamp: str, nonce: str, encrypt: str) -> bytes:
-        if _sha1_signature(self.token, timestamp, nonce, encrypt) != msg_signature:
+        if not isinstance(msg_signature, str) or not msg_signature.isascii() or not hmac.compare_digest(
+            _sha1_signature(self.token, timestamp, nonce, encrypt), msg_signature
+        ):
             raise SignatureError("signature mismatch")
         try:
             cipher_text = base64.b64decode(encrypt)
         except Exception as exc:
             raise DecryptError(f"invalid base64 payload: {exc}") from exc
         try:
-            decryptor = self._cipher().decryptor()
-            content = PKCS7Encoder.decode(decryptor.update(cipher_text) + decryptor.finalize())[16:]  # skip 16-byte random prefix
+            content = PKCS7Encoder.decode(aes_cbc_decrypt(self.key, self.iv, cipher_text))[16:]  # skip 16-byte random prefix
             xml_length = socket.ntohl(struct.unpack("I", content[:4])[0])
             xml_content, receive_id = content[4:4 + xml_length], content[4 + xml_length:].decode("utf-8")
         except WeComCryptoError:
@@ -104,8 +102,7 @@ class WXBizMsgCrypt:
     def _encrypt_bytes(self, raw: bytes) -> str:
         try:
             payload = os.urandom(16) + struct.pack("I", socket.htonl(len(raw))) + raw + self.receive_id.encode("utf-8")
-            encryptor = self._cipher().encryptor()
-            return base64.b64encode(encryptor.update(PKCS7Encoder.encode(payload)) + encryptor.finalize()).decode("utf-8")
+            return base64.b64encode(aes_cbc_encrypt(self.key, self.iv, PKCS7Encoder.encode(payload))).decode("utf-8")
         except Exception as exc:
             raise EncryptError(f"encrypt failed: {exc}") from exc
 

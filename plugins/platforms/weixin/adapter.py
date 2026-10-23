@@ -20,12 +20,9 @@ except ImportError:  # pragma: no cover - dependency gate
     aiohttp = None  # type: ignore[assignment]
 AIOHTTP_AVAILABLE = aiohttp is not None
 
-try:
-    from cryptography.hazmat.backends import default_backend
-    from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-except ImportError:  # pragma: no cover - dependency gate
-    default_backend = Cipher = algorithms = modes = None  # type: ignore[assignment]
-CRYPTO_AVAILABLE = Cipher is not None
+from standalone.crypto_backend import aes_ecb_decrypt, aes_ecb_encrypt, available as crypto_available
+
+CRYPTO_AVAILABLE = crypto_available()
 
 from gateway.config import Platform, PlatformConfig
 from gateway.platforms.helpers import MessageDeduplicator, cancel_task, greedy_pack_blocks
@@ -135,14 +132,12 @@ def _pkcs7_pad(data: bytes, block_size: int = 16) -> bytes:
 
 
 def _aes128_ecb_encrypt(plaintext: bytes, key: bytes) -> bytes:
-    encryptor = Cipher(algorithms.AES(key), modes.ECB(), backend=default_backend()).encryptor()
-    return encryptor.update(_pkcs7_pad(plaintext)) + encryptor.finalize()
+    return aes_ecb_encrypt(key, _pkcs7_pad(plaintext))
 
 
 def _aes128_ecb_decrypt(ciphertext: bytes, key: bytes) -> bytes:
     """Decrypt and strip PKCS#7 padding when it is well-formed (else return the raw block output)."""
-    decryptor = Cipher(algorithms.AES(key), modes.ECB(), backend=default_backend()).decryptor()
-    padded = decryptor.update(ciphertext) + decryptor.finalize()
+    padded = aes_ecb_decrypt(key, ciphertext)
     pad_len = padded[-1] if padded else 0
     if 1 <= pad_len <= 16 and padded.endswith(bytes([pad_len]) * pad_len):
         return padded[:-pad_len]
