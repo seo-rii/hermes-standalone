@@ -1,0 +1,99 @@
+{
+  "authoring_oracle": {
+    "implementation": "onnxruntime 1.23.2 CPUExecutionProvider, single threaded with default graph optimization, original faster-whisper vad.py consumers. Only asset-path import selection is changed in the original Python consumer oracle; all neural, threshold, duration, chunk and mapping algorithms remain original.",
+    "native_cache_only": true,
+    "runtime_and_public_tests": "No NumPy, ONNX runtime, native library, download, process or external program is required.",
+    "wheel_sha256": "da44b99206e77734c5819aa2142c69e64f3b46edc3bd314f6a45a932defc0b3e",
+    "wheel_url": "https://files.pythonhosted.org/packages/e9/80/113381ba832d5e777accedc6cb41d10f9eca82321ae31ebb6bcede530cea/onnxruntime-1.23.2-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl"
+  },
+  "fixtures_sha256": {
+    "local_whisper_vad.json": "eebbb1e5a4035c2a4c971011a8bf8d7df17df4a7e9537be978efb6ba83381c9a"
+  },
+  "interfaces": "Audio/probabilities are Python sequences and collected audio uses array(f); upstream NumPy object types are not impersonated.",
+  "licenses": {
+    "faster-whisper": {
+      "file": "licenses/faster-whisper.txt",
+      "sha256": "af6798135e729f8aa6c853936d037dfdea449734d26b8ea6a89805fca758c0d5"
+    },
+    "silero-vad": {
+      "commit": "fba061dc5559f696e62171e9a0741782b0fdc23c",
+      "file": "licenses/silero-vad-MIT.txt",
+      "sha256": "2e63e9a38b6e8fc0c7bc37ce174caca1862870856c6daf5697cfb785e925520b",
+      "url": "https://raw.githubusercontent.com/snakers4/silero-vad/fba061dc5559f696e62171e9a0741782b0fdc23c/LICENSE"
+    },
+    "whisper.cpp-sample": {
+      "file": "licenses/whisper-cpp-MIT.txt",
+      "sha256": "e562a2ddfaf8280537795ac5ecd34e3012b6582a147ef69ba6a6a5c08c84757d",
+      "url": "https://raw.githubusercontent.com/ggml-org/whisper.cpp/a8d002cfd879315632a579e73f0148d06959de36/LICENSE"
+    }
+  },
+  "model": {
+    "architecture": "256-sample STFT learned Fourier basis, magnitude, four Conv1d/ReLU layers, LSTM128, Conv1d/Sigmoid. Original input [sequence,576], h/c [1,1,128].",
+    "asset": "assets/silero_vad_v6.onnx",
+    "bytes": 1245151,
+    "format": "ONNX IR8/opset18, pytorch2.8.0 producer; original embedded float32 tensor data retained unchanged.",
+    "input": "16 kHz float audio; 512-sample windows and previous64 context. The strict reader rejects all other model hashes; no general graph evaluation or executable code loading.",
+    "sha256": "4cbf549b8326f60f80f2536d9eefeb450a9abe83365a098031c89719f1be17d2"
+  },
+  "preserved_behavior": [
+    "All original VadOptions and threshold/negative-threshold hysteresis",
+    "Original minimum speech/silence, maximum duration split and neighboring padding behavior",
+    "Unconditional final zero padding, including an extra512 window for aligned or empty input",
+    "Original model context view clears the final window tail64 samples; equivalent input values are used without mutating the caller sequence",
+    "h/c reset at each whole-audio call and continue through every window, without resetting at encoder batch boundaries",
+    "Original collect_chunks audio/metadata behavior and SpeechTimestampsMap boundary rounding"
+  ],
+  "runtime_modules_sha256": {
+    "local_whisper_vad.py": "8e55b19bbdf8f0fdd935f9d5a0933ae824ad1c962158af23d2c711e77d514a65",
+    "local_whisper_vad_model.py": "96c83e73d266da37c41881ecd170f96b055c444ddb6f8cfefe5c1e812df5cc61"
+  },
+  "sample": {
+    "bytes": 352078,
+    "commit": "a8d002cfd879315632a579e73f0148d06959de36",
+    "sha256": "59dfb9a4acb36fe2a2affc14bacbee2920ff435cb13cc314a08c13f66ba7860e",
+    "url": "https://raw.githubusercontent.com/ggml-org/whisper.cpp/a8d002cfd879315632a579e73f0148d06959de36/samples/jfk.wav"
+  },
+  "schema": 1,
+  "scope": "Qualified standard-library inference for the exact faster-whisper 1.2.1 Silero VAD v6 ONNX asset, including recurrent whole-audio state, speech timestamps, chunks and timestamp restoration. This is not a general ONNX runtime or a Whisper speech decoder.",
+  "source": {
+    "commit": "65882eee9f5cdbeeb2d877f1131d48cf241b327d",
+    "project": "faster-whisper",
+    "vad_py_sha256": "37a9c774aefdd3162d936b896c8dcf5571b2ed938d65bffecfd631770049a18d",
+    "version": "1.2.1",
+    "wheel_sha256": "79a66ad50688c0b794dd501dc340a736992a6342f7f95e5811be60b5224a26a7",
+    "wheel_url": "https://files.pythonhosted.org/packages/05/99/49ee85903dee060d9f08297b4a342e5e0bcfca2f027a07b4ee0a38ab13f9/faster_whisper-1.2.1-py3-none-any.whl"
+  },
+  "standards": [
+    "https://onnx.ai/onnx/operators/onnx__LSTM.html",
+    "https://github.com/onnx/onnx/blob/v1.18.0/onnx/onnx.proto"
+  ],
+  "verified": {
+    "chunk_cases": 12,
+    "discrete_segments_chunks_and_timestamp_results": "Exact matches to original faster-whisper consumers, including real model outputs.",
+    "floating_point_scope": "Neural float32 arithmetic is compared within explicit tolerance, not claimed bit-exact across native CPU kernels.",
+    "large_encoder_batch_boundary": {
+      "carried_cell_max_absolute_error": 0.00048828125,
+      "carried_cell_max_error_ulp": 1,
+      "carried_hidden_max_absolute_error": 1.043081283569336e-06,
+      "carried_state_transition_probability_absolute_error": 1.2048985809087753e-08,
+      "native_cell_at_max_error": 6883.6982421875,
+      "original_batch_lengths": [
+        10000,
+        1
+      ],
+      "original_window_count": 10001,
+      "public_state_tolerance": "abs5e-5 + relative1e-6 for the native carried-state boundary; existing short-state tolerance remains abs5e-5."
+    },
+    "max_observed_probability_error": 6.556510925292969e-07,
+    "max_observed_recurrent_state_error": 1.430511474609375e-05,
+    "public_probability_absolute_tolerance": 1e-05,
+    "public_recurrent_absolute_tolerance": 5e-05,
+    "real_speech_samples": 176000,
+    "real_speech_windows": 344,
+    "recurrent_hidden_and_cell_components_per_window": 256,
+    "recurrent_windows": 60,
+    "segmentation_cases": 125,
+    "timestamp_cases": 96,
+    "whole_audio_cases": 5
+  }
+}

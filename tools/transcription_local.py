@@ -101,6 +101,9 @@ def _try_lazy_install_stt() -> bool:
         # prompt mid-session. See #40490.
         import pm
         pm.ensure_import("stt-whisper")
+        from agent.sdk_boundary import bundled
+        if bundled():
+            return pm.available("stt-whisper")
         if _ilu.find_spec("faster_whisper"):
             return True
         logger.warning("faster-whisper was installed but importlib still cannot find it (may require Python restart)")
@@ -172,7 +175,11 @@ def _hub_cache_miss_error() -> type:
 
 def _create_whisper_model(model_name: str, *, device: str, compute_type: str):
     """Use a cached model without contacting the Hub, downloading only on a cache miss."""
-    from faster_whisper import WhisperModel
+    from agent.sdk_boundary import bundled
+    if bundled():
+        from standalone.local_whisper import WhisperModel
+    else:
+        from faster_whisper import WhisperModel
 
     kwargs = {"device": device, "compute_type": compute_type}
     try:

@@ -1,0 +1,151 @@
+{
+  "algorithm_sources_sha256": {
+    "ctranslate2-source/python/ctranslate2/specs/model_spec.py": "565dc4766f3e39e8f78ba994544e9175ae3a7b9e771928b603f5395289a753cb",
+    "ctranslate2-source/python/ctranslate2/specs/whisper_spec.py": "bf1c6b02c1d8188b580b62bd630da07851146d799e1ad72a1585c332a71ad250",
+    "ctranslate2-source/src/layers/whisper.cc": "6230917eea28f7811906ff5d58c5eb5da7239d1a1cdd4ee3b471d3bfa4b5f403",
+    "ctranslate2-source/src/models/model.cc": "5dcc3f1daa0de260c068b4645728a28305b27393f9461e650f45c8db89c707b7",
+    "faster_whisper/feature_extractor.py": "e403966dbc592a53695eea2aea24fa60bab50ef6755e0076b311f907be7a397c",
+    "faster_whisper/tokenizer.py": "614a96b6a9660096e4f4e9fbe8860cd75ad250dce8e85a847998a3d6d48165d2",
+    "tokenizers-source/tokenizers/src/models/bpe/model.rs": "550f2d0fa8f0ecd27013a0787d8343c961e83a724fc09f7d596c695220f72429",
+    "tokenizers-source/tokenizers/src/models/bpe/word.rs": "42a5547426082590675979ed72e03ce59a16f7cf0b57aaac6890d43ce0a79ad0",
+    "tokenizers-source/tokenizers/src/pre_tokenizers/byte_level.rs": "f9b5a747a0ad936f0c49cff8f32bc8f166126704ab02d5af0505ad032fe6d99a"
+  },
+  "authoring_only_native_wheels": {
+    "ctranslate2": {
+      "sha256": "c0a584c17f21779eb9035bcbc1ec280998f90b36725b70a5ff911f33e343199a",
+      "size": 39351971,
+      "url": "https://files.pythonhosted.org/packages/30/84/f610e90bb419707632b9b668476b9fd4cdb090c9b53c119ce017699b58ca/ctranslate2-4.8.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    "tokenizers": {
+      "sha256": "5075b405006415ea148a992d093699c66eb01952bf59f4d5727089a98bda45a4",
+      "size": 3346235,
+      "url": "https://files.pythonhosted.org/packages/0d/d5/1353e5f677ec27c2494fb6a6725e82d56c985f53e90ec511369e7e4f02c6/tokenizers-0.23.1-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+    }
+  },
+  "ctranslate2_source": {
+    "sha256": "45f279ff5e061c981eb048cbf7e55c390657136f807fe16080e91ce670036889",
+    "tag": {
+      "message": "Release version 4.8.1\n",
+      "node_id": "TA_kwDODIjp8NoAKDM5OTIzOWE3OTBhZDBkYTRlNDM2M2UwZGNiYjgzNDk1YjVhYmQ3NDI",
+      "object": {
+        "sha": "0d8bcd362ac75ef860ef161d6f0efad0ae439ff0",
+        "type": "commit",
+        "url": "https://api.github.com/repos/OpenNMT/CTranslate2/git/commits/0d8bcd362ac75ef860ef161d6f0efad0ae439ff0"
+      },
+      "sha": "399239a790ad0da4e4363e0dcbb83495b5abd742",
+      "tag": "v4.8.1",
+      "tagger": {
+        "date": "2026-07-03T11:37:24Z",
+        "email": "jmas@softcatala.org",
+        "name": "Jordi Mas"
+      },
+      "url": "https://api.github.com/repos/OpenNMT/CTranslate2/git/tags/399239a790ad0da4e4363e0dcbb83495b5abd742",
+      "verification": {
+        "payload": null,
+        "reason": "unsigned",
+        "signature": null,
+        "verified": false,
+        "verified_at": null
+      }
+    },
+    "url": "https://codeload.github.com/OpenNMT/CTranslate2/tar.gz/0d8bcd362ac75ef860ef161d6f0efad0ae439ff0"
+  },
+  "excluded": "Full external Whisper models, native extensions, BLAS libraries and authoring programs are not shipped.",
+  "external_authoring_model": {
+    "model_files": {
+      "README.md": {
+        "sha256": "1b7816626bf0548e4b71a467f4112b4592924bc818e3117f19aefcc50ce4b6aa",
+        "size": 1323,
+        "url": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/README.md"
+      },
+      "config.json": {
+        "sha256": "14b1b421a90349bc551b881461426b561a874049cb9e4c4864f2ca384f6a7cc5",
+        "size": 2317,
+        "url": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/config.json"
+      },
+      "model.bin": {
+        "sha256": "1a5afae06a4db91c975c9a9d78be5cc110ee4ea022ad57d55492e4550e936b2a",
+        "size": 75537502,
+        "url": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/model.bin"
+      },
+      "tokenizer.json": {
+        "sha256": "929c5252409436dce1b38a75d1abbcb5e132d170d8e324e4e04ed915fa2d22df",
+        "size": 2128466,
+        "url": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/tokenizer.json"
+      },
+      "vocabulary.txt": {
+        "sha256": "ff77588746d3a2595d32ab5b69ffd7b95ce2441ac57533cb66fc3eb575a115cf",
+        "size": 422309,
+        "url": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/vocabulary.txt"
+      }
+    },
+    "model_license": "MIT",
+    "model_revision": "0d3d19a32d3338f10357c0889762bd8d64bbdeba"
+  },
+  "faster_whisper_wheel": {
+    "sha256": "79a66ad50688c0b794dd501dc340a736992a6342f7f95e5811be60b5224a26a7",
+    "url": "https://files.pythonhosted.org/packages/05/99/49ee85903dee060d9f08297b4a342e5e0bcfca2f027a07b4ee0a38ab13f9/faster_whisper-1.2.1-py3-none-any.whl",
+    "version": "1.2.1"
+  },
+  "format_version": 1,
+  "licenses": {
+    "ctranslate2": "licenses/ctranslate2.txt",
+    "faster-whisper": "licenses/faster-whisper.txt",
+    "tokenizers": "licenses/tokenizers.txt"
+  },
+  "multilingual_tokenizer": {
+    "license": "mit",
+    "metadata": {
+      "blobId": "7818adb6de9fa3064d3ff81226fdd675be1f6344",
+      "rfilename": "tokenizer.json",
+      "size": 2203239
+    },
+    "revision": "d90ca5fe260221311c53c58e660288d3deb8d356",
+    "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab",
+    "size": 2203239,
+    "url": "https://huggingface.co/Systran/faster-whisper-tiny/resolve/d90ca5fe260221311c53c58e660288d3deb8d356/tokenizer.json"
+  },
+  "runtime_modules": [
+    "local_whisper_weights",
+    "local_whisper_features",
+    "local_whisper_tokenizer",
+    "local_whisper_unicode",
+    "local_whisper_tokens"
+  ],
+  "scope": "Complete model-data frontend and original task/language/timestamp/word-token contract. Whisper transformer/search consumer is not yet activated. VAD has its separate reviewed provenance.",
+  "test_fixture": {
+    "feature_vectors": 21,
+    "path": "tests/fixtures/local_whisper_frontend.json",
+    "sha256": "0ff307d67ce10e998e4d4d731d4c0ca3958ee13fecdbe727d78605890342a3b1",
+    "tokenizer_graph_note": "Test graph retains the merge closure of 282 native corpus cases with original IDs; full original tokenizer files are not bundled.",
+    "tokenizer_vectors": 282
+  },
+  "token_contract_fixture": {
+    "languages": [
+      "en",
+      "ko",
+      "zh",
+      "ja",
+      "th",
+      "yue"
+    ],
+    "native_word_cases": 91,
+    "native_wrappers": 13,
+    "path": "tests/fixtures/local_whisper_tokens.json",
+    "sha256": "d88f26c1032cfef57c879b6ac93e5d0814f6c4d1ce871d328f9530896467b1ad",
+    "task_and_special_ids": "Original IDs and non-speech-token suppression sets; no vocabulary renumbering."
+  },
+  "unicode_character_ranges": {
+    "module_sha256": "802a20c2dd83f9b92742e251a5e7704bdfa5c275d5ccf84660ac2fdac6d5b0f5",
+    "oracle_distribution": "tokenizers-0.23.1",
+    "oracle_wheel_sha256": "5075b405006415ea148a992d093699c66eb01952bf59f4d5727089a98bda45a4",
+    "patterns": {
+      "LETTER": "\\p{L}+",
+      "NUMBER": "\\p{N}+",
+      "SPACE": "\\s+",
+      "WORD": "\\w+"
+    },
+    "range_data_sha256": "b04a8701b71368b326b797b2b8a36a2e69779cea50ca350cdc9e5b8e13984edc",
+    "scalar_count": 1112064
+  }
+}

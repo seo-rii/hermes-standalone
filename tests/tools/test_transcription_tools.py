@@ -16,7 +16,9 @@ from unittest.mock import MagicMock, call, patch
 
 import pytest
 
-if "faster_whisper" not in sys.modules:
+from agent.sdk_boundary import bundled, openai_clients, openai_error_types
+
+if not bundled() and "faster_whisper" not in sys.modules:
     faster_whisper_stub = types.ModuleType("faster_whisper")
     faster_whisper_stub.WhisperModel = MagicMock(name="WhisperModel")
     # Set ``__spec__`` so ``importlib.util.find_spec("faster_whisper")``
@@ -25,6 +27,10 @@ if "faster_whisper" not in sys.modules:
     from importlib.machinery import ModuleSpec
     faster_whisper_stub.__spec__ = ModuleSpec("faster_whisper", loader=None)
     sys.modules["faster_whisper"] = faster_whisper_stub
+
+
+def _whisper_model_target():
+    return "standalone.local_whisper.WhisperModel" if bundled() else "faster_whisper.WhisperModel"
 
 
 # ============================================================================
@@ -231,7 +237,7 @@ class TestOpenAIClientConfig:
         mock_client.audio.transcriptions.create.return_value = "hi"
 
         with patch("tools.transcription_tools._HAS_OPENAI", True), \
-             patch("openai.OpenAI", return_value=mock_client) as openai_client:
+             patch.object(openai_clients(), "OpenAI", return_value=mock_client) as openai_client:
             from tools.transcription_tools import _transcribe_groq
             result = _transcribe_groq(sample_wav, "whisper-large-v3-turbo")
 
@@ -249,7 +255,7 @@ class TestOpenAIClientConfig:
         mock_client.audio.transcriptions.create.return_value = "hi"
 
         with patch("tools.transcription_tools._HAS_OPENAI", True), \
-             patch("openai.OpenAI", return_value=mock_client), \
+             patch.object(openai_clients(), "OpenAI", return_value=mock_client), \
              patch(
                  "tools.transcription_tools._load_stt_config",
                  return_value={"groq": None},
@@ -398,14 +404,14 @@ class TestTranscribeLocalCommand:
 # ============================================================================
 
 @pytest.mark.skipif(
-    not __import__("importlib").util.find_spec("faster_whisper"),
+    not bundled() and not __import__("importlib").util.find_spec("faster_whisper"),
     reason="faster_whisper not installed",
 )
 class TestLocalModelLoading:
     def test_cached_model_load_never_uses_online_resolution(self):
         cached_model = object()
 
-        with patch("faster_whisper.WhisperModel", return_value=cached_model) as model_cls:
+        with patch(_whisper_model_target(), return_value=cached_model) as model_cls:
             from tools.transcription_local import _create_whisper_model
 
             assert _create_whisper_model("base", device="cpu", compute_type="int8") is cached_model
@@ -425,7 +431,7 @@ class TestLocalModelLoading:
         downloaded_model = object()
         online_result = download_error or downloaded_model
         side_effect = [LocalEntryNotFoundError("not cached"), online_result]
-        with patch("faster_whisper.WhisperModel", side_effect=side_effect) as model_cls:
+        with patch(_whisper_model_target(), side_effect=side_effect) as model_cls:
             if download_error:
                 with pytest.raises(RuntimeError) as exc_info:
                     _create_whisper_model("base", device="auto", compute_type="auto")
@@ -449,14 +455,14 @@ class TestLocalModelLoading:
 
         downloaded_model = object()
         side_effect = [RuntimeError("Unable to open file 'model.bin' in model '/cache/snap'"), downloaded_model]
-        with patch("faster_whisper.WhisperModel", side_effect=side_effect) as model_cls:
+        with patch(_whisper_model_target(), side_effect=side_effect) as model_cls:
             assert _create_whisper_model("base", device="cpu", compute_type="int8") is downloaded_model
 
         assert [c.kwargs["local_files_only"] for c in model_cls.call_args_list] == [True, False]
 
 
 @pytest.mark.skipif(
-    not __import__("importlib").util.find_spec("faster_whisper"),
+    not bundled() and not __import__("importlib").util.find_spec("faster_whisper"),
     reason="faster_whisper not installed",
 )
 class TestTranscribeLocalExtended:
@@ -476,7 +482,7 @@ class TestTranscribeLocalExtended:
         mock_whisper_cls = MagicMock(return_value=mock_model)
 
         with patch("tools.transcription_tools._HAS_FASTER_WHISPER", True), \
-             patch("faster_whisper.WhisperModel", mock_whisper_cls), \
+             patch(_whisper_model_target(), mock_whisper_cls), \
              patch("tools.transcription_tools._local_model", None), \
              patch("tools.transcription_tools._local_model_name", None):
             from tools.transcription_tools import _transcribe_local
@@ -512,7 +518,7 @@ class TestTranscribeLocalExtended:
         }
 
         with patch("tools.transcription_tools._HAS_FASTER_WHISPER", True), \
-             patch("faster_whisper.WhisperModel", mock_whisper_cls), \
+             patch(_whisper_model_target(), mock_whisper_cls), \
              patch("tools.transcription_tools._local_model", None), \
              patch("tools.transcription_tools._local_model_name", None), \
              patch("tools.transcription_tools._load_stt_config", return_value=fake_config):
@@ -533,7 +539,7 @@ class TestTranscribeLocalExtended:
         mock_whisper_cls = MagicMock(side_effect=RuntimeError("CUDA out of memory"))
 
         with patch("tools.transcription_tools._HAS_FASTER_WHISPER", True), \
-             patch("faster_whisper.WhisperModel", mock_whisper_cls), \
+             patch(_whisper_model_target(), mock_whisper_cls), \
              patch("tools.transcription_tools._local_model", None), \
              patch("tools.transcription_tools._local_model_name", None):
             from tools.transcription_tools import _transcribe_local
@@ -569,7 +575,7 @@ class TestTranscribeLocalExtended:
         mock_whisper_cls = MagicMock(side_effect=[cuda_model, cpu_model])
 
         with patch("tools.transcription_tools._HAS_FASTER_WHISPER", True), \
-             patch("faster_whisper.WhisperModel", mock_whisper_cls), \
+             patch(_whisper_model_target(), mock_whisper_cls), \
              patch("tools.transcription_tools._local_model", None), \
              patch("tools.transcription_tools._local_model_name", None):
             from tools.transcription_tools import _transcribe_local
@@ -591,7 +597,7 @@ class TestTranscribeLocalExtended:
         mock_whisper_cls = MagicMock(return_value=cuda_model)
 
         with patch("tools.transcription_tools._HAS_FASTER_WHISPER", True), \
-             patch("faster_whisper.WhisperModel", mock_whisper_cls), \
+             patch(_whisper_model_target(), mock_whisper_cls), \
              patch("tools.transcription_tools._local_model", None), \
              patch("tools.transcription_tools._local_model_name", None):
             from tools.transcription_tools import _transcribe_local
@@ -614,7 +620,7 @@ class TestModelAutoCorrection:
         mock_client.audio.transcriptions.create.return_value = "hello world"
 
         with patch("tools.transcription_tools._HAS_OPENAI", True), \
-             patch("openai.OpenAI", return_value=mock_client):
+             patch.object(openai_clients(), "OpenAI", return_value=mock_client):
             from tools.transcription_tools import _transcribe_groq, DEFAULT_GROQ_STT_MODEL
             _transcribe_groq(sample_wav, "whisper-1")
 
@@ -630,7 +636,7 @@ class TestModelAutoCorrection:
         mock_client.audio.transcriptions.create.return_value = "test"
 
         with patch("tools.transcription_tools._HAS_OPENAI", True), \
-             patch("openai.OpenAI", return_value=mock_client):
+             patch.object(openai_clients(), "OpenAI", return_value=mock_client):
             from tools.transcription_tools import _transcribe_groq
             _transcribe_groq(sample_wav, "my-custom-model")
 
@@ -741,14 +747,13 @@ class TestTranscribeAudioDispatch:
 
 @pytest.fixture
 def mock_mistral_module():
-    """Inject a fake mistralai module into sys.modules for testing."""
+    """Inject the client into the distribution's selected provider boundary."""
     mock_client = MagicMock()
     mock_client.__enter__ = MagicMock(return_value=mock_client)
     mock_client.__exit__ = MagicMock(return_value=False)
     mock_mistral_cls = MagicMock(return_value=mock_client)
-    fake_module = MagicMock()
-    fake_module.Mistral = mock_mistral_cls
-    with patch.dict("sys.modules", {"mistralai": fake_module, "mistralai.client": fake_module}):
+    target = "standalone.transport_vendor_media.Mistral" if bundled() else "mistralai.client.Mistral"
+    with patch(target, mock_mistral_cls):
         yield mock_client
 
 
@@ -1194,7 +1199,7 @@ class TestStructuredTranscriptionErrors:
         mock_client.audio.transcriptions.create.return_value = self._error_object()
 
         with patch("tools.transcription_tools._HAS_OPENAI", True), \
-             patch("openai.OpenAI", return_value=mock_client):
+             patch.object(openai_clients(), "OpenAI", return_value=mock_client):
             from tools.transcription_tools import _transcribe_openai
             result = _transcribe_openai(sample_wav, "gpt-4o-transcribe", api_key="sk-test")
 
@@ -1210,7 +1215,7 @@ class TestStructuredTranscriptionErrors:
         )
 
         with patch("tools.transcription_tools._HAS_OPENAI", True), \
-             patch("openai.OpenAI", return_value=mock_client):
+             patch.object(openai_clients(), "OpenAI", return_value=mock_client):
             from tools.transcription_tools import _transcribe_openai
             result = _transcribe_openai(sample_wav, "gpt-4o-transcribe", api_key="sk-test")
 
@@ -1223,7 +1228,7 @@ class TestStructuredTranscriptionErrors:
         mock_client.audio.transcriptions.create.return_value = self._error_object()
 
         with patch("tools.transcription_tools._HAS_OPENAI", True), \
-             patch("openai.OpenAI", return_value=mock_client):
+             patch.object(openai_clients(), "OpenAI", return_value=mock_client):
             from tools.transcription_tools import _transcribe_groq
             result = _transcribe_groq(sample_wav, "whisper-large-v3-turbo")
 
@@ -1708,7 +1713,7 @@ class TestTranscribeOpenaiFiveXxRetry:
 
     def _status_error(self, status_code: int, message: str) -> Exception:
         import httpx
-        from openai import APIStatusError
+        APIStatusError, = openai_error_types("APIStatusError")
 
         request = httpx.Request(
             "POST", "https://api.example.com/v1/audio/transcriptions"
@@ -1731,7 +1736,7 @@ class TestTranscribeOpenaiFiveXxRetry:
         ]
 
         with patch("tools.transcription_tools._HAS_OPENAI", True), \
-             patch("openai.OpenAI", return_value=mock_client), \
+             patch.object(openai_clients(), "OpenAI", return_value=mock_client), \
              patch(
                  "tools.transcription_cloud._transcode_audio_for_stt",
                  return_value=(str(converted), None),
@@ -1752,7 +1757,7 @@ class TestTranscribeOpenaiFiveXxRetry:
         mock_client.audio.transcriptions.create.side_effect = self._status_error(503, "503 system_error")
 
         with patch("tools.transcription_tools._HAS_OPENAI", True), \
-             patch("openai.OpenAI", return_value=mock_client), \
+             patch.object(openai_clients(), "OpenAI", return_value=mock_client), \
              patch("tools.transcription_cloud._transcode_audio_for_stt",
                    return_value=(None, "ffmpeg not found")):
             from tools.transcription_tools import _transcribe_openai

@@ -4,6 +4,7 @@ Tests cover provider selection, config loading, validation, and transcription
 dispatch.  All external dependencies (faster_whisper, openai) are mocked.
 """
 
+from contextlib import contextmanager
 import os
 import tempfile
 from types import SimpleNamespace
@@ -11,9 +12,19 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+from agent.sdk_boundary import bundled, openai_clients, openai_error_types
 
-def _fake_faster_whisper_module(mock_model):
-    return SimpleNamespace(WhisperModel=MagicMock(return_value=mock_model))
+
+@contextmanager
+def _mock_whisper_model(mock_model):
+    """Patch the selected model boundary; source SDK tests retain their seam."""
+    if bundled():
+        with patch("standalone.local_whisper.WhisperModel", return_value=mock_model) as model_cls:
+            yield model_cls
+    else:
+        module = SimpleNamespace(WhisperModel=MagicMock(return_value=mock_model))
+        with patch.dict("sys.modules", {"faster_whisper": module}):
+            yield module.WhisperModel
 
 
 # ---------------------------------------------------------------------------
@@ -126,9 +137,8 @@ class TestTranscribeLocal:
         mock_model = MagicMock()
         mock_model.transcribe.return_value = ([mock_segment], mock_info)
 
-        fake_fw = _fake_faster_whisper_module(mock_model)
         with patch("tools.transcription_tools._HAS_FASTER_WHISPER", True), \
-             patch.dict("sys.modules", {"faster_whisper": fake_fw}), \
+             _mock_whisper_model(mock_model), \
              patch("tools.transcription_tools._local_model", None):
             from tools.transcription_tools import _transcribe_local
             result = _transcribe_local(str(audio_file), "base")
@@ -209,7 +219,7 @@ class TestTranscribeOpenAI:
              patch("tools.transcription_tools._load_stt_config", return_value={
                  "openai": {"language": ""},
              }), \
-             patch("openai.OpenAI", return_value=mock_client):
+             patch.object(openai_clients(), "OpenAI", return_value=mock_client):
             from tools.transcription_tools import _transcribe_openai
             result = _transcribe_openai(str(audio_file), "whisper-1")
 
@@ -300,8 +310,7 @@ class TestNormalizeLocalModel:
                  }), \
                  patch("tools.transcription_tools._local_model", None), \
                  patch("tools.transcription_tools._local_model_name", None), \
-                 patch.dict("sys.modules", {"faster_whisper": _fake_faster_whisper_module(mock_model)}):
-                mock_cls = __import__("faster_whisper").WhisperModel
+                 _mock_whisper_model(mock_model) as mock_cls:
                 from tools.transcription_tools import transcribe_audio
                 transcribe_audio(audio_file)
                 # WhisperModel must NOT have been called with "whisper-1"

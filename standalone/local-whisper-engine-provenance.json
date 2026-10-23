@@ -1,0 +1,399 @@
+{
+  "algorithm_source_sha256": {
+    "python/cpp/replica_pool.h": "ebcaa54a01fe45b5292b69f7216ae7635038bab8ddb6c4daf9f4ec2f4e67df8a",
+    "src/cpu/backend.cc": "23866dd76f5ab0bec1c4c39b05a3d4056f12816b3324d9a61fc252d18bdeccaf",
+    "src/cpu/kernels.cc": "95cce5bb8b4518f70fdf2e071733176e13729d66c8973a4d1f0e86eedcc02391",
+    "src/cpu/primitives.cc": "b1385185fab673357e482604e06cbaed57017580b1cd4e931b5361ba50f864a6",
+    "src/cpu/vec.h": "603d24cb327931e9dd3585f543efc696722f7b7333ba2e9735722c8ad16461c7",
+    "src/cpu/vec_avx.h": "158701fb4a4459e46ac7c2a335c691cb25064c4ca92c067f131387edbc8a4896",
+    "src/decoding.cc": "b1b871a8c3f0dd191a917637919dfbbc9118640621230da52114e01bc0c7326d",
+    "src/decoding_utils.cc": "72c43623a1863da6dd9726b63922ed3326acef0c287925ded8ecd1ab9fc03706",
+    "src/dtw.cc": "4305489e89577bd27e1139e5ef27154cebc456b8d7c710532f583b45a22eaa88",
+    "src/layers/attention.cc": "5c2a48d02dd089333824bda5feff983a71472af1b58923325f2bde1ee73a57fd",
+    "src/layers/common.cc": "afa57cd9d967182f6942b06bd12d24d3a63e2dd8c4f126f3222c6c804ba8374f",
+    "src/layers/transformer.cc": "988eb9839b636686ef47d840d497480d23bb203069f8fd6831ca4433f20f6e9b",
+    "src/layers/whisper.cc": "6230917eea28f7811906ff5d58c5eb5da7239d1a1cdd4ee3b471d3bfa4b5f403",
+    "src/models/model.cc": "5dcc3f1daa0de260c068b4645728a28305b27393f9461e650f45c8db89c707b7",
+    "src/models/whisper.cc": "cb2b7420667cda9d900e6f49b8a6eca08139e3c8f0dccbff06657ba6dd5e1e3e",
+    "src/ops/conv1d_cpu.cc": "40649222865eb74df6be6433c7b58466da9670827342ebeba67c0577691e1637",
+    "src/ops/dequantize_cpu.cc": "f45a15fe3bb921fe69e7e05017ca5d66b098f5bb34a0ca103bfbd76076e0b8ad",
+    "src/ops/median_filter_cpu.cc": "14166effc8292b3cad67f31dc9bba07db8b51ab1c799d9501c8b26a3bca586f3",
+    "src/ops/quantize.cc": "b21aa0df7b12eda9de8a2f7bc503bcc1a2eab69741305979a38e762b32f1c742",
+    "src/sampling.cc": "2c5f3c584bb695cfc2c30fbac5d0db93c6cb89206fc84b34881237c85723aa8b",
+    "src/types.cc": "7e930050b3561ae648dc8ab4537f8b032cbceae820174c0249657022a27da9ea",
+    "third_party/avx_mathfun.h": "0420c25e0a8f87d9e1827c006913c2455f694cc966d2163acd0c058d7321016f"
+  },
+  "authoring_only_native_oracle": {
+    "compiler": "g++ (Debian 12.2.0-14+deb12u1) 12.2.0",
+    "library_sha256": "9f7b42a6119711f7ac262a6ac47d24d316314f95c9befd7009985df134d224f1",
+    "policy": "Authoring only in ignored cache. No compiled payload, compiler, ctypes native inference loader or native dependencies enter the runtime or shipped tests.",
+    "public_cpp_wrapper_sha256": "66e7b5c2fb3e2f33932f292c76907f600cd1e74d4825443f744b063a2be38736",
+    "wheel_sha256": "c0a584c17f21779eb9035bcbc1ec280998f90b36725b70a5ff911f33e343199a"
+  },
+  "complete_real_speech_validation": {
+    "external_whisper_model_in_payload": false,
+    "float32": {
+      "encoder_rms_error": 2.74503e-06,
+      "encoder_shape": [
+        1,
+        1500,
+        384
+      ],
+      "exact_native_avx2_token_count": 28,
+      "initial_complete_stdlib_pcm_encoder_generation_seconds": 919.45,
+      "latest_search_exit_code": 0,
+      "latest_search_using_the_same_complete_stdlib_encoder_checkpoint_seconds": 303.79230189323425,
+      "maximum_encoder_error": 5.817413330078125e-05,
+      "maximum_frontend_error": 1.1920928955078125e-07,
+      "no_speech_error": 4.991888999938965e-07,
+      "pcm_sample_rate": 16000,
+      "pcm_samples": 176000,
+      "score_error": 4.172325134277344e-07
+    },
+    "int8_original_cpu_profile_comparison": {
+      "exact_matching_original_profiles": [
+        "generic"
+      ],
+      "exact_original_avx2_tokens": false,
+      "independent_profile_comparisons": {
+        "encoder_maximum_within_native_cpu_profile_span": true,
+        "encoder_rms_within_native_cpu_profile_span": true,
+        "exact_one_original_cpu_profile_tokens": true,
+        "no_speech_difference_within_native_cpu_profile_span": true,
+        "score_difference_within_native_cpu_profile_span": true
+      },
+      "maximum_pairwise_original_profile_span": {
+        "encoder_maximum": 0.21431183815002441,
+        "encoder_rms": 0.01998963004426756,
+        "no_speech_probability": 0.008544031530618668,
+        "score": 0.005950957536697388
+      },
+      "model": {
+        "repository": "Systran/faster-whisper-tiny.en",
+        "sha256": "1a5afae06a4db91c975c9a9d78be5cc110ee4ea022ad57d55492e4550e936b2a",
+        "snapshot": "0d3d19a32d3338f10357c0889762bd8d64bbdeba"
+      },
+      "note": "Original CT2 profile differences measure backend-dependent numerical variation, not exact arithmetic or universal speech-accuracy equivalence.",
+      "original_profiles": [
+        {
+          "encoded_f32le_sha256": "7cf7d699ee6c7e72016ed28f9c12a81c011520dcfb6670722efff1a7ffcd83c8",
+          "encoded_max_from_native_default": 0.0,
+          "encoded_rms_from_native_default": 0.0,
+          "environment": {
+            "CT2_FORCE_CPU_ISA": "AVX2",
+            "DNNL_MAX_CPU_ISA": null,
+            "ONEDNN_MAX_CPU_ISA": null
+          },
+          "label": "avx2",
+          "native_version": "4.8.1",
+          "no_speech_prob": 0.061822641640901566,
+          "scores": [
+            -0.3059517741203308
+          ],
+          "sequences_ids": [
+            [
+              50363,
+              843,
+              523,
+              11,
+              616,
+              5891,
+              3399,
+              1265,
+              407,
+              644,
+              534,
+              1499,
+              460,
+              466,
+              329,
+              345,
+              50763,
+              50763,
+              1265,
+              644,
+              345,
+              460,
+              466,
+              329,
+              534,
+              1499,
+              13,
+              50913
+            ]
+          ]
+        },
+        {
+          "encoded_f32le_sha256": "602d9e1b331ce212bd41dff98fd5c8b8eb0f4e2600370c24f780a9c4d7f77aba",
+          "encoded_max_from_native_default": 0.18783998489379883,
+          "encoded_rms_from_native_default": 0.017864350229501724,
+          "environment": {
+            "CT2_FORCE_CPU_ISA": "AVX",
+            "DNNL_MAX_CPU_ISA": null,
+            "ONEDNN_MAX_CPU_ISA": null
+          },
+          "label": "avx",
+          "native_version": "4.8.1",
+          "no_speech_prob": 0.0647701770067215,
+          "scores": [
+            -0.3000008165836334
+          ],
+          "sequences_ids": [
+            [
+              50363,
+              843,
+              523,
+              11,
+              616,
+              5891,
+              3399,
+              1265,
+              407,
+              644,
+              534,
+              1499,
+              460,
+              466,
+              329,
+              345,
+              50763,
+              50763,
+              1265,
+              644,
+              345,
+              460,
+              466,
+              329,
+              534,
+              1499,
+              13,
+              50913
+            ]
+          ]
+        },
+        {
+          "encoded_f32le_sha256": "0b19ee3d7d4f39a86d59b0e20cc69e23033415cbd86ad70d0e155ceecf1f928d",
+          "encoded_max_from_native_default": 0.1843724548816681,
+          "encoded_rms_from_native_default": 0.019451260566711426,
+          "environment": {
+            "CT2_FORCE_CPU_ISA": "GENERIC",
+            "DNNL_MAX_CPU_ISA": null,
+            "ONEDNN_MAX_CPU_ISA": null
+          },
+          "label": "generic",
+          "native_version": "4.8.1",
+          "no_speech_prob": 0.05836335942149162,
+          "scores": [
+            -0.3016285002231598
+          ],
+          "sequences_ids": [
+            [
+              50363,
+              843,
+              523,
+              616,
+              5891,
+              3399,
+              1265,
+              407,
+              644,
+              534,
+              1499,
+              460,
+              466,
+              329,
+              345,
+              50763,
+              50763,
+              1265,
+              644,
+              345,
+              460,
+              466,
+              329,
+              534,
+              1499,
+              13,
+              50913
+            ]
+          ]
+        },
+        {
+          "encoded_f32le_sha256": "696b3f1abde458b7fcabb631ed3d9bf3dd684acf6adc47ca95bba9a37be72e38",
+          "encoded_max_from_native_default": 0.21388107538223267,
+          "encoded_rms_from_native_default": 0.019453004002571106,
+          "environment": {
+            "CT2_FORCE_CPU_ISA": "AVX2",
+            "DNNL_MAX_CPU_ISA": "AVX",
+            "ONEDNN_MAX_CPU_ISA": "AVX"
+          },
+          "label": "dnnl-avx",
+          "native_version": "4.8.1",
+          "no_speech_prob": 0.06690739095211029,
+          "scores": [
+            -0.30238398909568787
+          ],
+          "sequences_ids": [
+            [
+              50363,
+              843,
+              523,
+              11,
+              616,
+              5891,
+              3399,
+              1265,
+              407,
+              644,
+              534,
+              1499,
+              460,
+              466,
+              329,
+              345,
+              50763,
+              50763,
+              1265,
+              644,
+              345,
+              460,
+              466,
+              329,
+              534,
+              1499,
+              13,
+              50913
+            ]
+          ]
+        }
+      ],
+      "portable_current": {
+        "complete_pcm_frontend_encoder_search_seconds": 1105.6195893287659,
+        "compute_type": "int8_float32",
+        "encoded_difference_from_native_avx2": {
+          "maximum": 0.17666292190551758,
+          "rms": 0.01859611187510971
+        },
+        "encoded_f32le_sha256": "822cae301cbe1922ea0560d15e10e0299d724538d78aa653c353bc357d2ed274",
+        "no_speech_difference_from_native_avx2": 0.001756954938173294,
+        "no_speech_prob": 0.06357959657907486,
+        "scores": [
+          -0.3063948154449463
+        ],
+        "scores_difference_from_native_avx2": 0.0004430413246154785,
+        "sequences_ids": [
+          [
+            50363,
+            843,
+            523,
+            616,
+            5891,
+            3399,
+            1265,
+            407,
+            644,
+            534,
+            1499,
+            460,
+            466,
+            329,
+            345,
+            50763,
+            50763,
+            1265,
+            644,
+            345,
+            460,
+            466,
+            329,
+            534,
+            1499,
+            13,
+            50913
+          ]
+        ],
+        "strict_single_native_profile_bounds": {
+          "no_speech_probability": 2e-05,
+          "score": 0.0002
+        },
+        "strict_single_native_profile_check_exit_code": 1,
+        "strict_single_profile_note": "A failed original absolute check remains a failure; no tolerance has been widened in that check."
+      }
+    },
+    "limitations": [
+      "The stdlib CPU implementation is not real-time: the checked 11 second tiny.en clip took about 15 minutes in float32 and 18 minutes in int8 on the authoring machine.",
+      "Int8 confidence values and punctuation can differ with floating-point reduction order, as they do between original CTranslate2 CPU profiles. No bitwise or arbitrary-threshold decision equivalence is claimed.",
+      "Prepared 16 kHz mono PCM input and float waveform are validated here; additional audio containers and resampling are a separate boundary.",
+      "Original task/language/segments/fallback/VAD orchestration is in local_whisper.py and local_whisper_segments.py, with separate provenance."
+    ],
+    "native_runtime_required": false
+  },
+  "format_version": 1,
+  "frozen_fixture": {
+    "alignment_vectors": 16,
+    "encoder_vectors": 14,
+    "generation_vectors": 36,
+    "incremental_decoder_streams": 4,
+    "language_vectors": 4,
+    "memory_reader_metadata_vectors": 14,
+    "model_note": "Original serializer with deterministic untrained parameters, for graph arithmetic and state contracts. It is not a speech model or a speech accuracy claim.",
+    "native_draws_per_distribution": 12000,
+    "original_kernel_values": 4112,
+    "path": "tests/fixtures/local_whisper_engine.json",
+    "sampling_distributions": 4,
+    "sha256": "f82ba5963a98746cda12d3c177e4150fdc7c2ded8b6b9ecf448671d7f35b4b49",
+    "stored_model_conversion_vectors": 9,
+    "synthetic_model_sha256": "972adcb56a2cccbee5782897e1d73c2149583ea67ebc224824ee1a5efa1a0746"
+  },
+  "implementation": "Qualified Python standard-library CPU encoder, causal decoder, int8/float32 tensor arithmetic, beam/sampling/language search, and word alignment; no fake CTranslate2 module or native runtime.",
+  "licenses": [
+    "licenses/ctranslate2.txt",
+    "licenses/avx_mathfun.txt"
+  ],
+  "numerical_contract": {
+    "float32": "Same model operations with float32 boundaries. Native GEMM/convolution reduction order can differ; trained-model vector bounds remain explicit.",
+    "int8": "Original per-row quantization, shifted u8/s8 pair saturation and compensation, float32 scale/dequantization, and compiler-fused elementary operations. Quantization thresholds amplify one-ULP input differences; original CPU profile comparisons are recorded separately.",
+    "parallelism": "CPU thread and worker hints are accepted, with serial stdlib execution. GPU settings are not silently changed to another service.",
+    "sampling": "Original top-k and temperature distribution. Python RNG streams are independent of the C++ RNG stream; seeded native draws are not claimed identical."
+  },
+  "original_source": {
+    "archive_sha256": "45f279ff5e061c981eb048cbf7e55c390657136f807fe16080e91ce670036889",
+    "commit": "0d8bcd362ac75ef860ef161d6f0efad0ae439ff0",
+    "repository": "OpenNMT/CTranslate2",
+    "url": "https://codeload.github.com/OpenNMT/CTranslate2/tar.gz/0d8bcd362ac75ef860ef161d6f0efad0ae439ff0",
+    "version": "4.8.1"
+  },
+  "private_original_model_checks": {
+    "alignment_vectors": 6,
+    "decoder_streams": 2,
+    "generation_token_sequences_and_alignment_paths": "exact against the original native CPU AVX2 reference",
+    "generation_vectors": 12,
+    "maximum_logits_error": 3.0517578125e-05,
+    "model": "Systran/faster-whisper-tiny.en",
+    "model_sha256": "1a5afae06a4db91c975c9a9d78be5cc110ee4ea022ad57d55492e4550e936b2a",
+    "models_excluded_from_payload": true,
+    "snapshot": "0d3d19a32d3338f10357c0889762bd8d64bbdeba"
+  },
+  "published_validation": {
+    "canonical_selected_consumer_tests_failed": 0,
+    "canonical_selected_consumer_tests_passed": 103,
+    "common_provider_availability_and_pm_gates_changed": false,
+    "public_wrapper_with_reviewed_external_tiny_model_encoder_error": 1.4841556549072266e-05,
+    "python_runtimes": [
+      "3.11.2",
+      "3.14.7"
+    ],
+    "source_sdk_branch_preserved": true,
+    "standard_library_unit_methods": 11
+  },
+  "related_model_data_provenance": "local-whisper-provenance.json",
+  "runtime_source_sha256": {
+    "local_whisper_align.py": "6b4446973a3f7cc6ef1f1757b38140b21c126b5a8d71676b665e236759df41c9",
+    "local_whisper_decoder.py": "54506e7777b875b92b7f9a610c19c18a5d01f3416ffa8444e9fdd213c9c89c5a",
+    "local_whisper_encoder.py": "ede667893560ed3b81641740811249eb6956272d218ab3980ff8d6657bb68adc",
+    "local_whisper_engine.py": "e6dd7edc4e0c5460f4496ffdcc5eaec9fa97d9c6e9df7ccbee1bcf24b5d0fab4",
+    "local_whisper_float.py": "fe6dcd783852f8c399666c5f6a9666ff3be4289844382332c3358348f9522086",
+    "local_whisper_search.py": "69e558132e4ce2054626931e31264d2589c4942c4016e06fdcbf4b9c5cc0ac5c",
+    "local_whisper_tensor.py": "dd3b65826dba143442c1c942a3451bdae34e64b416badeb2c3eab2d2dda1b7cc"
+  }
+}

@@ -1,0 +1,206 @@
+{
+  "adaptations": [
+    "NumPy feature slices/padding use owned MelFeatures; audio/chunks use standard sequences and array(f).",
+    "Original median, cumulative word boundaries, jump masks and means use statistics and Python sequence operations.",
+    "Original native model/Rust tokenizer are selected through qualified pure engine and ByteBPETokenizer factories.",
+    "The removed HuggingFace Hub local_dir_use_symlinks parameter is omitted for the pinned embedded Hub1.24.0; original model aliases, cache, revision, token, local_files_only and allowed data files remain.",
+    "Progress is a stdlib stderr counter rather than the tqdm renderer."
+  ],
+  "dependencies": "Qualified local_whisper_engine, local_whisper_features, local_whisper_tokens, local_whisper_tokenizer and local_whisper_vad. Explicit model-name/cache resolution uses the embedded pure huggingface_hub only for model data, with the original allowed filename patterns. No installer or global SDK namespace is introduced. File decoding/resampling selects local_whisper_audio; its qualified codec scope and independent native vectors are recorded in local-whisper-audio-provenance.json.",
+  "fixtures_sha256": {
+    "local_whisper_segments.json": "36e5daf6dc18ccfa10db995e03c609b34b7c11f28b43bf89748c5d46a89194d2"
+  },
+  "full_stdlib_engine_e2e": {
+    "exit_code": 0,
+    "job_metadata": "standalone/.cache/local-whisper-segment-pure-e2e3-job.json",
+    "scope": "Actual two-second PCM through stdlib log-mel, complete original3000-frame encoder padding, beam2 decoder and wrapper Segment/Info. All segment text/tokens/seek/timestamps match the native reference; numeric metrics pass the stated2e-4 absolute tolerance. No native inference or runtime process is used.",
+    "seconds": 596.990832970012,
+    "status": "passed",
+    "tokens": [
+      843,
+      523,
+      616,
+      5891,
+      1605
+    ],
+    "transcript": " And so my fellow American"
+  },
+  "interface": {
+    "engine": [
+      "encode(features,to_cpu=False)",
+      "generate(encoded,[prompt],**original_CT2_options)",
+      "detect_language(encoded)",
+      "align(encoded,sot_sequence,text_tokens,num_frames,median_filter_width=7)"
+    ],
+    "model": [
+      "WhisperModel constructor and supported_languages",
+      "transcribe",
+      "get_prompt",
+      "generate_segments",
+      "generate_with_fallback",
+      "detect_language",
+      "find_alignment and add_word_timestamps",
+      "restore_speech_timestamps"
+    ],
+    "records": [
+      "Word",
+      "Segment",
+      "TranscriptionOptions",
+      "TranscriptionInfo"
+    ]
+  },
+  "license_file": "licenses/faster-whisper.txt",
+  "license_sha256": "af6798135e729f8aa6c853936d037dfdea449734d26b8ea6a89805fca758c0d5",
+  "limits": [
+    "This component does not implement the unrelated BatchedInferencePipeline SDK surface.",
+    "Only tiny.en and multilingual tiny trained model configurations have been exercised by this component; generic engine/model support is recorded by their respective ports."
+  ],
+  "native_validation": {
+    "actual_model_scenarios": 12,
+    "comparison": "Segment text/token/seek structure and options match exactly. Actual native inference paths are compared with absolute2e-4 plus relative1e-5 floating tolerance for numeric results; public finite native trace replays compare orchestration numerical results within1e-10.",
+    "helper_vectors": {
+      "invalid_generation_options": 2,
+      "prompt_truncation": 144,
+      "suppression": 8,
+      "timestamp_restoration": 3,
+      "timestamp_splits": 48,
+      "trained_model_language_threshold_and_multiple_window_vote": 3
+    },
+    "models": {
+      "tiny": {
+        "files": [
+          {
+            "oid": "7e9bc5761a3e88762273fb1011479f2e501266c4",
+            "path": "README.md",
+            "sha256": "29fb8444a02c1f133ab7e538525aa478ff68845964f21cf42500842b0e4a7b20",
+            "size": 1991,
+            "type": "file",
+            "url": "https://huggingface.co/Systran/faster-whisper-tiny/resolve/d90ca5fe260221311c53c58e660288d3deb8d356/README.md"
+          },
+          {
+            "oid": "3baa18e2b321a2f489614607852a729fcd516480",
+            "path": "config.json",
+            "sha256": "a73a28cdfe1c43ccc7202fa333d1f89c202477271407ae9a7f19afa52039cac8",
+            "size": 2249,
+            "type": "file",
+            "url": "https://huggingface.co/Systran/faster-whisper-tiny/resolve/d90ca5fe260221311c53c58e660288d3deb8d356/config.json"
+          },
+          {
+            "lfs": {
+              "oid": "dcb76c6586fc06cbdac6dd21f14cfd129cc4cdd9dce19bf4ffa62e59cbe6e6d1",
+              "pointerSize": 133,
+              "size": 75538270
+            },
+            "oid": "ee1fa0720a33a1e4a7b698cf5e4aacfcb360b99a",
+            "path": "model.bin",
+            "sha256": "dcb76c6586fc06cbdac6dd21f14cfd129cc4cdd9dce19bf4ffa62e59cbe6e6d1",
+            "size": 75538270,
+            "type": "file",
+            "url": "https://huggingface.co/Systran/faster-whisper-tiny/resolve/d90ca5fe260221311c53c58e660288d3deb8d356/model.bin",
+            "xetHash": "95d706516af777831fff6b2c35837dfb450afca078db361910d44a435b24dc2c"
+          },
+          {
+            "oid": "7818adb6de9fa3064d3ff81226fdd675be1f6344",
+            "path": "tokenizer.json",
+            "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab",
+            "size": 2203239,
+            "type": "file",
+            "url": "https://huggingface.co/Systran/faster-whisper-tiny/resolve/d90ca5fe260221311c53c58e660288d3deb8d356/tokenizer.json"
+          },
+          {
+            "oid": "c9074644d9d1205686f16d411564729461324b75",
+            "path": "vocabulary.txt",
+            "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913",
+            "size": 459861,
+            "type": "file",
+            "url": "https://huggingface.co/Systran/faster-whisper-tiny/resolve/d90ca5fe260221311c53c58e660288d3deb8d356/vocabulary.txt"
+          }
+        ],
+        "metadata_url": "https://huggingface.co/api/models/Systran/faster-whisper-tiny/tree/d90ca5fe260221311c53c58e660288d3deb8d356?recursive=true",
+        "revision": "d90ca5fe260221311c53c58e660288d3deb8d356"
+      },
+      "tiny.en": {
+        "files": {
+          "README.md": {
+            "sha256": "1b7816626bf0548e4b71a467f4112b4592924bc818e3117f19aefcc50ce4b6aa",
+            "size": 1323,
+            "url": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/README.md"
+          },
+          "config.json": {
+            "sha256": "14b1b421a90349bc551b881461426b561a874049cb9e4c4864f2ca384f6a7cc5",
+            "size": 2317,
+            "url": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/config.json"
+          },
+          "model.bin": {
+            "sha256": "1a5afae06a4db91c975c9a9d78be5cc110ee4ea022ad57d55492e4550e936b2a",
+            "size": 75537502,
+            "url": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/model.bin"
+          },
+          "tokenizer.json": {
+            "sha256": "929c5252409436dce1b38a75d1abbcb5e132d170d8e324e4e04ed915fa2d22df",
+            "size": 2128466,
+            "url": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/tokenizer.json"
+          },
+          "vocabulary.txt": {
+            "sha256": "ff77588746d3a2595d32ab5b69ffd7b95ce2441ac57533cb66fc3eb575a115cf",
+            "size": 422309,
+            "url": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/vocabulary.txt"
+          }
+        },
+        "revision": "0d3d19a32d3338f10357c0889762bd8d64bbdeba"
+      }
+    },
+    "oracle": "Original faster-whisper 1.2.1 transcribe.py with actual ctranslate2 4.8.1 trained model and tokenizers0.23.1. Import selection avoids package initialization only; original algorithms and native computations are retained. Candidate orchestration independently calls the same actual native engine through a test-only dependency selection; production always selects the pure engine.",
+    "oracle_wheels": {
+      "ctranslate2": {
+        "sha256": "c0a584c17f21779eb9035bcbc1ec280998f90b36725b70a5ff911f33e343199a",
+        "size": 39351971,
+        "url": "https://files.pythonhosted.org/packages/30/84/f610e90bb419707632b9b668476b9fd4cdb090c9b53c119ce017699b58ca/ctranslate2-4.8.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl"
+      },
+      "tokenizers": {
+        "sha256": "5075b405006415ea148a992d093699c66eb01952bf59f4d5727089a98bda45a4",
+        "size": 3346235,
+        "url": "https://files.pythonhosted.org/packages/0d/d5/1353e5f677ec27c2494fb6a6725e82d56c985f53e90ec511369e7e4f02c6/tokenizers-0.23.1-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl"
+      }
+    },
+    "public_test_results": "All five methods pass under -I -S on both Python versions; source/generation boundaries use exact original recorded traces.",
+    "public_tests": "NoNative import guard prohibits NumPy, PyAV, tokenizers, CT2, ONNX runtime and Torch. Public test engine is finite replay of original trained-model generation/alignment events, validating all prompts and options; it is not shipped runtime inference.",
+    "public_unit_methods": 5,
+    "python_versions": [
+      "3.11.2",
+      "3.14.7"
+    ],
+    "scenarios": [
+      "timestamp and no-timestamp decoding",
+      "initial prompt, prefix and hotwords",
+      "explicit clips and seeking",
+      "temperature fallback and best failed-result selection",
+      "no-speech skipping",
+      "trained-model word alignment and hallucination silence logic",
+      "previous text and chunk length",
+      "real Silero VAD and timestamp restoration",
+      "multilingual trained tiny automatic language, per-segment language and translation"
+    ]
+  },
+  "runtime_modules_sha256": {
+    "local_whisper.py": "b83ff8736593253e884d51baca7a70264b7e500c6103a2a464e5a9a76a427920",
+    "local_whisper_segments.py": "44114ab4ac9a015d329ba17b64c97c0730f9c39bad2ab59e3e24c4d8a5d2e8fa"
+  },
+  "schema": 1,
+  "scope": "The single-stream faster-whisper 1.2.1 WhisperModel transcription orchestration used by Hermes, around the separately owned pure Whisper engine/tokenizer/frontend/VAD ports. This component preserves original generated Segment/Info, seeking, prompts, temperature fallback, silence checks, word postprocessing and timestamp restoration.",
+  "source": {
+    "commit": "65882eee9f5cdbeeb2d877f1131d48cf241b327d",
+    "project": "faster-whisper",
+    "version": "1.2.1",
+    "wheel_sha256": "79a66ad50688c0b794dd501dc340a736992a6342f7f95e5811be60b5224a26a7",
+    "wheel_url": "https://files.pythonhosted.org/packages/05/99/49ee85903dee060d9f08297b4a342e5e0bcfca2f027a07b4ee0a38ab13f9/faster_whisper-1.2.1-py3-none-any.whl"
+  },
+  "source_contract_hashes": {
+    "audio.py": "60a1d8638f718cbf6d245aed3e5a5aa61c1f822a0b0fe9b48a7c928d47c23909",
+    "feature_extractor.py": "e403966dbc592a53695eea2aea24fa60bab50ef6755e0076b311f907be7a397c",
+    "tokenizer.py": "614a96b6a9660096e4f4e9fbe8860cd75ad250dce8e85a847998a3d6d48165d2",
+    "transcribe.py": "5d5ffb00018561d3d529b2c72e1d9f5fff055bea725f3cccc7c6c67f5cc8ffe4",
+    "utils.py": "5b36ceb9d0fd3961de8cfb144bd82f9a4ef3151b2e5958405a11efb4f3ac4f82",
+    "vad.py": "37a9c774aefdd3162d936b896c8dcf5571b2ed938d65bffecfd631770049a18d"
+  }
+}
