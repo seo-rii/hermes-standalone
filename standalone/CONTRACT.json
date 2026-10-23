@@ -1,0 +1,101 @@
+{
+  "format_version": 1,
+  "version": "0.1.0.dev2",
+  "profile": "portable-runtime",
+  "upstream": {
+    "repository": "https://github.com/NousResearch/hermes-agent",
+    "commit": "bd3cbe91a90097f9804f16ea5c1768f5cbaaf0b7"
+  },
+  "runtime": {
+    "bootstrap_python_min": "3.11",
+    "hermes_python": "3.14"
+  },
+  "entrypoint": "standalone.cli:main",
+  "archive_layout": {
+    "app": "Upstream runtime sources and standalone modules",
+    "vendor": "Reviewed pure Python packages and their distribution metadata",
+    "bundle-manifest.json": "Manifest with file hashes, distribution provenance and capabilities"
+  },
+  "bootstrap_contract": {
+    "supported_envelope_versions": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "default_compression": "lzma",
+    "placeholders": [
+      "__HERMES_BUNDLE_INFO_LITERAL__",
+      "__HERMES_BUNDLE_PAYLOAD_LITERAL__",
+      "__HERMES_WINDOWS_ACL_SOURCE__"
+    ],
+    "info": {
+      "format_version": "1: Base85 ZIP; 2: Base85 XZ ZIP; 3: single Latin-1 source literal; 4: bounded Latin-1 source chunks; 5: ZIP_STORED application with a small __main__.py and payload.bin",
+      "sha256": "SHA-256 of decoded ZIP bytes; cache identity for all envelopes",
+      "size": "Decoded ZIP byte count",
+      "version": "Project version",
+      "compression": "Versions 2-5: lzma; versions 3-5 also allow zip for directly encoded per-file-deflated ZIP",
+      "payload_sha256": "Versions 2-5: original compressed or directly encoded payload SHA-256",
+      "payload_size": "Versions 2-5: original payload byte count",
+      "payload_encoding": "Versions 3/4: latin1 or latin1-chunks; version5: zip-member"
+    },
+    "payload": "Versions1/2 use Base85 source literals. Versions3/4 use PEP263 Latin-1 framed literals, bounded to256KiB decoded bytes per chunk in format4. Version5 stores exact compressed payload bytes in the ZIP_STORED member payload.bin and removes the outer import path before stdlib imports. Compressed SHA-256 is checked before bounded decoding to an owned temporary file; decoded ZIP size/hash, exact EOF, members, manifest and complete cache are checked before dispatch.",
+    "entrypoint_call": "standalone.cli.main(argv, context)",
+    "context": {
+      "artifact": "Absolute single-file artifact path as str",
+      "root": "Absolute extracted cache root as str",
+      "manifest": "Decoded bundle-manifest.json object",
+      "bundle_sha256": "SHA-256 of decoded ZIP bytes"
+    },
+    "cache_flag": "--cache-dir PATH is consumed by bootstrap before command dispatch",
+    "internal_module": "--internal-module MODULE ARGS is dispatched through runpy in the initialized runtime",
+    "upstream_startup": "initialize_bundle binds the verified source root before dispatch; hermes_bootstrap skips PM and source-update activation only for that bound tree",
+    "decompression_limits": {
+      "decoded_zip_bytes": 1073741824,
+      "lzma_decoder_memory_bytes": 67108864,
+      "extra_streams": "Rejected; exactly one complete XZ stream is required"
+    },
+    "windows_cache_security": "The bootstrap embeds the stdlib-only windows_acl.py boundary before extraction; directories are created atomically with a protected inheritable DACL, and cache entries must have this user as owner and grants limited to this user, SYSTEM and Administrators.",
+    "lzma_encoder_preset": 8,
+    "default_payload_encoding": "latin1-chunks",
+    "lzma_encoder_filter_options": {
+      "filter": "LZMA2",
+      "preset": 8,
+      "pb": 0,
+      "dict_size": 50331648
+    },
+    "default_container": "source",
+    "optional_container": "zipapp"
+  },
+  "manifest_contract": {
+    "required": [
+      "format_version",
+      "project",
+      "version",
+      "profile",
+      "upstream",
+      "runtime",
+      "entrypoint",
+      "files",
+      "distributions",
+      "capabilities"
+    ],
+    "file": {
+      "path": "Relative POSIX archive member name",
+      "sha256": "SHA-256 hex",
+      "size": "Byte count"
+    },
+    "source_transform": {
+      "default": "none: the AST stage preserves selected application/resource and vendored bytes; separately reviewed vendoring source patches remain applied with original sources/RECORD and exact before/after hashes preserved in provenance",
+      "optional_ast": "Only app Python sources; exact location-free AST, recursive compiled-code fingerprint and idempotence must match; retain original bytes on failure or growth",
+      "preserved": "Names, literals, docstrings, annotations, asserts and comment/license text",
+      "not_equivalent_in_ast_mode": "Source text and comment locations, tracebacks, tracing/coverage positions, inspect/source reads, and return values derived from frame/source introspection",
+      "reproducibility": "AST mode requires the same Python implementation and exact recorded three-part version for building and running; mismatched runtimes are rejected before cache creation. Default source-preserving mode has no additional toolchain gate.",
+      "proof": "Full deterministic per-file proofs are written to OUTPUT.py.minify.json; the artifact embeds its SHA-256, toolchain, aggregate counts and byte totals. The sidecar is not needed to run the artifact."
+    },
+    "file_list_excludes": [
+      "bundle-manifest.json"
+    ]
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "stage": "runtime-preview",
+  "agent_runtime_ready": true,
+  "full_parity_verified": false,
+  "validation_policy": "Core readiness verified by copied generated artifact CLI/gateway/managed-worker HTTP tool turn and durable worker receipts on Linux/CPython3.14. Full parity remains separate.",
+  "features": [
+    {
+      "id": "single-file-distribution",
+      "status": "implemented",
+      "description": "One relocatable Python source embeds selected original Hermes runtime, skill/resources, reviewed Python dependencies, metadata and license notices. Runtime package installation is disabled."
+    },
+    {
+      "id": "lossless-solid-compression",
+      "status": "implemented",
+      "description": "Default solid LZMA/XZ preset 8, 48 MiB dictionary and pb=0 preserve selected input bytes. A Latin-1 Python source literal removes most Base85 expansion; byte round trips, CRLF transport, isolated startup and a copied full-candidate managed-worker turn pass. Explicit Base85 and deflate remain available. Reviewed original Piper auxiliary model resources use a deterministic four-byte plane permutation, proved reversible at build time and checked against original SHA-256 after extraction; all byte pairs, remainder lengths, cache reuse and tampering/refusal cases pass both supported Python interpreters. The full202236003-byte Sudachi dictionary uses reversible per-block planes and uint16 connection deltas, saving10374048bytes in an isolated same-profile XZ comparison; whole-artifact size is measured separately. Every original byte and SHA is restored before publishing the cache."
+    },
+    {
+      "id": "verified-ast-minification",
+      "status": "experimental",
+      "description": "Optional deterministic app-only canonicalization requires identical location-free AST, recursive compiled-code fingerprints and idempotence. Failed checks retain original bytes. The recorded Python implementation and exact version are required to execute it; source observations and locations remain outside the equivalence claim."
+    },
+    {
+      "id": "isolated-bootstrap",
+      "status": "implemented",
+      "description": "Isolated Python with site disabled, bounded extraction, hashes, content-addressed cache, POSIX owner/mode checks and Windows owner/protected-DACL checks. Real Windows/macOS validation remains pending."
+    },
+    {
+      "id": "agent-and-gateway",
+      "status": "implemented",
+      "description": "Original CLI, GatewayRunner, AIAgent, canonical SessionDB and managed worker are retained. Loopback fixtures exercise Chat Completions, Responses and Anthropic JSON/SSE tool turns, persistence, worker identity and shutdown."
+    },
+    {
+      "id": "internal-processes",
+      "status": "implemented",
+      "description": "Explicit artifact re-entry preserves profile, PID/birth and authorization boundaries for gateway workers, ACP, plugin hosts, code kernel, browser harness and DDGS children."
+    },
+    {
+      "id": "classic-cli",
+      "status": "implemented",
+      "description": "Default classic Python REPL and one-shot CLI execute real tool turns. Explicit React/Ink UI selection requires a separate UI implementation."
+    },
+    {
+      "id": "dashboard",
+      "status": "partial",
+      "description": "Original routers and qualified Starlette boundary cover HTTP authorization/assets and Python terminal sessions. Browser assets require a matching source/icon receipt and complete dependency notices. The earlier staged browser build has missing notices and an incomplete optional backend, so it is excluded from public/default builds; fresh producer qualification remains pending."
+    },
+    {
+      "id": "mcp-and-acp",
+      "status": "implemented",
+      "description": "Real stdio/Streamable HTTP/legacy SSE MCP, discovery, notifications, cancellation, OAuth PKCE/device flows and the pinned privately relocated ACP protocol are covered with local peers."
+    },
+    {
+      "id": "provider-auth",
+      "status": "implemented",
+      "description": "Qualified provider HTTP boundaries retain normalized agent semantics. Embedded Google/AWS/Azure clients and qualified Python RSA/PSS/EC/EdDSA/AES handle reviewed authentication/certificate flows. Arithmetic has no constant-time claim."
+    },
+    {
+      "id": "memory-skills-cron",
+      "status": "partial",
+      "description": "Original memory, skill discovery, scheduler and persistence sources/resources are retained. Focused original contracts pass; exhaustive scheduler, plugin and long-duration behavior is not established."
+    },
+    {
+      "id": "web-search",
+      "status": "implemented",
+      "description": "Original Exa, Firecrawl, Parallel and DDGS provider selection/key scope/cache/billing paths use reviewed HTTP boundaries. Real loopback wire tests cover search/extract/retry/redirect/cancellation. DDGS does not reproduce native browser TLS fingerprints or every upstream search engine."
+    },
+    {
+      "id": "messaging",
+      "status": "partial",
+      "description": "Original Telegram, Slack, Discord text, encrypted Matrix, DingTalk, Feishu, Teams, Google Chat and SMS paths use embedded SDKs or qualified HTTP/crypto boundaries. Owned peers cover profile scope, admission, deduplication, attachments and outbound calls. Original Discord PCM voice send/receive and recording use verified full Opus reception and CELT CBR transmission; SILK/hybrid/FEC transmission remains separate."
+    },
+    {
+      "id": "images",
+      "status": "partial",
+      "description": "Python PNG/APNG, GIF, BMP, JPEG, lossless/lossy/animated WebP, TIFF/BigTIFF and ICO/CUR decoding and reviewed writers, image operations, X11/GDI/CoreGraphics capture and unhinted TTF/OTF rendering cover original consumers. Complex shaping, HDR, lossy WebP encoding, HEIC/AVIF and Wayland capture remain feature-specific."
+    },
+    {
+      "id": "documents",
+      "status": "implemented",
+      "description": "Original read_file integrates pure PDF, OOXML, ODF, EPUB, RTF and legacy Office text extraction. Local binary reads use Python. OCR requires an explicit hosted provider; binary layout/formatting can differ."
+    },
+    {
+      "id": "browser-and-terminal-backends",
+      "status": "external",
+      "description": "Original browser harness/CDP, PTY, remote shell/container and computer-use services remain execution environments. Their engines and OS facilities are not bundled Python dependencies."
+    },
+    {
+      "id": "remote-environments",
+      "status": "implemented",
+      "description": "Original Modal, Daytona and Vercel environments retain their command/state/file-sync lifecycle. Actual Modal gRPC/HTTP2/protobuf SDK and qualified Daytona/Vercel REST clients pass owned-peer tests; cloud resources and credentials are not created by validation."
+    },
+    {
+      "id": "audio-and-local-inference",
+      "status": "partial",
+      "description": "Cloud speech/transcription/media and Edge TTS are covered. Qualified PCM/math and PulseAudio/ALSA/WinMM/AudioQueue drive original recorder, playback, barge-in and TTS consumers. Pure SILK v3 decoding produces exact SDK PCM through original transcription/QQ consumers. The original openWakeWord TFLite models and stream/threshold behavior use a qualified Python interpreter; the qualified local Whisper CPU engine is connected to original STT selection/cache/unload. Additional audio input formats, Sherpa and local TTS engines remain incomplete. Wake inference is slower than realtime on the measured host; physical audio and native Windows/macOS execution remain unverified."
+    },
+    {
+      "id": "node-tui-and-desktop",
+      "status": "external",
+      "description": "Prebuilt browser dashboard is included when staged. React/Ink and Electron executables are not embedded; default interactive CLI uses the original classic Python interface."
+    },
+    {
+      "id": "trace-upload",
+      "status": "implemented",
+      "description": "Original trace redaction and uploader use the pinned Hub SDK, including its HTTP and LFS transfer paths. Owned peers verify private repository creation, token scope, JSONL bytes and failed-token refusal; optional native Xet acceleration is omitted."
+    },
+    {
+      "id": "matrix-encryption",
+      "status": "implemented",
+      "description": "Pure Olm/Megolm, X25519/Ed25519, cross-signing, attachment encryption and original trust/SQLite/replay/rotation semantics. Two original adapters over an owned TLS homeserver cover key exchange, bidirectional messages, key rotation, encrypted files, legacy pickle migration, restart and recovery; independent libolm wire/pickle fixtures also pass."
+    },
+    {
+      "id": "google-meet",
+      "status": "implemented",
+      "description": "Original Meet admission, captions, speech queue and detached bot lifecycle use direct Chromium CDP pipes plus native PulseAudio/CoreAudio boundaries. Owned pipe/WebSocket/audio peers and original regression contracts pass. An installed Chromium engine remains an execution environment; live Meet and physical host audio are not established."
+    },
+    {
+      "id": "windows-ssh",
+      "status": "implemented",
+      "description": "Artifact-bound Windows SSH re-entry and PID/birth/nonce ownership checks use qualified ctypes file-handle/ACL operations. Private files limit access to owner and SYSTEM, with reparse/refusal and bounded atomic I/O tests. Portable contracts pass; actual Windows host validation is pending."
+    },
+    {
+      "id": "relay-observability",
+      "status": "partial",
+      "description": "Qualified Relay middleware and original observability configuration retain Hermes consent/isolation. ATOF file/HTTP/WebSocket/long-lived NDJSON, ATIF lifecycle and OTLP HTTP/gRPC trace/log/metric paths pass owned peers. Native metric typed/schema/aggregation/resource and historical-failure contracts, plus 100 pricing validation/750 usage-cost and 173 response vectors, are verified. Complete native projection, adaptive/PII/resource plugins and dynamic native/worker hosts remain incomplete. ATIF metadata filenames, actual HTTP/S3 SigV4, rotating headers, native key/retry behavior, remote success/local fallback and confined atomic files match 54 filename and 34 native wire observations; native Windows proof remains pending."
+    },
+    {
+      "id": "wake-openwakeword",
+      "status": "partial",
+      "description": "The same three TFLite model files execute with stdlib float32 math and verified CNN overlap reuse. Independent native tensors and a 20-second stream match within recorded tolerances, with identical six-threshold confirmation/trigger sequences and original pause/resume/queue lifecycle. Native wheel platform restrictions are removed only for this portable model path. Measured median 178 ms per 80 ms input exceeds realtime, so sustained capture may drop frames under the original queue rule."
+    },
+    {
+      "id": "discord-dave-mls",
+      "status": "implemented",
+      "description": "Qualified Python MLS suite 0x0002 and DAVE ratchets interoperate with pinned Rust davey, including group joins, Welcome/Commit/TreeKEM, replay, transition negotiation and self-eviction. Original Discord TLS/UDP consumers match native nested RTP ciphertexts and recover invalid commits; readiness/authentication failures refuse without implicit plaintext fallback. Complete Opus voice codecs remain separate."
+    },
+    {
+      "id": "opus-codecs",
+      "status": "partial",
+      "description": "Pure Opus framing and full received SILK/CELT/hybrid routing cover native packets, shared entropy, FEC, PLC, recovery and format changes; independent 1,384-frame wrapper fixtures match final range and PCM within one LSB. The SILK component separately matches 1,014 native frames byte for byte. Original Discord mixer/playback, DAVE/RTP send/receive, WAV recording and replay pass actual TLS/UDP consumers. Transmission uses interoperable CELT CBR; SILK/hybrid/FEC transmission remains unimplemented."
+    },
+    {
+      "id": "local-whisper-frontend",
+      "status": "implemented",
+      "description": "A bounded CT2 model reader, original logmel frontend and unmodified tokenizer.json ByteBPE graphs match native serializer, NumPy and Rust tokenizer fixtures. Original token/suppression/word boundary contracts and Silero VAD are separately verified. Transformer decoding, beam generation and original local-transcription consumers are qualified separately by local-whisper-cpu. Pure AAC-LC/ADTS/M4A decoding covers 217 native files and 266 independent tool streams; original trained AAC/M4A speech file consumers pass. All868 original SWR file/rate/downmix cases, including native22.2 layout compaction, match independent s16 output within one LSB. HE-AAC/SBR/PS adds361retained files and1,444original file/SWR comparisons within1LSB against the explicit FFmpegGENERIC profile, plus27original changing-format refusals and two actual trainedHEspeech-file consumers. Optimized native CPU differences remain separately recorded."
+    },
+    {
+      "id": "local-whisper-vad",
+      "status": "implemented",
+      "description": "The exact faster-whisper1.2.1 Silero VAD v6 ONNX model runs through bounded stdlib STFT, Conv and LSTM inference. Native ORT probabilities/recurrent states match within explicit float32 tolerances; 344 actual-speech windows produce identical four segments, with original threshold, duration, chunk and timestamp mapping contracts. Full Whisper transcription remains separate."
+    },
+    {
+      "id": "local-whisper-cpu",
+      "status": "partial",
+      "description": "Qualified CT2 CPU Transformer, incremental decoding, beam/sampling, language detection, word alignment and original segment/fallback/VAD orchestration use stdlib math with the original model/tokenizer files. Actual speech FP32 tokens match the native engine; INT8 tokens match native GENERIC and differ from AVX2 by one comma. Recorded native CPU profile differences and 15–18 minute processing time for 11 seconds remain explicit. Original STT selection, real model factory, cache and idle release pass native-free consumers; 122 original STT/PM tests pass. WAV/ADPCM, FLAC, Ogg/Opus, Ogg/Vorbis, WebM/Matroska Opus/Vorbis, MP3 and AAC-LC/HE-AAC ADTS/M4A input plus SWR resampling are verified, including eleven trained native audio-file traces. Documented Opus PCM/confidence differences and additional input formats remain explicit. HE-AAC/SBR/PS follows the original GENERIC float32 transform/QMF/PS graph; stress host-versus-GENERIC PCM differences are documented rather than claimed universally exact. Vorbis has 260 native whole files and 594 rare floor/block streams with GENERIC float32 equality, 1,040 original SWR cases within one LSB, and two actual trained CT2 frontend/controller traces; full pure-engine inference is separately qualified. Common dispatch preflight passes the ten filtered decoder-init failures and thirteen demux/open errors. Generated-file acceptance and full regression results are recorded separately for exact frozen inputs/artifact hashes. Corrupt Vorbis recovery follows the original closed-generator boundary, returning the accepted PCM prefix and stopping at the first invalid packet. Independent64 mutated streams/632 packet events preserve native decoder state; all128 original frontend outputs match within1LSB on both interpreters. Direct strict decoding remains available. WebM/Matroska adds2138 byte-exact native packets, allthree lacing modes, delays/padding and zlib/LZO/header-strip content encodings;93 native LZO streams and952 codec-reference PCM combinations pass both versions. Original FFmpeg Opus output remains a distinct unresolved profile:4587LSB maximum on real voip remux stress,20509LSB on synthetic boundary cases and8746LSB on compressed/laced inputs. No other Matroska codecs or trained Matroska transcription claim is made."
+    },
+    {
+      "id": "local-piper-model",
+      "status": "partial",
+      "description": "Qualified VITS ONNX model reader, 51 operator types and source normal generator use stdlib math. Native 137 operator/108 RNG cases, actual trained lessac Hello and 109-speaker VCTK paths agree within recorded float tolerances and PCM within one LSB on Python 3.11/3.14. The real PiperVoice and original Hermes TTS registry now connect eSpeak/TEXT/Arabic/Hebrew/Thai/Chinese/Japanese, source config/noise/duration/speaker/normalization/alignment, three-entry LRU, warm/release/holder leases and profile cache directories. Eight native registry WAV/input cases and an actual original registry call through full trained lessac produce verified PCM without native libraries. Main voice weights remain separate user data; the original separate-process model-data downloader retains the 300-second deadline and served-profile home/environment. All 373 eSpeak resources, auxiliary Arabic/Hebrew models and licenses are embedded with original-byte hashes. Unicode11, 40,557 number cases, 62,104 whole-word cases, 15,860 whole-rule cases, retained full-buffer clauses and 338 actual facade cases match independent originals; the pinned build disables Klatt. Thai adds 679 original g2p/th2ipa transcripts, 310 original normalization/number/tone consumers and 40 whole PiperVoice/ID/cache cases, all passing both interpreters. Four original resources and unmodified CLDR data are retained; three unread initialization resources totaling 3,263,655 raw bytes are omitted. Chinese uses the complete unchanged quantized G2PW BERT and original tokenizer/number/sentence rules; all44 observed batches select exact original labels and29 actual whole-voice texts match grouped IDs/PCM/WAV on both interpreters. The declared1e-6 probability gate fails (maximum absolute error0.0027914643); confidence values are not qualified. Japanese retains full MeCab/Sudachi resources and default reading corrections;9,001 original controller inputs,126,017 labels and58 PiperVoice cases pass both interpreters. Original resource bytes are hash-pinned and exempt from AST minification; the Sudachi dictionary is reversibly packed and restored before cache publication. Small real ONNX voice synthesis is qualified for both languages, without a trained-language voice quality claim. Generated-file acceptance is recorded separately for exact artifact hashes. Pure CPU inference is much slower than native; explicit CUDA requests refuse."
+    }
+  ],
+  "blockers": [
+    {
+      "id": "PORT-003",
+      "title": "Remaining optional native capabilities",
+      "components": [
+        "SILK/hybrid/FEC voice transmission",
+        "additional local audio formats, TTS phonemizers and Sherpa/Porcupine wake engines",
+        "complex font shaping and advanced image codecs",
+        "remaining Relay native plugins and exporter projections"
+      ],
+      "next_step": "Complete each consumed boundary and independent fixtures; do not mark full parity from core agent acceptance."
+    },
+    {
+      "id": "PORT-004",
+      "title": "Independent host and live-service conformance",
+      "components": [
+        "Windows",
+        "macOS",
+        "real provider/platform accounts",
+        "long-lived state recovery"
+      ],
+      "next_step": "Run native host CI and authorized live-service checks. Local fixture evidence does not establish external service behavior."
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "acceptance": [
+    {
+      "artifact": "dist/hermes-zipapp-20261023.pyz",
+      "exit_code": 0,
+      "seconds": 589.4632844839998
+    },
+    {
+      "artifact": "dist/hermes-zipapp-ast-20261023.pyz",
+      "exit_code": 0,
+      "seconds": 516.1907792640004
+    }
+  ],
+  "all_hashes_unchanged": true,
+  "all_passed": true,
+  "authoring_source_hashes": {
+    "standalone/.cache/envelope_work/measure_child.py": "f95471d42764223ac7c6ac7d2d923b7159c8386862070a3fead3c56cb6f7c11c",
+    "standalone/.cache/resume_zipapp_acceptance.py": "5afb5a54fa46595be06480d6136f25810f4b4cda301ef1331383563888fbe261",
+    "standalone/.cache/run_selected_checks.py": "0c78a340781ee28d4075ee95ced32b54a3d8b56fb0c64808d34b30d5e8145ac0",
+    "standalone/agent_probe_worker.py": "1add1c1b3404a4780a99ba348782d1236144778ae91e3c5e283a990367876dc5"
+  },
+  "frozen_input_sha256": "2522163856f5e72469a01a414af4f1b4dc44c73ffe1b711ac1286593ae13a126",
+  "measurements": [
+    {
+      "artifact": "dist/hermes-zipapp-20261023.pyz",
+      "peak_rss_kib": 832564,
+      "phase": "cold",
+      "seconds": 53.85335919400677
+    },
+    {
+      "artifact": "dist/hermes-zipapp-20261023.pyz",
+      "peak_rss_kib": 73604,
+      "phase": "warm",
+      "seconds": 28.302414981997572
+    },
+    {
+      "artifact": "dist/hermes-zipapp-ast-20261023.pyz",
+      "peak_rss_kib": 832792,
+      "phase": "cold",
+      "run": "resumed-20261023",
+      "seconds": 25.866297237000254
+    },
+    {
+      "artifact": "dist/hermes-zipapp-ast-20261023.pyz",
+      "peak_rss_kib": 73820,
+      "phase": "warm",
+      "run": "resumed-20261023",
+      "seconds": 16.264803213999585
+    }
+  ],
+  "records": [
+    {
+      "artifact": "dist/hermes-zipapp-20261023.pyz",
+      "inner_zip_sha256": "711c6313393f0faef27d11d01af1e61dcf10827b5ebdaf7bf253955d3e141fa4",
+      "inner_zip_size": 844199160,
+      "new_source_build": false,
+      "payload_sha256": "20ebc6ce95ebdf42d209411d78e7fee7df0e4262d38ad2858dc82da359a7eae2",
+      "payload_size": 254018796,
+      "saving_bytes": 3063055,
+      "sha256": "da7cd602a01e669f318e180447b6a42e1279810739a7d444d4c024f72f35fc71",
+      "size": 254066246,
+      "source_artifact": "dist/hermes-chunks.py",
+      "source_sha256": "894d88199e1a5754d95f08f00d2e5cb856d1aa973e286a8fe79ffb6b6184388e",
+      "source_size": 257129301,
+      "two_envelope_renders_identical": true
+    },
+    {
+      "artifact": "dist/hermes-zipapp-ast-20261023.pyz",
+      "inner_zip_sha256": "ecea18b66b79e71b7d31f3927f7838240f06de5b5e739aafb354ef26308877fb",
+      "inner_zip_size": 843870887,
+      "minify_report_sha256": "fedd48a26e7e1c492fc274504c163ca4118a08ac20b2f386dbe7ba2f40c61319",
+      "new_source_build": false,
+      "payload_sha256": "d292be4547d30e7c8bcf2caa01bdfb2eff14bcc24261ed434cec292a4a235e03",
+      "payload_size": 254009712,
+      "saving_bytes": 3063862,
+      "sha256": "51ba02cf8597d0bb96822f62134b6421acfdc062d3545b868d44ad946c8cb900",
+      "size": 254057162,
+      "source_artifact": "dist/hermes-chunks-ast.py",
+      "source_sha256": "782ac3d978855506fe017e6078d3f61307a991d330e258e5d2a8f973dd81e8b3",
+      "source_size": 257121024,
+      "two_envelope_renders_identical": true
+    }
+  ],
+  "scope": "Unchanged optional envelopes; exact prior render proofs retained. Full original eleven copied methods, unchanged limits. Prior process has no recorded exit, so this is an independent repeat, not a completion claim for it. No canonical promotion.",
+  "source_hashes": {
+    "standalone/bootstrap.py": "80beb0bc6e7ff632ff63e5659198068104ea7fa56f7bab31ee949608cfa14330",
+    "standalone/build.py": "aecb3f2ccb0c9e6d2ad1c12fb00cfdfaf732d1398342dc16e828bb1d3b052a4a",
+    "standalone/dictionary_pack.py": "55989c3284334044e0473c7eaf2260ed055a353bdcc11d2b67a55906ccdcda62",
+    "standalone/windows_acl.py": "97105c4aee17c07514db0140163c25337cbb65d2811be7a5f9761b960be34656"
+  }
+}

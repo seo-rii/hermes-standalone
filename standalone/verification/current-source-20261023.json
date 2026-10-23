@@ -1,0 +1,83 @@
+{
+  "all12_original_methods_passed_across_disjoint_runs": true,
+  "all_passed": true,
+  "artifact": {
+    "bytes": 252751498,
+    "container": "zipapp",
+    "minify": "none",
+    "path": "dist/hermes-review.pyz",
+    "sha256": "5bc4caa2b56aa981bdb7cde53776b3934f868fa38d7cfd5b85c58e138ecc2dfa"
+  },
+  "artifact_integrity": {
+    "all_selected_app_sources_match_final_worktree": true,
+    "artifact": {
+      "bytes": 252751498,
+      "container": "zipapp",
+      "minify": "none",
+      "path": "dist/hermes-review.pyz",
+      "sha256": "5bc4caa2b56aa981bdb7cde53776b3934f868fa38d7cfd5b85c58e138ecc2dfa"
+    },
+    "bundle_manifest_sha256": "d43fdb29e58d8c70f06bfb62c67f8dccef86da4946009288adfecfc73ca71017",
+    "decoded_archive_bytes_scanned": 834804715,
+    "exact_private_path_prefixes_found": 0,
+    "no_network_or_external_processes": true,
+    "schema_version": 1,
+    "scope": "Full decoded archive scan for exact author home/workspace prefixes plus every selected app file identity; complements the earlier pattern/provenance review, not a blanket secret guarantee.",
+    "seconds": 22.729319293001026,
+    "selected_app_files": 4795,
+    "selected_app_map_sha256": "5ad2a488304866540f0ce65b2df7cbd2daae125f444aff5ec9be8c73461a32e1"
+  },
+  "build_network_and_external_processes_blocked": true,
+  "continuous12_method_suite_passed": false,
+  "disposable_empty_profile": true,
+  "full_parity_verified": false,
+  "original_suite": {
+    "exit_code": 1,
+    "failed": 1,
+    "passed": 11,
+    "seconds": 646.5906830860004,
+    "tests": 12
+  },
+  "prior_failed_attempts": [
+    {
+      "exit_code": 1,
+      "seconds": 646.5906830860004,
+      "stage": "copied-artifact-original-acceptance"
+    }
+  ],
+  "python": "3.14.7",
+  "records": [
+    {
+      "exit_code": 0,
+      "seconds": 11.05803147900042,
+      "stage": "restore-original-resources"
+    },
+    {
+      "exit_code": 0,
+      "seconds": 517.7451564519997,
+      "stage": "fresh-offline-zipapp-build"
+    },
+    {
+      "exit_code": 0,
+      "scope": "Original failed copied-artifact fixture-turn method, unchanged assertions and300-second per-command limit; only owned temporary profile placement changed. All source and artifact hashes unchanged.",
+      "seconds": 56.251052366000295,
+      "stage": "unchanged-failed-method-outside-git-ancestor",
+      "tests": 1
+    }
+  ],
+  "resources_manifest_files_verified": 489,
+  "schema_version": 1,
+  "scope": "Fresh Git-only source export and offline full-resource build. Original12-method copied-artifact suite passed11and failed one because its temporary profile inherited a Git ancestor; the unchanged failed method passes separately outside a Git ancestor. These are disjoint results, not a continuously green12-method run or complete source-suite/full-parity claim.",
+  "scope_of_all_passed": "Every original method passed across the recorded disjoint runs; failed initial full-run evidence is retained.",
+  "source_bytes": 665049997,
+  "source_files": 21783,
+  "source_map_sha256": "9d31f583104702888d9481fb8265f1af47adca9e2d20edc7417d545c2c83e020",
+  "unchanged_failed_method_repeat": {
+    "exit_code": 0,
+    "scope": "Original failed copied-artifact fixture-turn method, unchanged assertions and300-second per-command limit; only owned temporary profile placement changed. All source and artifact hashes unchanged.",
+    "seconds": 56.251052366000295,
+    "stage": "unchanged-failed-method-outside-git-ancestor",
+    "tests": 1
+  },
+  "upstream_commit": "bd3cbe91a90097f9804f16ea5c1768f5cbaaf0b7"
+}

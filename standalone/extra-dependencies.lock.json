@@ -1,0 +1,395 @@
+{
+  "format_version": 1,
+  "authority": "pypi-release-metadata",
+  "packages": [
+    {
+      "name": "cbor2",
+      "version": "5.8.0",
+      "filename": "cbor2-5.8.0.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/d9/8e/8b4fdde28e42ffcd741a37f4ffa9fb59cd4fe01625b544dfcfd9ccb54f01/cbor2-5.8.0.tar.gz",
+      "sha256": "b19c35fcae9688ac01ef75bad5db27300c2537eb4ee00ed07e05d8456a0d4931",
+      "size": 107825,
+      "dependencies": [],
+      "pin_source": "supplemental-lock",
+      "kind": "sdist",
+      "release_url": "https://pypi.org/project/cbor2/5.8.0/",
+      "metadata_url": "https://pypi.org/pypi/cbor2/5.8.0/json",
+      "metadata_sha256": "c0bfac6dc5a76bc8fac5058b41eef55ec00bfa5b307840e0cd77d3f0172d1365",
+      "requires_dist": [],
+      "review_reason": "Modal CBOR values use the original upstream pure Python encoder/decoder rather than the Rust-only 6.x implementation. Basic values, integer/tag semantics, canonical encoding and shared references remain the original reviewed Python implementation; version choice is explicit."
+    },
+    {
+      "name": "ecdsa",
+      "version": "0.19.2",
+      "filename": "ecdsa-0.19.2-py2.py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/51/79/119091c98e2bf49e24ed9f3ae69f816d715d2904aefa6a2baa039a2ba0b0/ecdsa-0.19.2-py2.py3-none-any.whl",
+      "sha256": "840f5dc5e375c68f36c1a7a5b9caad28f95daa65185c9253c0c08dd952bb7399",
+      "size": 150818,
+      "dependencies": [
+        "six"
+      ],
+      "pin_source": "supplemental-lock",
+      "kind": "wheel",
+      "release_url": "https://pypi.org/project/ecdsa/0.19.2/",
+      "metadata_url": "https://pypi.org/pypi/ecdsa/0.19.2/json",
+      "metadata_sha256": "9803de12765003365a528f9b80919d2509ff60568799663fe43f4bc7c782fa4b",
+      "requires_dist": [
+        "six>=1.9.0",
+        "gmpy; extra == \"gmpy\"",
+        "gmpy2; extra == \"gmpy2\""
+      ],
+      "review_reason": "Explicitly reviewed pure Python cryptographic primitives for narrow Hermes native-dependency replacements; no TLS transport replacement."
+    },
+    {
+      "name": "fonttools",
+      "version": "4.67.0",
+      "filename": "fonttools-4.67.0.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/94/36/102e180f8f5dbaee88b26595b01ca8aa80bf4e62128d9aa94265b3996c96/fonttools-4.67.0.tar.gz",
+      "sha256": "3cb57e6600ca77c0b1729cf8adc23bc0652633a37f18cfa934d9c7bc3de25519",
+      "size": 3750028,
+      "dependencies": [],
+      "pin_source": "supplemental-lock",
+      "kind": "sdist",
+      "release_url": "https://pypi.org/project/fonttools/4.67.0/",
+      "metadata_url": "https://pypi.org/pypi/fonttools/4.67.0/json",
+      "metadata_sha256": "d1fbc08b439af8b15c880f5467ec5ad4946bc684c2984e401acf2102818edcf4",
+      "requires_dist": [
+        "lxml>=4.0; extra == \"lxml\"",
+        "brotli>=1.0.1; platform_python_implementation == \"CPython\" and extra == \"woff\"",
+        "brotlicffi>=0.8.0; platform_python_implementation != \"CPython\" and extra == \"woff\"",
+        "zopfli>=0.1.4; extra == \"woff\"",
+        "unicodedata2>=18.0.0; python_version <= \"3.15\" and extra == \"unicode\"",
+        "lz4>=1.7.4.2; extra == \"graphite\"",
+        "scipy; platform_python_implementation != \"PyPy\" and extra == \"interpolatable\"",
+        "munkres; platform_python_implementation == \"PyPy\" and extra == \"interpolatable\"",
+        "pycairo; extra == \"interpolatable\"",
+        "matplotlib; extra == \"plot\"",
+        "sympy; extra == \"symfont\"",
+        "xattr; sys_platform == \"darwin\" and extra == \"type1\"",
+        "skia-pathops>=0.5.0; extra == \"pathops\"",
+        "uharfbuzz>=0.45.0; extra == \"repacker\"",
+        "lxml>=4.0; extra == \"all\"",
+        "brotli>=1.0.1; platform_python_implementation == \"CPython\" and extra == \"all\"",
+        "brotlicffi>=0.8.0; platform_python_implementation != \"CPython\" and extra == \"all\"",
+        "zopfli>=0.1.4; extra == \"all\"",
+        "unicodedata2>=18.0.0; python_version <= \"3.15\" and extra == \"all\"",
+        "lz4>=1.7.4.2; extra == \"all\"",
+        "scipy; platform_python_implementation != \"PyPy\" and extra == \"all\"",
+        "munkres; platform_python_implementation == \"PyPy\" and extra == \"all\"",
+        "pycairo; extra == \"all\"",
+        "matplotlib; extra == \"all\"",
+        "sympy; extra == \"all\"",
+        "xattr; sys_platform == \"darwin\" and extra == \"all\"",
+        "skia-pathops>=0.5.0; extra == \"all\"",
+        "uharfbuzz>=0.45.0; extra == \"all\""
+      ],
+      "review_reason": "Pure Python TrueType/OpenType font outline reader and pens for the standalone image text renderer. No native acceleration or extras are selected."
+    },
+    {
+      "name": "olefile",
+      "version": "0.47",
+      "filename": "olefile-0.47-py2.py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/17/d3/b64c356a907242d719fc668b71befd73324e47ab46c8ebbbede252c154b2/olefile-0.47-py2.py3-none-any.whl",
+      "sha256": "543c7da2a7adadf21214938bb79c83ea12b473a4b6ee4ad4bf854e7715e13d1f",
+      "size": 114565,
+      "dependencies": [],
+      "pin_source": "supplemental-lock",
+      "kind": "wheel",
+      "release_url": "https://pypi.org/project/olefile/0.47/",
+      "metadata_url": "https://pypi.org/pypi/olefile/0.47/json",
+      "metadata_sha256": "1a4230c355612742939d128c7ffe94051be0eaffa926635545c18d0b8f330c8e",
+      "requires_dist": [
+        "pytest ; extra == 'tests'",
+        "pytest-cov ; extra == 'tests'"
+      ],
+      "review_reason": "Pure Python document decoding for the original read_file boundary; no installation or native OCR engine."
+    },
+    {
+      "name": "pyjpeg",
+      "version": "0.9",
+      "filename": "pyjpeg-0.9-py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/76/f6/b118088e7623d624079fe0dbacad593ff98814cb6fc4d315227e235802d5/pyjpeg-0.9-py3-none-any.whl",
+      "sha256": "613a5703d56f426a5d5e947ad78aa99d24c7380915ec7d19e696ea75f9e356db",
+      "size": 86111,
+      "dependencies": [],
+      "pin_source": "supplemental-lock",
+      "kind": "wheel",
+      "release_url": "https://pypi.org/project/pyjpeg/0.9/",
+      "metadata_url": "https://pypi.org/pypi/pyjpeg/0.9/json",
+      "metadata_sha256": "ba05d7675d69811e106e2ee2405af925293fa1be1e4983512c759fedbb89f2e7",
+      "requires_dist": [],
+      "review_reason": "Explicit pure Python JPEG codec for the Hermes image boundary; high-level decoding is replaced by an application-owned scan assembly adapter with fixture validation."
+    },
+    {
+      "name": "pypdf",
+      "version": "6.21.1",
+      "filename": "pypdf-6.21.1-py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/85/e6/24c944e473c34e818cf1b98085796fcd780465ecfe17663f2bf8fee1958b/pypdf-6.21.1-py3-none-any.whl",
+      "sha256": "553e2d42f5bb3bb2a785a7d3de8ef90bb7df74b5413eff5a7b4388007ea9254b",
+      "size": 405134,
+      "dependencies": [],
+      "pin_source": "supplemental-lock",
+      "kind": "wheel",
+      "release_url": "https://pypi.org/project/pypdf/6.21.1/",
+      "metadata_url": "https://pypi.org/pypi/pypdf/6.21.1/json",
+      "metadata_sha256": "681f1f79c29a12f41944563a482a25ed28cf44a89f607125c87551022babe5bb",
+      "requires_dist": [
+        "typing_extensions>=4.0; python_version < \"3.11\"",
+        "brotli>=1.2.0; extra == \"brotli\"",
+        "cryptography>3.0; extra == \"crypto\"",
+        "PyCryptodome; extra == \"cryptodome\"",
+        "flit; extra == \"dev\"",
+        "pip-tools; extra == \"dev\"",
+        "pre-commit; extra == \"dev\"",
+        "pytest-cov; extra == \"dev\"",
+        "pytest-socket; extra == \"dev\"",
+        "pytest-timeout; extra == \"dev\"",
+        "pytest-xdist; extra == \"dev\"",
+        "wheel; extra == \"dev\"",
+        "myst_parser; extra == \"docs\"",
+        "sphinx; extra == \"docs\"",
+        "sphinx_rtd_theme; extra == \"docs\"",
+        "fonttools; extra == \"fonts\"",
+        "arabic-reshaper; extra == \"full\"",
+        "brotli>=1.2.0; extra == \"full\"",
+        "cryptography>3.0; extra == \"full\"",
+        "fonttools; extra == \"full\"",
+        "Pillow>=8.0.0; extra == \"full\"",
+        "python-bidi; extra == \"full\"",
+        "Pillow>=8.0.0; extra == \"image\"",
+        "arabic-reshaper; extra == \"rtl-text\"",
+        "python-bidi; extra == \"rtl-text\""
+      ],
+      "review_reason": "Pure Python document decoding for the original read_file boundary; no installation or native OCR engine."
+    },
+    {
+      "name": "pyxlsb",
+      "version": "1.0.10",
+      "filename": "pyxlsb-1.0.10-py2.py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/7e/92/345823838ae367c59b63e03aef9c331f485370f9df6d049256a61a28f06d/pyxlsb-1.0.10-py2.py3-none-any.whl",
+      "sha256": "87c122a9a622e35ca5e741d2e541201d28af00fb46bec492cfa9586890b120b4",
+      "size": 23849,
+      "dependencies": [],
+      "pin_source": "supplemental-lock",
+      "kind": "wheel",
+      "release_url": "https://pypi.org/project/pyxlsb/1.0.10/",
+      "metadata_url": "https://pypi.org/pypi/pyxlsb/1.0.10/json",
+      "metadata_sha256": "9afec4c67ea10ed50463985f2fcdd82c46b7d125132209e3e74c3f618ec6f1d8",
+      "requires_dist": [],
+      "review_reason": "Pure Python document decoding for the original read_file boundary; no installation or native OCR engine."
+    },
+    {
+      "name": "striprtf",
+      "version": "0.0.33",
+      "filename": "striprtf-0.0.33-py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/f5/85/bee751fd2096accfc8b76186d49fbb2871163723e45f1e721e03c3f044ae/striprtf-0.0.33-py3-none-any.whl",
+      "sha256": "f9637632a4414de05b1c399ee34d324dc336133ae45769992143a024e0f919ef",
+      "size": 8446,
+      "dependencies": [],
+      "pin_source": "supplemental-lock",
+      "kind": "wheel",
+      "release_url": "https://pypi.org/project/striprtf/0.0.33/",
+      "metadata_url": "https://pypi.org/pypi/striprtf/0.0.33/json",
+      "metadata_sha256": "50faab1a06516f41df8ba9e91ff0710b1f34cbb2d3c6c0b53c90c9a7452da601",
+      "requires_dist": [
+        "build>=1.0.0; extra == \"dev\"",
+        "pytest>=7.0.0; extra == \"dev\"",
+        "twine>=6.1.0; extra == \"dev\""
+      ],
+      "review_reason": "Pure Python document decoding for the original read_file boundary; no installation or native OCR engine."
+    },
+    {
+      "name": "tlslite-ng",
+      "version": "0.8.2",
+      "filename": "tlslite_ng-0.8.2.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/ff/d1/f6572100f6d6ddb31d7356d7c670599bf404b744ce9bb3c6728bde3665f3/tlslite_ng-0.8.2.tar.gz",
+      "sha256": "9ac377526c60a7d6e7625bd49e7a5ae551b12b0465b07d691342c64a0b3e8440",
+      "size": 1343739,
+      "dependencies": [
+        "ecdsa"
+      ],
+      "pin_source": "supplemental-lock",
+      "kind": "sdist",
+      "release_url": "https://pypi.org/project/tlslite-ng/0.8.2/",
+      "metadata_url": "https://pypi.org/pypi/tlslite-ng/0.8.2/json",
+      "metadata_sha256": "0c310f1f75b1dd7bfca64d5ac6983bf8c7402b5cc4214e9c60785276a9cdf536",
+      "requires_dist": [
+        "ecdsa>=0.18.0b1"
+      ],
+      "review_reason": "Explicitly reviewed pure Python cryptographic primitives for narrow Hermes native-dependency replacements; no TLS transport replacement."
+    },
+    {
+      "dependencies": [
+        "gensim",
+        "nltk",
+        "scikit-learn",
+        "sklearn-crfsuite"
+      ],
+      "filename": "tltk-1.10.tar.gz",
+      "kind": "sdist",
+      "metadata_sha256": "0eec888227d23dcc8393e54e909785804cc6482f1a09c9b211c127a52b7b14de",
+      "metadata_url": "https://pypi.org/pypi/tltk/1.10/json",
+      "name": "tltk",
+      "pin_source": "supplemental-lock",
+      "release_url": "https://pypi.org/project/tltk/1.10/",
+      "replaced_dependencies": {
+        "gensim": {
+          "module": "standalone.local_piper_thai",
+          "reason": "Original Piper consumes only th2ipa. Its statically reviewed call closure uses stdlib algorithms; unrelated tagging, classification and embeddings and their imports are omitted, with no SDK or algorithm fake."
+        },
+        "nltk": {
+          "module": "standalone.local_piper_thai",
+          "reason": "Original Piper consumes only th2ipa. Its statically reviewed call closure uses stdlib algorithms; unrelated tagging, classification and embeddings and their imports are omitted, with no SDK or algorithm fake."
+        },
+        "scikit-learn": {
+          "module": "standalone.local_piper_thai",
+          "reason": "Original Piper consumes only th2ipa. Its statically reviewed call closure uses stdlib algorithms; unrelated tagging, classification and embeddings and their imports are omitted, with no SDK or algorithm fake."
+        },
+        "sklearn-crfsuite": {
+          "module": "standalone.local_piper_thai",
+          "reason": "Original Piper consumes only th2ipa. Its statically reviewed call closure uses stdlib algorithms; unrelated tagging, classification and embeddings and their imports are omitted, with no SDK or algorithm fake."
+        }
+      },
+      "requires_dist": [
+        "nltk",
+        "scikit-learn",
+        "sklearn-crfsuite",
+        "gensim"
+      ],
+      "review_reason": "Actual Piper Thai th2ipa source and four original rule/statistic resources. Unused optional NLP/ML imports and unread initialization are omitted with exact source patches; all consumed algorithm bodies remain original. Vendored in private hermes_tltk namespace, not a replacement public SDK.",
+      "sha256": "f9f9669b64c1e545366b9def4f7d38514f0686f5e1197a91346a2e4166a30b00",
+      "size": 20048983,
+      "source_layout": {
+        "files": {
+          "hermes_tltk/PhSTrigram.sts": "tltk/PhSTrigram.sts",
+          "hermes_tltk/__init__.py": "tltk/__init__.py",
+          "hermes_tltk/nlp.py": "tltk/nlp.py",
+          "hermes_tltk/sylrule.lts": "tltk/sylrule.lts",
+          "hermes_tltk/sylseg.3g": "tltk/sylseg.3g",
+          "hermes_tltk/thaisyl.dict": "tltk/thaisyl.dict"
+        },
+        "licenses": [
+          "LICENSE.txt",
+          "LICENSE-gpl.txt"
+        ],
+        "metadata": "PKG-INFO",
+        "root": "tltk-1.10"
+      },
+      "source_patches": [
+        {
+          "original_sha256": "9fb4aa15a7b414ee6652cd80e9ab36c24c93b021c060207faa4953e2a7a3b7d0",
+          "patched_sha256": "4b684ff181127f18adba1df96ef70494c332ba8a64aed6a2b48009fe3740fd85",
+          "path": "hermes_tltk/__init__.py",
+          "replacements": [
+            {
+              "new": "\"\"\"Reviewed original TLTK th2ipa subset for the Hermes Piper path.\"\"\"\nfrom .nlp import th2ipa\n",
+              "old": "from tltk import nlp\nfrom tltk import corpus\nfrom tltk.nlp import initial, word_segment, word_segment_mm, syl_segment, word_segment_nbest, read_thaidict, reset_thaidict, check_thaidict, spell_candidates, spell_variants, pos_tag, pos_tag_wordlist, segment, chunk, ner, ner_tag, g2p, th2ipa, th2roman, th2ipa_all, WordAna, TextAna, SylAna, th2read, TNC_tag, TextAna2json, MaltParser, print_dtree, spoonerism, TextClass, txt2feat\nfrom tltk.corpus import TNC_load, trigram_load, bigram, trigram, unigram, collocates, w2v_load, w2v_exist, w2v, w2v_plot, similarity, cosine_similarity, similar_words, outofgroup, analogy, w2v_compare_color, Corpus_build, W2V_train, D2V_train, W2V_load, Corpus, Xwordlist, download_TNCw2v, download_TNC3g, compound\n"
+            }
+          ]
+        },
+        {
+          "original_sha256": "66aa123e77988b51cf76d2f94fab2aadcc20a060ce735c9098d830ec8b6353d0",
+          "patched_sha256": "d0b5970a82ee10be770d557462db0bcb09dc5bb40a6aeb6cca974ece3e16f09c",
+          "path": "hermes_tltk/nlp.py",
+          "replacements": [
+            {
+              "new": "\n\n# Unrelated dependency import is outside the Piper th2ipa closure.",
+              "old": "\n\nfrom nltk.parse import malt"
+            },
+            {
+              "new": "# Unrelated dependency import is outside the Piper th2ipa closure.",
+              "old": "from sklearn_crfsuite import CRF"
+            },
+            {
+              "new": "# Unrelated dependency import is outside the Piper th2ipa closure.",
+              "old": "from sklearn.pipeline import Pipeline"
+            },
+            {
+              "new": "# Unrelated dependency import is outside the Piper th2ipa closure.",
+              "old": "from sklearn.feature_extraction import DictVectorizer"
+            },
+            {
+              "new": "# Unrelated dependency import is outside the Piper th2ipa closure.",
+              "old": "from sklearn.ensemble import RandomForestClassifier"
+            },
+            {
+              "new": "# Unrelated dependency import is outside the Piper th2ipa closure.",
+              "old": "from nltk.parse import malt"
+            },
+            {
+              "new": "# Unrelated dependency import is outside the Piper th2ipa closure.",
+              "old": "from nltk.tag.perceptron import PerceptronTagger"
+            },
+            {
+              "new": "# Unrelated dependency import is outside the Piper th2ipa closure.",
+              "old": "import pandas as pd"
+            },
+            {
+              "new": "# Unrelated dependency import is outside the Piper th2ipa closure.",
+              "old": "from pydoc import allmethods"
+            },
+            {
+              "new": "    # Data never read by the th2ipa closure is not initialized.",
+              "old": "    read_thdict(ATA_PATH +  '/thdict')"
+            },
+            {
+              "new": "    # Data never read by the th2ipa closure is not initialized.",
+              "old": "    read_sylvar(ATA_PATH + '/sylform_var.pklz')"
+            },
+            {
+              "new": "    # Data never read by the th2ipa closure is not initialized.",
+              "old": "    read_wordtier(ATA_PATH +  '/word.pklz')"
+            }
+          ]
+        }
+      ],
+      "url": "https://files.pythonhosted.org/packages/05/76/f24c01a02c2fb7a3e233b6a309ce1dbbc0a71aac66089297dbec37bba910/tltk-1.10.tar.gz",
+      "version": "1.10"
+    },
+    {
+      "dependencies": [],
+      "filename": "unicode_rbnf-2.4.0-py3-none-any.whl",
+      "kind": "wheel",
+      "metadata_sha256": "515faaacf27b07bcd9ca6fc430ed8d690ccf6173b6793c3a915420c1f295e875",
+      "metadata_url": "https://pypi.org/pypi/unicode-rbnf/2.4.0/json",
+      "name": "unicode-rbnf",
+      "pin_source": "supplemental-lock",
+      "release_url": "https://pypi.org/project/unicode-rbnf/2.4.0/",
+      "requires_dist": [
+        "black==24.8.0; extra == \"dev\"",
+        "flake8==7.1.1; extra == \"dev\"",
+        "mypy==1.14.0; extra == \"dev\"",
+        "pylint==3.2.7; extra == \"dev\"",
+        "pytest==8.3.4; extra == \"dev\"",
+        "build==1.2.2; extra == \"dev\""
+      ],
+      "review_reason": "Original Piper Thai and Chinese CLDR rule-based number expansion. All Python, XML resources, metadata and licenses are retained; runtime imports use stdlib only.",
+      "sha256": "0176b30ac9b7b84008d7dc0f23078055dc10d2671fdadfab5747943243e20e2d",
+      "size": 141691,
+      "url": "https://files.pythonhosted.org/packages/4b/21/82f5d435808cba330668a8b69efb180e3ef9739d4998e8cd0381e8c9cb23/unicode_rbnf-2.4.0-py3-none-any.whl",
+      "version": "2.4.0"
+    },
+    {
+      "name": "xlrd",
+      "version": "2.0.2",
+      "filename": "xlrd-2.0.2.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/07/5a/377161c2d3538d1990d7af382c79f3b2372e880b65de21b01b1a2b78691e/xlrd-2.0.2.tar.gz",
+      "sha256": "08b5e25de58f21ce71dc7db3b3b8106c1fa776f3024c54e45b45b374e89234c9",
+      "size": 100167,
+      "dependencies": [],
+      "pin_source": "supplemental-lock",
+      "kind": "sdist",
+      "release_url": "https://pypi.org/project/xlrd/2.0.2/",
+      "metadata_url": "https://pypi.org/pypi/xlrd/2.0.2/json",
+      "metadata_sha256": "320fd24af58bea9b9ef35aa0763f79c81a0b464ad8078d1558b96c39ce38bd65",
+      "requires_dist": [
+        "wheel; extra == \"build\"",
+        "twine; extra == \"build\"",
+        "sphinx; extra == \"docs\"",
+        "pytest; extra == \"test\"",
+        "pytest-cov; extra == \"test\""
+      ],
+      "review_reason": "Pure Python document decoding for the original read_file boundary; no installation or native OCR engine."
+    }
+  ]
+}
