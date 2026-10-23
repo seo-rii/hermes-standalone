@@ -1,0 +1,2748 @@
+# coding: utf-8
+# cython: boundscheck=True, wraparound=True
+# cython: c_string_type=unicode, c_string_encoding=ascii
+# cython: freethreading_compatible=True
+# cython: language_level=3
+# pyright: reportGeneralTypeIssues=false
+# pyright: reportMissingTypeArgument=false
+# pyright: reportUnnecessaryIsInstance=false
+# pyright: reportWildcardImportFromLibrary=false
+
+import numpy as np
+from collections.abc import Callable, Sequence
+from functools import wraps
+from threading import Lock
+from typing import Concatenate, Iterable, ParamSpec, TypeVar
+
+from .types import (
+    JPCommonMappingEntry,
+    MeCabLatticeCandidate,
+    MeCabMorph,
+    MeCabNBestPath,
+    NJDFeature,
+)
+from .tsqyomi.types import (
+    CandidateConnection,
+    CandidateNode,
+    CandidatePath,
+    ReadingAnalysis,
+)
+
+cimport numpy as np
+np.import_array()
+
+from ._kana_utils import contains_hiragana, is_katakana_word
+from ._known_symbols import KNOWN_SYMBOL_FEATURES
+
+from libc.limits cimport LONG_MAX
+from libc.stdlib cimport calloc
+from libc.string cimport strlen
+from libc.stdint cimport *
+
+from .openjtalk.mecab cimport Mecab, Mecab_initialize, Mecab_load, Mecab_analysis
+from .openjtalk.mecab cimport Mecab_parse_lattice_with_numeral_boundaries
+from .openjtalk.mecab cimport Mecab_get_feature, Mecab_get_size, Mecab_refresh, Mecab_clear
+from .openjtalk.mecab cimport createModel, Model, Tagger, Lattice
+from .openjtalk.mecab cimport mecab_dict_index as _mecab_dict_index
+from .openjtalk.mecab cimport (
+    mecab_node_t,
+    mecab_path_t,
+    mecab_t,
+    mecab_lattice_t,
+    mecab_lattice_get_bos_node,
+    mecab_lattice_get_begin_nodes,
+    mecab_lattice_get_request_type,
+    mecab_lattice_get_sentence,
+    mecab_lattice_get_size,
+    mecab_lattice_set_request_type,
+    mecab_nbest_init2,
+    mecab_nbest_next_tonode,
+    MECAB_NBEST,
+)
+from .openjtalk.njd cimport NJD, NJD_initialize, NJD_refresh, NJD_clear
+from .openjtalk cimport njd as _njd
+from .openjtalk.jpcommon cimport JPCommon, JPCommon_initialize, JPCommon_make_label
+from .openjtalk.jpcommon cimport JPCommon_get_label_size, JPCommon_get_label_feature
+from .openjtalk.jpcommon cimport JPCommon_refresh, JPCommon_clear
+from .openjtalk.jpcommon cimport JPCommonLabel, JPCommonLabelWord, JPCommonLabelMora, JPCommonLabelPhoneme
+from .openjtalk.jpcommon cimport JPCommonLabel_initialize, JPCommonLabel_push_word
+from .openjtalk.jpcommon cimport JPCommonLabel_clear
+from .openjtalk.jpcommon cimport JPCommonNode
+from .openjtalk.jpcommon cimport (
+    JPCommonNode_get_pron,
+    JPCommonNode_get_pos,
+    JPCommonNode_get_ctype,
+    JPCommonNode_get_cform,
+    JPCommonNode_get_acc,
+    JPCommonNode_get_chain_flag,
+)
+from .openjtalk.text2mecab cimport (
+    TEXT2MECAB_RESULT_INVALID_ARGUMENT,
+    TEXT2MECAB_RESULT_RANGE_ERROR,
+    text2mecab,
+)
+from .openjtalk.mecab2njd cimport mecab2njd
+from .openjtalk.njd2jpcommon cimport njd2jpcommon
+
+DEF TEXT2MECAB_BUFFER_SIZE = 16384
+
+_NON_PAUSE_SYMBOLS = frozenset((
+    "「", "」", "『", "』", "（", "）", "(", ")",
+    "【", "】", "［", "］", "[", "]", "〈", "〉",
+    "《", "》", "〔", "〕", "｛", "｝", "{", "}",
+    "\"", "'", "”", "“", "’", "‘",
+))
+
+# MeCab が「！？！？」のような記号の並びを1つの未知語にまとめたとき、1文字ずつに分けるきっかけにする記号
+# 疑問符か感嘆符を含む並びだけを分け、踊り字の「ヾ」などを含む顔文字はまとめたまま NJD へ渡す
+_PAUSE_SYMBOLS_REQUIRING_EXPANSION = frozenset(("！", "？"))
+
+# 数詞の直後で英字の記号として解析された1文字の単位を、助数詞として読むための読み・アクセント核・モーラ数・結合規則
+# 値は既定辞書の助数詞の行と同じにして、「四千ｇ」と辞書の助数詞が選ばれた場合とで読みとアクセントをそろえる
+## 1文字の単位の助数詞の行はコストが高く、「四千ｇだった」「八十ｍ先」では英字の記号に負けて単位が読まれない
+## 辞書のコストを下げると、読点の後の「ｔ値」や数式の変数の「ｍ」まで助数詞になるので、数詞の直後に限って読み替える
+_UNIT_LETTER_COUNTERS = {
+    "ｇ": ("グラム", 1, 3, "C1"),
+    "ｍ": ("メートル", 0, 4, "C2"),
+    "ｔ": ("トン", 1, 2, "C3"),
+    "ｌ": ("リットル", 0, 4, "C2"),
+}
+# 単位の英字の直後にあると、その英字を数式の変数とみなす演算子 (「2m+1」の「＋」など)
+## 「1m60cm」の数字、「五百ｇ／タマネギ」の区切りの斜線、空白を挟んだ「七十ｇ　Ａ」の英字は単位の後にも続くので含めない
+_UNIT_LETTER_FORMULA_OPERATORS = frozenset("＋−－＝×÷＊＜＞+-=*<>")
+
+
+cdef inline object _encode_text_for_mecab(text):
+    """
+    MeCab へ渡す本文を UTF-8 にエンコードし、NUL を読み飛ばす。
+    NUL は C 文字列を終端するため、ほかの ASCII 制御文字を除去する text2mecab() の手前で取り除く。
+
+    Args:
+        text (str | bytes | bytearray): 入力テキスト
+
+    Returns:
+        bytes | bytearray: NUL を含まない UTF-8 の入力本文
+    """
+
+    if isinstance(text, str):
+        text = text.encode("utf-8")
+    return text.replace(b"\x00", b"")
+
+
+cdef inline str _decode_utf8_or_empty(const char* value):
+    """
+    C 文字列ポインタを UTF-8 の Python str へデコードする。
+
+    Args:
+        value (const char*): null 終端 C 文字列。NULL の場合は空文字列として扱う
+
+    Returns:
+        str: デコード結果
+    """
+    if value == NULL:
+        return ""
+    return (<bytes>value).decode("utf-8")
+
+
+cdef inline bytes _validate_and_encode_njd_field(feature_node, str field_name) except *:
+    """
+    NJDFeature dict の文字列フィールドを検証し UTF-8 bytes へエンコードする。
+
+    Args:
+        feature_node: NJDFeature 相当 dict
+        field_name (str): 読み取るフィールド名
+
+    Returns:
+        bytes: UTF-8 エンコード済みフィールド値
+
+    Raises:
+        TypeError: フィールドが str でない場合
+        ValueError: null 文字が含まれる場合
+    """
+    cdef object field_value
+    cdef bytes encoded_value
+
+    field_value = feature_node[field_name]
+    if isinstance(field_value, str) is False:
+        raise TypeError(f"NJD feature field must be str: {field_name}")
+    if "\x00" in field_value:
+        raise ValueError(f"NJD feature field contains null character: {field_name}")
+    encoded_value = field_value.encode("utf-8")
+    return encoded_value
+
+
+cdef inline object _validate_int_njd_field(feature_node, str field_name) except *:
+    """
+    NJDFeature dict の整数フィールドを検証する。
+
+    Args:
+        feature_node: NJDFeature 相当 dict
+        field_name (str): 読み取るフィールド名
+
+    Returns:
+        object: 検証済み int 値 (Python オブジェクト)
+
+    Raises:
+        TypeError: フィールドが bool または int 以外の場合
+    """
+    cdef object field_value
+
+    field_value = feature_node[field_name]
+    if isinstance(field_value, bool) is True or isinstance(field_value, int) is False:
+        raise TypeError(f"NJD feature field must be int: {field_name}")
+    return field_value
+
+
+cdef njd_node_get_string(_njd.NJDNode* node):
+    """NJDNode の表層形 string を UTF-8 str として返す。"""
+    return _decode_utf8_or_empty(_njd.NJDNode_get_string(node))
+
+
+cdef njd_node_get_pos(_njd.NJDNode* node):
+    """NJDNode の品詞 pos を UTF-8 str として返す。"""
+    return _decode_utf8_or_empty(_njd.NJDNode_get_pos(node))
+
+
+cdef njd_node_get_pos_group1(_njd.NJDNode* node):
+    """NJDNode の pos_group1 を UTF-8 str として返す。"""
+    return _decode_utf8_or_empty(_njd.NJDNode_get_pos_group1(node))
+
+
+cdef njd_node_get_pos_group2(_njd.NJDNode* node):
+    """NJDNode の pos_group2 を UTF-8 str として返す。"""
+    return _decode_utf8_or_empty(_njd.NJDNode_get_pos_group2(node))
+
+
+cdef njd_node_get_pos_group3(_njd.NJDNode* node):
+    """NJDNode の pos_group3 を UTF-8 str として返す。"""
+    return _decode_utf8_or_empty(_njd.NJDNode_get_pos_group3(node))
+
+
+cdef njd_node_get_ctype(_njd.NJDNode* node):
+    """NJDNode の ctype を UTF-8 str として返す。"""
+    return _decode_utf8_or_empty(_njd.NJDNode_get_ctype(node))
+
+
+cdef njd_node_get_cform(_njd.NJDNode* node):
+    """NJDNode の cform を UTF-8 str として返す。"""
+    return _decode_utf8_or_empty(_njd.NJDNode_get_cform(node))
+
+
+cdef njd_node_get_orig(_njd.NJDNode* node):
+    """NJDNode の orig を UTF-8 str として返す。"""
+    return _decode_utf8_or_empty(_njd.NJDNode_get_orig(node))
+
+
+cdef njd_node_get_read(_njd.NJDNode* node):
+    """NJDNode の read を UTF-8 str として返す。"""
+    return _decode_utf8_or_empty(_njd.NJDNode_get_read(node))
+
+
+cdef njd_node_get_pron(_njd.NJDNode* node):
+    """NJDNode の pron を UTF-8 str として返す。"""
+    return _decode_utf8_or_empty(_njd.NJDNode_get_pron(node))
+
+
+cdef int njd_node_get_acc(_njd.NJDNode* node) noexcept:
+    """NJDNode の acc (アクセント核位置) を返す。"""
+    return _njd.NJDNode_get_acc(node)
+
+
+cdef int njd_node_get_mora_size(_njd.NJDNode* node) noexcept:
+    """NJDNode の mora_size (モーラ数) を返す。"""
+    return _njd.NJDNode_get_mora_size(node)
+
+
+cdef njd_node_get_chain_rule(_njd.NJDNode* node):
+    """NJDNode の chain_rule を UTF-8 str として返す。"""
+    return _decode_utf8_or_empty(_njd.NJDNode_get_chain_rule(node))
+
+
+cdef int njd_node_get_chain_flag(_njd.NJDNode* node) noexcept:
+    """NJDNode の chain_flag (アクセント句連結フラグ) を返す。"""
+    return _njd.NJDNode_get_chain_flag(node)
+
+
+cdef node2feature(_njd.NJDNode* node):
+    """
+    NJD 連結リストの1ノードを NJDFeature 相当の dict へ変換する。
+
+    Args:
+        node (_njd.NJDNode*): 読み取る NJD ノード
+
+    Returns:
+        NJDFeature: `string` / `pos` / `pron` / `acc` 等を含む NJDFeature
+    """
+    return NJDFeature(
+        string=njd_node_get_string(node),
+        pos=njd_node_get_pos(node),
+        pos_group1=njd_node_get_pos_group1(node),
+        pos_group2=njd_node_get_pos_group2(node),
+        pos_group3=njd_node_get_pos_group3(node),
+        ctype=njd_node_get_ctype(node),
+        cform=njd_node_get_cform(node),
+        orig=njd_node_get_orig(node),
+        read=njd_node_get_read(node),
+        pron=njd_node_get_pron(node),
+        acc=njd_node_get_acc(node),
+        mora_size=njd_node_get_mora_size(node),
+        chain_rule=njd_node_get_chain_rule(node),
+        chain_flag=njd_node_get_chain_flag(node),
+        # 読み保護と読みの書き換えの印は NJD のノードに持てないので、ここでは False で作り、後段の処理が立てる
+        is_reading_protected=False,
+        is_reading_rewritten=False,
+    )
+
+
+cdef njd2feature(_njd.NJD* njd):
+    """
+    NJD 連結リスト全体を NJDFeature dict の list へ変換する。
+
+    Args:
+        njd (_njd.NJD*): 走査する NJD 構造体
+
+    Returns:
+        list[NJDFeature]: 先頭から末尾までの NJDFeature の list
+    """
+    cdef _njd.NJDNode* node = njd.head
+    features = []
+    while node is not NULL:
+        features.append(node2feature(node))
+        node = node.next
+    return features
+
+
+cdef void feature2njd(_njd.NJD* njd, features) except *:
+    """
+    NJDFeature dict の list から NJD 連結リストを再構築する。
+
+    Args:
+        njd (_njd.NJD*): 書き込み先 NJD 構造体 (呼び出し前に `NJD_refresh()` 済みであること)
+        features (list): NJDFeature 相当 dict の list
+
+    Raises:
+        TypeError: 文字列フィールドが str でない、または整数フィールドが int でない場合
+        ValueError: 文字列フィールドに null 文字が含まれる場合
+        MemoryError: NJD ノードの確保に失敗した場合
+
+    NOTE:
+        例外時は `NJD_refresh(njd)` で部分構築済みノードを解放する
+    """
+    cdef _njd.NJDNode* node
+    cdef bytes string_bytes
+    cdef bytes pos_bytes
+    cdef bytes pos_group1_bytes
+    cdef bytes pos_group2_bytes
+    cdef bytes pos_group3_bytes
+    cdef bytes ctype_bytes
+    cdef bytes cform_bytes
+    cdef bytes orig_bytes
+    cdef bytes read_bytes
+    cdef bytes pron_bytes
+    cdef bytes chain_rule_bytes
+    cdef int acc_value
+    cdef int mora_size_value
+    cdef int chain_flag_value
+
+    try:
+        for feature_node in features:
+            string_bytes = _validate_and_encode_njd_field(feature_node, "string")
+            pos_bytes = _validate_and_encode_njd_field(feature_node, "pos")
+            pos_group1_bytes = _validate_and_encode_njd_field(feature_node, "pos_group1")
+            pos_group2_bytes = _validate_and_encode_njd_field(feature_node, "pos_group2")
+            pos_group3_bytes = _validate_and_encode_njd_field(feature_node, "pos_group3")
+            ctype_bytes = _validate_and_encode_njd_field(feature_node, "ctype")
+            cform_bytes = _validate_and_encode_njd_field(feature_node, "cform")
+            orig_bytes = _validate_and_encode_njd_field(feature_node, "orig")
+            read_bytes = _validate_and_encode_njd_field(feature_node, "read")
+            pron_bytes = _validate_and_encode_njd_field(feature_node, "pron")
+            chain_rule_bytes = _validate_and_encode_njd_field(feature_node, "chain_rule")
+            acc_value = <int> _validate_int_njd_field(feature_node, "acc")
+            mora_size_value = <int> _validate_int_njd_field(feature_node, "mora_size")
+            chain_flag_value = <int> _validate_int_njd_field(feature_node, "chain_flag")
+
+            node = <_njd.NJDNode *> calloc(1, sizeof(_njd.NJDNode))
+            if node == NULL:
+                raise MemoryError("Failed to allocate memory for NJD node")
+            _njd.NJDNode_initialize(node)
+            # set values
+            _njd.NJDNode_set_string(node, string_bytes)
+            _njd.NJDNode_set_pos(node, pos_bytes)
+            _njd.NJDNode_set_pos_group1(node, pos_group1_bytes)
+            _njd.NJDNode_set_pos_group2(node, pos_group2_bytes)
+            _njd.NJDNode_set_pos_group3(node, pos_group3_bytes)
+            _njd.NJDNode_set_ctype(node, ctype_bytes)
+            _njd.NJDNode_set_cform(node, cform_bytes)
+            _njd.NJDNode_set_orig(node, orig_bytes)
+            _njd.NJDNode_set_read(node, read_bytes)
+            _njd.NJDNode_set_pron(node, pron_bytes)
+            _njd.NJDNode_set_acc(node, acc_value)
+            _njd.NJDNode_set_mora_size(node, mora_size_value)
+            _njd.NJDNode_set_chain_rule(node, chain_rule_bytes)
+            _njd.NJDNode_set_chain_flag(node, chain_flag_value)
+            _njd.NJD_push_node(njd, node)
+    except Exception:
+        NJD_refresh(njd)
+        raise
+
+
+cdef long _selected_mecab_link_cost(mecab_node_t* node, bint can_use_node_cost_fallback) except *:
+    """
+    最良経路または n-best 候補パス上の MeCab ノードについて、直前ノードとの接続コストを返す。
+
+    Args:
+        node (mecab_node_t*): 接続コストを求める Lattice ノード
+        can_use_node_cost_fallback (bint): one-best 解析向けに累積コスト差から復元してよいか
+
+    Returns:
+        long: 直前ノードとの接続コスト
+
+    Raises:
+        RuntimeError: n-best 候補で対応する接続辺が見つからない場合
+    """
+
+    cdef mecab_path_t* path
+
+    # n-best 生成後の node.cost は MeCab 側で再計算されないため、候補パスの prev リンクから局所コストを復元する
+    ## Path.cost は MeCab の connector->cost() 由来で、直前ノードとの連接コストと現在ノードの単語コストを含む
+    if node == NULL or node.prev == NULL:
+        return 0
+
+    path = node.lpath
+    while path != NULL:
+        if path.lnode == node.prev and path.rnode == node:
+            return path.cost
+        path = path.lnext
+
+    # one-best 解析では lpath が残らない場合があるため、累積コスト差から局所コストを復元する
+    ## n-best の node.cost は候補パス向けに再計算されないので、このフォールバックは one-best 用に限定する
+    if can_use_node_cost_fallback is True:
+        return node.cost - node.prev.cost
+
+    # n-best で対応する接続が見つからない場合は、候補パスの内部リンクが壊れている
+    ## 0 として扱うと path_cost が過小評価されるため、呼び出し側に明示的に失敗を返す
+    raise RuntimeError("Failed to resolve selected MeCab link cost")
+
+
+cdef list _build_byte_to_char_offsets(bytes sentence_bytes):
+    """
+    MeCab 文の UTF-8 バイト位置を Python 文字位置へ変換する対応表を構築する。
+
+    Args:
+        sentence_bytes (bytes): MeCab Lattice の sentence バッファ
+
+    Returns:
+        list: 長さ `len(sentence_bytes) + 1` の対応表。インデックス i はバイト i の直前までの文字数
+    """
+
+    cdef Py_ssize_t byte_index
+    cdef Py_ssize_t character_index = 0
+    cdef unsigned char current_byte
+    cdef list byte_to_char_offsets = [0] * (len(sentence_bytes) + 1)
+
+    # MeCab の位置は UTF-8 のバイト単位なので、文ごとに Python の文字位置との対応表を作る
+    ## 各ノードで先頭から decode すると候補数に応じて同じ接頭辞を繰り返し走査することになる
+    for byte_index in range(len(sentence_bytes)):
+        current_byte = sentence_bytes[byte_index]
+        if (current_byte & 0xC0) != 0x80:
+            character_index += 1
+        byte_to_char_offsets[byte_index + 1] = character_index
+    return byte_to_char_offsets
+
+
+cdef tuple _mecab_node_to_common_fields(
+    mecab_node_t* node,
+    const char* sentence,
+    list byte_to_char_offsets,
+) except *:
+    """
+    MeCab ノードから surface・feature・文字位置などの共通フィールドを抽出する。
+
+    Args:
+        node (mecab_node_t*): 読み取る Lattice ノード
+        sentence (const char*): MeCab が解析した sentence バッファ
+        byte_to_char_offsets (list): `_build_byte_to_char_offsets()` が構築したバイト→文字対応表
+
+    Returns:
+        tuple: `(surface_str, feature_columns, is_unknown, is_ignored, char_span)`
+    """
+
+    cdef Py_ssize_t byte_begin
+    cdef Py_ssize_t byte_end
+    cdef uintptr_t byte_offset
+    cdef bytes surface_bytes
+    cdef bytes feature_bytes
+    cdef str surface_str
+    cdef str feature_str
+    cdef list feature_columns
+    cdef bint is_unknown
+    cdef bint is_ignored
+    cdef object char_span
+
+    # surface は null 終端ではないため、MeCab が示すバイト長だけを UTF-8 として読む
+    ## c_string_encoding=ascii の影響を受けると非 ASCII 文字が壊れるため、明示的に bytes 化する
+    if node.surface != NULL and node.length > 0:
+        surface_bytes = (<char*>node.surface)[:node.length]
+        surface_str = surface_bytes.decode("utf-8", errors="replace")
+    else:
+        surface_str = ""
+
+    # feature は MeCab 側で null 終端済みの文字列として保持される
+    ## 未知語や異常系でも Python 側の検証コードが扱えるよう、NULL は空文字列として返す
+    if node.feature != NULL:
+        feature_bytes = <bytes> node.feature
+        feature_str = feature_bytes.decode("utf-8", errors="replace")
+    else:
+        feature_str = ""
+
+    feature_columns = (surface_str + "," + feature_str).split(",")
+    is_unknown = node.stat == 1  # MECAB_UNK_NODE
+    is_ignored = "記号,空白" in feature_str
+
+    # sentence と同じバッファを指すノードだけ、Python の半開区間へ変換する
+    ## n-best や外部確保されたノードの surface は sentence の範囲外を指す場合がある
+    if (
+        sentence != NULL
+        and node.surface != NULL
+        and <uintptr_t> node.surface >= <uintptr_t> sentence
+    ):
+        byte_offset = <uintptr_t> node.surface - <uintptr_t> sentence
+        if (
+            byte_offset < <uintptr_t> len(byte_to_char_offsets)
+            and node.length < <uintptr_t> len(byte_to_char_offsets) - byte_offset
+        ):
+            byte_begin = <Py_ssize_t> byte_offset
+            byte_end = byte_begin + node.length
+            char_span = (
+                byte_to_char_offsets[byte_begin],
+                byte_to_char_offsets[byte_end],
+            )
+        else:
+            char_span = (0, 0)
+    else:
+        char_span = (0, 0)
+
+    return surface_str, feature_columns, is_unknown, is_ignored, char_span
+
+
+cdef object _mecab_node_to_morph(
+    mecab_node_t* node,
+    bint can_use_node_cost_fallback,
+    const char* sentence,
+    list byte_to_char_offsets,
+) except *:
+    """
+    MeCab ノードを `run_mecab_detailed()` 互換の形態素 dict へ変換する。
+
+    Args:
+        node (mecab_node_t*): 読み取る Lattice ノード
+        can_use_node_cost_fallback (bint): 接続コスト復元に one-best 向けフォールバックを許可するか
+        sentence (const char*): MeCab が解析した sentence バッファ
+        byte_to_char_offsets (list): `_build_byte_to_char_offsets()` が構築したバイト→文字対応表
+
+    Returns:
+        MeCabMorph: 詳細形態素 API 向けの surface・feature・コスト・文字位置情報
+    """
+
+    cdef long link_cost
+    cdef str surface_str
+    cdef list feature_columns
+    cdef bint is_unknown
+    cdef bint is_ignored
+    cdef object char_span
+
+    link_cost = _selected_mecab_link_cost(node, can_use_node_cost_fallback)
+    surface_str, feature_columns, is_unknown, is_ignored, char_span = (
+        _mecab_node_to_common_fields(node, sentence, byte_to_char_offsets)
+    )
+    return MeCabMorph(
+        surface=surface_str,
+        features=feature_columns,
+        char_span=char_span,
+        pos_id=node.posid,
+        left_id=node.lcAttr,
+        right_id=node.rcAttr,
+        word_cost=node.wcost,
+        link_cost=link_cost,
+        node_cost=node.cost,
+        is_unknown=is_unknown,
+        is_ignored=is_ignored,
+        dictionary_index=node.dictionary_index,
+        # tsqyomi の経路が、読みを差し替えた印と読みを選んだ対象の印を立てる
+        is_tsqyomi_selected=False,
+        is_tsqyomi_target=False,
+    )
+
+
+cdef list _expand_symbol_morphs(
+    mecab_node_t* node,
+    object node_morph,
+) except *:
+    """
+    未知語連結記号を1文字ずつ既知記号へ復元した MeCabMorph 列を返す。
+    分割不要なら `node_morph` 1件だけを返す。
+
+    Args:
+        node (mecab_node_t*): 分割元の MeCab Lattice ノード
+        node_morph (MeCabMorph): 分割元ノードから構築した詳細形態素
+
+    Returns:
+        list[MeCabMorph]: 記号単位へ分割した形態素列、または分割不要な元形態素1件
+    """
+
+    cdef list expanded_morphs = []
+    cdef str surface_str
+    cdef str morph_feature_str
+    cdef bint is_unknown
+    cdef bint should_split_symbol_chunk
+    cdef Py_ssize_t character_index
+    cdef str character
+    cdef object known_symbol
+    cdef int split_left_id
+    cdef int split_right_id
+    cdef long split_word_cost
+    cdef str split_feature
+    cdef long split_link_cost
+    cdef int split_char_start
+
+    surface_str = node_morph["surface"]
+    morph_feature_str = ",".join(node_morph["features"][1:])
+    is_unknown = node_morph["is_unknown"]
+    should_split_symbol_chunk = (
+        is_unknown is True
+        and len(surface_str) > 1
+        and all(character.isalnum() is False for character in surface_str)
+    )
+    if should_split_symbol_chunk is False:
+        expanded_morphs.append(node_morph)
+        return expanded_morphs
+
+    for character_index, character in enumerate(surface_str):
+        known_symbol = KNOWN_SYMBOL_FEATURES.get(character)
+        if known_symbol is not None:
+            split_left_id = known_symbol[0]
+            split_right_id = known_symbol[1]
+            split_word_cost = known_symbol[2]
+            split_feature = known_symbol[3]
+        else:
+            split_feature = morph_feature_str
+            split_word_cost = node.wcost
+            split_left_id = node.lcAttr
+            split_right_id = node.rcAttr
+
+        split_link_cost = node_morph["link_cost"] if character_index == 0 else 0
+        split_char_start = node_morph["char_span"][0] + character_index
+        expanded_morphs.append(MeCabMorph(
+            surface=character,
+            features=(character + "," + split_feature).split(","),
+            char_span=(split_char_start, split_char_start + 1),
+            pos_id=node.posid,
+            left_id=split_left_id,
+            right_id=split_right_id,
+            word_cost=split_word_cost,
+            link_cost=split_link_cost,
+            node_cost=node_morph["node_cost"],
+            is_unknown=known_symbol is None,
+            is_ignored="記号,空白" in split_feature,
+            dictionary_index=0 if known_symbol is not None else node_morph["dictionary_index"],
+            is_tsqyomi_selected=False,
+            is_tsqyomi_target=False,
+        ))
+    return expanded_morphs
+
+
+cdef list _expand_symbol_feature(str mecab_feature):
+    """
+    MeCab が1つの未知語にまとめた記号の並びを、1文字ずつの feature に分ける。
+    疑問符か感嘆符を含まない feature は分けず、そのまま1件だけ返す。
+
+    Args:
+        mecab_feature (str): MeCab が返した surface 付き feature 文字列
+
+    Returns:
+        list[str]: 1文字ずつに分けた feature の列 (分けない場合は元の feature 1件)
+    """
+
+    columns = mecab_feature.split(",")
+    surface = columns[0]
+    is_unknown_symbol_chunk = (
+        len(columns) == 8
+        and len(surface) > 1
+        and all(character.isalnum() is False for character in surface)
+        and any(character in _PAUSE_SYMBOLS_REQUIRING_EXPANSION for character in surface)
+    )
+    if is_unknown_symbol_chunk is False:
+        return [mecab_feature]
+
+    expanded_features = []
+    for character in surface:
+        known_symbol = KNOWN_SYMBOL_FEATURES.get(character)
+        if known_symbol is None:
+            expanded_features.append(character + "," + ",".join(columns[1:]))
+        else:
+            expanded_features.append(character + "," + known_symbol[3])
+    return expanded_features
+
+
+cdef list _mark_numeral_space_boundaries(list features):
+    """
+    数字間の空白を後続の結合境界へ移し、空白自体は NJD 入力から除く。
+
+    Args:
+        features (list[str]): 空白を含む MeCab feature 列
+
+    Returns:
+        list[str]: 空白を除き、数字間の空白の直後を独立させた feature 列
+    """
+    result = []
+    previous_was_number = False
+    number_space = False
+    for feature in features:
+        columns = feature.split(",")
+        if "記号,空白" in feature:
+            # 「EF65 1032号機」の空白は無音のまま、次の数詞の位取りだけを独立させる
+            number_space = previous_was_number
+            continue
+        is_number = len(columns) > 2 and columns[1:3] == ["名詞", "数"]
+        if number_space is True and is_number is True:
+            if len(columns) == 12:
+                columns.append("0")
+            elif len(columns) > 12:
+                columns[12] = "0"
+            feature = ",".join(columns)
+        result.append(feature)
+        previous_was_number = is_number
+        number_space = False
+    return result
+
+
+cdef object _mecab_node_to_cost_candidate(
+    mecab_node_t* node,
+    const char* sentence,
+    list byte_to_char_offsets,
+    tuple userdic_reading_protection,
+) except *:
+    """
+    tsqyomi 候補解析向けに MeCab ノードを辞書候補 dict へ変換する。
+
+    Args:
+        node (mecab_node_t*): 読み取る Lattice ノード
+        sentence (const char*): MeCab が解析した sentence バッファ
+        byte_to_char_offsets (list): `_build_byte_to_char_offsets()` が構築したバイト→文字対応表
+        userdic_reading_protection (tuple): ユーザー辞書ごとの読み保護フラグ
+
+    Returns:
+        MeCabLatticeCandidate: 候補ノードの surface・feature・文字位置・保護状態・MeCab コスト情報
+    """
+
+    cdef str surface_str
+    cdef list feature_columns
+    cdef bint is_unknown
+    cdef bint is_ignored
+    cdef bint is_reading_protected
+    cdef object char_span
+
+    surface_str, feature_columns, is_unknown, is_ignored, char_span = (
+        _mecab_node_to_common_fields(node, sentence, byte_to_char_offsets)
+    )
+    # システム辞書と未知語は保護対象外とし、ユーザー辞書だけを読み込み順のフラグへ対応させる
+    is_reading_protected = (
+        node.dictionary_index >= 1
+        and node.dictionary_index <= len(userdic_reading_protection)
+        and userdic_reading_protection[node.dictionary_index - 1] is True
+    )
+
+    return MeCabLatticeCandidate(
+        surface=surface_str,
+        features=feature_columns,
+        char_span=char_span,
+        pos_id=node.posid,
+        left_id=node.lcAttr,
+        right_id=node.rcAttr,
+        word_cost=node.wcost,
+        is_unknown=is_unknown,
+        is_ignored=is_ignored,
+        is_reading_protected=is_reading_protected,
+        dictionary_index=node.dictionary_index,
+        local_replacement_cost=None,
+        left_boundary_cost=None,
+        right_boundary_cost=None,
+        right_link_cost=None,
+    )
+
+
+# based on Mecab_load in impl. from mecab.cpp
+cdef inline int Mecab_load_with_userdic(Mecab *m, char* dicdir, char* userdic) noexcept nogil:
+    """
+    システム辞書とユーザー辞書 (カンマ区切り複数可) を読み込み、MeCab Model / Tagger / Lattice を初期化する。
+
+    Args:
+        m (Mecab*): 初期化対象の OpenJTalk MeCab ラッパ
+        dicdir (char*): システム辞書ディレクトリ
+        userdic (char*): ユーザー辞書パス。空文字列なら `Mecab_load()` のみ実行
+
+    Returns:
+        int: 成功時 1、失敗時 0
+    """
+    if userdic == NULL or strlen(userdic) == 0:
+        return Mecab_load(m, dicdir)
+
+    if m == NULL or dicdir == NULL or strlen(dicdir) == 0:
+        return 0
+
+    Mecab_clear(m)
+
+    cdef char* argv[5]
+    argv[0] = "mecab"
+    argv[1] = "-d"
+    argv[2] = dicdir
+    argv[3] = "-u"
+    argv[4] = userdic
+    cdef Model *model = createModel(5, argv)
+
+    if model == NULL:
+        return 0
+    m.model = model
+
+    cdef Tagger *tagger = model.createTagger()
+    if tagger == NULL:
+        Mecab_clear(m)
+        return 0
+    m.tagger = tagger
+
+    cdef Lattice *lattice = model.createLattice()
+    if lattice == NULL:
+        Mecab_clear(m)
+        return 0
+    m.lattice = lattice
+
+    return 1
+
+P = ParamSpec("P")
+R = TypeVar("R")
+Self = TypeVar("Self")
+
+
+def _lock_manager() -> Callable[[Callable[Concatenate[Self, P], R]], Callable[Concatenate[Self, P], R]]:
+    """
+    OpenJTalk インスタンスの公開メソッドを直列化するデコレータを返す。
+
+    Returns:
+        Callable: `OpenJTalk` の公開メソッドをラップし、`self._lock` で排他するデコレータ
+
+    NOTE:
+        `Mecab` / `NJD` / `JPCommon` はインスタンス内で共有されるため、同一インスタンスへの同時呼び出しは安全でない
+        ロックはインスタンスごとに分離され、別インスタンスの `nogil` 区間は並行実行できる
+    """
+
+    def decorator(method: Callable[Concatenate[Self, P], R]) -> Callable[Concatenate[Self, P], R]:
+        @wraps(method)
+        def wrapped(self: Self, *args: P.args, **kwargs: P.kwargs) -> R:
+            with self._lock:
+                return method(self, *args, **kwargs)
+
+        return wrapped
+
+    return decorator
+
+
+cdef class OpenJTalk:
+    """
+    OpenJTalk のテキスト処理フロントエンドの Cython 実装。
+    通常は pyopenjtalk モジュール経由で使用するが、低レベル API として直接インスタンス化も可能。
+
+    Args:
+        dn_mecab (bytes): MeCab システム辞書のディレクトリパス
+        userdic (bytes): OpenJTalk 用ユーザー辞書 (.dic) のパス。空バイト列の場合は無視される。複数指定時はカンマ区切り。デフォルト: 空
+        userdic_reading_protection (Sequence[bool] | None): 各ユーザー辞書が与えた読みを、tsqyomi を含む後段の読み補正から保護するか
+            None の場合は全辞書を未保護として扱う。デフォルト: None
+
+    Raises:
+        ValueError: `userdic_reading_protection` の要素数が辞書数と一致しない場合
+        TypeError: 保護フラグに bool 以外が含まれる場合
+        RuntimeError: MeCab 初期化に失敗した場合
+
+    NOTE:
+        公開メソッドは `@_lock_manager()` で直列化される。`Mecab` / `NJD` / `JPCommon` はインスタンス内で共有される
+        `Mecab_refresh()` は Python 側の `try/finally` から呼び出し、Lattice ノード走査後に MeCab 内部状態を解放する
+    """
+    cdef Mecab* mecab
+    cdef NJD* njd
+    cdef JPCommon* jpcommon
+    # ユーザー辞書ごとの読み保護の指定 (読み込んだ順)。変更できない tuple なので、読み取り専用の属性として公開する
+    cdef readonly tuple userdic_reading_protection
+    # ユーザー辞書ファイルのパス (読み込んだ順)。形態素の dictionary_index から、行が来た辞書を引くために使う
+    cdef readonly tuple userdic_paths
+    cdef readonly object _lock
+
+    def __cinit__(
+        self,
+        dn_mecab: bytes = b"/usr/local/dic",
+        userdic: bytes = b"",
+        userdic_reading_protection: Sequence[bool] | None = None,
+    ):
+        """
+        OpenJTalk のテキスト処理フロントエンドの Cython 実装。
+        通常は pyopenjtalk モジュール経由で使用するが、低レベル API として直接インスタンス化も可能。
+
+        Args:
+            dn_mecab (bytes): MeCab システム辞書のディレクトリパス
+            userdic (bytes): OpenJTalk 用ユーザー辞書 (.dic) のパス。空バイト列の場合は無視される。複数指定時はカンマ区切り。デフォルト: 空
+            userdic_reading_protection (Sequence[bool] | None): 各ユーザー辞書が与えた読みを、tsqyomi を含む後段の読み補正から保護するか
+                None の場合は全辞書を未保護として扱う。デフォルト: None
+
+        Raises:
+            ValueError: `userdic_reading_protection` の要素数が辞書数と一致しない場合
+            TypeError: 保護フラグに bool 以外が含まれる場合
+            RuntimeError: MeCab 初期化に失敗した場合
+
+        NOTE:
+            公開メソッドは `@_lock_manager()` で直列化される。`Mecab` / `NJD` / `JPCommon` はインスタンス内で共有される
+            `Mecab_refresh()` は Python 側の `try/finally` から呼び出し、Lattice ノード走査後に MeCab 内部状態を解放する
+        """
+        cdef char* _dn_mecab = dn_mecab
+        cdef char* _userdic = userdic
+        cdef tuple protection_flags
+        cdef Py_ssize_t userdic_count
+
+        # 引数検証で例外になっても __dealloc__() が未初期化ポインタを解放しないよう先に NULL を設定する
+        self.mecab = NULL
+        self.njd = NULL
+        self.jpcommon = NULL
+
+        # 低レベル API のカンマ区切り辞書と同じ順序で保護状態を固定する
+        userdic_count = 0 if len(userdic) == 0 else len(userdic.split(b","))
+        if userdic_reading_protection is None:
+            protection_flags = (False,) * userdic_count
+        else:
+            protection_flags = tuple(userdic_reading_protection)
+            if len(protection_flags) != userdic_count:
+                raise ValueError(
+                    "userdic_reading_protection must have the same number of entries as userdic"
+                )
+            if any(type(flag) is not bool for flag in protection_flags):
+                raise TypeError("userdic_reading_protection entries must be bool")
+        self.userdic_reading_protection = protection_flags
+        self.userdic_paths = (
+            tuple(path.decode("utf-8", "surrogateescape") for path in userdic.split(b","))
+            if userdic_count > 0
+            else ()
+        )
+
+        # 排他範囲をインスタンス内へ限定し、異なる辞書を使う処理同士も並行実行できるようにする
+        self._lock = Lock()
+        self.mecab = new Mecab()
+        self.njd = new NJD()
+        self.jpcommon = new JPCommon()
+
+        with nogil:
+            Mecab_initialize(self.mecab)
+            NJD_initialize(self.njd)
+            JPCommon_initialize(self.jpcommon)
+
+            r = self._load(_dn_mecab, _userdic)
+            if r != 1:
+                self._clear()
+        if r != 1:
+            raise RuntimeError("Failed to initialize Mecab")
+
+    cdef void _clear(self) noexcept nogil:
+        """
+        インスタンスが保持する MeCab / NJD / JPCommon の内部バッファをクリアする。
+        C Wrapper 自体は解放しない。
+        """
+        if self.mecab != NULL:
+            Mecab_clear(self.mecab)
+        if self.njd != NULL:
+            NJD_clear(self.njd)
+        if self.jpcommon != NULL:
+            JPCommon_clear(self.jpcommon)
+
+    cdef int _load(self, char* dn_mecab, char* userdic) noexcept nogil:
+        """
+        `Mecab_load_with_userdic()` へ委譲して辞書をロードする。
+
+        Returns:
+            int: 成功時 1、失敗時 0
+        """
+        return Mecab_load_with_userdic(self.mecab, dn_mecab, userdic)
+
+    def normalize_for_mecab(self, text: str | bytes | bytearray) -> str:
+        """
+        OpenJTalk の MeCab 入力と同じ規則で本文を正規化する。
+        NUL を含む ASCII 制御文字は読み飛ばし、その後ろの本文も正規化する。
+
+        Args:
+            text (str | bytes | bytearray): 入力テキスト (str の場合は UTF-8 にエンコードされる)
+
+        Returns:
+            str: 正規化されたテキスト
+
+        NOTE:
+            関数ローカルのバッファと `text2mecab()` のみを使用し、共有 C 状態
+            (`Mecab` / `NJD` / `JPCommon`) には触れないため `@_lock_manager()` の対象外
+        """
+        cdef char buff[TEXT2MECAB_BUFFER_SIZE]
+        cdef int text2mecab_result
+        text = _encode_text_for_mecab(text)
+        cdef const char* _text = text
+        with nogil:
+            text2mecab_result = text2mecab(buff, TEXT2MECAB_BUFFER_SIZE, _text)
+        if text2mecab_result != 0:
+            if text2mecab_result == TEXT2MECAB_RESULT_INVALID_ARGUMENT:
+                raise RuntimeError("Invalid arguments for text2mecab")
+            if text2mecab_result == TEXT2MECAB_RESULT_RANGE_ERROR:
+                raise RuntimeError("Input text is too long after normalization")
+            raise RuntimeError("Unknown text2mecab error: " + str(text2mecab_result))
+        return (<bytes> buff).decode("utf-8")
+
+    def _run_mecab(self, text: str | bytes | bytearray) -> list[str]:
+        """
+        MeCab で形態素解析し、NJD 入力用の feature 文字列列を返す。
+
+        Args:
+            text (str | bytes | bytearray): 入力テキスト (str の場合は UTF-8 にエンコードされる)
+
+        Returns:
+            list[str]: MeCab の feature 文字列のリスト ("記号,空白" を除く)
+
+        NOTE:
+            pyopenjtalk-plus 独自の "記号,空白" フィルタを適用する
+            `text2mecab()` が半角スペースを全角スペースへ変換し MeCab が "記号,空白" としてトークン化すると、
+            NJD 経由で `pau` が挿入されるため、通常の G2P 経路では除外する
+            全トークンが必要な場合は `_run_mecab_detailed()` を使うこと
+        """
+        # 読み保護付きの「2 人」は、登録元の辞書を確認できる詳細形態素解析で「ヒト」を保つ
+        if any(self.userdic_reading_protection) is True:
+            return self._run_mecab_detailed(text)[0]
+        cdef char buff[TEXT2MECAB_BUFFER_SIZE]
+        text = _encode_text_for_mecab(text)
+
+        cdef const char* _text = text
+        cdef int result
+        with nogil:
+            result = text2mecab(buff, TEXT2MECAB_BUFFER_SIZE, _text)
+        if result != 0:
+            if result == TEXT2MECAB_RESULT_INVALID_ARGUMENT:
+                raise RuntimeError("Invalid arguments for text2mecab")
+            if result == TEXT2MECAB_RESULT_RANGE_ERROR:
+                raise RuntimeError("Input text is too long after normalization")
+            raise RuntimeError("Unknown text2mecab error: " + str(result))
+
+        cdef int morph_size
+        cdef char** mecab_morphs
+        cdef int analysis_result
+        with nogil:
+            analysis_result = Mecab_analysis(self.mecab, buff)
+
+            morph_size = Mecab_get_size(self.mecab)
+            mecab_morphs = Mecab_get_feature(self.mecab)
+        try:
+            if analysis_result != 1:
+                raise RuntimeError("Failed to run MeCab analysis")
+            if morph_size > 0 and mecab_morphs == NULL:
+                raise RuntimeError("MeCab returned invalid feature buffer")
+            if morph_size < 0:
+                raise RuntimeError("MeCab returned invalid morph size")
+
+            # "記号,空白" を NJD 入力から除外する (NOTE は _run_mecab() の Docstring を参照)
+            morphs = []
+            for i in range(morph_size):
+                if mecab_morphs[i] == NULL:
+                    raise RuntimeError("MeCab returned null morph entry")
+                m = (<bytes>(mecab_morphs[i])).decode("utf-8")
+                morphs.extend(_expand_symbol_feature(m))
+            return _mark_numeral_space_boundaries(morphs)
+        finally:
+            Mecab_refresh(self.mecab)
+
+    def _mark_protected_counter_features(self, features: list[str], morphs: list[MeCabMorph]) -> list[str]:
+        """
+        読み保護付きのユーザー辞書から選んだ名詞と記号に、助数詞への変換を止める印を付ける。
+
+        Args:
+            features (list[str]): 空白を含む MeCab feature 列
+            morphs (list[MeCabMorph]): 登録元の辞書と文字位置を持つ詳細形態素列
+
+        Returns:
+            list[str]: 保護する名詞と記号に印を付けた feature 列
+        """
+
+        # 「2 人」の名詞「ヒト」や、記号として登録した「ｇ」は辞書番号と文字位置で保護し、空白や他の語の feature はそのまま渡す
+        protected_spans = {
+            morph["char_span"] for morph in morphs
+            if 1 <= morph["dictionary_index"] <= len(self.userdic_reading_protection)
+            and self.userdic_reading_protection[morph["dictionary_index"] - 1] is True
+        }
+        if not protected_spans:
+            return features
+        result = []
+        offset = 0
+        for feature in features:
+            columns = feature.split(",")
+            end = offset + len(columns[0])
+            if (
+                (offset, end) in protected_spans
+                and columns[4] == "*"
+                and (
+                    (columns[1] == "名詞" and columns[2] in ("一般", "非自立", "接尾") and columns[3] != "助数詞")
+                    or columns[1:3] == ["接頭詞", "数接続"]
+                    or columns[1] == "記号"
+                )
+            ):
+                columns[4] = "読み保護"
+                feature = ",".join(columns)
+            result.append(feature)
+            offset = end
+        return result
+
+    @_lock_manager()
+    def run_mecab(self, text: str | bytes | bytearray) -> list[str]:
+        """
+        MeCab で形態素解析を実行する。"記号,空白" は除外される。
+        全トークン (未知語フラグ・コスト情報含む) が必要な場合は代わりに run_mecab_detailed() を使うこと。
+
+        Args:
+            text (str | bytes | bytearray): 入力テキスト (str の場合は UTF-8 にエンコードされる)
+
+        Returns:
+            list[str]: MeCab の feature 文字列のリスト ("記号,空白" を除く)
+        """
+        return self._run_mecab(text)
+
+    def _run_mecab_detailed(
+        self, text: str | bytes | bytearray
+    ) -> tuple[list[str], list[MeCabMorph]]:
+        """
+        MeCab で形態素解析し、フィルタ済み features と全 morphs を同時に返す。
+
+        Args:
+            text (str | bytes | bytearray): 入力テキスト (str の場合は UTF-8 にエンコードされる)
+
+        Returns:
+            tuple[list[str], list[MeCabMorph]]: (フィルタ済み features, 全 morphs)
+                features は `_run_mecab()` と同等 ("記号,空白" を除く)
+                morphs は Lattice 走査で構築した詳細形態素列 ("記号,空白" も含む)
+
+        NOTE:
+            `Mecab_analysis()` 後に Lattice ノードを走査し、未知語フラグ・コスト・文字位置を取得する
+            未知語に連結された連続記号は、既知記号辞書を使って1文字ずつ morph へ分割する
+        """
+
+        cdef char buff[TEXT2MECAB_BUFFER_SIZE]
+        # cdef 宣言は関数スコープの先頭でなければならないため、ここで事前宣言する
+        cdef mecab_lattice_t* lattice = NULL
+        cdef const char* sentence = NULL
+        cdef mecab_node_t* node
+        cdef int morph_size
+        cdef char** mecab_feature_array
+        cdef int analysis_result
+        cdef bytes sentence_bytes
+        cdef list byte_to_char_offsets
+
+        text = _encode_text_for_mecab(text)
+        cdef const char* _text = text
+        cdef int result
+        with nogil:
+            result = text2mecab(buff, TEXT2MECAB_BUFFER_SIZE, _text)
+        if result != 0:
+            if result == TEXT2MECAB_RESULT_INVALID_ARGUMENT:
+                raise RuntimeError("Invalid arguments for text2mecab")
+            if result == TEXT2MECAB_RESULT_RANGE_ERROR:
+                raise RuntimeError("Input text is too long after normalization")
+            raise RuntimeError("Unknown text2mecab error: " + str(result))
+
+        sentence_bytes = <bytes> buff
+        byte_to_char_offsets = _build_byte_to_char_offsets(sentence_bytes)
+
+        # Mecab_analysis() で解析を実行
+        with nogil:
+            analysis_result = Mecab_analysis(self.mecab, buff)
+            morph_size = Mecab_get_size(self.mecab)
+            mecab_feature_array = Mecab_get_feature(self.mecab)
+        try:
+            if analysis_result != 1:
+                raise RuntimeError("Failed to run MeCab analysis")
+            if morph_size > 0 and mecab_feature_array == NULL:
+                raise RuntimeError("MeCab returned invalid feature buffer")
+            if morph_size < 0:
+                raise RuntimeError("MeCab returned invalid morph size")
+
+            # NJD へ渡す features では、_run_mecab() と同じく疑問符か感嘆符を含む記号の並びだけを1文字ずつに分ける
+            ## 下で作る詳細形態素は入力の表層と対応させるために記号をすべて分けるが、顔文字まで NJD の形態素に分けると踊り字の処理が変わってしまう
+            features = []
+            for i in range(morph_size):
+                if mecab_feature_array[i] == NULL:
+                    raise RuntimeError("MeCab returned null morph entry")
+                mecab_feature = (<bytes>(mecab_feature_array[i])).decode("utf-8")
+                features.extend(_expand_symbol_feature(mecab_feature))
+
+            # Lattice ノードを走査して MeCabMorph リストを構築
+            ## 未知語にまとめられた既知の記号は、入力の表層と対応させるため、詳細形態素では1文字ずつに戻す
+            if self.mecab.lattice == NULL:
+                raise RuntimeError("Failed to access MeCab Lattice")
+            lattice = <mecab_lattice_t*> self.mecab.lattice
+            sentence = mecab_lattice_get_sentence(lattice)
+            if sentence == NULL:
+                raise RuntimeError("Failed to access MeCab Lattice sentence")
+            node = mecab_lattice_get_bos_node(lattice)
+
+            morphs = []
+            while node != NULL:
+                stat = node.stat
+                # BOS (stat=2), EOS (stat=3) ノードはスキップ
+                if stat != 2 and stat != 3:
+                    # 通常ノードと記号分割の両方で Lattice 由来のコスト・位置情報を共通化する
+                    node_morph = _mecab_node_to_morph(
+                        node,
+                        True,
+                        sentence,
+                        byte_to_char_offsets,
+                    )
+                    morphs.extend(_expand_symbol_morphs(node, node_morph))
+                node = node.next
+
+            features = _mark_numeral_space_boundaries(self._mark_protected_counter_features(features, morphs))
+            return features, morphs
+        finally:
+            Mecab_refresh(self.mecab)
+
+    @_lock_manager()
+    def run_mecab_detailed(
+        self, text: str | bytes | bytearray
+    ) -> tuple[list[str], list[MeCabMorph]]:
+        """
+        MeCab を1回だけ実行し、run_mecab() 互換の features と詳細 morphs を返す。
+        詳細 morphs には "記号,空白" も含まれ、未知語フラグ・コスト情報を保持する。
+        tsqyomi を適用する前なので、is_tsqyomi_selected と is_tsqyomi_target は False になる。
+
+        Args:
+            text (str | bytes | bytearray): 入力テキスト (str の場合は UTF-8 にエンコードされる)
+
+        Returns:
+            tuple[list[str], list[MeCabMorph]]: (フィルタ済み features, 全 morphs)
+                features は run_mecab() と同等 ("記号,空白" を除く)
+                morphs は Lattice 走査で構築した詳細形態素列 ("記号,空白" も含む)
+
+        NOTE:
+            `Mecab_analysis()` 後に Lattice ノードを走査し、未知語フラグ・コスト・文字位置を取得する
+            未知語に連結された連続記号は、既知記号辞書を使って1文字ずつ morph へ分割する
+        """
+
+        return self._run_mecab_detailed(text)
+
+    # max_paths を int で注釈すると Cython が関数に入る前に bool や float を int へ変換し、型の検査を通り抜けるので object で受け取る
+    def _run_mecab_nbest_features(
+        self, text: str | bytes | bytearray, max_paths: object = 5
+    ) -> list[MeCabNBestPath]:
+        """
+        MeCab の n-best 候補を、NJD に渡せる features と詳細 morphs の組として返す。
+
+        Args:
+            text (str | bytes | bytearray): 入力テキスト (str の場合は UTF-8 にエンコードされる)
+            max_paths (int): 取得する最大候補数 (MeCab の上限に合わせて 1-512 を受け付ける)
+
+        Returns:
+            list[MeCabNBestPath]: 各候補パスの features / morphs / path_cost
+
+        NOTE:
+            `parseNBestInit()` は Tagger 内部の可変 Lattice を使う。終了時は `Mecab_refresh()` で OpenJTalk 側状態も初期化する
+        """
+
+        cdef char buff[TEXT2MECAB_BUFFER_SIZE]
+        cdef int result
+        cdef int init_result
+        cdef int stat
+        cdef long path_cost
+        cdef mecab_t* tagger = NULL
+        cdef const mecab_node_t* const_node
+        cdef mecab_node_t* node
+        cdef bytes sentence_bytes
+        cdef list byte_to_char_offsets
+        cdef const char* _text
+
+        if isinstance(max_paths, bool) is True or isinstance(max_paths, int) is False:
+            raise TypeError("max_paths must be int")
+        if max_paths < 1 or max_paths > 512:
+            raise ValueError("max_paths must be between 1 and 512")
+
+        text = _encode_text_for_mecab(text)
+        _text = text
+        with nogil:
+            result = text2mecab(buff, TEXT2MECAB_BUFFER_SIZE, _text)
+        if result != 0:
+            if result == TEXT2MECAB_RESULT_INVALID_ARGUMENT:
+                raise RuntimeError("Invalid arguments for text2mecab")
+            if result == TEXT2MECAB_RESULT_RANGE_ERROR:
+                raise RuntimeError("Input text is too long after normalization")
+            raise RuntimeError("Unknown text2mecab error: " + str(result))
+
+        sentence_bytes = <bytes> buff
+        byte_to_char_offsets = _build_byte_to_char_offsets(sentence_bytes)
+
+        if self.mecab.tagger == NULL:
+            raise RuntimeError("Failed to access MeCab tagger")
+        tagger = <mecab_t*> self.mecab.tagger
+
+        # parseNBestInit() は Tagger 内部の可変ラティスを使う
+        ## 既存の Mecab_analysis() 用 Lattice とは別領域なので、最後は Mecab_refresh() で OpenJTalk 側の状態も初期化する
+        with nogil:
+            init_result = mecab_nbest_init2(tagger, buff, strlen(buff))
+        try:
+            if init_result != 1:
+                raise RuntimeError("Failed to initialize MeCab n-best analysis")
+
+            paths = []
+            for _path_index in range(max_paths):
+                with nogil:
+                    const_node = mecab_nbest_next_tonode(tagger)
+                if const_node == NULL:
+                    break
+
+                node = <mecab_node_t*> const_node
+                features = []
+                morphs = []
+                path_cost = 0
+                while node != NULL:
+                    stat = node.stat
+                    if stat != 2:
+                        path_cost += _selected_mecab_link_cost(node, False)
+
+                    # BOS/EOS/EON は制御用ノードなので、形態素候補としては返さない
+                    if stat != 2 and stat != 3 and stat != 4:
+                        morph = _mecab_node_to_morph(
+                            node,
+                            False,
+                            buff,
+                            byte_to_char_offsets,
+                        )
+                        morphs.append(morph)
+                        features.append(",".join(morph["features"]))
+                    node = node.next
+
+                paths.append(MeCabNBestPath(
+                    features=_mark_numeral_space_boundaries(self._mark_protected_counter_features(features, morphs)),
+                    morphs=morphs,
+                    path_cost=path_cost,
+                ))
+            return paths
+        finally:
+            Mecab_refresh(self.mecab)
+
+    @_lock_manager()
+    def run_mecab_nbest_features(
+        self, text: str | bytes | bytearray, max_paths: object = 5
+    ) -> list[MeCabNBestPath]:
+        """
+        MeCab の n-best 候補を features / morphs / path_cost 付きで返す。
+        features は run_njd_from_mecab() に渡せる形式で、morphs は run_mecab_detailed()[1] と同じ詳細形式を持つ。
+        ただし n-best の morphs は、run_mecab_detailed() の記号単位分割を適用しない。
+
+        Args:
+            text (str | bytes | bytearray): 入力テキスト (str の場合は UTF-8 にエンコードされる)
+            max_paths (int): 取得する最大候補数 (MeCab の上限に合わせて 1-512 を受け付ける)
+
+        Returns:
+            list[MeCabNBestPath]: MeCab n-best 候補パスのリスト
+
+        Raises:
+            TypeError: max_paths が int でない場合
+            ValueError: max_paths が 1-512 の範囲外の場合
+        """
+        return self._run_mecab_nbest_features(text, max_paths)
+
+    @_lock_manager()
+    def analyze_mecab_candidates(
+        self,
+        text: str | bytes | bytearray,
+        target_spans: Sequence[tuple[int, int]],
+    ) -> ReadingAnalysis:
+        """
+        MeCab の補正前最良経路と全候補ノードをコピーして返す。
+        戻り値は MeCab の生ポインタを含まず、呼び出し完了後にモデル推論へ安全に渡せる。
+
+        Args:
+            text (str | bytes | bytearray): 入力テキスト (str の場合は UTF-8 にエンコードされる)
+            target_spans (Sequence[tuple[int, int]]): 候補経路を列挙する正規化本文上の半開区間
+
+        Returns:
+            ReadingAnalysis: 正規化本文、最良経路、候補グラフのコピー
+
+        NOTE:
+            MeCab を NBEST モードで解析し、候補ノード間の接続辺を取得する。コスト変更や最良経路の再計算は行わない
+            戻り値は Lattice ノードの Python コピーのみで、呼び出し完了後は `Mecab_refresh()` で C 側 Lattice を解放する
+            tsqyomi はこの戻り値をロック外でモデル推論へ渡せる
+        """
+
+        cdef char buff[TEXT2MECAB_BUFFER_SIZE]
+        cdef int text2mecab_result
+        cdef int parse_result
+        cdef int previous_request_type
+        cdef int stat
+        cdef size_t lattice_size
+        cdef size_t pos
+        cdef mecab_t* tagger = NULL
+        cdef mecab_lattice_t* lattice = NULL
+        cdef mecab_node_t* node = NULL
+        cdef mecab_node_t* bos_node = NULL
+        cdef const char* sentence = NULL
+        cdef bytes sentence_bytes
+        cdef list byte_to_char_offsets
+        cdef list candidates
+        cdef list node_addresses
+        cdef dict node_index_by_address
+        cdef tuple normalized_target_spans
+        cdef dict best_neighbors_by_span
+        cdef dict previous_neighbor_by_start
+        cdef dict next_neighbor_by_end
+        cdef dict candidate
+        cdef object candidate_span
+        cdef list features
+        cdef list morphs
+        cdef set public_node_ids
+        cdef list features_with_spaces
+        cdef int public_node_id
+        cdef list public_nodes
+        cdef list public_paths
+        cdef list public_connections
+        cdef long left_boundary_cost
+        cdef long right_boundary_cost
+        cdef mecab_path_t* candidate_path
+        cdef uintptr_t previous_node_address
+        cdef uintptr_t next_node_address
+        cdef uintptr_t right_node_address
+        cdef const char* _text
+
+        normalized_target_spans = tuple(target_spans)
+        if len(normalized_target_spans) == 0:
+            raise ValueError("target_spans must not be empty")
+
+        text = _encode_text_for_mecab(text)
+        _text = text
+        with nogil:
+            text2mecab_result = text2mecab(buff, TEXT2MECAB_BUFFER_SIZE, _text)
+        if text2mecab_result != 0:
+            if text2mecab_result == TEXT2MECAB_RESULT_INVALID_ARGUMENT:
+                raise RuntimeError("Invalid arguments for text2mecab")
+            if text2mecab_result == TEXT2MECAB_RESULT_RANGE_ERROR:
+                raise RuntimeError("Input text is too long after normalization")
+            raise RuntimeError("Unknown text2mecab error: " + str(text2mecab_result))
+
+        if self.mecab.tagger == NULL or self.mecab.lattice == NULL:
+            raise RuntimeError("Failed to access MeCab internals")
+        tagger = <mecab_t*> self.mecab.tagger
+        lattice = <mecab_lattice_t*> self.mecab.lattice
+
+        # 候補の接続辺を取得するため NBEST で解析するが、費用変更と最良経路の再計算は行わない
+        ## 漢数字の並びを1字ずつに分ける境界制約は Mecab_analysis() と同じ関数で付け、既定の経路と同じ最良経路を候補の基準にする
+        previous_request_type = mecab_lattice_get_request_type(lattice)
+        try:
+            with nogil:
+                mecab_lattice_set_request_type(lattice, MECAB_NBEST)
+                parse_result = Mecab_parse_lattice_with_numeral_boundaries(
+                    <void*> tagger, <void*> lattice, buff
+                )
+            if parse_result != 1:
+                raise RuntimeError("Failed to run MeCab Lattice analysis")
+            sentence = mecab_lattice_get_sentence(lattice)
+            if sentence == NULL:
+                raise RuntimeError("Failed to access MeCab Lattice sentence")
+            sentence_bytes = <bytes> sentence
+            byte_to_char_offsets = _build_byte_to_char_offsets(sentence_bytes)
+            lattice_size = mecab_lattice_get_size(lattice)
+
+            candidates = []
+            node_addresses = []
+            node_index_by_address = {}
+            candidate_index = 0
+
+            # BOS も費用計算の境界として必要なので候補列へ保持する
+            bos_node = mecab_lattice_get_bos_node(lattice)
+            if bos_node == NULL:
+                raise RuntimeError("Failed to access MeCab BOS node")
+            candidate = _mecab_node_to_cost_candidate(
+                bos_node,
+                sentence,
+                byte_to_char_offsets,
+                self.userdic_reading_protection,
+            )
+            candidates.append(candidate)
+            node_addresses.append(<uintptr_t> bos_node)
+            node_index_by_address[<uintptr_t> bos_node] = candidate_index
+            candidate_index += 1
+
+            # 候補の列挙順を固定し、同額候補の選択診断を再現可能にする
+            for pos in range(lattice_size + 1):
+                node = mecab_lattice_get_begin_nodes(lattice, pos)
+                while node != NULL:
+                    candidate = _mecab_node_to_cost_candidate(
+                        node,
+                        sentence,
+                        byte_to_char_offsets,
+                        self.userdic_reading_protection,
+                    )
+                    candidates.append(candidate)
+                    node_addresses.append(<uintptr_t> node)
+                    node_index_by_address[<uintptr_t> node] = candidate_index
+                    candidate_index += 1
+                    node = node.bnext
+
+            # 固定した外側経路と接続する費用だけを読み実現候補へ残す
+            best_neighbors_by_span = {}
+            previous_neighbor_by_start = {}
+            next_neighbor_by_end = {}
+            node = mecab_lattice_get_bos_node(lattice)
+            while node != NULL:
+                if node.stat != 2 and node.stat != 3 and node.stat != 4:
+                    candidate = candidates[node_index_by_address[<uintptr_t> node]]
+                    best_neighbors_by_span[candidate["char_span"]] = (
+                        <uintptr_t> node.prev,
+                        <uintptr_t> node.next,
+                    )
+                    previous_neighbor_by_start[candidate["char_span"][0]] = <uintptr_t> node.prev
+                    next_neighbor_by_end[candidate["char_span"][1]] = <uintptr_t> node.next
+                node = node.next
+
+            for candidate_iteration_index in range(len(candidates)):
+                node = <mecab_node_t*> <uintptr_t> node_addresses[candidate_iteration_index]
+                candidate = candidates[candidate_iteration_index]
+                candidate["local_replacement_cost"] = None
+                candidate["left_boundary_cost"] = None
+                candidate["right_boundary_cost"] = None
+                candidate["right_link_cost"] = None
+                candidate_span = candidate["char_span"]
+                # 複数形態素を覆う1ノード候補も、固定外側経路の両境界が一致すれば交換対象にできる
+                if (
+                    candidate_span[0] in previous_neighbor_by_start
+                    and candidate_span[1] in next_neighbor_by_end
+                ):
+                    best_neighbors_by_span[candidate_span] = (
+                        previous_neighbor_by_start[candidate_span[0]],
+                        next_neighbor_by_end[candidate_span[1]],
+                    )
+                if (
+                    candidate_span in best_neighbors_by_span
+                    and node.stat != 2
+                    and node.stat != 3
+                    and node.stat != 4
+                ):
+                    previous_node_address, next_node_address = best_neighbors_by_span[candidate_span]
+                    left_boundary_cost = LONG_MAX
+                    candidate_path = node.lpath
+                    while candidate_path != NULL:
+                        if <uintptr_t> candidate_path.lnode == previous_node_address:
+                            left_boundary_cost = candidate_path.cost
+                            break
+                        candidate_path = candidate_path.lnext
+                    right_boundary_cost = LONG_MAX
+                    candidate_path = node.rpath
+                    while candidate_path != NULL:
+                        if <uintptr_t> candidate_path.rnode == next_node_address:
+                            right_boundary_cost = candidate_path.cost
+                            break
+                        candidate_path = candidate_path.rnext
+                    if left_boundary_cost != LONG_MAX and right_boundary_cost != LONG_MAX:
+                        candidate["left_boundary_cost"] = left_boundary_cost
+                        candidate["right_link_cost"] = right_boundary_cost
+                        candidate["right_boundary_cost"] = (
+                            right_boundary_cost - (<mecab_node_t*> next_node_address).wcost
+                        )
+                        candidate["local_replacement_cost"] = (
+                            candidate["left_boundary_cost"] + candidate["right_boundary_cost"]
+                        )
+
+            # 補正前の node.next が示す最良経路をコピーし、モデル選択後も外側経路を固定できるようにする
+            features = []
+            morphs = []
+            feature_index_by_morph = []
+            features_with_spaces = []
+            node = mecab_lattice_get_bos_node(lattice)
+            while node != NULL:
+                stat = node.stat
+                if stat != 2 and stat != 3 and stat != 4:
+                    node_morph = _mecab_node_to_morph(
+                        node,
+                        True,
+                        sentence,
+                        byte_to_char_offsets,
+                    )
+                    features_with_spaces.append(",".join(node_morph["features"]))
+                    for split_morph in _expand_symbol_morphs(node, node_morph):
+                        morphs.append(split_morph)
+                        # 展開後も元ノードの feature 添字を保持し、記号分割で差し替え位置がずれないようにする
+                        feature_index_by_morph.append(
+                            len(features)
+                            if node_morph["is_ignored"] is False
+                            and split_morph["is_ignored"] is False
+                            else None
+                        )
+                    if node_morph["is_ignored"] is False:
+                        features.append(",".join(node_morph["features"]))
+                node = node.next
+
+            # 空白を除く前に数字間の境界を付け、通常解析と同じ NJD 入力にする
+            ## 空白を除いた feature 数は変わらないので、形態素から差し替え位置への添字も保たれる
+            features = _mark_numeral_space_boundaries(features_with_spaces)
+
+            public_nodes = []
+            public_paths = []
+            for candidate_iteration_index in range(len(candidates)):
+                candidate = candidates[candidate_iteration_index]
+                if candidate["local_replacement_cost"] is None:
+                    continue
+                if candidate["char_span"] not in normalized_target_spans:
+                    continue
+                if len(candidate["features"]) <= 9:
+                    continue
+                public_nodes.append(CandidateNode(
+                    node_id=candidate_iteration_index,
+                    surface=candidate["surface"],
+                    feature=",".join(candidate["features"]),
+                    pronunciation=candidate["features"][9],
+                    char_span=candidate["char_span"],
+                    pos_id=candidate["pos_id"],
+                    left_id=candidate["left_id"],
+                    right_id=candidate["right_id"],
+                    word_cost=candidate["word_cost"],
+                    dictionary_index=candidate["dictionary_index"],
+                    is_unknown=candidate["is_unknown"],
+                    is_ignored=candidate["is_ignored"],
+                    is_reading_protected=candidate["is_reading_protected"],
+                ))
+                public_paths.append(CandidatePath(
+                    path_id=len(public_paths),
+                    node_ids=(candidate_iteration_index,),
+                    char_span=candidate["char_span"],
+                    surface=candidate["surface"],
+                    pronunciation=candidate["features"][9],
+                    features=(",".join(candidate["features"]),),
+                    left_boundary_cost=candidate["left_boundary_cost"],
+                    right_boundary_cost=candidate["right_boundary_cost"],
+                    right_link_cost=candidate["right_link_cost"],
+                    boundary_cost=candidate["local_replacement_cost"],
+                ))
+
+            public_node_ids = {public_node["node_id"] for public_node in public_nodes}
+
+            # 公開候補ノード同士を結ぶ辺だけをコピーする
+            public_connections = []
+            for public_node in public_nodes:
+                public_node_id = public_node["node_id"]
+                node = <mecab_node_t*> <uintptr_t> node_addresses[public_node_id]
+                candidate_path = node.rpath
+                while candidate_path != NULL:
+                    right_node_address = <uintptr_t> candidate_path.rnode
+                    if right_node_address in node_index_by_address:
+                        right_node_id = node_index_by_address[right_node_address]
+                        if right_node_id in public_node_ids:
+                            public_connections.append(CandidateConnection(
+                                left_node_id=public_node_id,
+                                right_node_id=right_node_id,
+                                cost=candidate_path.cost,
+                            ))
+                    candidate_path = candidate_path.rnext
+
+            return ReadingAnalysis(
+                normalized_text=sentence_bytes.decode("utf-8"),
+                features=tuple(features),
+                morphs=tuple(morphs),
+                feature_index_by_morph=tuple(feature_index_by_morph),
+                nodes=tuple(public_nodes),
+                paths=tuple(public_paths),
+                connections=tuple(public_connections),
+            )
+        finally:
+            mecab_lattice_set_request_type(lattice, previous_request_type)
+            Mecab_refresh(self.mecab)
+
+    def _run_njd_from_mecab(
+        self,
+        mecab_features: list[str],
+        restore_unknown_katakana: bool = False,
+        modify_numeral_reading: bool = True,
+    ) -> list[NJDFeature]:
+        """
+        MeCab feature 列から NJD 処理を実行し、Python 側のアクセント結合規則を挟んで NJDFeature 列を返す。
+
+        Args:
+            mecab_features (list[str]): MeCab の feature 文字列のリスト
+            restore_unknown_katakana (bool): True の場合、未知カタカナ語の品詞とアクセントを MeCab の結果から復元する (デフォルト: False)
+            modify_numeral_reading (bool): True の場合、分数の分母の「分」を「ブン」、2つ以上続く「〇」を「マル」と読み、数詞の直後の「ｇ」「ｍ」などの単位の英字を助数詞として読む (デフォルト: True)
+
+        Returns:
+            list[NJDFeature]: NJD 処理後の features
+
+        NOTE:
+            `mecab2njd` → Python dict → `_apply_original_rule_before_chaining()` → NJD 再構築 → digit/accent 等
+            という二重変換を行う。Python dict を直接操作して chaining 前ルールを適用するためこの構造が必要
+            成否にかかわらず `NJD_refresh()` で C 側メモリを解放する
+        """
+        # if empty list, return empty list
+        new_size = len(mecab_features)
+        if new_size == 0:
+            return []
+
+        for mecab_feature in mecab_features:
+            if isinstance(mecab_feature, str) is False:
+                raise TypeError("Each MeCab feature must be str")
+            if "\x00" in mecab_feature:
+                raise ValueError("MeCab feature must not contain null characters")
+
+        expanded_features = []
+        for mecab_feature in mecab_features:
+            columns = mecab_feature.split(",")
+            surface = columns[0]
+            # 「〇七〇−〇〇二四」が未知語にまとまった場合も、桁と区切りを NJD の数詞処理へ渡す
+            if (
+                len(columns) == 8
+                and len(surface) > 1
+                and all(character in "０１２３４５６７８９〇零一二三四五六七八九−－ー‐‑‒–—-" for character in surface)
+                and any(character in "０１２３４５６７８９零一二三四五六七八九" for character in surface)
+            ):
+                for character in surface:
+                    if character in "−－ー‐‑‒–—-":
+                        expanded_features.append(
+                            character + ",記号,一般,*,*,*,*," + character + ",、,、,0/0,*"
+                        )
+                    else:
+                        digit_index = "０１２３４５６７８９".find(character)
+                        if digit_index < 0:
+                            digit_index = "〇一二三四五六七八九".find(character) if character != "零" else 0
+                        reading = ("ゼロ", "イチ", "ニ", "サン", "ヨン", "ゴ", "ロク", "ナナ", "ハチ", "キュー")[digit_index]
+                        # 未知の「二」「五」は1拍で渡し、電話番号の「ニー」「ゴー」への伸長は NJD が決める
+                        mora_size = (2, 2, 1, 2, 2, 1, 2, 2, 2, 2)[digit_index]
+                        expanded_features.append(
+                            character + ",名詞,数,*,*,*,*," + character + "," + reading + "," + reading + ",0/" + str(mora_size) + ",C3"
+                        )
+            else:
+                expanded_features.append(mecab_feature)
+        new_size = len(expanded_features)
+        byte_morphs = [m.encode("utf-8") + b"\x00" for m in expanded_features]
+        int_morphs = np.zeros(len(byte_morphs), dtype=np.uint64)
+        for i in range(new_size):
+            int_morphs[i] = <uint64_t>(<char *>byte_morphs[i])
+
+        cdef uint64_t[:] cint_morphs = int_morphs
+        cdef char** new_mecab_morphs = <char**>&cint_morphs[0]
+        try:
+            with nogil:
+                mecab2njd(self.njd, new_mecab_morphs, new_size)
+                _njd.njd_set_pronunciation(self.njd)
+
+            feature = njd2feature(self.njd)
+            # フィラーにされた未知のカタカナ語を戻すのは、呼び出し側が指定したときだけにする
+            # use_vanilla=True を指定したときと、低レベル API をそのまま呼んだときは、OpenJTalk が返したフィラーのまま残す
+            if restore_unknown_katakana is True:
+                feature = _restore_unknown_katakana_features(feature, mecab_features)
+            feature = _apply_original_rule_before_chaining(
+                feature,
+                modify_numeral_reading=modify_numeral_reading,
+            )
+            bounded_features = []
+            has_number_boundary = False
+            for index, current in enumerate(feature):
+                # 「65 1032」の2つの数を別々に位取りし、後段では無音の境界ノードを取り除く
+                if (
+                    index > 0
+                    and current["pos_group1"] == "数"
+                    and feature[index - 1]["pos_group1"] == "数"
+                    and current["chain_flag"] == 0
+                ):
+                    boundary = current.copy()
+                    boundary.update(
+                        string="", orig="", read="*", pron="空白境界", pos_group1="一般",
+                        pos_group3="空白境界", acc=0, mora_size=0, chain_rule="*",
+                    )
+                    bounded_features.append(boundary)
+                    has_number_boundary = True
+                bounded_features.append(current)
+            NJD_refresh(self.njd)
+            feature2njd(self.njd, bounded_features)
+
+            with nogil:
+                _njd.njd_set_digit(self.njd)
+            if has_number_boundary is True:
+                # 「EF65 1032号機」の一時ノードを取り除き、数詞の区切りだけをアクセント処理へ渡す
+                ## pron="*" は数詞処理中に消えるため別の値を使い、JPCommon へ渡す前にノードごと除く
+                feature = []
+                after_boundary = False
+                for current in njd2feature(self.njd):
+                    if current["pos_group3"] == "空白境界":
+                        after_boundary = True
+                        continue
+                    if after_boundary is True:
+                        # 「二〇 万円」のように空白を挟んで「十」「百」「千」に「万」以上の位が続く場合は、空白のない「二〇万円」と同じく同じ数として句を続ける
+                        is_place_after_place = (
+                            len(feature) > 0
+                            and feature[-1]["string"] in ("十", "百", "千")
+                            and current["string"] in ("万", "億", "兆", "京")
+                        )
+                        current["chain_flag"] = 1 if is_place_after_place is True else 0
+                        after_boundary = False
+                    feature.append(current)
+                NJD_refresh(self.njd)
+                feature2njd(self.njd, feature)
+            with nogil:
+                _njd.njd_set_accent_phrase(self.njd)
+                _njd.njd_set_accent_type(self.njd)
+                _njd.njd_set_unvoiced_vowel(self.njd)
+                _njd.njd_set_long_vowel(self.njd)
+            return njd2feature(self.njd)
+        finally:
+            # Python 側の規則適用が失敗した場合も、次の呼び出しへ NJD ノードを残さない
+            NJD_refresh(self.njd)
+
+    @_lock_manager()
+    def run_njd_from_mecab(
+        self,
+        mecab_features: list[str],
+        restore_unknown_katakana: bool = False,
+        modify_numeral_reading: bool = True,
+    ) -> list[NJDFeature]:
+        """
+        MeCab の feature 文字列のリストから NJD 処理を実行する。
+        run_mecab() の戻り値をそのまま渡す想定。
+        数字正規化・アクセント句設定・長音処理などの NJD ルールが適用される。
+
+        Args:
+            mecab_features (list[str]): MeCab の feature 文字列のリスト
+            restore_unknown_katakana (bool): True の場合、未知カタカナ語の品詞とアクセントを MeCab の結果から復元する (デフォルト: False)
+            modify_numeral_reading (bool): True の場合、分数の分母の「分」を「ブン」、2つ以上続く「〇」を「マル」と読み、数詞の直後の「ｇ」「ｍ」などの単位の英字を助数詞として読む (デフォルト: True)
+
+        Returns:
+            list[NJDFeature]: NJDNode 用 features
+        """
+        return self._run_njd_from_mecab(
+            mecab_features,
+            restore_unknown_katakana,
+            modify_numeral_reading,
+        )
+
+    @_lock_manager()
+    def run_frontend(
+        self,
+        text: str | bytes | bytearray,
+        restore_unknown_katakana: bool = False,
+        modify_numeral_reading: bool = True,
+    ) -> list[NJDFeature]:
+        """
+        OpenJTalk のテキスト処理フロントエンドを実行する。
+        MeCab 形態素詳細を構築せず、NJD features のみを返す軽量経路。
+
+        Args:
+            text (str | bytes | bytearray): 入力テキスト (str の場合は UTF-8 にエンコードされる)
+            restore_unknown_katakana (bool): True の場合、未知カタカナ語の品詞とアクセントを MeCab の結果から復元する (デフォルト: False)
+            modify_numeral_reading (bool): True の場合、分数の分母の「分」を「ブン」、2つ以上続く「〇」を「マル」と読み、数詞の直後の「ｇ」「ｍ」などの単位の英字を助数詞として読む (デフォルト: True)
+
+        Returns:
+            list[NJDFeature]: NJDNode 用 features
+        """
+        features = self._run_mecab(text)
+        njd_features = self._run_njd_from_mecab(
+            features,
+            restore_unknown_katakana,
+            modify_numeral_reading,
+        )
+        return njd_features
+
+    @_lock_manager()
+    def run_frontend_detailed(
+        self,
+        text: str | bytes | bytearray,
+        restore_unknown_katakana: bool = False,
+        modify_numeral_reading: bool = True,
+    ) -> tuple[list[NJDFeature], list[MeCabMorph]]:
+        """
+        OpenJTalk のテキスト処理フロントエンドを MeCab 形態素詳細付きで実行する。
+        MeCab 解析を 1 回だけ実行し、NJD features と MeCab morphs を同時に返す。
+
+        Args:
+            text (str | bytes | bytearray): 入力テキスト (str の場合は UTF-8 にエンコードされる)
+            restore_unknown_katakana (bool): True の場合、未知カタカナ語の品詞とアクセントを MeCab の結果から復元する (デフォルト: False)
+            modify_numeral_reading (bool): True の場合、分数の分母の「分」を「ブン」、2つ以上続く「〇」を「マル」と読み、数詞の直後の「ｇ」「ｍ」などの単位の英字を助数詞として読む (デフォルト: True)
+
+        Returns:
+            tuple[list[NJDFeature], list[MeCabMorph]]: (NJD features, MeCab morphs)
+                NJD features は run_frontend() と、MeCab morphs は run_mecab_detailed() と同一の結果
+        """
+        features, morphs = self._run_mecab_detailed(text)
+        njd_features = self._run_njd_from_mecab(
+            features,
+            restore_unknown_katakana,
+            modify_numeral_reading,
+        )
+        return njd_features, morphs
+
+    @_lock_manager()
+    def extract_phonemes(self, features: Iterable[NJDFeature]) -> list[str]:
+        """
+        NJD features からフラットな音素列を直接抽出する。
+        HTS フルコンテキストラベル文字列は生成せず、JPCommonLabel の音素連結リストをそのまま走査する。
+
+        Args:
+            features (Iterable[NJDFeature]): NJDNode 用 features (run_frontend() の戻り値)
+
+        Returns:
+            list[str]: フラットな音素列
+
+        NOTE:
+            `try/finally` で `JPCommon_refresh()` と `NJD_refresh()` を呼び、インスタンス共有バッファを解放する
+        """
+
+        cdef JPCommonLabelPhoneme* phoneme_node
+        cdef JPCommonNode* node
+
+        # 顔文字の空の発音は JPCommon へ渡さず、本文の音素だけを生成する
+        features = [feature for feature in features if feature["pron"] != ""]
+        if not features:
+            return []
+
+        try:
+            feature2njd(self.njd, features)
+            with nogil:
+                njd2jpcommon(self.jpcommon, self.njd)
+
+            if self.jpcommon.label != NULL:
+                JPCommonLabel_clear(self.jpcommon.label)
+            else:
+                self.jpcommon.label = <JPCommonLabel*> calloc(1, sizeof(JPCommonLabel))
+                if self.jpcommon.label == NULL:
+                    raise MemoryError("Failed to allocate JPCommonLabel")
+            JPCommonLabel_initialize(self.jpcommon.label)
+
+            node = self.jpcommon.head
+            while node != NULL:
+                JPCommonLabel_push_word(
+                    self.jpcommon.label,
+                    JPCommonNode_get_pron(node),
+                    JPCommonNode_get_pos(node),
+                    JPCommonNode_get_ctype(node),
+                    JPCommonNode_get_cform(node),
+                    JPCommonNode_get_acc(node),
+                    JPCommonNode_get_chain_flag(node),
+                )
+                node = <JPCommonNode*> node.next
+
+            if self.jpcommon.label.is_valid == 0:
+                raise RuntimeError("JPCommonLabel internal allocation failure (is_valid=0)")
+
+            phonemes = []
+            phoneme_node = self.jpcommon.label.phoneme_head
+            while phoneme_node != NULL:
+                if phoneme_node.phoneme != NULL:
+                    phonemes.append((<bytes> phoneme_node.phoneme).decode("utf-8"))
+                phoneme_node = phoneme_node.next
+
+            return phonemes
+        finally:
+            JPCommon_refresh(self.jpcommon)
+            NJD_refresh(self.njd)
+
+    @_lock_manager()
+    def set_unvoiced_vowel(self, features: Iterable[NJDFeature]) -> list[NJDFeature]:
+        """
+        NJD features の発音に、OpenJTalk の規則で母音の無声化の記号「’」を付け直す。
+        すでに付いている「’」はそのまま残すので、付け直したい形態素は呼び出し側で「’」を外してから渡す。
+
+        Args:
+            features (Iterable[NJDFeature]): NJDNode 用 features (run_frontend() の戻り値)
+
+        Returns:
+            list[NJDFeature]: 無声化の記号を付け直した NJDNode 用 features。形態素の数と順は入力と同じ
+
+        NOTE:
+            `njd_set_unvoiced_vowel()` だけを通し、数詞・アクセント句・アクセント型・長音の処理はしない
+            読み保護と読みの書き換えの印は NJD のノードに持てないので、入力の値を位置ごとに写して返す
+        """
+        features = list(features)
+        try:
+            feature2njd(self.njd, features)
+            with nogil:
+                _njd.njd_set_unvoiced_vowel(self.njd)
+            result = njd2feature(self.njd)
+        finally:
+            NJD_refresh(self.njd)
+        for output_feature, input_feature in zip(result, features, strict=True):
+            output_feature["is_reading_protected"] = input_feature.get("is_reading_protected", False)
+            output_feature["is_reading_rewritten"] = input_feature.get("is_reading_rewritten", False)
+        return result
+
+    @_lock_manager()
+    def make_label(self, features: Iterable[NJDFeature]) -> list[str]:
+        """
+        HTS 音声合成用のフルコンテキストラベルを返す。
+
+        Args:
+            features (Iterable[NJDFeature]): NJDNode 用 features (run_frontend() の戻り値)
+
+        Returns:
+            list[str]: フルコンテキストラベル文字列のリスト
+
+        NOTE:
+            `try/finally` で `JPCommon_refresh()` と `NJD_refresh()` を呼び、ラベル文字列と中間バッファを解放する
+        """
+        features = [feature for feature in features if feature["pron"] != ""]
+        if not features:
+            return []
+        try:
+            feature2njd(self.njd, features)
+            with nogil:
+                njd2jpcommon(self.jpcommon, self.njd)
+
+                JPCommon_make_label(self.jpcommon)
+
+                label_size = JPCommon_get_label_size(self.jpcommon)
+                label_feature = JPCommon_get_label_feature(self.jpcommon)
+            if label_size > 0 and label_feature == NULL:
+                raise RuntimeError("Failed to create full-context labels")
+            if label_size < 0:
+                raise RuntimeError("OpenJTalk returned invalid label size")
+
+            labels = []
+            for i in range(label_size):
+                if label_feature[i] == NULL:
+                    raise RuntimeError("OpenJTalk returned null label entry")
+                # This will create a copy of c string
+                # http://cython.readthedocs.io/en/latest/src/tutorial/strings.html
+                labels.append(<unicode>label_feature[i])
+            return labels
+        finally:
+            # Note that this will release memory for label feature
+            JPCommon_refresh(self.jpcommon)
+            NJD_refresh(self.njd)
+
+    @_lock_manager()
+    def make_phoneme_mapping(self, features: Iterable[NJDFeature]) -> list[JPCommonMappingEntry]:
+        """
+        NJD features から各形態素に対応する音素列のマッピングを生成する。
+        JPCommon の Word-Mora-Phoneme 階層を構築し、各 feature に音素を割り当てる。
+        NJD の pron が短ポーズを表す記号へ ["pau"] を割り当て、括弧類は空の音素列で保持する。
+        長音吸収マージにより、戻り値の長さが入力と異なる場合がある。
+
+        Args:
+            features (Iterable[NJDFeature]): NJDNode 用 features (run_frontend() の戻り値)
+
+        Returns:
+            list[JPCommonMappingEntry]: NJDFeature の全フィールド + phonemes を含む辞書のリスト。
+                MeCab の未知語情報や features が必要な場合は pyopenjtalk.make_phoneme_mapping() を使用すること
+
+        Raises:
+            RuntimeError: JPCommonLabel の内部アロケーション失敗時
+
+        NOTE:
+            `JPCommon_make_label()` は呼ばず、`JPCommonLabel_push_word()` で Word-Mora-Phoneme 階層だけ構築する
+            ポーズ形態素 ("、"/"？"/"！") や長音吸収された 'ー' では Word が生成されず、対応 feature の音素は空のままになる
+            長音吸収で隣接 feature がマージされ、戻り値の要素数が入力より少なくなる場合がある
+        """
+
+        # cdef 宣言は関数スコープの先頭でなければならないため、ここで事前宣言する
+        cdef JPCommonLabelWord* prev_word_tail
+        cdef JPCommonLabelWord* curr_word_tail
+        cdef JPCommonLabelPhoneme* phoneme_node
+        cdef JPCommonLabelMora* mora_ptr
+        cdef JPCommonLabelMora* prev_mora_tail
+        cdef JPCommonLabelWord* word_ptr
+        cdef JPCommonNode* node
+
+        # features を複数回イテレーションする (feature2njd, pause 割当, メインループ) ため、
+        # Iterable (ジェネレータ等) が渡された場合に備えて list に変換する
+        features = list(features)
+        audible_indices = [index for index, feature in enumerate(features) if feature["pron"] != ""]
+
+        if not features:
+            return []
+
+        try:
+            # 顔文字の要素は出力に残し、発音を持つ要素だけで JPCommon の階層を作る
+            feature2njd(self.njd, [features[index] for index in audible_indices])
+            with nogil:
+                njd2jpcommon(self.jpcommon, self.njd)
+
+            # JPCommonLabel_push_word() を個別に呼び出し、
+            # Word が新規生成されたかを word_tail の変化で追跡する
+            if self.jpcommon.label != NULL:
+                JPCommonLabel_clear(self.jpcommon.label)
+            else:
+                self.jpcommon.label = <JPCommonLabel*> calloc(1, sizeof(JPCommonLabel))
+                if self.jpcommon.label == NULL:
+                    raise MemoryError("Failed to allocate JPCommonLabel")
+            JPCommonLabel_initialize(self.jpcommon.label)
+
+            # Word ポインタ → feature index のマッピングを構築
+            # JPCommonLabel_push_word() は以下の場合に新しい Word を生成しない:
+            #   - pause-like な記号で、Word を生成せず短ポーズフラグのみ設定した場合
+            #   - 長音 'ー' で先行 Word に吸収された場合
+            # これらの feature は ptr_to_idx に含まれず、音素が空のままになる
+            ptr_to_idx = {}
+            absorbed_long_vowels = {}
+            node = self.jpcommon.head
+            f_idx = 0
+            while node != NULL:
+                prev_word_tail = self.jpcommon.label.word_tail
+                prev_mora_tail = prev_word_tail.tail if prev_word_tail != NULL else NULL
+
+                JPCommonLabel_push_word(
+                    self.jpcommon.label,
+                    JPCommonNode_get_pron(node),
+                    JPCommonNode_get_pos(node),
+                    JPCommonNode_get_ctype(node),
+                    JPCommonNode_get_cform(node),
+                    JPCommonNode_get_acc(node),
+                    JPCommonNode_get_chain_flag(node),
+                )
+
+                # push_word 後に word_tail が変化していれば新しい Word が生成された
+                curr_word_tail = self.jpcommon.label.word_tail
+                if prev_word_tail != curr_word_tail and curr_word_tail != NULL:
+                    ptr_to_idx[<uintptr_t> curr_word_tail] = audible_indices[f_idx]
+
+                # 括弧やポーズの後の長音は吸収されないため、先行 Word に実際に追加されたモーラだけを記録する
+                if prev_mora_tail != NULL:
+                    mora_ptr = prev_mora_tail.next
+                    absorbed_count = 0
+                    while mora_ptr != NULL and mora_ptr.up == prev_word_tail:
+                        absorbed_count += 1
+                        mora_ptr = mora_ptr.next
+                    if absorbed_count > 0:
+                        absorbed_long_vowels[audible_indices[f_idx]] = (
+                            ptr_to_idx[<uintptr_t> prev_word_tail], absorbed_count
+                        )
+
+                node = <JPCommonNode*> node.next
+                f_idx += 1
+
+            # JPCommonLabel_make() は不要 (push_word() で階層は構築済み)
+            # is_valid=0 は内部アロケーション失敗を示す
+            if self.jpcommon.label.is_valid == 0:
+                raise RuntimeError("JPCommonLabel internal allocation failure (is_valid=0)")
+
+            # --- 全 feature のマッピングを初期化 ---
+            # NJDFeature の全フィールドを転写する
+            mapping = []
+            for feat in features:
+                phonemes = []
+                # 「1・2年生」の数を並べる中黒は、njd2jpcommon が発音を空にして休止を置かない
+                is_pause_pron = feat["pron"] in ("、", "？", "！") and feat["pos_group3"] != "数の区切り"
+                if is_pause_pron is True and feat["string"] not in _NON_PAUSE_SYMBOLS:
+                    phonemes.append("pau")
+
+                mapping.append(JPCommonMappingEntry(
+                    surface=feat["string"],
+                    phonemes=phonemes,
+                    pos=feat["pos"],
+                    pos_group1=feat["pos_group1"],
+                    pos_group2=feat["pos_group2"],
+                    pos_group3=feat["pos_group3"],
+                    ctype=feat["ctype"],
+                    cform=feat["cform"],
+                    orig=feat["orig"],
+                    read=feat["read"],
+                    pron=feat["pron"],
+                    accent_nucleus=feat["acc"],
+                    mora_count=0,
+                    chain_rule=feat["chain_rule"],
+                    chain_flag=feat["chain_flag"],
+                    # 公開メソッドの入口なので、呼び出し元が作った印のない古い形の素性は書き換えなしとして扱う
+                    is_reading_rewritten=feat.get("is_reading_rewritten", False),
+                ))
+
+            # 通常音素を Phoneme → Mora → Word の階層から対応する feature へ割り当てる
+            ## pau は Word を持たず位置を逆引きできないため、NJD の pron から上で静的に割り当て済み
+            phoneme_node = self.jpcommon.label.phoneme_head
+            counted_moras = set()
+            while phoneme_node != NULL:
+                if phoneme_node.phoneme != NULL:
+                    phoneme_str = (<bytes> phoneme_node.phoneme).decode("utf-8")
+
+                    if phoneme_str != "pau":
+                        # phoneme → Mora → Word の階層を辿って feature index を取得
+                        mora_ptr = phoneme_node.up
+                        if mora_ptr != NULL:
+                            word_ptr = mora_ptr.up
+                            if word_ptr != NULL:
+                                word_addr = <uintptr_t> word_ptr
+                                if word_addr in ptr_to_idx:
+                                    target_idx = ptr_to_idx[word_addr]
+                                    mapping[target_idx]["phonemes"].append(phoneme_str)
+                                    # 発音されない語頭の長音や結合濁点はモーラを作らないため、生成した Mora を数える
+                                    mora_addr = <uintptr_t> mora_ptr
+                                    if mora_addr not in counted_moras:
+                                        counted_moras.add(mora_addr)
+                                        mapping[target_idx]["mora_count"] += 1
+
+                phoneme_node = phoneme_node.next
+
+            # 長音「ー」で始まり、長音のあとに別の音が続く形態素 (「ーーッッ」など) は、JPCommon が先頭の長音のモーラだけを前の Word に吸収する
+            # 実際に吸収された長音の音素 (1モーラに1つ) を、吸収先の形態素の末尾からこの形態素の先頭に戻す
+            ## 形態素がまるごと長音の場合は、下の長音吸収マージで前の形態素に結合する
+            for entry_index, (previous_index, leading_long_vowel_count) in absorbed_long_vowels.items():
+                entry = mapping[entry_index]
+                # 前の Word に追加された長音も、入力上の長音の要素へ数を割り当てる
+                mapping[previous_index]["mora_count"] -= leading_long_vowel_count
+                entry["mora_count"] += leading_long_vowel_count
+                if (
+                    leading_long_vowel_count == len(entry["pron"])
+                    or len(entry["phonemes"]) == 0
+                ):
+                    continue
+                previous_phonemes = mapping[previous_index]["phonemes"]
+                if "pau" in previous_phonemes or len(previous_phonemes) <= leading_long_vowel_count:
+                    continue
+                entry["phonemes"] = previous_phonemes[-leading_long_vowel_count:] + entry["phonemes"]
+                mapping[previous_index]["phonemes"] = previous_phonemes[:-leading_long_vowel_count]
+
+            # 長音吸収マージ: 長音処理で先行 Word に吸収されたトークンは音素が空のまま残る
+            # 記号由来の空音素まで誤って吸収しないよう、pron が長音記号のみの要素だけ前方に結合する
+            merged = []
+            for entry_index, entry in enumerate(mapping):
+                # 踊り字が長音になっても入力の独立した記号として残し、数詞列の末尾へ表層を連結しない
+                if (
+                    entry["surface"]
+                    and entry["surface"][0] in ("ヽ", "ヾ", "ゝ", "ゞ")
+                    and set(entry["pron"]) == {"ー"}
+                    and entry_index in absorbed_long_vowels
+                ):
+                    previous_index, count = absorbed_long_vowels[entry_index]
+                    previous = mapping[previous_index]
+                    entry["phonemes"] = previous["phonemes"][-count:]
+                    previous["phonemes"] = previous["phonemes"][:-count]
+                is_absorbed_long_vowel = (
+                    len(entry["phonemes"]) == 0
+                    and len(entry["pron"]) > 0
+                    and set(entry["pron"]) == {"ー"}
+                    and len(merged) > 0
+                    and entry_index in absorbed_long_vowels
+                )
+                if is_absorbed_long_vowel is True:
+                    prev = merged[-1]
+                    # 顔文字や独立した踊り字の後ろに続く長音は、吸収先と直前の要素が異なるため、母音を長音自体に戻す
+                    if (
+                        prev["pos_group1"] == "顔文字"
+                        or mapping[absorbed_long_vowels[entry_index][0]] is not prev
+                    ):
+                        absorbed = absorbed_long_vowels.get(entry_index)
+                        if absorbed is not None:
+                            previous_index, count = absorbed
+                            previous = mapping[previous_index]
+                            if "pau" not in previous["phonemes"] and len(previous["phonemes"]) > count:
+                                entry["phonemes"] = previous["phonemes"][-count:]
+                                previous["phonemes"] = previous["phonemes"][:-count]
+                        merged.append(entry)
+                        continue
+                    # 前方が ["pau"] や空音素の場合は結合しない
+                    is_prev_pause = (len(prev["phonemes"]) == 1 and prev["phonemes"][0] == "pau")
+                    if is_prev_pause is False and len(prev["phonemes"]) > 0:
+                        prev["surface"] += entry["surface"]
+                        prev["mora_count"] += entry["mora_count"]
+                        # orig は辞書の原形を表すため、活用形の吸収 (食べよ+う→食べよう) では連結しない
+                        # ただしリテラルの長音記号 (ー) が吸収された場合は入力テキストを保持するため連結する
+                        if set(entry["orig"]) == {"ー"}:
+                            prev["orig"] += entry["orig"]
+                        prev["read"] += entry["read"]
+                        prev["pron"] += entry["pron"]
+                        prev["is_reading_rewritten"] = (
+                            prev["is_reading_rewritten"] or entry["is_reading_rewritten"]
+                        )
+                        continue
+                merged.append(entry)
+            mapping = merged
+
+            return mapping
+        finally:
+            # Note that this will release memory for label feature
+            JPCommon_refresh(self.jpcommon)
+            NJD_refresh(self.njd)
+
+    def g2p(
+        self, text: str | bytes | bytearray, kana: bool = False, join: bool = True
+    ) -> list[str] | str:
+        """
+        文字から音素への変換 (G2P) 。
+
+        Args:
+            text (str | bytes | bytearray): 入力テキスト (str の場合は UTF-8 にエンコードされる)
+            kana (bool): True の場合、カタカナで発音を返す。False の場合は音素形式。デフォルト: False
+            join (bool): True の場合、音素またはカタカナを単一の文字列に連結する。デフォルト: True
+
+        Returns:
+            str | list[str]: kana と join の組み合わせにより、str または list[str] を返す
+        """
+        njd_features = self.run_frontend(text)
+
+        if not kana:
+            prons = self.extract_phonemes(njd_features)
+            if join:
+                prons = " ".join(prons)
+            return prons
+
+        # kana
+        prons = []
+        for n in njd_features:
+            if n["pos"] == "記号":
+                p = n["string"]
+            else:
+                p = n["pron"]
+            # remove special chars
+            for c in "’":
+                p = p.replace(c,"")
+            prons.append(p)
+        if join:
+            prons = "".join(prons)
+        return prons
+
+    def __dealloc__(self) -> None:
+        """
+        MeCab / NJD / JPCommon の C Wrapper を解放する。
+        """
+        self._clear()
+        if self.mecab != NULL:
+            del self.mecab
+        if self.njd != NULL:
+            del self.njd
+        if self.jpcommon != NULL:
+            del self.jpcommon
+
+
+def mecab_dict_index(dn_mecab: bytes, path: bytes, out_path: bytes) -> int:
+    """
+    OpenJTalk 用のユーザー辞書を CSV からビルドする。低レベル API 。
+    通常は pyopenjtalk.mecab_dict_index() を使用すること。
+    CSV は naist-jdic 互換の品詞体系で記述する必要がある。
+
+    Args:
+        dn_mecab (bytes): MeCab システム辞書のディレクトリパス
+        path (bytes): ユーザー CSV ファイルのパス
+        out_path (bytes): 出力辞書ファイルのパス
+
+    Returns:
+        int: mecab-dict-index の戻り値 (0: 成功, 非 0: 失敗)
+    """
+    cdef char* argv[10]
+    argv[0] = "mecab-dict-index"
+    argv[1] = "-d"
+    argv[2] = dn_mecab
+    argv[3] = "-u"
+    argv[4] = out_path
+    argv[5] = "-f"
+    argv[6] = "utf-8"
+    argv[7] = "-t"
+    argv[8] = "utf-8"
+    argv[9] = path
+    cdef int ret
+    with nogil:
+        ret = _mecab_dict_index(10, argv)
+    return ret
+
+
+def build_mecab_dictionary(dn_mecab: bytes) -> int:
+    """
+    OpenJTalk 用のシステム辞書を再ビルドする。低レベル API 。
+    通常は pyopenjtalk.build_mecab_dictionary() を使用すること。
+
+    Args:
+        dn_mecab (bytes): MeCab システム辞書のディレクトリパス
+
+    Returns:
+        int: mecab-dict-index の戻り値 (0: 成功, 非 0: 失敗)
+    """
+    cdef char* argv[9]
+    argv[0] = "mecab-dict-index"
+    argv[1] = "-d"
+    argv[2] = dn_mecab
+    argv[3] = "-o"
+    argv[4] = dn_mecab
+    argv[5] = "-f"
+    argv[6] = "utf-8"
+    argv[7] = "-t"
+    argv[8] = "utf-8"
+    cdef int ret
+    with nogil:
+        ret = _mecab_dict_index(9, argv)
+    return ret
+
+
+def _restore_unknown_katakana_features(
+    njd_features: list[NJDFeature],
+    mecab_features: list[str],
+) -> list[NJDFeature]:
+    """
+    `njd_set_pronunciation()` がフィラーへ変えた未知のカタカナ語を MeCab の品詞へ戻す。
+    読みを持たない未知語だけを対象にするため、辞書に登録された本来のフィラーは維持する。
+
+    Args:
+        njd_features (list[NJDFeature]): `njd_set_pronunciation()` 適用後の NJD features
+        mecab_features (list[str]): NJD 変換前の MeCab feature 文字列
+
+    Returns:
+        list[NJDFeature]: 未知のカタカナ語の品詞とアクセントを復元した NJD features
+    """
+    unknown_pos_by_surface: dict[str, list[tuple[str, str, str, str]]] = {}
+
+    # 既知語は読み以降を含む12列以上になるため、短い未知語 feature の品詞だけを保存する
+    for mecab_feature in mecab_features:
+        fields = mecab_feature.split(",")
+        if len(fields) < 5 or len(fields) >= 12:
+            continue
+        unknown_pos_by_surface.setdefault(fields[0], []).append(
+            (fields[1], fields[2], fields[3], fields[4])
+        )
+
+    for feature in njd_features:
+        # 英字未知語のフィラー化は英語読み補正が利用するため、全カタカナの表層形へ限定する
+        surface = feature["string"]
+        if (
+            feature["pos"] != "フィラー"
+            or is_katakana_word(surface) is False
+            or surface not in unknown_pos_by_surface
+        ):
+            continue
+
+        # 同じ表層形が複数回現れても後方の品詞で上書きせず、MeCab の出現順に対応させる
+        pos, pos_group1, pos_group2, pos_group3 = unknown_pos_by_surface[surface].pop(0)
+        if len(unknown_pos_by_surface[surface]) == 0:
+            del unknown_pos_by_surface[surface]
+        feature["pos"] = pos
+        feature["pos_group1"] = pos_group1
+        feature["pos_group2"] = pos_group2
+        feature["pos_group3"] = pos_group3
+
+        # 外来語の核を後ろから3モーラ目へ置き、特殊拍に当たる場合は1つ前へ移す
+        moras: list[str] = []
+        for char in feature["pron"]:
+            if char in "ャュョァィゥェォ" and len(moras) > 0:
+                moras[-1] += char
+            else:
+                moras.append(char)
+        if len(moras) <= 3:
+            feature["acc"] = 1
+        else:
+            accent_index = len(moras) - 3
+            while accent_index > 0 and moras[accent_index] in ("ー", "ン", "ッ"):
+                accent_index -= 1
+            feature["acc"] = accent_index + 1
+
+    return njd_features
+
+
+def _apply_original_rule_before_chaining(
+    njd_features: list[NJDFeature],
+    modify_numeral_reading: bool = True,
+) -> list[NJDFeature]:
+    """
+    NJD features に chaining 前の独自ルールを適用する。内部用。
+    サ変接続・接頭語・動詞連続・連用形・助動詞などのアクセント結合規則を適用する。
+
+    Args:
+        njd_features (list[NJDFeature]): NJDNode 用 features 。インプレースで更新される
+        modify_numeral_reading (bool): True の場合、分数の分母の「分」を「ブン」、2つ以上続く「〇」を「マル」と読み、数詞の直後の「ｇ」「ｍ」などの単位の英字を助数詞として読む (デフォルト: True)
+
+    Returns:
+        list[NJDFeature]: 更新後の njd_features（同一オブジェクト）
+    """
+    numeral_zero_indices: set[int] = set()
+    digit_characters = "０１２３４５６７８９〇零一二三四五六七八九"
+    index = 0
+    while index < len(njd_features):
+        start = index
+        while (
+            index < len(njd_features)
+            and njd_features[index]["string"] in digit_characters
+            and len(njd_features[index]["string"]) == 1
+        ):
+            index += 1
+        if index == start:
+            index += 1
+            continue
+        # 「一〇〇一号室」の〇は番号の桁なので、伏字の「〇〇町」と区別して数詞へ渡す
+        is_number = any(feature["string"] != "〇" for feature in njd_features[start:index])
+        if index < len(njd_features):
+            following = njd_features[index]
+            is_number = is_number or following["pos_group2"] == "助数詞"
+            # 「〇〇〇-一二三四-五六七八」の先頭も、区切りの後に数字が続く番号として扱う
+            if following["string"] in "−－ー‐‑‒–—-" and index + 1 < len(njd_features):
+                is_number = is_number or njd_features[index + 1]["string"] in digit_characters
+        # 「〇一二〇-九九九-〇〇〇」の最後の組と、「一,〇〇〇」の3桁区切りの後の組も、数字の後の区切りに続く数として扱う
+        if start >= 2 and njd_features[start - 1]["string"] in "−－ー‐‑‒–—-，":
+            is_number = is_number or njd_features[start - 2]["string"] in digit_characters
+        # 「〇円」の単独の〇は数値のレーを保ち、2桁以上の番号に含まれる〇だけをゼロへ戻す
+        if is_number is True and index - start > 1:
+            for zero_index in range(start, index):
+                zero = njd_features[zero_index]
+                if zero["string"] == "〇":
+                    numeral_zero_indices.add(zero_index)
+                    zero["pos"] = "名詞"
+                    zero["pos_group1"] = "数"
+                    zero["read"] = zero["pron"] = "ゼロ"
+                    zero["mora_size"] = 2
+
+    for i, njd in enumerate(njd_features[:-1]):
+        # 名詞の後ろで新しい語を作る「不足」は連濁した「ブソク」と読む
+        # 「情報が不足する」のように単独で用いる場合は、辞書本来の「フソク」という読みを変更しない
+        next_njd = njd_features[i + 1]
+        # ナイ形に続く「の」「と」は、助動詞に付く結合規則を明示して否定形の核を保つ
+        ## 助動詞用の規則がないと結合規則の末尾の F2 が適用され、平板型の「知らないのか」が「シラナイ＼ノカ」になる
+        if (
+            njd["pos"] == "助動詞"
+            and njd["orig"] == "ない"
+            and (
+                next_njd["pos"] == "助詞"
+                or (next_njd["pos"] == "名詞" and next_njd["pos_group1"] == "非自立")
+            )
+            and next_njd["orig"] in ("の", "と")
+        ):
+            next_njd["chain_rule"] = "助動詞%F1/" + "/".join(
+                rule for rule in next_njd["chain_rule"].split("/")
+                if not rule.startswith("助動詞%")
+            )
+        # 放置を意味する「放っておく」「放っとく」の「放っ」は、読み補正で平板型の「放る」の「ホーッ」に替えるため、結合の前に核を0にする
+        ## 結合した後で核だけを書き換えると、「放っておきません」「放っておきなさい」で後続の語が置く核まで消えてしまう
+        if njd["string"] == "放っ" and (
+            (
+                next_njd["string"] == "て"
+                and i + 2 < len(njd_features)
+                and njd_features[i + 2]["orig"] == "おく"
+                and njd_features[i + 2]["pos"] == "動詞"
+            )
+            or (next_njd["orig"] == "とく" and next_njd["pos"] == "動詞")
+        ):
+            njd["acc"] = 0
+        # 動詞の意向形の「う」は、付属語の「う」が核を決める型で、「守ろう」「盛ろう」を「マモロ＼ー」「モロ＼ー」と「う」の直前の拍の後で下げる
+        ## 推量の「だろう」の「う」は直前が助動詞なので変えず、「かかるだろう」を1つの句の「カカルダロ＼ー」にしない
+        ## 平板の動詞の意向形に「と」と「する」「思う」が続く「盛ろうとする」は、平板のまま「モロートスル」と読むので変えない
+        if (
+            njd["pos"] == "動詞"
+            and njd["cform"] == "未然ウ接続"
+            and next_njd["pos"] == "助動詞"
+            and next_njd["orig"] == "う"
+        ):
+            is_flat_before_to_suru = (
+                njd["acc"] == 0
+                and i + 3 < len(njd_features)
+                and njd_features[i + 2]["string"] == "と"
+                and njd_features[i + 3]["orig"] in ("する", "思う")
+            )
+            if is_flat_before_to_suru is False:
+                next_njd["chain_rule"] = "動詞%F4@0/特殊助動詞%F2@0"
+        # 平板の動詞に使役の「せ」「させ」と「ない」が続く「聞かせない」「歌わせない」は、平板の「キカセナイ」「ウタワセナイ」と読む
+        ## MeCab は「聞か」「せ」「ない」に分けるので、動詞の連続の規則が「せ」の核を採って「キカセ＼ナイ」と読んでいた
+        ## 「せ」の核をなくすと、後ろの動詞の連続の規則が平板の C4 で結合し、「ない」は直前の動詞の型を保つ F1 で続く
+        ## 起伏の動詞の「書かせない」は、今までどおり「カカセ＼ナイ」と読む
+        if (
+            njd["pos"] == "動詞"
+            and njd["pos_group1"] == "自立"
+            and njd["acc"] == 0
+            and next_njd["pos"] == "動詞"
+            and next_njd["pos_group1"] == "接尾"
+            and next_njd["orig"] in ("せる", "させる")
+            and i + 2 < len(njd_features)
+            and njd_features[i + 2]["pos"] == "助動詞"
+            and njd_features[i + 2]["orig"] == "ない"
+        ):
+            next_njd["acc"] = 0
+            njd_features[i + 2]["chain_rule"] = "/".join(
+                "動詞%F1" if rule.startswith("動詞%") else rule
+                for rule in njd_features[i + 2]["chain_rule"].split("/")
+            )
+        # 平板の動詞の使役の基本形「聞かせる」「歌わせる」も、平板の「キカセル」「ウタワセル」と読む
+        ## 「せる」の核を動詞の連続の規則が採って「キカセ＼ル」と読んでいたので、ナイ形と同じく「せる」の核をなくす
+        ## 起伏の動詞の「書かせる」は「カカセ＼ル」のまま読み、「聞かせます」「聞かせれば」は付属語の規則で核を置く
+        if (
+            njd["pos"] == "動詞"
+            and njd["pos_group1"] == "自立"
+            and njd["acc"] == 0
+            and next_njd["pos"] == "動詞"
+            and next_njd["pos_group1"] == "接尾"
+            and next_njd["orig"] in ("せる", "させる")
+            and next_njd["cform"] == "基本形"
+        ):
+            next_njd["acc"] = 0
+        # 一般名詞の「湖」を接尾辞として読む場合、全体が4モーラ以上なら前部末型で結合する
+        ## 「ミズウミ」は後処理で1モーラの「コ」になるので、その長さで判定する
+        ## 短い湖名は辞書の結合規則を使い、語全体で登録された湖名の核も辞書に任せる
+        if njd["pos"] == "名詞" and next_njd["string"] == "湖" and next_njd["pron"] == "ミズウミ":
+            preceding_mora_size = 0
+            for preceding_index in range(i, -1, -1):
+                preceding_njd = njd_features[preceding_index]
+                if preceding_njd["pos"] != "名詞":
+                    break
+                preceding_mora_size += preceding_njd["mora_size"]
+                if preceding_njd["chain_flag"] == 0:
+                    break
+            if preceding_mora_size + 1 >= 4:
+                next_njd["chain_rule"] = "C3"
+
+        if (
+            njd["pos"] == "名詞"
+            and next_njd["string"] == "不足"
+            and next_njd["pron"] == "フソク"
+        ):
+            next_njd["read"] = "ブソク"
+            next_njd["pron"] = "ブソク"
+
+        # 分母を表す「数値 + 分 + の + 数値」だけ、時間量の「フン」・「プン」や割合の「ブ」と区別して「ブン」と読む
+        # 漢数字を含む長単位候補と、算用数字の後ろへ付く助数詞のどちらにも同じ文法条件を適用する
+        is_fraction_denominator = False
+        if i + 2 < len(njd_features) and next_njd["string"] == "の":
+            following_njd = njd_features[i + 2]
+            # 「3分の何」「何分の何」の分子の「何」は数を問う語なので、数詞の「ナン」と読み、分母を「ブン」にする
+            ## 「5分の何もない時間」のように「も」が続く「何」は、数でない「ナニ」の用法なので除く
+            ## 「千分の何がし」は MeCab が「何」「が」「し」に分けるが、数でない「ナニガシ」なので除く
+            if (
+                modify_numeral_reading is True
+                and njd["string"].endswith("分")
+                and (
+                    (
+                        len(njd["string"]) > 1
+                        and all(character in digit_characters + "十百千万何" for character in njd["string"][:-1])
+                    )
+                    or (i > 0 and njd_features[i - 1]["pos_group1"] == "数")
+                )
+                and following_njd["string"] == "何"
+                and following_njd["pos_group1"] != "数"
+                and (i + 3 >= len(njd_features) or njd_features[i + 3]["string"] != "も")
+                and not (
+                    i + 4 < len(njd_features)
+                    and njd_features[i + 3]["string"] == "が"
+                    and njd_features[i + 4]["string"] == "し"
+                )
+            ):
+                following_njd.update(
+                    pos="名詞", pos_group1="数", pos_group2="*", pos_group3="*",
+                    read="ナン", pron="ナン", acc=1, mora_size=2, chain_rule="C3",
+                )
+            is_fraction_denominator = following_njd["pos_group1"] == "数"
+        if (
+            modify_numeral_reading is True
+            and is_fraction_denominator is True
+            and njd["string"].endswith("分")
+        ):
+            if njd["pron"].endswith(("フン", "プン")):
+                njd["read"] = njd["read"][:-2] + "ブン"
+                njd["pron"] = njd["pron"][:-2] + "ブン"
+            elif njd["pron"].endswith("ブ"):
+                njd["read"] += "ン"
+                njd["pron"] += "ン"
+            # 読みの長さを変更した場合も、後続のアクセント句が参照するモーラ数を同じ値に保つ
+            njd["mora_size"] = sum(
+                character not in "ャュョァィゥェォ’" for character in njd["pron"]
+            )
+            # 分数は「万分の一」(「マンブンノイチ＼」) と同じく、分母を平板にして分子の数詞の核で1つのアクセント句に読む
+            ## 数詞に続く助数詞の「分」は、数詞との結合後の句を平板にする F5 にし、「三分」のような1語の分母は核をなくす
+            if njd["string"] == "分" and i > 0 and njd_features[i - 1]["pos_group1"] == "数":
+                njd["chain_rule"] = "F5"
+            else:
+                njd["acc"] = 0
+            next_njd["chain_flag"] = 1
+            njd_features[i + 2]["chain_flag"] = 1
+            njd_features[i + 2]["chain_rule"] = "C1"
+
+        # 算用数字が別形態素になった分数では、数詞と「の」に挟まれた助数詞の「分」を「ブン」へ変える
+        if (
+            modify_numeral_reading is True
+            and i > 0
+            and i + 2 < len(njd_features)
+            and njd["string"] == "分"
+            and njd_features[i - 1]["pos_group1"] == "数"
+            and next_njd["string"] == "の"
+            and njd_features[i + 2]["pos_group1"] == "数"
+        ):
+            njd["read"] = "ブン"
+            njd["pron"] = "ブン"
+            njd["mora_size"] = 2
+
+        # 数詞の直後で英字の記号として解析された「ｇ」「ｍ」などの単位を、辞書の助数詞と同じ読みとアクセントに置き換える
+        ## 助数詞に変えておくと、後段の NJD の数詞処理が「サンゼングラム」のように数詞と1つのアクセント句にまとめる
+        ## 「2m+1」「x＝2ｔ×3」のように英字の直後に演算子が続く場合は、数式の変数として英字のまま読む
+        ## 読み保護付きのユーザー辞書で記号として登録した英字は、登録した読みとアクセント核を使う
+        following_string = njd_features[i + 2]["string"] if i + 2 < len(njd_features) else ""
+        if (
+            modify_numeral_reading is True
+            and njd["pos_group1"] == "数"
+            and next_njd["pos"] == "記号"
+            and next_njd["string"] in _UNIT_LETTER_COUNTERS
+            and next_njd["pos_group3"] != "読み保護"
+            and following_string[:1] not in _UNIT_LETTER_FORMULA_OPERATORS
+        ):
+            read, acc, mora_size, chain_rule = _UNIT_LETTER_COUNTERS[next_njd["string"]]
+            next_njd.update(
+                pos="名詞", pos_group1="接尾", pos_group2="助数詞", pos_group3="*",
+                read=read, pron=read, acc=acc, mora_size=mora_size, chain_rule=chain_rule,
+            )
+
+        # 番号の桁に含まれない「〇〇町」のような伏字だけ、NJD の数字変換へ渡さずマルと読む
+        # 単独の「〇円」などは数詞のまま残し、従来の零読みを維持する
+        # アクセント句の核は NJD の結合に任せる (「〇〇です」は「マル＼マルデス」、「〇〇町」は「マルマル＼マチ」になる)
+        ## Haqumei は NJD の処理が終わったあとで核を1に書き換えているが、それでは「マ＼ルマル」になってしまうので取り入れていない
+        if (
+            modify_numeral_reading is True
+            and njd["string"] == "〇"
+            and next_njd["string"] == "〇"
+            and i not in numeral_zero_indices
+            and i + 1 not in numeral_zero_indices
+        ):
+            for placeholder_njd in (njd, next_njd):
+                # MeCab は後ろに何も続かない「〇〇」を記号として返すので、品詞も名詞にそろえて読ませる
+                placeholder_njd["pos"] = "名詞"
+                placeholder_njd["pos_group1"] = "一般"
+                placeholder_njd["read"] = "マル"
+                placeholder_njd["pron"] = "マル"
+                # 単独の「マル」は平板
+                placeholder_njd["acc"] = 0
+                placeholder_njd["mora_size"] = 2
+
+        # 接尾辞「球」は漢語・外来語との生産的な結合をキュウとし、送り仮名を持つ和語だけ連濁させる
+        # 漢字とひらがなの混在を条件にすることで、ひらがなだけの生産的な造語までダマへ変えない
+        if (
+            next_njd["string"] == "球"
+            and next_njd["pos"] == "名詞"
+            and next_njd["pos_group1"] == "接尾"
+            and next_njd["pron"] == "キュー"
+            and any("一" <= character <= "鿿" for character in njd["string"])
+            and contains_hiragana(njd["string"]) is True
+        ):
+            next_njd["read"] = "ダマ"
+            next_njd["pron"] = "ダマ"
+            next_njd["acc"] = 1
+            next_njd["mora_size"] = 2
+            next_njd["chain_rule"] = "C4"
+
+        # サ変動詞(スル)の前にサ変接続や名詞が来た場合は、一つのアクセント句に纏める
+        if (njd["pos_group1"] in ["サ変接続", "格助詞", "接続助詞"] or (njd["pos"] == "名詞" and njd["pos_group1"] == "一般") or njd["pos"] == "副詞" ) and njd_features[i+1]["ctype"] == "サ変・スル":
+            njd_features[i+1]["chain_flag"] = 1
+        # ご遠慮、ご配慮のような接頭語がつく場合にその後に続く単語の結合則を変更する
+        if (njd["string"] in ["お","御","ご"] and njd["chain_rule"] == "P1"):
+            if njd_features[i+1]["acc"] == 0 or njd_features[i+1]["acc"] == njd_features[i+1]["mora_size"]:
+                njd_features[i+1]["chain_rule"] = "C4"
+                njd_features[i+1]["acc"] = 0
+            else:
+                njd_features[i+1]["chain_rule"] = "C1"
+        # 動詞(自立)が連続する場合(ex 推し量る、刺し貫く)、後ろの動詞のアクセント核が採用される
+        if njd["pos"] == "動詞"  and njd_features[i+1]["pos"] == "動詞" :
+            njd_features[i+1]["chain_rule"] = "C1" if njd_features[i+1]["acc"] != 0 else "C4"
+        # 連用形のアクセント核の登録を修正する
+        if njd["cform"] in ["連用形","連用タ接続","連用ゴザイ接続","連用テ接続"] and njd["acc"] == njd["mora_size"] > 1 :
+            njd["acc"] -= 1
+        # 「らる、られる」＋「た」の組み合わせで「た」の助動詞/F2@0を上書きしてアクセントを下げないようにする
+        if njd["orig"] in ["れる", "られる","せる", "させる","ちゃう"]  and njd_features[i+1]["string"] in ["た"] :
+            njd_features[i+1]["chain_rule"] = "F2@1"
+
+        # 形容詞＋「なる、する」は一つのアクセント句に纏める
+        if njd["pos"] == "形容詞" and njd_features[i+1]["orig"] in ["なる", "する"]:
+            njd_features[i+1]["chain_flag"] = 1
+
+    # フィラーは前の語の句につなげず、フィラー自身と直後の名詞からそれぞれ新しいアクセント句を始める
+    ## 句の切れ目を NJD が核を計算した後で変えると、前の句の核が句の外に残る (「東京タワーえーとスカイツリー」が「タワー」の後で下がらない) ので、核の計算の前に決める
+    for i, njd in enumerate(njd_features):
+        if njd["pos"] != "フィラー":
+            continue
+        njd["chain_flag"] = 0
+        if i + 1 < len(njd_features) and njd_features[i + 1]["pos"] == "名詞":
+            njd_features[i + 1]["chain_flag"] = 0
+
+    if modify_numeral_reading is True:
+        # 「当大学病院」「本研究計画」は、接頭辞の後ろで句を分けてから複合語の核を計算する
+        ## 計算後に句だけを分けると、接頭辞につながった間に失われた後ろの句の核を復元できない
+        from .utils import split_prefix_accent_phrase
+        split_prefix_accent_phrase(njd_features)
+
+    return njd_features

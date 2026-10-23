@@ -1,0 +1,13 @@
+g2pw/__init__.py,sha256=MQ6fo4tDUkyeEi9ZRk8qzUZoqMbO2yqQKhvvFLAXkyg,35
+g2pw/api.py,sha256=KFB0cDfp00yN4Gbzwe_wZViQL3R18JCPCAcIFaU_ekc,8052
+g2pw/bert-base-chinese_s2t_dict.txt,sha256=OUgigixD9TrcJYqvf-ym6L2CqE_30C7kpq3PcLVy9Ec,13999
+g2pw/bopomofo_to_pinyin_wo_tune_dict.json,sha256=D-kOJr52UwI3crOtLQiVKWG78pX7ObpoXHFy09l2n1I,7739
+g2pw/char_bopomofo_dict.json,sha256=-96NOSRTYSyBS7ZyjG1fUqH504E1pgLvmPgh-iLX8AU,1851164
+g2pw/dataset.py,sha256=UErsA0cOZiCCr04rfAxEKgdLId0gaaReOpUtBb4KrOQ,7449
+g2pw/module.py,sha256=ryx2ZC6SbVStMCkI3RT5x4WoQ65eMKnRDCgfDsA25zY,11508
+g2pw/utils.py,sha256=fygu0J6SWGK-sMLSht8m3x3h1SS1QvnpqtT7BUE31T0,4818
+g2pw-0.1.2.dist-info/licenses/LICENCE,sha256=QwcOLU5TJoTeUhuIXzhdCEEDDvorGiC6-3YTOl4TecE,11356
+g2pw-0.1.2.dist-info/METADATA,sha256=-ILxXWzh6lk1xrl79exyyXYGDwa4M5ESod477sBF-64,4861
+g2pw-0.1.2.dist-info/WHEEL,sha256=YVMoNqKzERt-wjUZwJ33xBGAwnFl-4cqbYkTtWa4itE,91
+g2pw-0.1.2.dist-info/top_level.txt,sha256=QmWtxw3v4D3cTfwiwNyozHyzr0ir2OmGpBiZnGYWhSo,5
+g2pw-0.1.2.dist-info/RECORD,,

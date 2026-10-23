@@ -1,0 +1,697 @@
+{
+  "archives": [
+    {
+      "bytes": 32573858,
+      "name": "pyopenjtalk_plus-0.4.1.post10-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "239c2fe9d6fb97a3c14ccfaabee91f44c7953d36b34249c7e05884eecbebc93d",
+      "url": "https://files.pythonhosted.org/packages/70/13/efdbebfc28c1b6c0844088779d95216da7684ca9bcda57833a968d1d8e9c/pyopenjtalk_plus-0.4.1.post10-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    {
+      "bytes": 25495232,
+      "name": "pyopenjtalk_plus-0.4.1.post10.tar.gz",
+      "sha256": "cda6a562a9cb80fbc21d151f0f0264ecd368afa3dfee51dbd7bcfdcb57df5e40",
+      "url": "https://files.pythonhosted.org/packages/29/5d/966296aac74e8fa5c9c586f82df920b9d629da5968f5a86a27b286688f6c/pyopenjtalk_plus-0.4.1.post10.tar.gz"
+    },
+    {
+      "bytes": 1758941,
+      "name": "sudachipy-0.7.0-cp310-abi3-manylinux_2_28_x86_64.whl",
+      "sha256": "dfc90631aa2276d2165e1995bc94b56c9f5bc27b875f43fb7d67e4a3b7346d4f",
+      "url": "https://files.pythonhosted.org/packages/1d/2d/b2c2511b3627032e81ef1626d6bce4506efacc7b698ca0e70cf6b4345e86/sudachipy-0.7.0-cp310-abi3-manylinux_2_28_x86_64.whl"
+    },
+    {
+      "bytes": 304664,
+      "name": "sudachipy-0.7.0.tar.gz",
+      "sha256": "14a2505e7d086fe9da64c0048d8e2de13cdded3aac4f1e047929cef51dba338c",
+      "url": "https://files.pythonhosted.org/packages/fc/1d/b34702f38a8bd34972836538d222209095d5aba7faff79d56bce3fb2640c/sudachipy-0.7.0.tar.gz"
+    },
+    {
+      "bytes": 76937301,
+      "name": "sudachidict_core-20261015-py3-none-any.whl",
+      "sha256": "6d7774b518e64c88a0578975d569590b3dae3b3c834f166486aa611879ee9d98",
+      "url": "https://files.pythonhosted.org/packages/3d/6a/9dddc36e33ff7f86e394315a77b90d0f41bfd161e011d77a8397662d53e0/sudachidict_core-20261015-py3-none-any.whl"
+    },
+    {
+      "bytes": 9157,
+      "name": "sudachidict_core-20261015.tar.gz",
+      "sha256": "32d2bfc1491b82659959d28f79eb7c034d3a57d77f7610c3d2ea834151d15d23",
+      "url": "https://files.pythonhosted.org/packages/70/04/4e8698fcb26999fc9381911aea95a4c861e219c098476b784f54a0cd5c36/sudachidict_core-20261015.tar.gz"
+    }
+  ],
+  "exact_byte_python_resources": [
+    "local_piper_japanese/controller/_cjkvi_variants_map.py",
+    "local_piper_japanese/controller/_context_reading.py",
+    "local_piper_japanese/controller/_itaiji_map.py",
+    "local_piper_japanese/controller/_kana_utils.py",
+    "local_piper_japanese/controller/_kaomoji.py",
+    "local_piper_japanese/controller/_known_symbols.py",
+    "local_piper_japanese/controller/_loanword.py",
+    "local_piper_japanese/controller/_mapping.py",
+    "local_piper_japanese/controller/_prosody.py",
+    "local_piper_japanese/controller/_unihan_readings_map.py",
+    "local_piper_japanese/controller/version.py",
+    "local_piper_japanese/data/original/pyopenjtalk/__init__.py",
+    "local_piper_japanese/data/original/pyopenjtalk/__main__.py",
+    "local_piper_japanese/data/original/pyopenjtalk/_cjkvi_variants_map.py",
+    "local_piper_japanese/data/original/pyopenjtalk/_context_reading.py",
+    "local_piper_japanese/data/original/pyopenjtalk/_itaiji_map.py",
+    "local_piper_japanese/data/original/pyopenjtalk/_kana_utils.py",
+    "local_piper_japanese/data/original/pyopenjtalk/_kaomoji.py",
+    "local_piper_japanese/data/original/pyopenjtalk/_known_symbols.py",
+    "local_piper_japanese/data/original/pyopenjtalk/_loanword.py",
+    "local_piper_japanese/data/original/pyopenjtalk/_mapping.py",
+    "local_piper_japanese/data/original/pyopenjtalk/_prosody.py",
+    "local_piper_japanese/data/original/pyopenjtalk/_unihan_readings_map.py",
+    "local_piper_japanese/data/original/pyopenjtalk/_unknown_kanji.py",
+    "local_piper_japanese/data/original/pyopenjtalk/tsqyomi/__init__.py",
+    "local_piper_japanese/data/original/pyopenjtalk/tsqyomi/diagnostics.py",
+    "local_piper_japanese/data/original/pyopenjtalk/tsqyomi/inference.py",
+    "local_piper_japanese/data/original/pyopenjtalk/tsqyomi/model.py",
+    "local_piper_japanese/data/original/pyopenjtalk/tsqyomi/types.py",
+    "local_piper_japanese/data/original/pyopenjtalk/types.py",
+    "local_piper_japanese/data/original/pyopenjtalk/utils.py",
+    "local_piper_japanese/data/original/pyopenjtalk/version.py",
+    "local_piper_japanese/data/original/pyopenjtalk/yomi_model/convert_onnx.py",
+    "local_piper_japanese/data/original/pyopenjtalk/yomi_model/nani_predict.py"
+  ],
+  "native_extensions_or_executables_shipped": false,
+  "private_proposal": false,
+  "publication_status": "Qualified original default Piper Japanese source route; exact copied-artifact result remains separate.",
+  "resources": {
+    "licenses/local-piper-japanese/SudachiDict-Apache-2.0.txt": {
+      "bytes": 11358,
+      "exact_bytes": true,
+      "kind": "license_notice",
+      "origin": "oracle/sudachidict_core-20261015.dist-info/licenses/LICENSE-2.0.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "licenses/local-piper-japanese/SudachiPy-Apache-2.0.txt": {
+      "bytes": 11357,
+      "exact_bytes": true,
+      "kind": "license_notice",
+      "origin": "oracle/sudachipy-0.7.0.dist-info/licenses/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    "licenses/local-piper-japanese/mecab-BSD.txt": {
+      "bytes": 4411,
+      "exact_bytes": true,
+      "kind": "license_notice",
+      "origin": "pyopenjtalk_plus-0.4.1.post10/lib/open_jtalk/src/mecab/COPYING",
+      "sha256": "05e94c185a3e31f0c658f7011132be952b6d1a4d588b682f92da380e0a290650"
+    },
+    "licenses/local-piper-japanese/open-jtalk-BSD.txt": {
+      "bytes": 2808,
+      "exact_bytes": true,
+      "kind": "license_notice",
+      "origin": "pyopenjtalk_plus-0.4.1.post10/lib/open_jtalk/src/COPYING",
+      "sha256": "14f380a0db8dce139fdcfb731d21e993a31a00b68907515d1c54a5f356241343"
+    },
+    "licenses/local-piper-japanese/open-jtalk-dictionary-COPYING.txt": {
+      "bytes": 5865,
+      "exact_bytes": true,
+      "kind": "license_notice",
+      "origin": "oracle/pyopenjtalk/dictionary/COPYING",
+      "sha256": "f4eca42ebd930e2c6e57fca58319d989bebcd1510cb7714b149c50f5425135ea"
+    },
+    "licenses/local-piper-japanese/pyopenjtalk-plus-MIT.txt": {
+      "bytes": 1177,
+      "exact_bytes": true,
+      "kind": "license_notice",
+      "origin": "pyopenjtalk_plus-0.4.1.post10/LICENSE.md",
+      "sha256": "c38083a4d51c1ea86e08b3303a984d0c23718c5ac214058af705814d30f4bb5b"
+    },
+    "licenses/local-piper-japanese/unicode-normalization-COPYRIGHT.txt": {
+      "bytes": 321,
+      "exact_bytes": true,
+      "kind": "license_notice",
+      "origin": "unicode-normalization-0.1.25/COPYRIGHT",
+      "sha256": "23860c2a7b5d96b21569afedf033469bab9fe14a1b24a35068b8641c578ce24d"
+    },
+    "licenses/local-piper-japanese/unicode-normalization-LICENSE-APACHE.txt": {
+      "bytes": 10847,
+      "exact_bytes": true,
+      "kind": "license_notice",
+      "origin": "unicode-normalization-0.1.25/LICENSE-APACHE",
+      "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+    },
+    "licenses/local-piper-japanese/unicode-normalization-LICENSE-MIT.txt": {
+      "bytes": 1071,
+      "exact_bytes": true,
+      "kind": "license_notice",
+      "origin": "unicode-normalization-0.1.25/LICENSE-MIT",
+      "sha256": "7b63ecd5f1902af1b63729947373683c32745c16a10e8e6292e2e2dcd7e90ae0"
+    },
+    "local_piper_japanese/controller/_cjkvi_variants_map.py": {
+      "bytes": 327771,
+      "exact_bytes": true,
+      "kind": "original_runtime_python_source",
+      "origin": "Unchanged original pyopenjtalk-plus==0.4.1.post10 Python source",
+      "sha256": "8f7aabc148fe63aa4dbb7a6ec5f66f5aac1e70aa9228a293fd0ae719d7ff3835"
+    },
+    "local_piper_japanese/controller/_context_reading.py": {
+      "bytes": 117605,
+      "exact_bytes": true,
+      "kind": "original_runtime_python_source",
+      "origin": "Unchanged original pyopenjtalk-plus==0.4.1.post10 Python source",
+      "sha256": "9c422bb89d88fd9f12814f9435787995c56b0f50c93db9d001de508ae6dd551c"
+    },
+    "local_piper_japanese/controller/_itaiji_map.py": {
+      "bytes": 7905,
+      "exact_bytes": true,
+      "kind": "original_runtime_python_source",
+      "origin": "Unchanged original pyopenjtalk-plus==0.4.1.post10 Python source",
+      "sha256": "f0318ee9506894ce446c26a98831b36abed71b4d95e5a8dab7d063dc8c5aedc9"
+    },
+    "local_piper_japanese/controller/_kana_utils.py": {
+      "bytes": 1380,
+      "exact_bytes": true,
+      "kind": "original_runtime_python_source",
+      "origin": "Unchanged original pyopenjtalk-plus==0.4.1.post10 Python source",
+      "sha256": "9089e9fdabba88dc280eb7dcc1f892938cbed17d7867ab6e404d3cfe88cfb6fb"
+    },
+    "local_piper_japanese/controller/_kaomoji.py": {
+      "bytes": 29855,
+      "exact_bytes": true,
+      "kind": "original_runtime_python_source",
+      "origin": "Unchanged original pyopenjtalk-plus==0.4.1.post10 Python source",
+      "sha256": "493f7acb507a1c8ec1e54c97e3d9506745e5510cf3ab1c6c20e0edb96720ed34"
+    },
+    "local_piper_japanese/controller/_known_symbols.py": {
+      "bytes": 16227,
+      "exact_bytes": true,
+      "kind": "original_runtime_python_source",
+      "origin": "Unchanged original pyopenjtalk-plus==0.4.1.post10 Python source",
+      "sha256": "b499d53dc5419856d9c4875c81684d19822385842d899e10516b5851f01f367c"
+    },
+    "local_piper_japanese/controller/_loanword.py": {
+      "bytes": 8391,
+      "exact_bytes": true,
+      "kind": "original_runtime_python_source",
+      "origin": "Unchanged original pyopenjtalk-plus==0.4.1.post10 Python source",
+      "sha256": "6acc46e806db398bb5e0dd004bd4d0780ef9be7a1b14e2888712a6a97d207c73"
+    },
+    "local_piper_japanese/controller/_mapping.py": {
+      "bytes": 80315,
+      "exact_bytes": true,
+      "kind": "original_runtime_python_source",
+      "origin": "Unchanged original pyopenjtalk-plus==0.4.1.post10 Python source",
+      "sha256": "329309c49e1dfab453c1a7e9a242507de8b31e45d70cf973e4680de8ec981761"
+    },
+    "local_piper_japanese/controller/_prosody.py": {
+      "bytes": 11651,
+      "exact_bytes": true,
+      "kind": "original_runtime_python_source",
+      "origin": "Unchanged original pyopenjtalk-plus==0.4.1.post10 Python source",
+      "sha256": "065d3fe6d8c87c13509d69cd6c9505da26e4848ac5ccb6398f874d862c33b7e6"
+    },
+    "local_piper_japanese/controller/_unihan_readings_map.py": {
+      "bytes": 1107253,
+      "exact_bytes": true,
+      "kind": "original_runtime_python_source",
+      "origin": "Unchanged original pyopenjtalk-plus==0.4.1.post10 Python source",
+      "sha256": "afa62bdf93f3a6d39265068a15a7fa72bb1b1459e7bf6e4ed4be0265e84dc71c"
+    },
+    "local_piper_japanese/controller/version.py": {
+      "bytes": 29,
+      "exact_bytes": true,
+      "kind": "original_runtime_python_source",
+      "origin": "Unchanged original pyopenjtalk-plus==0.4.1.post10 Python source",
+      "sha256": "f37d11891178a990a1d02c1e84b422c77e8641b95daa577d1f5660e4699e0e21"
+    },
+    "local_piper_japanese/data/distributions/pyopenjtalk_plus-0.4.1.post10.dist-info/METADATA": {
+      "bytes": 32870,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: pyopenjtalk_plus-0.4.1.post10.dist-info/METADATA",
+      "sha256": "666efeff8303817c687c0e0f92f11bb220be19ac43b2301c1027354c60c17ffb"
+    },
+    "local_piper_japanese/data/distributions/pyopenjtalk_plus-0.4.1.post10.dist-info/RECORD": {
+      "bytes": 4803,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: pyopenjtalk_plus-0.4.1.post10.dist-info/RECORD",
+      "sha256": "54308a2ee8cd0bdd78a3722c89dd7067df753740de9a31db9ff03162c38f9bea"
+    },
+    "local_piper_japanese/data/distributions/pyopenjtalk_plus-0.4.1.post10.dist-info/WHEEL": {
+      "bytes": 152,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: pyopenjtalk_plus-0.4.1.post10.dist-info/WHEEL",
+      "sha256": "15a210bfa961295521ed6f908bf5e4e662173abb3d5bbf5b39e4deb9be14562e"
+    },
+    "local_piper_japanese/data/distributions/pyopenjtalk_plus-0.4.1.post10.dist-info/licenses/LICENSE.md": {
+      "bytes": 1177,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: pyopenjtalk_plus-0.4.1.post10.dist-info/licenses/LICENSE.md",
+      "sha256": "c38083a4d51c1ea86e08b3303a984d0c23718c5ac214058af705814d30f4bb5b"
+    },
+    "local_piper_japanese/data/distributions/pyopenjtalk_plus-0.4.1.post10.dist-info/top_level.txt": {
+      "bytes": 12,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: pyopenjtalk_plus-0.4.1.post10.dist-info/top_level.txt",
+      "sha256": "4bb7906b2561122a07b66ee54bea06f26b5e00ba9205de4347d1c98df2671ced"
+    },
+    "local_piper_japanese/data/distributions/sudachidict_core-20261015.dist-info/METADATA": {
+      "bytes": 2659,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: sudachidict_core-20261015.dist-info/METADATA",
+      "sha256": "05da196088deffaef95b0ce4fb8602be1a171e464662a8217f5516bc5e804a00"
+    },
+    "local_piper_japanese/data/distributions/sudachidict_core-20261015.dist-info/RECORD": {
+      "bytes": 645,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: sudachidict_core-20261015.dist-info/RECORD",
+      "sha256": "7614e68cf4b252b53b4c79e8abe8bfb43c32030e48ef1f7da0b8cc1dd0fa4a68"
+    },
+    "local_piper_japanese/data/distributions/sudachidict_core-20261015.dist-info/WHEEL": {
+      "bytes": 91,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: sudachidict_core-20261015.dist-info/WHEEL",
+      "sha256": "2b6eb4118ce7cd7b09601406aa623c553c4476265836f0d9c16f5c061f7efcc0"
+    },
+    "local_piper_japanese/data/distributions/sudachidict_core-20261015.dist-info/licenses/LICENSE-2.0.txt": {
+      "bytes": 11358,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: sudachidict_core-20261015.dist-info/licenses/LICENSE-2.0.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "local_piper_japanese/data/distributions/sudachidict_core-20261015.dist-info/top_level.txt": {
+      "bytes": 17,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: sudachidict_core-20261015.dist-info/top_level.txt",
+      "sha256": "376f0e8132a36427788ea43f9ec9cb1b15c6df2d1060af19741b03c8e5e8de2b"
+    },
+    "local_piper_japanese/data/distributions/sudachipy-0.7.0.dist-info/METADATA": {
+      "bytes": 13749,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: sudachipy-0.7.0.dist-info/METADATA",
+      "sha256": "d4ba437821a3aa150bb9ce6cfd7bd76426e6d2bb2026740edf53f7fbc7b5444f"
+    },
+    "local_piper_japanese/data/distributions/sudachipy-0.7.0.dist-info/RECORD": {
+      "bytes": 1810,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: sudachipy-0.7.0.dist-info/RECORD",
+      "sha256": "7ddd5171fc623018dd1c3c09c7711e6c0784dc7b750e732e0561221d374720c5"
+    },
+    "local_piper_japanese/data/distributions/sudachipy-0.7.0.dist-info/WHEEL": {
+      "bytes": 109,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: sudachipy-0.7.0.dist-info/WHEEL",
+      "sha256": "97685f448c509e3e252286de3ca029edee753248b82ce77835ef29c9ad4e0997"
+    },
+    "local_piper_japanese/data/distributions/sudachipy-0.7.0.dist-info/entry_points.txt": {
+      "bytes": 56,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: sudachipy-0.7.0.dist-info/entry_points.txt",
+      "sha256": "5c51f894edc94241de4ee25a2d7fd4c065d655ee34d931363e7f569d34d2a80e"
+    },
+    "local_piper_japanese/data/distributions/sudachipy-0.7.0.dist-info/licenses/LICENSE": {
+      "bytes": 11357,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: sudachipy-0.7.0.dist-info/licenses/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    "local_piper_japanese/data/distributions/sudachipy-0.7.0.dist-info/sboms/sudachipy.cyclonedx.json": {
+      "bytes": 63010,
+      "exact_bytes": true,
+      "kind": "original_distribution_metadata",
+      "origin": "Original reviewed wheel: sudachipy-0.7.0.dist-info/sboms/sudachipy.cyclonedx.json",
+      "sha256": "440d75f81bf1dca9def0fd1a9ca3bf1a57db7cff1002b58d424a5bed3d05286c"
+    },
+    "local_piper_japanese/data/openjtalk/dictionary/COPYING": {
+      "bytes": 5865,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/dictionary/COPYING",
+      "sha256": "f4eca42ebd930e2c6e57fca58319d989bebcd1510cb7714b149c50f5425135ea"
+    },
+    "local_piper_japanese/data/openjtalk/dictionary/char.bin": {
+      "bytes": 262496,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/dictionary/char.bin",
+      "sha256": "1a3ade6a84c0e6b1cfbd04f3803f32aefe37139724359f2a6cc72abf68099b06"
+    },
+    "local_piper_japanese/data/openjtalk/dictionary/left-id.def": {
+      "bytes": 77672,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/dictionary/left-id.def",
+      "sha256": "db1adac8a7f9e5854cd82ea044c85115249206c8181b9d88cf92ae2ee5e87b84"
+    },
+    "local_piper_japanese/data/openjtalk/dictionary/matrix.bin": {
+      "bytes": 3792262,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/dictionary/matrix.bin",
+      "sha256": "62fd16b4f64c851d5dc352ef0d5740c5fc83ddc7c203b2b0b1fc5271969a14ce"
+    },
+    "local_piper_japanese/data/openjtalk/dictionary/pos-id.def": {
+      "bytes": 1923,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/dictionary/pos-id.def",
+      "sha256": "3460aa742053085af47cdfc889a1e0e6f557e89b406e501ba81c9ccc286de0c7"
+    },
+    "local_piper_japanese/data/openjtalk/dictionary/rewrite.def": {
+      "bytes": 7457,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/dictionary/rewrite.def",
+      "sha256": "7f7c8dfbfe24092e8a149a9b6e0a3a7f1c2cf37d6c3dc29d1cccc6c004da9c1c"
+    },
+    "local_piper_japanese/data/openjtalk/dictionary/right-id.def": {
+      "bytes": 77672,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/dictionary/right-id.def",
+      "sha256": "db1adac8a7f9e5854cd82ea044c85115249206c8181b9d88cf92ae2ee5e87b84"
+    },
+    "local_piper_japanese/data/openjtalk/dictionary/sys.dic": {
+      "bytes": 103305451,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/dictionary/sys.dic",
+      "sha256": "23287ce5d518164b8b97683b1d9534df095556e446f3470a6c52bd737be74527"
+    },
+    "local_piper_japanese/data/openjtalk/dictionary/unk.dic": {
+      "bytes": 5690,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/dictionary/unk.dic",
+      "sha256": "f8ce58a6b49795680d68c4f2c5801296d4d3b047b4b7708baa1610f7e2d91f1f"
+    },
+    "local_piper_japanese/data/openjtalk/yomi_model/nani_enc.onnx": {
+      "bytes": 2682,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/yomi_model/nani_enc.onnx",
+      "sha256": "22f9a0c8219a1a1aa8452bd3b4025d6225b954ed47dd35c3125a5f4300be6df9"
+    },
+    "local_piper_japanese/data/openjtalk/yomi_model/nani_model.onnx": {
+      "bytes": 161120,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/yomi_model/nani_model.onnx",
+      "sha256": "750d00f008ab2444ef4b8d1e101f18c64f8cf81c6336be613fc7017d007b0644"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/__init__.py": {
+      "bytes": 100590,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/__init__.py",
+      "sha256": "8f198bcf47607a94c99cb0aa88380de5591f9d8cd862f1d9431268a16db8cee7"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/__main__.py": {
+      "bytes": 875,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/__main__.py",
+      "sha256": "a40b71343a08d7cc0c711271dbf99d73395c2eb31a04eeba25ed4bf256e347ab"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/_cjkvi_variants_map.py": {
+      "bytes": 327771,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/_cjkvi_variants_map.py",
+      "sha256": "8f7aabc148fe63aa4dbb7a6ec5f66f5aac1e70aa9228a293fd0ae719d7ff3835"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/_context_reading.py": {
+      "bytes": 117605,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/_context_reading.py",
+      "sha256": "9c422bb89d88fd9f12814f9435787995c56b0f50c93db9d001de508ae6dd551c"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/_itaiji_map.py": {
+      "bytes": 7905,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/_itaiji_map.py",
+      "sha256": "f0318ee9506894ce446c26a98831b36abed71b4d95e5a8dab7d063dc8c5aedc9"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/_kana_utils.py": {
+      "bytes": 1380,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/_kana_utils.py",
+      "sha256": "9089e9fdabba88dc280eb7dcc1f892938cbed17d7867ab6e404d3cfe88cfb6fb"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/_kaomoji.py": {
+      "bytes": 29855,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/_kaomoji.py",
+      "sha256": "493f7acb507a1c8ec1e54c97e3d9506745e5510cf3ab1c6c20e0edb96720ed34"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/_known_symbols.py": {
+      "bytes": 16227,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/_known_symbols.py",
+      "sha256": "b499d53dc5419856d9c4875c81684d19822385842d899e10516b5851f01f367c"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/_loanword.py": {
+      "bytes": 8391,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/_loanword.py",
+      "sha256": "6acc46e806db398bb5e0dd004bd4d0780ef9be7a1b14e2888712a6a97d207c73"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/_mapping.py": {
+      "bytes": 80315,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/_mapping.py",
+      "sha256": "329309c49e1dfab453c1a7e9a242507de8b31e45d70cf973e4680de8ec981761"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/_prosody.py": {
+      "bytes": 11651,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/_prosody.py",
+      "sha256": "065d3fe6d8c87c13509d69cd6c9505da26e4848ac5ccb6398f874d862c33b7e6"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/_unihan_readings_map.py": {
+      "bytes": 1107253,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/_unihan_readings_map.py",
+      "sha256": "afa62bdf93f3a6d39265068a15a7fa72bb1b1459e7bf6e4ed4be0265e84dc71c"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/_unknown_kanji.py": {
+      "bytes": 8258,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/_unknown_kanji.py",
+      "sha256": "cad88d98988fdaaf5eb2458863cafaab1c6e1b4abea1a228e5679aefd4b30f76"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/htsengine.pyi": {
+      "bytes": 4492,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/htsengine.pyi",
+      "sha256": "919ca3b4776036d177c2698425937096da9b7576579ba5709603373d17fb101d"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/openjtalk.pyi": {
+      "bytes": 15507,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/openjtalk.pyi",
+      "sha256": "be14c279b37283456b07fb3de1159f5e107334f9c7c35c2901f5cf7cc4bc8d26"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/openjtalk.pyx": {
+      "bytes": 129134,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 source archive: pyopenjtalk/openjtalk.pyx",
+      "sha256": "2cc9a0929c34dbc399a04c39e1ab7315e9ecf185340f84dc1a5c29b46f2971a0"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/openjtalk/__init__.pxd": {
+      "bytes": 27,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/openjtalk/__init__.pxd",
+      "sha256": "988bf9f5d29431f03e5044bbdf0b64024eb08c17c5bce132b13f1dd1c0c70cb5"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/openjtalk/jpcommon.pxd": {
+      "bytes": 3454,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/openjtalk/jpcommon.pxd",
+      "sha256": "3a8b78523cd37a7c95d3b09f3b09fc2cb382bfbb9ed03eec9173d0d9981c132d"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/openjtalk/mecab.pxd": {
+      "bytes": 3957,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/openjtalk/mecab.pxd",
+      "sha256": "d17fc45080a860fa4098f1dc881eac58c2c3bb1230726ab48b201ea05225594a"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/openjtalk/mecab2njd.pxd": {
+      "bytes": 173,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/openjtalk/mecab2njd.pxd",
+      "sha256": "a6dc9c5cf8a22306f62b32cc23172073feedd0d597190588fa33d4f98e2db774"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/openjtalk/njd.pxd": {
+      "bytes": 3751,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/openjtalk/njd.pxd",
+      "sha256": "a15b32cd9959017db0d4001844b72ef60b665b538cd299a6d75651f37230c570"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/openjtalk/njd2jpcommon.pxd": {
+      "bytes": 206,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/openjtalk/njd2jpcommon.pxd",
+      "sha256": "42a3e3d942e878eef100822c47761e255cf30d5021c7cad861d81a71b56bd28f"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/openjtalk/text2mecab.pxd": {
+      "bytes": 339,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/openjtalk/text2mecab.pxd",
+      "sha256": "016b90f606542c7b6ab2406a7512519aecd38b4490f46176eb03762dec99a823"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/tsqyomi/__init__.py": {
+      "bytes": 758,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/tsqyomi/__init__.py",
+      "sha256": "8d7826b7ff04ad26cdb4a8d1ec5c9a878cff94f4142a799944daef4ba2bb3a88"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/tsqyomi/diagnostics.py": {
+      "bytes": 5373,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/tsqyomi/diagnostics.py",
+      "sha256": "75d2b292a1ee64767d32de9d0c98890ea8faff3942e35fb454776478c66a7de4"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/tsqyomi/inference.py": {
+      "bytes": 69061,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/tsqyomi/inference.py",
+      "sha256": "d8a30462189d15307f017df3e4ea19961318660870a13c6b9a219535166f8111"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/tsqyomi/model.py": {
+      "bytes": 33267,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/tsqyomi/model.py",
+      "sha256": "8f93fad2e57064da9d03c22157c64368ff7c465d31bbbf3632decff5b85f4840"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/tsqyomi/types.py": {
+      "bytes": 2945,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/tsqyomi/types.py",
+      "sha256": "ab3a96443c911d2985271192a5678f85eb71063fb2aab1269ffcecb66fd043c3"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/types.py": {
+      "bytes": 18100,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/types.py",
+      "sha256": "524cb06d9450bc87c80e65d42ade225432a3a2d3f671b2d0d0473ff3a006beca"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/utils.py": {
+      "bytes": 80051,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/utils.py",
+      "sha256": "072a5b64e51d993b374c473607c1b957cb6091e957393a3e0dfd91760d27ea5b"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/version.py": {
+      "bytes": 29,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/version.py",
+      "sha256": "f37d11891178a990a1d02c1e84b422c77e8641b95daa577d1f5660e4699e0e21"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/yomi_model/convert_onnx.py": {
+      "bytes": 1775,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/yomi_model/convert_onnx.py",
+      "sha256": "398901192e180bf3ce3225a9f9c8931149f8809652528669bebdda1644f3b58d"
+    },
+    "local_piper_japanese/data/original/pyopenjtalk/yomi_model/nani_predict.py": {
+      "bytes": 2831,
+      "exact_bytes": true,
+      "kind": "original_source",
+      "origin": "pyopenjtalk-plus==0.4.1.post10 wheel: pyopenjtalk/yomi_model/nani_predict.py",
+      "sha256": "7d51ae523a8ec4720928b4b1afc7bf3ca8f23d40e779a12fdb8bbabffd0309d4"
+    },
+    "local_piper_japanese/data/sudachi/resources/char.def": {
+      "bytes": 5483,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "SudachiPy==0.7.0 wheel: sudachipy/resources/char.def",
+      "sha256": "3fcb45c133b9f59d77ed052931f3a19dbcf884a91289e546071a826038342d5d"
+    },
+    "local_piper_japanese/data/sudachi/resources/rewrite.def": {
+      "bytes": 5426,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "SudachiPy==0.7.0 wheel: sudachipy/resources/rewrite.def",
+      "sha256": "a62bb6af22136331225d05fbcf95b97939e3f236feeda2240ed59641a0470d1c"
+    },
+    "local_piper_japanese/data/sudachi/resources/sudachi.json": {
+      "bytes": 1234,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "SudachiPy==0.7.0 wheel: sudachipy/resources/sudachi.json",
+      "sha256": "5ef3d0c95ab6f9261ec75411947d90a837ac56556b3e242fb6351b1417582395"
+    },
+    "local_piper_japanese/data/sudachi/resources/unk.def": {
+      "bytes": 2000,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "SudachiPy==0.7.0 wheel: sudachipy/resources/unk.def",
+      "sha256": "4e8c4c15e18af6a9fc5d636e3dc73fde55d50941b93a6c8835d4653d3f54ba79"
+    },
+    "local_piper_japanese/data/sudachi/system.dic": {
+      "bytes": 202236003,
+      "exact_bytes": true,
+      "kind": "original_resource",
+      "origin": "sudachidict-core==20261015 wheel: sudachidict_core/resources/system.dic",
+      "sha256": "e815659f6ad6f6118725103d47d317d660276ff3a15f668f8fc123ec3c4e6646"
+    },
+    "local_piper_japanese/sudachi-unicode.json.zlib": {
+      "bytes": 33494,
+      "exact_bytes": true,
+      "kind": "derived_unicode_resource",
+      "origin": "Deterministic derivation of pinned Unicode17 normalization and original Rust wheel lowercase tables.",
+      "sha256": "35c2d7b6e3130e7fd08986244694ae06dabc12de89bf4bb77b0dd15cf6322176"
+    }
+  },
+  "runtime_api": "standalone.local_piper_japanese.JapanesePhonemizer",
+  "schema_version": 1,
+  "scope": "Default Piper1.8.0 Japanese route, actual OpenJTalk+ reading corrections and full original dictionaries/weights. Marine/tsqyomi/HTS voice synthesis and dictionary compilation are outside this runtime API.",
+  "unicode_sources": {
+    "rust_lowercase": {
+      "commit_from_actual_wheel": "48a229ceaefd4985c50990b14116b6d856af0985",
+      "sha256": "d3d218b7574f08efe423e9d4b6b539e700046aca4f2a2793d38164ec5a1b00b2",
+      "size": 91749,
+      "url": "https://raw.githubusercontent.com/rust-lang/rust/48a229ceaefd4985c50990b14116b6d856af0985/library/core/src/unicode/unicode_data.rs"
+    },
+    "sha256": "5fd4f6878c9cb28d874b009da9e8d183b5abc80117c40bbd187a1fde336be6e8",
+    "size": 128462,
+    "url": "https://static.crates.io/crates/unicode-normalization/unicode-normalization-0.1.25.crate"
+  }
+}

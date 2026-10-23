@@ -1,0 +1,70 @@
+from pathlib import Path
+from typing import Any, cast
+
+import numpy as np
+
+from ..types import NJDFeature
+
+
+X_COLS = ["pos", "pos_group1", "pos_group2", "pron", "ctype", "cform"]
+MODEL_DIR = Path(__file__).parent
+
+# ONNX モデルをロード
+# 非常に軽量なモデルのため、import 時に ONNX モデルをロードするオーバーヘッドはほとんどない
+try:
+    from onnxruntime import InferenceSession
+
+    enc_session = InferenceSession(
+        MODEL_DIR / "nani_enc.onnx",
+        providers=["CPUExecutionProvider"],
+    )
+    model_session = InferenceSession(
+        MODEL_DIR / "nani_model.onnx",
+        providers=["CPUExecutionProvider"],
+    )
+except ImportError:
+    # ONNX Runtime がインストールされていない場合は、モデルをロードしない
+    # ONNX Runtime は onnxruntime (無印, CPU 版)・onnxruntime-gpu (CUDA 版)・onnxruntime-directml (DirectML 版) などが提供されている
+    # ユーザーはこのうちいずれかのパッケージ「のみ」をインストールする必要があるため、ライブラリ側からは依存関係を明示できない
+    print("Warning: ONNX Runtime is not installed. Nani prediction will be disabled.")
+    print("Please install ONNX Runtime by `pip install pyopenjtalk-plus[onnxruntime]`")
+    enc_session = None
+    model_session = None
+
+
+def predict(input_njd: list[NJDFeature | None]) -> int:
+    """
+    直後形態素の文脈から「何」の読み (ナニ/ナン) を ONNX モデルで推定する。
+
+    Args:
+        input_njd (list[NJDFeature | None]): 直後 1 形態素分の NJDFeature。
+            文末など後続がない場合は `[None]`
+
+    Returns:
+        int: 0 ならナニ、1 ならナン。ONNX Runtime 未導入時は常に 0
+    """
+
+    # ONNX Runtime がインストールされていない場合は常に 0 を返す
+    if enc_session is None or model_session is None:
+        return 0
+
+    if input_njd == [None]:
+        return 0
+    else:
+        # 入力データを準備
+        input_data = np.array(
+            [[njd[col] for col in X_COLS] for njd in input_njd if njd is not None]
+        )
+
+        # OneHotEncoder で変換
+        enc_input = {"input": input_data}
+        enc_output = enc_session.run(None, enc_input)
+        encoded_feature_array = np.asarray(cast(Any, enc_output[0]), dtype=np.float32)
+
+        # RandomForestClassifier の二クラス確率を取得
+        ## ORT の二値ラベル生成はバージョンによって解釈が異なるため、明示された確率から判定する
+        model_input = {"input": encoded_feature_array}
+        model_output = model_session.run(None, model_input)
+        probability_array = np.asarray(cast(Any, model_output[0]), dtype=np.float32)
+
+        return int(np.argmax(probability_array[0]))

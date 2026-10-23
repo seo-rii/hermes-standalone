@@ -1,0 +1,264 @@
+{
+  "component": "Owned Piper Chinese/PINYIN CPU backend",
+  "embedding": "Complete original G2PW model and data embedded once. Cold per-voice model directories receive byte-identical copies; existing g2pw.onnx takes the original no-write fast path.",
+  "format_version": 1,
+  "full_project_parity_verified": false,
+  "original_cold_model_fixture": {
+    "cases": 4,
+    "owned_loopback_archive_requests": 2,
+    "path": "original-cold-model.json",
+    "sha256": "2363dce61063e8e619688e1dcc992e4310e5b2410853b776859462d872ef1183"
+  },
+  "original_text_fixture": {
+    "bytes": 209487,
+    "counts": {
+      "collation": 48,
+      "controller": 48,
+      "features": 192,
+      "ids": 256,
+      "label_cases": 80,
+      "numbers": 114,
+      "sentence_cases": 160,
+      "syllables": 2136,
+      "tokens": 180
+    },
+    "data_sha256": "4cc1bd3274bed2f3f49cd9f03cf2fafcc47d018c09a0ff2d3af62dc5f27191bf",
+    "native_graph_batches": 44,
+    "sha256": "b2000f4c78c15549c973a4508d5e02bbe6d76cd813389ba23b74b0a1d4ea29fd",
+    "unicode_codepoints": 1114112
+  },
+  "original_whole_voice_fixture": {
+    "cases": 29,
+    "fixture_bytes": 15640,
+    "fixture_sha256": "153f3ea5303de17c7e9dc2523ea212c5223a5d29ac2cfb692cf0fd1172e97986",
+    "native_batches": 30,
+    "raw_sha256": "613cecf35062b2f63e40e7b5b227b3cb9a8d1435281ac17c831d85280baaac31",
+    "seconds": 17.05815325397998,
+    "source_sha256": {
+      "config.py": "ea60d6d94ffa2724573c9e945b6b942d260b458180f52717b0b284224d4437ae",
+      "g2pw_onnx.py": "6066f5f0a351b4536c0c7d907fd00901de9d8cb392306858ed1bbf06d0a97323",
+      "phonemize_chinese.py": "3de683aa630ae11c44f5822afd040c4d588cb5e4fda0f3f9f546757f982a0662",
+      "voice.py": "3d6ce0415dda785396af3000f89d59cb6307eeee31711c9d671a7d2c0e5f8b19"
+    }
+  },
+  "project": "hermes-standalone",
+  "public_fixture": {
+    "bytes": 227235,
+    "decoded_sha256": "51008b6a23dc5c4f3d827d5edddd235ca87cff0f20672afab82f644e7adc8df5",
+    "inputs": {
+      "cold": {
+        "decoded_sha256": "2363dce61063e8e619688e1dcc992e4310e5b2410853b776859462d872ef1183",
+        "file_sha256": "2363dce61063e8e619688e1dcc992e4310e5b2410853b776859462d872ef1183",
+        "path": "original-cold-model.json"
+      },
+      "text": {
+        "decoded_sha256": "4cc1bd3274bed2f3f49cd9f03cf2fafcc47d018c09a0ff2d3af62dc5f27191bf",
+        "file_sha256": "b2000f4c78c15549c973a4508d5e02bbe6d76cd813389ba23b74b0a1d4ea29fd",
+        "path": "original-goldens.json.zlib"
+      },
+      "voice": {
+        "decoded_sha256": "613cecf35062b2f63e40e7b5b227b3cb9a8d1435281ac17c831d85280baaac31",
+        "file_sha256": "153f3ea5303de17c7e9dc2523ea212c5223a5d29ac2cfb692cf0fd1172e97986",
+        "path": "original-voice-pinyin.json.zlib"
+      }
+    },
+    "sha256": "ab5b51ac1d69a022d561ad7c352aaaae9673c2bbb6433288c6a7889960e09d50"
+  },
+  "qualification": {
+    "actual_neural_batches": 44,
+    "all_original_argmax_equal": true,
+    "decision": "Activate the independently qualified consumed Piper contract. Preserve both failed probability gates without relaxing tolerance, changing weights or claiming neural numeric equivalence. The private mean-reduction prototype is not adopted.",
+    "max_optimized_probability_error": 0.0027915239334106445,
+    "max_original_profile_difference": 0.0011264681816101074,
+    "max_unfused_probability_error": 0.002791464328765869,
+    "public_checks": [
+      {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-chinese-public311-zgg_ivwy.log",
+        "name": "chinese-public311",
+        "seconds": 70.88430905342102,
+        "status": "validation-logs/hermes-chinese-public311-zgg_ivwy.log.status.json"
+      },
+      {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-chinese-public314-stoi2esa.log",
+        "name": "chinese-public314",
+        "seconds": 66.17622637748718,
+        "status": "validation-logs/hermes-chinese-public314-stoi2esa.log.status.json"
+      }
+    ],
+    "public_tests_per_interpreter": 5,
+    "published": true,
+    "strict_probability_checks": [
+      {
+        "exit_code": 1,
+        "log": "validation-logs/hermes-chinese-graph-qualified311-sdk8y2z9.log",
+        "name": "chinese-graph-qualified311",
+        "seconds": 1969.2607004642487,
+        "status": "validation-logs/hermes-chinese-graph-qualified311-sdk8y2z9.log.status.json"
+      },
+      {
+        "exit_code": 1,
+        "log": "validation-logs/hermes-chinese-graph-qualified314-ec6uhbf7.log",
+        "name": "chinese-graph-qualified314",
+        "seconds": 1868.6943712234497,
+        "status": "validation-logs/hermes-chinese-graph-qualified314-ec6uhbf7.log.status.json"
+      }
+    ],
+    "strict_unfused_probability_gate_passed": false,
+    "unfused_probability_tolerance": 1e-06,
+    "whole_voice_29_texts_two_versions": [
+      {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-chinese-voice-full311-l7phctpl.log",
+        "name": "piper-chinese-voice-full311",
+        "seconds": 1717.41264295578,
+        "status": "validation-logs/hermes-piper-chinese-voice-full311-l7phctpl.log.status.json"
+      },
+      {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-chinese-voice-full314-e293t_9t.log",
+        "name": "piper-chinese-voice-full314",
+        "seconds": 1571.305426120758,
+        "status": "validation-logs/hermes-piper-chinese-voice-full314-e293t_9t.log.status.json"
+      }
+    ]
+  },
+  "resources_manifest": {
+    "path": "piper-chinese-resources-provenance.json",
+    "resource_bytes": 161958875,
+    "resource_count": 30,
+    "sha256": "5f18e1c4d53a410d92183587706d0278927222f9ad6787bc35e5623988b09838"
+  },
+  "scope": {
+    "default_frontend": "Original number expansion, pinyin normalization, word/token mapping, masks/windows/collation, polyphone labels, grouped IDs and per-voice cache semantics.",
+    "native_probability_profiles": "All44 tested batches select the same original maximum-probability labels. Internal probabilities fail the declared1e-6 tolerance against original unfused ORT, with maximum absolute error0.002791464328765869; optimized error0.0027915239334106445. This is an open numeric equivalence gap, not a passed confidence-value claim.",
+    "neural_runtime": "Complete original quantized G2PW BERT graph, standard ONNX opset12 CPU math, separate from VITS13–17 public graph profile.",
+    "source_only_proof": "Controller-only tests explicitly inject independently recorded native probabilities after checking every feed; actual graph/whole-voice tests are separate and use the complete owned model.",
+    "voice_audio": "Real original small ONNX contract graph PCM/WAV, separately from previously qualified trained VITS voices. No trained Chinese voice claim."
+  },
+  "size": {
+    "adopted_model_transform": null,
+    "model_values_or_precision_changed": false,
+    "raw_model_bytes": 159287362,
+    "raw_resource_bytes": 161958875,
+    "sample_experiments": "model-packing-analysis.json",
+    "whole_model_or_artifact_size_claim": null
+  },
+  "source": {
+    "adaptations": [
+      "Original source algorithms/ASTs copied exactly for BERT BasicTokenizer/WordpieceTokenizer and Unicode helper methods, source tokenizer/map/mask/window/labels, sentence detector and Chinese number/ID methods.",
+      "BERT wrapper implements the g2pW word-tokenizer caller boundary with original pinned vocab/config; it does not install a transformers namespace.",
+      "Original sentence regex property classes expanded from all-codepoint independent native regex observations; fixed-width Python re word-boundary/line-start equivalents preserve the consumed pattern grammar.",
+      "Collation produces owned Tensor int64/float32 feeds instead of NumPy; controller calls the actual owned model Tensor API and preserves original first-maximum label choice.",
+      "Controller-only tests explicitly inject recorded native probabilities and validate every feed. Separate actual whole-graph and29-case whole-voice checks execute the complete original159287362-byte quantized model through the owned kernels; the consumed Piper route is public."
+    ],
+    "copied_algorithm_nodes": {
+      "local_piper_chinese_work/oracle/sentence_stream/sentence_stream.py::SentenceBoundaryDetector": {
+        "ast_sha256": "841e3149222435d0278c9a4982b09f3acc8d51e1014b5de4716b9c32a3351770",
+        "source_sha256": "5b7e3c01600f683038bfa417a15cab2e4acf24503a19a3e448e4604950a4094a"
+      },
+      "local_piper_chinese_work/oracle/sentence_stream/sentence_stream.py::async_stream_to_sentences": {
+        "ast_sha256": "5db4e7b03d6e9296f1d9fb17281c3b391a5bd37e4e76ec81df96bcc0a83a74af",
+        "source_sha256": "cfa0f9b469db06be3471083d260daa34bfcf6b3e5c9e22388d34c70637582bbc"
+      },
+      "local_piper_chinese_work/oracle/sentence_stream/sentence_stream.py::stream_to_sentences": {
+        "ast_sha256": "a50184e47c6e4c8c5272c8057336ade1d0d6f534f541e786e4bc2f43fd5cd8f8",
+        "source_sha256": "b2931553ee12b8d55aab2a556d638805bc61d1e05a86fde29c480c514c42a234"
+      },
+      "local_piper_chinese_work/oracle/sentence_stream/util.py::remove_asterisks": {
+        "ast_sha256": "2cedf9ad0c89e83f0db497ec1d5a9c10e808aa741bfb07d05de4e0eb07dfa381",
+        "source_sha256": "c7d5d02021cbfcaa67c56fda03cc5b83663dba591354d17d4cc8b1d2a9ebaa39"
+      },
+      "local_piper_chinese_work/oracle/transformers/models/bert/tokenization_bert.py::BasicTokenizer": {
+        "ast_sha256": "4d037fbed4f1b3bda44fb4a51a9f56920e7ec8ec26f92bbb9f4693aa2e157831",
+        "source_sha256": "c7096f62e0bd0bf7914d2e6c5c9ae29d3dc918b8f0bcb29b0deb492a945055c7"
+      },
+      "local_piper_chinese_work/oracle/transformers/models/bert/tokenization_bert.py::WordpieceTokenizer": {
+        "ast_sha256": "e09ad0cdf3ccaf7a1984229a052c15d421b4d203b98a5270b049952d25963834",
+        "source_sha256": "ad59cd068cd777e117550e40ba1ba2b66f20c922abfa7a61480c2a19a13b9bf5"
+      },
+      "local_piper_chinese_work/oracle/transformers/models/bert/tokenization_bert.py::load_vocab": {
+        "ast_sha256": "6d13bbe8a8b1e552837f58e1dfc14a761f7f91813162919d627ccbde144f1f60",
+        "source_sha256": "623c32a06f258eef0af3919593f07c4f495e1272f8f1db6f97aaa79952011aeb"
+      },
+      "local_piper_chinese_work/oracle/transformers/models/bert/tokenization_bert.py::whitespace_tokenize": {
+        "ast_sha256": "840d9b97d0385f796d9db0d665ee7a690f2a93d772a546c42df666bb8c695864",
+        "source_sha256": "b64f1d63b6e5c86ccff63bfbc775c0d11a530f82835335ea5867c56f166e13a9"
+      },
+      "local_piper_chinese_work/oracle/transformers/tokenization_utils.py::_is_control": {
+        "ast_sha256": "af8c45c650f3ac8c5ca57518c7c17e5db5a242982a898b02fc7aa59365518cef",
+        "source_sha256": "209a24fee4967f3bdd95aeefc38adb6aaaf2c1c2e14e0bdddbbb28b26ed3c52b"
+      },
+      "local_piper_chinese_work/oracle/transformers/tokenization_utils.py::_is_punctuation": {
+        "ast_sha256": "0485222e8ad8344c00d11de09c831e4097589f3450378e4e09fb65f4acd3bff2",
+        "source_sha256": "0b2b178273ba9c78770a21e7dc85b101e7c846d71d29d448dfe33654dd4aaa23"
+      },
+      "local_piper_chinese_work/oracle/transformers/tokenization_utils.py::_is_whitespace": {
+        "ast_sha256": "04c98ea70e75bb296565db2ce40f88f46258e674f983cdd17de3e8d69b9af531",
+        "source_sha256": "06ab53cfb5e1c73c121c5df1b3d06045a975986891fdf6bdecd412464dae95ed"
+      },
+      "local_piper_work/oracle/piper/g2pw_onnx.py::_FeatureBuilder": {
+        "ast_sha256": "3003e97b030d392fe5d9e84947d3e91a7273f4d6c2d5436b403d5679b6ca3141",
+        "source_sha256": "7d87b5aa080ea394eee6852a031395cb19df2e0ad8e6074e271b8e5ac8a460e3"
+      },
+      "local_piper_work/oracle/piper/g2pw_onnx.py::_read_lines": {
+        "ast_sha256": "e1b40ecd74f3415e5cbbfbc24868d6dfb0b4874bccd0d11e6511b64ef34c42e9",
+        "source_sha256": "fefcca80a59474187b1ad2bf30f91960632b8205747217b2cc2fb63babfdfe99"
+      },
+      "local_piper_work/oracle/piper/g2pw_onnx.py::get_char_phoneme_labels": {
+        "ast_sha256": "febf6d63d390736ab2f1d5d22613a560cf601336218cb4dc0b05f50a6b2c184f",
+        "source_sha256": "24f43e9936d48bd14185daabf9097233835ecd7a998c414d39c690d1903db65f"
+      },
+      "local_piper_work/oracle/piper/g2pw_onnx.py::get_phoneme_labels": {
+        "ast_sha256": "e652747e62e3fcc45d4f4bd693866aec3b9baa25cbb9c2ba70fc89a520e4ccef",
+        "source_sha256": "557b0ef71edbea231dc9cbcc9f5c473776b55556777c1c1c3321928c5184368f"
+      },
+      "local_piper_work/oracle/piper/g2pw_onnx.py::tokenize_and_map": {
+        "ast_sha256": "47f42d5e7dc3eb1147b849159d0dbebc341ddf9108adfcf4ed587febab1d162c",
+        "source_sha256": "4f90dfe1565625735897571cf5229ebf67fa405dc556ca27d83100852e866470"
+      },
+      "local_piper_work/oracle/piper/g2pw_onnx.py::wordize_and_map": {
+        "ast_sha256": "985aae9eb9cd574822aefe4ca45a74af3b100faaed9f873678237228e832fca9",
+        "source_sha256": "d6f5a6f911fcb7b92f20a46e08aff061fc32d8475fbed67568558867b102d5fc"
+      }
+    },
+    "model_operator_schema": 12,
+    "piper_commit": "639388b6317fc4731e91d53da42aea68fd4166ff",
+    "piper_version": "1.8.0",
+    "runtime_modules": {
+      "standalone/local_piper_chinese.py": {
+        "bytes": 7356,
+        "sha256": "520c0d91d0791df2b865528d23b9eb056e53290c60534ae346ef9a5dab158f19"
+      },
+      "standalone/local_piper_chinese_controller.py": {
+        "bytes": 14981,
+        "sha256": "1c08147646cbbf0dfacc77ebcce9f95a02047bb542b05c2032461461a60e4684"
+      },
+      "standalone/local_piper_chinese_model.py": {
+        "bytes": 3971,
+        "sha256": "0d6d260833f59203563b13bbfad9db577a89150cc0d08a9bc41b7de1f1b3d6c4"
+      },
+      "standalone/local_piper_chinese_quantized.py": {
+        "bytes": 4403,
+        "sha256": "cadef6e9c6595398255435c499875964133b33c91b63edce55231aee17757241"
+      },
+      "standalone/local_piper_chinese_reader.py": {
+        "bytes": 3396,
+        "sha256": "a1f7a3f92ea3c9c7497e961710bd33bafb114f309b73e88fe5d2bc732e4d801f"
+      },
+      "standalone/local_piper_chinese_sentence.py": {
+        "bytes": 51182,
+        "sha256": "f51856afa2e12fc51d8b7624d1958bd60e571aa398b64d57d1e758fd91e88c83"
+      },
+      "standalone/local_piper_chinese_tokenizer.py": {
+        "bytes": 10308,
+        "sha256": "e1cf9b879cab82589d20467bfc0906f06c590af7209fc1db763f9f915f0accc5"
+      },
+      "standalone/local_piper_voice.py": {
+        "bytes": 10906,
+        "sha256": "0dddd24eec1b9f2d381e28a3f036fe9e8ab4b38b57ae7467ddb036b961d54544"
+      }
+    }
+  }
+}

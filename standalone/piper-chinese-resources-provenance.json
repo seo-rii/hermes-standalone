@@ -1,0 +1,216 @@
+{
+  "bert_tokenizer_inputs": [
+    {
+      "bytes": 624,
+      "git_blob_sha1": "a521dc2845bdddbe822864290c6b928396fc5ee8",
+      "name": "bert-base-chinese/config.json",
+      "revision": "8f23c25b06e129b6c986331a13d8d025a92cf0ea",
+      "sha256": "88af762cfb15fa9ce183c84dcbfdc9d635196ba635dfe81f265fdd21d67f4c4c",
+      "url": "https://huggingface.co/google-bert/bert-base-chinese/resolve/8f23c25b06e129b6c986331a13d8d025a92cf0ea/config.json"
+    },
+    {
+      "bytes": 49,
+      "git_blob_sha1": "2ba5de7675473164e07f3b3531748c9a6f113a2c",
+      "name": "bert-base-chinese/tokenizer_config.json",
+      "revision": "8f23c25b06e129b6c986331a13d8d025a92cf0ea",
+      "sha256": "0f6d13e6f4da6f9e24f22ada6bc3be571123d858d7c0c05a8a7cd55a9c23c2e8",
+      "url": "https://huggingface.co/google-bert/bert-base-chinese/resolve/8f23c25b06e129b6c986331a13d8d025a92cf0ea/tokenizer_config.json"
+    },
+    {
+      "bytes": 109540,
+      "git_blob_sha1": "ca4f9781030019ab9b253c6dcb8c7878b6dc87a5",
+      "name": "bert-base-chinese/vocab.txt",
+      "revision": "8f23c25b06e129b6c986331a13d8d025a92cf0ea",
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c",
+      "url": "https://huggingface.co/google-bert/bert-base-chinese/resolve/8f23c25b06e129b6c986331a13d8d025a92cf0ea/vocab.txt"
+    }
+  ],
+  "component": "Piper Chinese original model, tokenizer, lookup and source resources",
+  "data_byte_contract": "Every reviewed resource is restored byte-for-byte; .py files in this list are immutable model/config/original-source data and must be exempt from source minification.",
+  "format_version": 1,
+  "model_copies_in_archive": 1,
+  "native_payloads": false,
+  "original_inputs": [
+    {
+      "bytes": 283632,
+      "name": "g2pw-0.1.2-py3-none-any.whl",
+      "sha256": "88e1252efbdc56fe7efef6368266129628926afac2797f87cb5a059ce4b3ff65",
+      "url": "https://files.pythonhosted.org/packages/6c/9b/36aa8e799bc0834acc18f73f11c1740ec17b75b532743a3d83f06f4e6885/g2pw-0.1.2-py3-none-any.whl"
+    },
+    {
+      "bytes": 8065,
+      "name": "sentence_stream-1.2.1-py3-none-any.whl",
+      "sha256": "a925a52322545dff19991247edd1c7b88dfb9bcd5013e09a50a280a3199bb796",
+      "url": "https://files.pythonhosted.org/packages/43/4d/2570aa15f43c4faf8c5a3e0d6ed5cb265af13c8b66cd408c970bd6aa0177/sentence_stream-1.2.1-py3-none-any.whl"
+    },
+    {
+      "bytes": 11993498,
+      "name": "transformers-4.57.6-py3-none-any.whl",
+      "sha256": "4c9e9de11333ddfe5114bc872c9f370509198acf0b87a832a0ab9458e2bd0550",
+      "url": "https://files.pythonhosted.org/packages/03/b8/e484ef633af3887baeeb4b6ad12743363af7cce68ae51e938e00aaa0529d/transformers-4.57.6-py3-none-any.whl"
+    },
+    {
+      "bytes": 112991734,
+      "name": "g2pw.tar.gz",
+      "sha256": "252c6f561c11014fbb243d70aec993a816d82109887b91edcda0261ab9967060",
+      "url": "https://huggingface.co/datasets/rhasspy/piper-checkpoints/resolve/0d8f505885b1fd426191b9d09d9b38f4e11408a0/zh/zh_CN/_resources/g2pw.tar.gz?download=true"
+    }
+  ],
+  "original_model_values_unchanged": true,
+  "project": "hermes-standalone",
+  "resource_bytes": 161958875,
+  "resource_count": 30,
+  "resources": {
+    "licenses/local-piper-chinese-notices.txt": {
+      "bytes": 36134,
+      "original_path": "Assembled original license texts with source references.",
+      "sha256": "726176a516243c8f6941764b8e1a85a2e2db15834af70b33b5cb992c96ec65e5"
+    },
+    "piper_chinese_data/bert-base-chinese/config.json": {
+      "bytes": 624,
+      "original_path": "local_piper_chinese_work/bert-base-chinese/config.json",
+      "sha256": "88af762cfb15fa9ce183c84dcbfdc9d635196ba635dfe81f265fdd21d67f4c4c"
+    },
+    "piper_chinese_data/bert-base-chinese/tokenizer_config.json": {
+      "bytes": 49,
+      "original_path": "local_piper_chinese_work/bert-base-chinese/tokenizer_config.json",
+      "sha256": "0f6d13e6f4da6f9e24f22ada6bc3be571123d858d7c0c05a8a7cd55a9c23c2e8"
+    },
+    "piper_chinese_data/bert-base-chinese/vocab.txt": {
+      "bytes": 109540,
+      "original_path": "local_piper_chinese_work/bert-base-chinese/vocab.txt",
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c"
+    },
+    "piper_chinese_data/g2pw/bert-base-chinese_s2t_dict.txt": {
+      "bytes": 13999,
+      "original_path": "local_piper_chinese_work/oracle/g2pw/bert-base-chinese_s2t_dict.txt",
+      "sha256": "394822822c43f53adc258aaf7feca6e8bd82a84ff7d02ee4a6adcf70b572f447"
+    },
+    "piper_chinese_data/g2pw/bopomofo_to_pinyin_wo_tune_dict.json": {
+      "bytes": 7739,
+      "original_path": "local_piper_chinese_work/oracle/g2pw/bopomofo_to_pinyin_wo_tune_dict.json",
+      "sha256": "0fe90e26be7653023772b3ad2d08952961bbf295fb39ba685c7172d3d9769f52"
+    },
+    "piper_chinese_data/g2pw/char_bopomofo_dict.json": {
+      "bytes": 1851164,
+      "original_path": "local_piper_chinese_work/oracle/g2pw/char_bopomofo_dict.json",
+      "sha256": "fbde8d392453612c814bb6728c6d5f52a1f9d38135a602ef98f821fa22d7f005"
+    },
+    "piper_chinese_data/model/MONOPHONIC_CHARS.txt": {
+      "bytes": 120779,
+      "original_path": "local_piper_chinese_work/model/MONOPHONIC_CHARS.txt",
+      "sha256": "e46c9190330e95757573159eef921a577849426728e72c0e6a427f9e4c00b31e"
+    },
+    "piper_chinese_data/model/POLYPHONIC_CHARS.txt": {
+      "bytes": 102449,
+      "original_path": "local_piper_chinese_work/model/POLYPHONIC_CHARS.txt",
+      "sha256": "b63cd02d842dbaea32ca55b3fbbdef986a617854967cc2fb9ec1f2126715b747"
+    },
+    "piper_chinese_data/model/config.py": {
+      "bytes": 347,
+      "original_path": "local_piper_chinese_work/model/config.py",
+      "sha256": "b6154e494355d14a8d2c8a38d07720f77b34479e26aab21a5f63495ae904da76"
+    },
+    "piper_chinese_data/model/g2pw.onnx": {
+      "bytes": 159287362,
+      "original_path": "local_piper_chinese_work/model/g2pw.onnx",
+      "sha256": "367b87bfb59826590d1d85bd19a21d46aad3332fb364eca0c61d93cabe1d0323"
+    },
+    "piper_chinese_data/model/version": {
+      "bytes": 5,
+      "original_path": "local_piper_chinese_work/model/version",
+      "sha256": "517036ffbc4858eba27a01b85badcfd5e5c2a59a3d35d1898ab34567f818e799"
+    },
+    "piper_chinese_data/original-metadata/g2pw-0.1.2.dist-info/METADATA": {
+      "bytes": 4861,
+      "original_path": "local_piper_chinese_work/oracle/g2pw-0.1.2.dist-info/METADATA",
+      "sha256": "f882f15d6ce1ea5935c6b97bf5ec72c976060f06b8339112a1de3beec045fbae"
+    },
+    "piper_chinese_data/original-metadata/g2pw-0.1.2.dist-info/RECORD": {
+      "bytes": 1012,
+      "original_path": "local_piper_chinese_work/oracle/g2pw-0.1.2.dist-info/RECORD",
+      "sha256": "bdb16a680309ad5c4f07da846ac31e0c8d9a38f392d86e32d95dafa28370a6cc"
+    },
+    "piper_chinese_data/original-metadata/g2pw-0.1.2.dist-info/WHEEL": {
+      "bytes": 91,
+      "original_path": "local_piper_chinese_work/oracle/g2pw-0.1.2.dist-info/WHEEL",
+      "sha256": "61532836a2b3111b7ec23519c09df7c41180c27165fb872a6d8913b566b88ad1"
+    },
+    "piper_chinese_data/original-metadata/g2pw-0.1.2.dist-info/licenses/LICENCE": {
+      "bytes": 11356,
+      "original_path": "local_piper_chinese_work/oracle/g2pw-0.1.2.dist-info/licenses/LICENCE",
+      "sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1"
+    },
+    "piper_chinese_data/original-metadata/sentence_stream-1.2.1.dist-info/METADATA": {
+      "bytes": 1931,
+      "original_path": "local_piper_chinese_work/oracle/sentence_stream-1.2.1.dist-info/METADATA",
+      "sha256": "941efb165b1be5376ecbbcdf9c6b59eeafd823f40c21bb7f9f0d2f14b5844bac"
+    },
+    "piper_chinese_data/original-metadata/sentence_stream-1.2.1.dist-info/RECORD": {
+      "bytes": 786,
+      "original_path": "local_piper_chinese_work/oracle/sentence_stream-1.2.1.dist-info/RECORD",
+      "sha256": "8bdf4bf5353fff072a5e6b75cccde74c113620a582fade1f1a8f071ab045e30d"
+    },
+    "piper_chinese_data/original-metadata/sentence_stream-1.2.1.dist-info/WHEEL": {
+      "bytes": 91,
+      "original_path": "local_piper_chinese_work/oracle/sentence_stream-1.2.1.dist-info/WHEEL",
+      "sha256": "ff309ddcdd65ebd02bc724dbf2bcc4a0ff53a5b61792a44548d383e4ebb19d3b"
+    },
+    "piper_chinese_data/original-metadata/sentence_stream-1.2.1.dist-info/licenses/LICENSE.md": {
+      "bytes": 11357,
+      "original_path": "local_piper_chinese_work/oracle/sentence_stream-1.2.1.dist-info/licenses/LICENSE.md",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    "piper_chinese_data/original-metadata/transformers-4.57.6.dist-info/METADATA": {
+      "bytes": 43991,
+      "original_path": "local_piper_chinese_work/oracle/transformers-4.57.6.dist-info/METADATA",
+      "sha256": "91601044a74fe02571a825356754dbbaa9e1d3e3dd3c2237254c15e903e421e3"
+    },
+    "piper_chinese_data/original-metadata/transformers-4.57.6.dist-info/RECORD": {
+      "bytes": 240058,
+      "original_path": "local_piper_chinese_work/oracle/transformers-4.57.6.dist-info/RECORD",
+      "sha256": "6a3075dd9b745d5ea705304044253f822364311d5b2eea3fd208c8983385e3fe"
+    },
+    "piper_chinese_data/original-metadata/transformers-4.57.6.dist-info/WHEEL": {
+      "bytes": 91,
+      "original_path": "local_piper_chinese_work/oracle/transformers-4.57.6.dist-info/WHEEL",
+      "sha256": "ff309ddcdd65ebd02bc724dbf2bcc4a0ff53a5b61792a44548d383e4ebb19d3b"
+    },
+    "piper_chinese_data/original-metadata/transformers-4.57.6.dist-info/licenses/LICENSE": {
+      "bytes": 11418,
+      "original_path": "local_piper_chinese_work/oracle/transformers-4.57.6.dist-info/licenses/LICENSE",
+      "sha256": "77fd4710def9ec3c0f6225800e0235f15a425abd4a8b03559127fcd782612049"
+    },
+    "piper_chinese_data/original-sources/piper/g2pw_onnx.py": {
+      "bytes": 20945,
+      "original_path": "local_piper_work/oracle/piper/g2pw_onnx.py",
+      "sha256": "6066f5f0a351b4536c0c7d907fd00901de9d8cb392306858ed1bbf06d0a97323"
+    },
+    "piper_chinese_data/original-sources/piper/phonemize_chinese.py": {
+      "bytes": 9001,
+      "original_path": "local_piper_work/oracle/piper/phonemize_chinese.py",
+      "sha256": "3de683aa630ae11c44f5822afd040c4d588cb5e4fda0f3f9f546757f982a0662"
+    },
+    "piper_chinese_data/original-sources/sentence_stream/sentence_stream.py": {
+      "bytes": 3818,
+      "original_path": "local_piper_chinese_work/oracle/sentence_stream/sentence_stream.py",
+      "sha256": "26728b9009b5cad09ecf82051bd888f582bdb2861e9a16ade8b1ebaf9c04fd3f"
+    },
+    "piper_chinese_data/original-sources/sentence_stream/util.py": {
+      "bytes": 331,
+      "original_path": "local_piper_chinese_work/oracle/sentence_stream/util.py",
+      "sha256": "c7c81ba71f7442bbbbd83b99b8bc6e21a8d1d276f7693515f19cb0a2d0ae9c86"
+    },
+    "piper_chinese_data/original-sources/transformers/models/bert/tokenization_bert.py": {
+      "bytes": 19766,
+      "original_path": "local_piper_chinese_work/oracle/transformers/models/bert/tokenization_bert.py",
+      "sha256": "15f92ca3917a52e2b2150ff8028e28a7493da350dff74a9e03d209a588f6b7df"
+    },
+    "piper_chinese_data/original-sources/transformers/tokenization_utils.py": {
+      "bytes": 47780,
+      "original_path": "local_piper_chinese_work/oracle/transformers/tokenization_utils.py",
+      "sha256": "dfcc42414037d865d22568259eec12dd10caa7375b2d7a27707b7a502a08ef80"
+    }
+  },
+  "runtime_model_download": false
+}
