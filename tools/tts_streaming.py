@@ -296,7 +296,8 @@ class OpenAIStreamer(StreamingTTSProvider):
         return bool(_openai_config_api_key() or resolve_openai_audio_api_key())
 
     def stream(self, text: str) -> Iterator[bytes]:
-        from openai import OpenAI
+        from agent.sdk_boundary import openai_client_type
+        OpenAI = openai_client_type()
         from hermes_cli.config import get_env_value
         client = OpenAI(
             api_key=(self.section.get("api_key") or resolve_openai_audio_api_key()),

@@ -46,7 +46,8 @@ def _with_openai_client(api_key: str, base_url: Optional[str], file_path: str, l
     Errors map to the shared envelope. APIConnectionError is checked before APITimeoutError (its
     subclass) so timeouts report as connection errors, as they always have."""
     try:
-        from openai import OpenAI
+        from agent.sdk_boundary import openai_client_type
+        OpenAI = openai_client_type()
         from tools.transcription_common import DEFAULT_STT_TIMEOUT, _config_number
         from tools.transcription_tools import _load_stt_config
         openai_config = _get_stt_section(_load_stt_config(), "openai")
@@ -64,7 +65,8 @@ def _with_openai_client(api_key: str, base_url: Optional[str], file_path: str, l
                 close()
     except Exception as exc:
         try:
-            from openai import APIError, APIConnectionError, APITimeoutError
+            from agent.sdk_boundary import openai_error_types
+            APIError, APIConnectionError, APITimeoutError = openai_error_types("APIError", "APIConnectionError", "APITimeoutError")
         except ImportError:  # pragma: no cover — callers gate on _HAS_OPENAI
             APIError = APIConnectionError = APITimeoutError = ()
         if isinstance(exc, PermissionError):
@@ -148,7 +150,8 @@ def _transcribe_openai(
         model_name = DEFAULT_STT_MODEL
 
     def _run(client):
-        from openai import APIStatusError
+        from agent.sdk_boundary import openai_error_types
+        APIStatusError, = openai_error_types("APIStatusError")
 
         def _create_transcription(path: str):
             create_kwargs: dict[str, Any] = {
@@ -195,14 +198,22 @@ def _transcribe_mistral(
     file_path: str, model_name: str, *, language: Optional[str] = None, prompt: Optional[str] = None
 ) -> dict[str, Any]:
     """Transcribe with the ``mistralai`` SDK (``/v1/audio/transcriptions``); requires ``MISTRAL_API_KEY``."""
-    from tools.transcription_tools import _resolve_provider_key, _resolve_stt_language
+    from tools.transcription_tools import _resolve_provider_key, _resolve_stt_language, _load_stt_config
     api_key = _resolve_provider_key("MISTRAL_API_KEY", "mistral")
     if not api_key:
         return _error_result("MISTRAL_API_KEY not set")
     try:
-        _lazy_ensure_quietly("mistral")
-        from mistralai.client import Mistral
-        with Mistral(api_key=api_key) as client, open(file_path, "rb") as audio_file:
+        from agent.sdk_boundary import bundled
+        if bundled():
+            from standalone.transport_vendor_media import Mistral
+        else:
+            _lazy_ensure_quietly("mistral")
+            from mistralai.client import Mistral
+        client_options = {"api_key": api_key}
+        base_url = _get_stt_section(_load_stt_config(), "mistral").get("base_url")
+        if base_url:
+            client_options["server_url"] = base_url
+        with Mistral(**client_options) as client, open(file_path, "rb") as audio_file:
             # Language: hook override > stt.mistral.language > stt.language > env > auto.
             language = language or _resolve_stt_language("mistral")
             result = client.audio.transcriptions.complete(

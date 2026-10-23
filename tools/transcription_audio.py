@@ -129,7 +129,8 @@ def _prepare_audio_for_transcription(file_path: str) -> tuple[Optional[str], Opt
     temp_dir = tempfile.mkdtemp(prefix="hermes-silk-")
     converted_path = os.path.join(temp_dir, f"{audio_path.stem}.wav")
     try:
-        import pilk
+        from hermes_platform.audio import silk_codec
+        pilk = silk_codec()
         pilk.silk_to_wav(file_path, converted_path)
         if not Path(converted_path).is_file() or Path(converted_path).stat().st_size == 0:
             raise RuntimeError("pilk did not produce a readable WAV file")

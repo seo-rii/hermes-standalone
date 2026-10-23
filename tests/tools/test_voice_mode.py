@@ -338,6 +338,7 @@ class TestAudioRecorder:
         package, not 'pip install sounddevice numpy' (#18432)."""
         def _fail_import():
             raise OSError("PortAudio library not found")
+        monkeypatch.setattr("agent.sdk_boundary.bundled", lambda: False)
         monkeypatch.setattr("tools.voice_mode._import_audio", _fail_import)
 
         from tools.voice_mode import AudioRecorder

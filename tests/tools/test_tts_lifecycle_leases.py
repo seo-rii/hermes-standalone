@@ -157,6 +157,11 @@ def test_warm_sdk_uses_pm_availability_and_refuses_inactive_generation(tmp_path,
     import pm.paths
     import pm.extras
     from pm.environments import runtime_facts_path
+    from standalone import runtime
+
+    # This test exercises PM's ordinary venv generation. Bundle consumers never
+    # install packages; their real warm/cache/lease path is qualified separately.
+    monkeypatch.setattr(runtime, "_active_bundle", None)
 
     calls = []
     root = tmp_path / "repo"

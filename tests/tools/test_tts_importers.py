@@ -10,6 +10,13 @@ import pm
 from tools import tts_tool
 
 
+@pytest.fixture(autouse=True)
+def _ordinary_sdk_installation(monkeypatch):
+    """Exercise original SDK fallback; bundle transports have real peer tests."""
+    from agent import sdk_boundary
+    monkeypatch.setattr(sdk_boundary, "bundled", lambda: False)
+
+
 @pytest.mark.parametrize("importer,module,attribute,feature", [
     (tts_tool._import_edge_tts, "edge_tts", None, "edge-tts"),
     (tts_tool._import_elevenlabs, "elevenlabs.client", "ElevenLabs", "tts-premium"),

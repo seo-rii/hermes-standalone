@@ -1,0 +1,48 @@
+{
+  "implementation": "Application-owned signed 16-bit interleaved PCM, voice DSP and native OS audio boundary. Handwritten ctypes bindings and stdlib algorithms; no PortAudio, sounddevice or NumPy runtime payload or global compatibility namespace.",
+  "consumer_selection": "The verified bundle selects hermes_platform.audio.native_audio_io through the original lazy voice and TTS import boundaries. Source installations retain their SDK/PM branch. The original macOS output permission policy still routes voice/TTS playback through afplay.",
+  "sources": [
+    "https://www.alsa-project.org/alsa-doc/alsa-lib/group___p_c_m.html",
+    "https://www.freedesktop.org/software/pulseaudio/doxygen/async.html",
+    "https://www.freedesktop.org/software/pulseaudio/doxygen/stream_8h.html",
+    "https://www.freedesktop.org/software/pulseaudio/doxygen/introspect_8h.html",
+    "https://learn.microsoft.com/en-us/windows/win32/api/mmeapi/ns-mmeapi-waveformatex",
+    "https://learn.microsoft.com/en-us/windows/win32/api/mmeapi/ns-mmeapi-wavehdr",
+    "https://learn.microsoft.com/en-us/windows/win32/api/mmeapi/nf-mmeapi-waveinopen",
+    "https://learn.microsoft.com/en-us/windows/win32/api/mmeapi/nf-mmeapi-waveoutopen",
+    "https://developer.apple.com/documentation/audiotoolbox/audioqueuebuffer",
+    "https://developer.apple.com/documentation/audiotoolbox/audioqueuenewinput(_:_:_:_:_:_:_:)",
+    "https://developer.apple.com/documentation/audiotoolbox/audioqueuenewoutput(_:_:_:_:_:_:_:)",
+    "https://developer.apple.com/documentation/coreaudiotypes/audiostreambasicdescription",
+    "https://developer.apple.com/documentation/coreaudio/audioobjectgetpropertydata",
+    "https://developer.apple.com/library/archive/documentation/MusicAudio/Conceptual/AudioQueueProgrammingGuide/Introduction/Introduction.html"
+  ],
+  "limits": {
+    "pcm_bytes": 67108864,
+    "rate_hz": [8000, 192000],
+    "channels": [1, 8],
+    "stream_block_frames": 65536,
+    "tts_queued_sentences": 3,
+    "tts_sentence_queue_chunks": 64,
+    "tts_chunk_bytes": 65536,
+    "native_capture_pre_roll_ms": 60000,
+    "native_capture_utterance_ms": 1200000,
+    "audioqueue_capture_blocks": 8,
+    "native_owned_buffers": 4,
+    "failed_native_release_quarantine": 16
+  },
+  "checks": [
+    "Independent NumPy 1.26.4 oracle PCM vectors cover beeps, thinking cues, mono/stereo warmup, RMS and percentile interpolation. Committed tests decode ordinary JSON bytes using stdlib only; waveform rounding tolerance is one signed-16 sample unit.",
+    "Controlled native-device boundary exercises actual callback/manual streams, background playback, cancellation, overflow and error propagation, close/drain lifetimes and no device open on construction.",
+    "Portable fixed-width WinMM, PulseAudio and AudioQueue ABI tests execute native callback and buffer handling without pretending to run another host OS.",
+    "Linux native ALSA null PCM capture/output uses an explicit private ALSA configuration and never the default microphone or speakers.",
+    "The actual PulseAudio client library is tested against an explicitly absent private Unix socket, proving bounded native connection errors without consulting a user audio server.",
+    "An isolated original bundled consumer fixture calls the real _import_audio, AudioRecorder, WAV playback, both barge-in listeners and streaming TTS; only the OS device provider is controlled. NumPy, sounddevice, subprocesses and network audio services are absent."
+  ],
+  "evidence_limits": [
+    "Successful PulseAudio/PipeWire service I/O and physical Linux microphone/speaker behavior are not claimed: no private Pulse server executable or authorized physical-device test is available on this host.",
+    "Windows winMM and macOS AudioQueue/CoreAudio have portable ABI/lifecycle fixtures, but real host capture/playback remains unverified. Native enumeration tests run only on their actual host.",
+    "The consumed voice/TTS device format is signed 16-bit PCM, normally mono with stereo WAV playback. Unsupported native formats, unavailable OS libraries, device permission failures and capture overflow raise explicit errors.",
+    "Local neural inference, wake-word engines and compressed-audio file synthesis are separate native dependencies; these PCM and OS audio adapters do not emulate their models or claim their validation."
+  ]
+}

@@ -111,7 +111,8 @@ def terminate_command_process_tree(proc: subprocess.Popen) -> None:
             proc.kill()
         return
     try:
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()  # type: ignore
     except ImportError:
         psutil = None
     # Without psutil only the shell itself is signalled (children may survive).

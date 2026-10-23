@@ -211,7 +211,11 @@ def _elevenlabs_environment_kwargs(el_config: dict[str, Any]) -> dict[str, Any]:
     base_url = (el_config.get("base_url") or "").rstrip("/")
     if not base_url:
         return {}
-    from elevenlabs.environment import ElevenLabsEnvironment
+    from agent.sdk_boundary import bundled
+    if bundled():
+        from standalone.transport_vendor_media import ElevenLabsEnvironment
+    else:
+        from elevenlabs.environment import ElevenLabsEnvironment
     wss_url = (el_config.get("wss_url") or "").rstrip("/") or re.sub(r"^http", "ws", base_url)
     return {"environment": ElevenLabsEnvironment(base=base_url, wss=wss_url)}
 
@@ -220,12 +224,18 @@ def _generate_elevenlabs(text: str, output_path: str, tts_config: dict[str, Any]
     api_key = _require_key("ELEVENLABS_API_KEY", "elevenlabs", "Get one at https://elevenlabs.io/")
     el_config = tts_config.get("elevenlabs") or {}
     client = _origin()._import_elevenlabs()(api_key=api_key, **_elevenlabs_environment_kwargs(el_config))
-    audio_generator = client.text_to_speech.convert(
-        text=text, voice_id=el_config.get("voice_id", DEFAULT_ELEVENLABS_VOICE_ID),
-        model_id=el_config.get("model_id", DEFAULT_ELEVENLABS_MODEL_ID),
-        output_format="opus_48000_64" if output_path.endswith(".ogg") else "mp3_44100_128")
-    with open(output_path, "wb") as f:
-        f.writelines(audio_generator)
+    try:
+        audio_generator = client.text_to_speech.convert(
+            text=text, voice_id=el_config.get("voice_id", DEFAULT_ELEVENLABS_VOICE_ID),
+            model_id=el_config.get("model_id", DEFAULT_ELEVENLABS_MODEL_ID),
+            output_format="opus_48000_64" if output_path.endswith(".ogg") else "mp3_44100_128")
+        try:
+            with open(output_path, "wb") as f:
+                f.writelines(audio_generator)
+        finally:
+            _close_response(audio_generator)
+    finally:
+        _close_response(client)
     return output_path
 
 

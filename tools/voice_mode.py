@@ -43,12 +43,16 @@ _TEMP_DIR = os.path.join(tempfile.gettempdir(), "hermes_voice")
 # WSL, no PortAudio).
 
 def _import_audio():
-    """Lazy-import (sounddevice, numpy), enabling the ``audio-io`` extra through PM first.
+    """Select native PCM in a bundle, or the source install's audio SDKs.
 
     Raises ImportError when the extra cannot be enabled here (lazy installs off, platform
     gate, or installed-but-needs-restart) and OSError when PortAudio's shared library is
     missing — pip can't fix that one, so it is reported separately.
     """
+    from agent.sdk_boundary import bundled
+    if bundled():
+        from hermes_platform.audio import native_audio_io
+        return native_audio_io(), None
     import pm
 
     if not pm.available("audio-io"):
@@ -108,8 +112,8 @@ def _audio_unavailable_reason() -> str:
         _import_audio()
     except ImportError as exc:
         return _voice_capture_install_hint(exc)
-    except OSError:
-        return _portaudio_missing_message().splitlines()[0]
+    except OSError as exc:
+        return _audio_system_error(exc).splitlines()[0]
     return ""
 
 
@@ -122,7 +126,24 @@ def _audio_available() -> bool:
 
 
 def _rms(np, data) -> float:
+    if np is None:
+        from standalone.audio_samples import rms
+        return rms(data)
     return float(np.sqrt(np.mean(data.astype(np.float64) ** 2)))
+
+
+def _concatenate(np, frames):
+    if np is None:
+        from standalone.audio_samples import concatenate
+        return concatenate(frames)
+    return np.concatenate(frames, axis=0)
+
+
+def _percentile(np, values, percentage):
+    if np is None:
+        from standalone.audio_samples import percentile
+        return percentile(values, percentage)
+    return float(np.percentile(values, percentage))
 
 
 def _default_input_samplerate(sd) -> int:
@@ -139,6 +160,9 @@ def _default_input_samplerate(sd) -> int:
 def _voice_capture_install_hint(error: BaseException | None = None) -> str:
     """Why audio capture is unavailable. ``_import_audio`` already tried to enable the
     ``audio-io`` extra through PM, so the ImportError it raised IS the remediation."""
+    from agent.sdk_boundary import bundled
+    if bundled():
+        return str(error) if error else "The operating system audio API is unavailable"
     # On Termux PortAudio is a system package a pip install can't provide (#18432).
     if _is_termux_environment():
         return "pkg install python-numpy portaudio && python -m pip install sounddevice"
@@ -150,6 +174,11 @@ def _portaudio_missing_message() -> str:
     hint = ("  Termux: pkg install portaudio" if _is_termux_environment()
             else "  Linux:  sudo apt-get install libportaudio2\n  macOS:  brew install portaudio")
     return f"PortAudio system library not found -- install it first:\n{hint}\nThen retry /voice on."
+
+
+def _audio_system_error(error) -> str:
+    from agent.sdk_boundary import bundled
+    return "Native audio unavailable: " + str(error) if bundled() else _portaudio_missing_message()
 
 
 _TERMUX_APP_MISSING_WARNING = (
@@ -272,18 +301,20 @@ def _probe_audio_libraries(warnings: list[str], notices: list[str], *, has_forwa
     except ImportError as exc:
         return outcome("Termux:API microphone recording available (sounddevice not required)",
                        f"Audio libraries not installed ({_voice_capture_install_hint(exc)})", import_failed=True)
-    except OSError:
+    except OSError as exc:
         return outcome("Termux:API microphone recording available (PortAudio not required)",
-                       _portaudio_missing_message(), import_failed=True)
+                       _audio_system_error(exc), import_failed=True)
+    from agent.sdk_boundary import bundled
+    backend = "native audio" if bundled() else "PortAudio"
     try:
         if sd.query_devices():
             return
-        outcome("No PortAudio devices detected, but Termux:API microphone capture is available",
+        outcome(f"No {backend} devices detected, but Termux:API microphone capture is available",
                 "No audio input/output devices detected",
-                forwarded_notice="No PortAudio devices detected but host audio forwarding is configured -- continuing")
-    except Exception:
-        outcome("PortAudio device query failed, but Termux:API microphone capture is available",
-                "Audio subsystem error (PortAudio cannot query devices)",
+                forwarded_notice=f"No {backend} devices detected but host audio forwarding is configured -- continuing")
+    except Exception as exc:
+        outcome(f"{backend} device query failed, but Termux:API microphone capture is available",
+                f"Audio subsystem error ({backend} cannot query devices): {exc}",
                 forwarded_notice="Audio device query failed but host audio forwarding is configured -- continuing")
 
 
@@ -372,14 +403,34 @@ def _sd_play_blocking(sd, audio, sample_rate: int, *, timeout: float, blocksize:
     hangs forever if the device stalls)."""
     sd.play(audio, samplerate=sample_rate, blocksize=blocksize)
     deadline = time.monotonic() + timeout
-    while sd.get_stream() and sd.get_stream().active and time.monotonic() < deadline:
-        time.sleep(0.01)
-    sd.stop()
+    try:
+        while True:
+            stream = sd.get_stream()
+            if stream is None or not stream.active:
+                return
+            if time.monotonic() >= deadline:
+                raise TimeoutError("Audio playback did not finish within its deadline")
+            time.sleep(0.01)
+    finally:
+        sd.stop()
 
 
 def play_beep(frequency: int = 880, duration: float = 0.12, count: int = 1) -> None:
     """Play *count* short beeps of *frequency* Hz, *duration* s each. Synthesized with
     numpy only (no sounddevice import => no macOS TCC prompt); macOS output via afplay."""
+    from agent.sdk_boundary import bundled
+    if bundled():
+        try:
+            from standalone.audio_samples import beep
+            audio = beep(frequency, duration, count, rate=SAMPLE_RATE, volume=_get_beep_volume())
+            if not _sounddevice_output_allowed():
+                _play_int16_via_tempfile(audio, SAMPLE_RATE)
+                return
+            device, _ = _import_audio()
+            _sd_play_blocking(device, audio, SAMPLE_RATE, timeout=2.0)
+        except (OSError, ValueError) as error:
+            logger.debug("Beep playback failed: %s", error)
+        return
     try:
         import numpy as np
     except ImportError:
@@ -450,6 +501,9 @@ def thinking_sound_enabled() -> bool:
 
 def _synth_thinking_blip(np, frequency: float) -> Any:
     """One soft 'blub': short sine with a downward glide and a click-free envelope."""
+    if np is None:
+        from standalone.audio_samples import thinking_blip
+        return thinking_blip(frequency, rate=SAMPLE_RATE, volume=_get_beep_volume() * .5)
     duration = 0.16
     n = int(SAMPLE_RATE * duration)
     t = np.linspace(0, duration, n, endpoint=False)
@@ -672,6 +726,7 @@ class AudioRecorder(_RecorderBase):
         super().__init__()
         self._stream: Any = None
         self._frames: list[Any] = []
+        self._capture_bytes, self._capture_error = 0, None
         self._sample_rate: int = SAMPLE_RATE
         self._on_silence_stop = None
         self._silence_threshold: int = SILENCE_RMS_THRESHOLD
@@ -765,6 +820,13 @@ class AudioRecorder(_RecorderBase):
         threading.Thread(target=_safe_cb, daemon=True).start()
 
     def _on_audio_block(self, np, indata) -> None:
+        if np is None:
+            from standalone.audio_samples import MAX_BYTES
+            self._capture_bytes += len(indata.tobytes())
+            if self._capture_bytes > MAX_BYTES:
+                self._capture_error = RuntimeError("Voice recording exceeded the 64 MiB capture limit")
+                self._fire_silence_callback()
+                return
         self._frames.append(indata.copy())
         live = self._live
         if live is not None:
@@ -801,6 +863,10 @@ class AudioRecorder(_RecorderBase):
         sd, np = _import_audio()
 
         def _callback(indata, frames, time_info, status):
+            if isinstance(status, BaseException):
+                self._capture_error = status
+                self._fire_silence_callback()
+                return
             if status:
                 logger.debug("sounddevice status: %s", status)
             if self._recording:
@@ -834,13 +900,14 @@ class AudioRecorder(_RecorderBase):
         try:
             sd, _ = _import_audio()
         except OSError as e:
-            raise RuntimeError(_portaudio_missing_message()) from e
+            raise RuntimeError(_audio_system_error(e)) from e
         except ImportError as e:
             raise RuntimeError(f"Voice mode requires sounddevice and numpy.\n{_voice_capture_install_hint(e)}") from e
         with self._lock:
             if self._recording:
                 return
             self._frames = []
+            self._capture_bytes, self._capture_error = 0, None
             self._start_time = time.monotonic()
             self._reset_detection_state()
             self._peak_rms = 0
@@ -882,13 +949,17 @@ class AudioRecorder(_RecorderBase):
 
     def _stop_capture(self) -> Optional[str]:
         with self._lock:
+            if self._capture_error is not None:
+                error, self._capture_error = self._capture_error, None
+                self._recording, self._frames, self._current_rms = False, [], 0
+                raise RuntimeError("Voice capture failed: " + str(error)) from error
             if not self._recording:
                 return None
             self._recording, self._current_rms = False, 0
             if not self._frames:
                 return None
             _, np = _import_audio()
-            audio_data = np.concatenate(self._frames, axis=0)
+            audio_data = _concatenate(np, self._frames)
             self._frames = []
             logger.info("Voice recording stopped (%.1fs, %d samples)",
                         time.monotonic() - self._start_time, len(audio_data))
@@ -908,6 +979,7 @@ class AudioRecorder(_RecorderBase):
     def _discard(self) -> None:
         with self._lock:
             self._recording, self._frames, self._on_silence_stop, self._current_rms = False, [], None, 0
+            self._capture_bytes, self._capture_error = 0, None
         live = self._detach_live()
         if live is not None:
             live.cancel()
@@ -925,7 +997,7 @@ class AudioRecorder(_RecorderBase):
 
     @staticmethod
     def _write_wav(audio_data, *, sample_rate: int = SAMPLE_RATE) -> str:
-        """Write numpy int16 audio to a WAV file; returns the path."""
+        """Write signed 16-bit PCM to a WAV file; return its path."""
         wav_path = _new_recording_path("wav")
         _write_wav_frames(wav_path, audio_data.tobytes(), sample_rate)
         logger.info("WAV written: %s (%d bytes)", wav_path, os.path.getsize(wav_path))
@@ -1025,14 +1097,31 @@ def _play_wav_via_sounddevice(file_path: str) -> bool:
     try:
         sd, np = _import_audio()
         with wave.open(file_path, "rb") as wf:
-            frames = wf.readframes(wf.getnframes())
-            audio_data = np.frombuffer(frames, dtype=np.int16)
+            if np is None:
+                from standalone.audio_samples import MAX_BYTES, PCM16
+                if wf.getsampwidth() != 2:
+                    raise ValueError("Native WAV playback requires 16-bit PCM")
+                if wf.getnframes() * wf.getnchannels() * 2 > MAX_BYTES:
+                    raise ValueError("WAV playback exceeds the PCM byte limit")
+                frames = wf.readframes(wf.getnframes())
+                if len(frames) != wf.getnframes() * wf.getnchannels() * 2:
+                    raise ValueError("WAV playback has truncated PCM frames")
+                audio_data = PCM16(frames, wf.getnchannels())
+            else:
+                frames = wf.readframes(wf.getnframes())
+                audio_data = np.frombuffer(frames, dtype=np.int16)
             sample_rate = wf.getframerate()
         # WSLg RDP audio needs a warmup to avoid crackling: the RDP channel takes
         # ~100 ms to stabilise and the small default blocksize worsens
         # clock-adjustment jitter (microsoft/wslg#1257).
         blocksize = 0  # default (auto)
         if is_wsl():
+            if np is None:
+                from standalone.audio_samples import warmup
+                audio_data = warmup(audio_data, sample_rate)
+                blocksize = 4096
+                _sd_play_blocking(sd, audio_data, sample_rate, timeout=len(audio_data) / sample_rate + 2, blocksize=blocksize)
+                return True
             fade_samples = int(0.1 * sample_rate)
             audio_float = audio_data.astype(np.float64)
             audio_float[:fade_samples] *= np.linspace(0.0, 1.0, fade_samples, dtype=np.float64)
@@ -1140,6 +1229,14 @@ def _play_audio_file_impl(file_path: str) -> bool:
 # ── Barge-in — detect the user speaking over TTS playback ──
 # Public API kept from main: the per-playback barge monitor (rolling-floor VAD). No in-tree
 # caller since full_duplex_listen took over the voice path, but plugins may import it.
+def _native_capture_limits(np, pre_roll_ms, max_utterance_ms, calibration_ms, sustained_ms):
+    if np is None:
+        for value, limit in ((pre_roll_ms, 60000), (max_utterance_ms, 1200000),
+                             (calibration_ms, 60000), (sustained_ms, 60000)):
+            if type(value) is not int or not 0 <= value <= limit:
+                raise ValueError("Native voice capture exceeds its bounded duration limits")
+
+
 def listen_for_speech(
     should_stop: Callable[[], bool],
     threshold: Optional[int] = None,
@@ -1172,6 +1269,7 @@ def listen_for_speech(
         sd, np = _import_audio()
     except (ImportError, OSError):
         return None if capture else False
+    _native_capture_limits(np, pre_roll_ms, max_utterance_ms, calibration_ms, sustained_ms)
 
     from collections import deque
 
@@ -1197,7 +1295,7 @@ def listen_for_speech(
         with sd.InputStream(samplerate=SAMPLE_RATE, channels=1, dtype="int16", blocksize=block) as stream:
             while not should_stop():
                 data, _ = stream.read(block)
-                rms = float(np.sqrt(np.mean(data.astype(np.float64) ** 2)))
+                rms = _rms(np, data)
                 if capture:
                     pre_roll.append(data.copy())
                 block_idx += 1
@@ -1227,10 +1325,10 @@ def listen_for_speech(
                 # (500-2000 RMS) stays below it and feeds the rolling window,
                 # while genuine speech (3000-8000 RMS) can still trip it.
                 if min_floor == 0.0 and len(floor_window) >= calib_blocks:
-                    _pct90 = float(np.percentile(list(floor_window), 90))
+                    _pct90 = _percentile(np, list(floor_window), 90)
                     min_floor = max(_pct90, SILENCE_RMS_THRESHOLD * 2)
                 else:
-                    _pct90 = float(np.percentile(list(floor_window), 90))
+                    _pct90 = _percentile(np, list(floor_window), 90)
 
                 # Use the 90th percentile of the ROLLING window for the
                 # noise floor so the trigger reflects the loudest parts of
@@ -1288,11 +1386,11 @@ def listen_for_speech(
                 for _ in range(max_blocks):
                     data, _ = stream.read(block)
                     frames.append(data.copy())
-                    rms = float(np.sqrt(np.mean(data.astype(np.float64) ** 2)))
+                    rms = _rms(np, data)
                     quiet = quiet + 1 if rms < SILENCE_RMS_THRESHOLD else 0
                     if quiet >= endpoint_blocks:
                         break
-                return AudioRecorder._write_wav(np.concatenate(frames, axis=0))
+                return AudioRecorder._write_wav(_concatenate(np, frames))
     except Exception as e:
         logger.debug("Barge-in listener failed: %s", e)
     return None if capture else False
@@ -1329,7 +1427,7 @@ def _capture_until_quiet(stream, np, block: int, pre_roll, *, endpoint_blocks: i
         quiet = quiet + 1 if _rms(np, data) < SILENCE_RMS_THRESHOLD else 0
         if quiet >= endpoint_blocks:
             break
-    return AudioRecorder._write_wav(np.concatenate(frames, axis=0))
+    return AudioRecorder._write_wav(_concatenate(np, frames))
 
 
 class _BargeDetector:
@@ -1347,7 +1445,7 @@ class _BargeDetector:
 
     def _floor(self) -> tuple:
         """(pct90, floor): 90th percentile of the quiet window; floor never below the silence threshold."""
-        pct90 = float(self._np.percentile(list(self.ambient), 90)) if self.ambient else float(SILENCE_RMS_THRESHOLD)
+        pct90 = _percentile(self._np, list(self.ambient), 90) if self.ambient else float(SILENCE_RMS_THRESHOLD)
         return pct90, max(pct90, float(SILENCE_RMS_THRESHOLD))
 
     def _calibrate(self, rms: float, playing: bool) -> bool:
@@ -1428,6 +1526,7 @@ def full_duplex_listen(
         sd, np = _import_audio()
     except (ImportError, OSError):
         return None
+    _native_capture_limits(np, pre_roll_ms, max_utterance_ms, calibration_ms, sustained_ms)
     block = int(SAMPLE_RATE * 0.03)  # 30ms blocks
     endpoint_blocks = max(1, endpoint_silence_ms // 30)
     detector = _BargeDetector(
@@ -1528,11 +1627,12 @@ def check_voice_requirements() -> dict[str, Any]:
     ]
     details += [f"Environment: {w}" for w in env_check["warnings"]]
     details += [f"Environment: {n}" for n in env_check.get("notices", [])]
+    from agent.sdk_boundary import bundled
     return {
         "available": has_audio and stt_available and env_check["available"],
         "audio_available": has_audio,
         "stt_available": stt_available,
-        "missing_packages": [] if has_audio else ["sounddevice", "numpy"],
+        "missing_packages": [] if has_audio or bundled() else ["sounddevice", "numpy"],
         "details": "\n".join(details),
         "environment": env_check,
     }

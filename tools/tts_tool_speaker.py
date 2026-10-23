@@ -19,6 +19,7 @@ import platform
 import queue
 import tempfile
 import threading
+import time
 from concurrent.futures import Future, ThreadPoolExecutor
 from typing import Callable, Iterable, Iterator, List, Optional
 
@@ -39,7 +40,7 @@ def _align_int16_chunks(chunks: Iterable[bytes], stop_evt: threading.Event, *, p
             yield buf[:aligned_len]
         leftover = buf[aligned_len:]
     if leftover and pad_tail:
-        yield b"\x00"
+        yield leftover + b"\x00"
 
 
 def _play_via_tempfile(audio_iter: Iterable[bytes], stop_evt: threading.Event, sample_rate: int = 24000) -> None:
@@ -53,13 +54,18 @@ def _play_via_tempfile(audio_iter: Iterable[bytes], stop_evt: threading.Event, s
             wf.setnchannels(1)
             wf.setsampwidth(2)  # 16-bit
             wf.setframerate(sample_rate)
+            length = 0
             for aligned in _align_int16_chunks(audio_iter, stop_evt):
+                length += len(aligned)
+                if length > 64 * 1024 * 1024:
+                    raise ValueError("TTS sentence exceeds the 64 MiB PCM limit")
                 wf.writeframes(aligned)
         # wave.open() on a file object does NOT close it; on Windows the open write
         # handle blocks the player and the unlink below (WinError 32).
         tmp.close()
-        from tools.voice_mode import play_audio_file
-        play_audio_file(tmp_path)
+        if not stop_evt.is_set():
+            from tools.voice_mode import play_audio_file
+            play_audio_file(tmp_path)
     except Exception as exc:
         logger.warning("Temp-file TTS fallback failed: %s", exc)
     finally:
@@ -71,7 +77,37 @@ def _play_via_tempfile(audio_iter: Iterable[bytes], stop_evt: threading.Event, s
 
 def _drain_chunks(chunk_queue: queue.Queue[Optional[bytes]]) -> list[bytes]:
     """Collect one sentence's PCM chunks up to the ``None`` sentinel."""
-    return list(iter(chunk_queue.get, None))
+    result, length = [], 0
+    for chunk in iter(chunk_queue.get, None):
+        length += len(chunk)
+        if length > 64 * 1024 * 1024:
+            raise ValueError("TTS sentence exceeds the 64 MiB PCM limit")
+        result.append(chunk)
+    return result
+
+
+class _SentenceChunks(queue.Queue):
+    """A bounded producer queue whose EOF never needs an extra free slot."""
+
+    def __init__(self, limit, stop):
+        super().__init__(maxsize=limit)
+        self.complete, self.stop = threading.Event(), stop
+        self.consumed = False
+
+    def get(self, block=True, timeout=None):
+        deadline = time.monotonic() + (30 if timeout is None else timeout)
+        while True:
+            try:
+                return super().get(block=False)
+            except queue.Empty:
+                if self.complete.is_set() or self.stop.is_set():
+                    self.consumed = True
+                    return None
+                if not block:
+                    raise
+                if time.monotonic() >= deadline:
+                    raise TimeoutError("TTS provider stopped delivering PCM chunks")
+                self.complete.wait(.05)
 
 
 def _first_written_artifact(raw: object, requested: str) -> str:
@@ -164,6 +200,7 @@ class _StreamerPlayback:
 
     _MAX_REINIT = 3
     _CHUNK_QUEUE_MAX = 64
+    _CHUNK_BYTES_MAX = 64 * 1024
 
     def __init__(self, streamer, stop_event: threading.Event):
         self.streamer, self.stop_event = streamer, stop_event
@@ -172,7 +209,7 @@ class _StreamerPlayback:
         # ``streamer.sample_rate`` is only trustworthy after the request answered (#76466).
         self.output_stream = None
         self._use_device = self._device_usable()
-        self._audio_queue: queue.Queue[Optional[queue.Queue[Optional[bytes]]]] = queue.Queue()
+        self._audio_queue: queue.Queue[Optional[queue.Queue[Optional[bytes]]]] = queue.Queue(maxsize=3)
         self._prefetch_threads: list[threading.Thread] = []
         self._prefetch_sem = threading.Semaphore(3)
         self._worker = threading.Thread(target=self._playback_worker, daemon=True)
@@ -217,21 +254,41 @@ class _StreamerPlayback:
 
     def close_output_stream(self) -> None:
         """Always release the device so a later stream can open it."""
-        if self.output_stream is not None:
+        stream, self.output_stream = self.output_stream, None
+        if stream is not None:
             with contextlib.suppress(Exception):
-                self.output_stream.stop()
-                self.output_stream.close()
+                if self.stop_event.is_set():
+                    stream.abort()
+                else:
+                    stream.stop()
+            with contextlib.suppress(Exception):
+                stream.close()
 
     def speak(self, text: str) -> None:
         """Start ``streamer.stream(text)`` and prefetch its chunks immediately."""
+        if self.stop_event.is_set():
+            return
         try:
             audio_iter = self.streamer.stream(text)
         except Exception as exc:
             logger.warning("Streaming TTS synthesis failed: %s", exc)
             return
-        self._prefetch_sem.acquire()
-        chunk_queue: queue.Queue[Optional[bytes]] = queue.Queue(maxsize=self._CHUNK_QUEUE_MAX)
-        self._audio_queue.put(chunk_queue)
+        while not self._prefetch_sem.acquire(timeout=.1):
+            if self.stop_event.is_set():
+                return
+        if self.stop_event.is_set():
+            self._prefetch_sem.release()
+            return
+        chunk_queue = _SentenceChunks(self._CHUNK_QUEUE_MAX, self.stop_event)
+        while True:
+            try:
+                self._audio_queue.put(chunk_queue, timeout=.1)
+                break
+            except queue.Full:
+                if self.stop_event.is_set() or not self._worker.is_alive():
+                    self._prefetch_sem.release()
+                    return
+        self._prefetch_threads = [thread for thread in self._prefetch_threads if thread.is_alive()]
         self._prefetch_threads.append(threading.Thread(
             target=self._consume_to_queue, args=(audio_iter, chunk_queue), daemon=True))
         self._prefetch_threads[-1].start()
@@ -242,11 +299,24 @@ class _StreamerPlayback:
                 if self.stop_event.is_set():
                     logger.info("TTS CUT: prefetch cancelled (stop_event set mid-sentence) — partial audio only")
                     break
-                chunk_queue.put(chunk, timeout=30.0)
+                if not isinstance(chunk, bytes) or len(chunk) > 64 * 1024 * 1024:
+                    raise ValueError("TTS provider returned invalid or oversized PCM bytes")
+                for offset in range(0, len(chunk), self._CHUNK_BYTES_MAX):
+                    while not self.stop_event.is_set():
+                        try:
+                            chunk_queue.put(chunk[offset:offset + self._CHUNK_BYTES_MAX], timeout=.1)
+                            break
+                        except queue.Full:
+                            continue
+                    if self.stop_event.is_set():
+                        return
         except Exception as exc:
             logger.warning("TTS CUT: streaming TTS prefetch failed mid-sentence (partial audio only): %s", exc)
         finally:
-            chunk_queue.put(None)  # sentinel: no more chunks
+            if hasattr(audio_iter, "close"):
+                with contextlib.suppress(Exception):
+                    audio_iter.close()
+            chunk_queue.complete.set()
             self._prefetch_sem.release()
 
     def _play_sentence_via_tempfile(self, chunk_queue) -> None:
@@ -256,11 +326,22 @@ class _StreamerPlayback:
     def _for_each_sentence(self, play: Callable[[queue.Queue], None]) -> None:
         """Feed queued sentences to *play* in order until the end sentinel; stopped sentences are skipped."""
         for chunk_queue in iter(self._audio_queue.get, None):
-            if not self.stop_event.is_set():
-                play(chunk_queue)
+            try:
+                if not self.stop_event.is_set():
+                    play(chunk_queue)
+            except Exception as exc:
+                logger.warning("TTS sentence playback failed: %s", exc)
+            finally:
+                if not chunk_queue.consumed:
+                    with contextlib.suppress(Exception):
+                        for _chunk in iter(chunk_queue.get, None):
+                            pass
 
     def _write_pcm(self, buf: bytes) -> None:
-        self._current_stream.write(self._np.frombuffer(buf, dtype="<i2").reshape(-1, 1))
+        if self._np is None:
+            self._current_stream.write(buf)
+        else:
+            self._current_stream.write(self._np.frombuffer(buf, dtype="<i2").reshape(-1, 1))
 
     def _recover_stream(self) -> bool:
         """Close the broken PortAudio stream and open a fresh one after a failed write; False once
@@ -290,12 +371,14 @@ class _StreamerPlayback:
             return
         chunks = itertools.chain([first], chunks)
         if not self._ensure_output_stream():
-            _play_via_tempfile(list(chunks), self.stop_event, self.streamer.sample_rate)
+            _play_via_tempfile(chunks, self.stop_event, self.streamer.sample_rate)
             return
         for aligned in _align_int16_chunks(chunks, self.stop_event, pad_tail=False):
             try:
                 self._write_pcm(aligned)
             except Exception as write_exc:
+                if self.stop_event.is_set():
+                    return
                 logger.warning("PortAudio write failed, attempting stream reinit: %s", write_exc)
                 if not self._recover_stream():
                     return
@@ -307,7 +390,11 @@ class _StreamerPlayback:
         if not self._use_device:
             self._for_each_sentence(self._play_sentence_via_tempfile)
             return
-        import numpy as _np
+        from agent.sdk_boundary import bundled
+        if bundled():
+            _np = None
+        else:
+            import numpy as _np
         try:
             from tools.voice_mode import mark_audio_output_active
         except Exception:
@@ -321,11 +408,24 @@ class _StreamerPlayback:
 
     def finish(self) -> None:
         """Send the end sentinel, then wait for playback and prefetch threads."""
-        self._audio_queue.put(None)
-        self._worker.join(timeout=300.0)
+        if self.stop_event.is_set():
+            self.close_output_stream()
+        while self._worker.is_alive():
+            try:
+                self._audio_queue.put(None, timeout=.1)
+                break
+            except queue.Full:
+                continue
+        self._worker.join(timeout=5.0 if self.stop_event.is_set() else 300.0)
+        if self._worker.is_alive():
+            self.stop_event.set()
+            self.close_output_stream()
+            self._worker.join(timeout=2.0)
         for t in self._prefetch_threads:
-            t.join(timeout=10.0)
+            t.join(timeout=.1 if self.stop_event.is_set() else 10.0)
         self.close_output_stream()
+        if self._worker.is_alive():
+            raise RuntimeError("TTS playback did not stop within its deadline")
 
 
 def stream_tts_to_speaker(

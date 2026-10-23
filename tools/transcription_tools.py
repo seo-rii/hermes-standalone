@@ -55,6 +55,10 @@ def _resolve_provider_key(env_var: str, provider_id: str) -> str:
 
 
 def _safe_find_spec(module_name: str) -> bool:
+    if module_name in ("openai", "mistralai", "pilk", "faster_whisper"):
+        from agent.sdk_boundary import bundled
+        if bundled():
+            return True
     try:
         return _ilu.find_spec(module_name) is not None
     except (ImportError, ValueError):

@@ -50,10 +50,10 @@ def _tts_cache_get_or_load(cache: dict[str, Any], key: str, load: Callable[[], A
     return value
 
 
-def _run_helper(cmd: list, timeout: int) -> subprocess.CompletedProcess:
+def _run_helper(cmd: list, timeout: int, *, env: dict[str, str] | None = None) -> subprocess.CompletedProcess:
     return subprocess.run(
         cmd, capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=timeout, stdin=subprocess.DEVNULL,
-        check=False,
+        check=False, env=env,
     )
 
 
@@ -96,10 +96,22 @@ def _resolve_piper_voice_path(voice: str, download_dir: Path) -> str:
     if cached.exists() and (download_dir / f"{voice}.onnx.json").exists():
         return str(cached)
     logger.info("[Piper] Downloading voice '%s' to %s (first use)", voice, download_dir)
-    try:
-        result = _run_helper(
-            [sys.executable, "-m", "piper.download_voices", voice, "--download-dir", str(download_dir)], 300,
+    from agent.sdk_boundary import bundled
+    command = [sys.executable, "-m", "piper.download_voices", voice, "--download-dir", str(download_dir)]
+    helper_options = {}
+    if bundled():
+        from hermes_constants import get_hermes_home
+        from standalone.runtime import bundled_command
+        from tools.environments.local import served_profile_child_env
+        home = get_hermes_home()
+        command = bundled_command(
+            Path(__file__).resolve().parents[1], "standalone.local_piper_download_voices",
+            [voice, "--download-dir", str(download_dir)],
+            home=home,
         )
+        helper_options["env"] = served_profile_child_env(target_home=home, inherit_credentials=False)
+    try:
+        result = _run_helper(command, 300, **helper_options)
     except subprocess.TimeoutExpired as exc:
         raise RuntimeError(f"Piper voice download timed out after 300s for '{voice}'") from exc
     if result.returncode != 0:
@@ -149,7 +161,11 @@ def _generate_piper_tts(text: str, output_path: str, tts_config: dict[str, Any])
     syn_config = None
     if any(k in piper_config for k in _PIPER_ADVANCED_KNOBS):
         try:
-            from piper import SynthesisConfig  # type: ignore
+            from agent.sdk_boundary import bundled
+            if bundled():
+                from standalone.local_piper_config import SynthesisConfig
+            else:
+                from piper import SynthesisConfig  # type: ignore
             syn_config = SynthesisConfig(
                 length_scale=float(piper_config.get("length_scale", 1.0)),
                 noise_scale=float(piper_config.get("noise_scale", 0.667)),

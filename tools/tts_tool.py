@@ -62,6 +62,10 @@ def _sdk_importer(module: str, attr: Optional[str] = None, feature: Optional[str
     a provider in config.yaml never ran the post-setup hook); any failure there falls through so
     the raw import still raises cleanly. sounddevice also raises OSError without PortAudio."""
     def _import():
+        from agent.sdk_boundary import bundled
+        if bundled() and module in ("elevenlabs.client", "mistralai.client"):
+            from standalone import transport_vendor_media
+            return getattr(transport_vendor_media, attr)
         if feature:
             with contextlib.suppress(Exception):
                 from pm import ensure_import as _pm_ensure
@@ -74,11 +78,21 @@ def _sdk_importer(module: str, attr: Optional[str] = None, feature: Optional[str
 
 _import_edge_tts = _sdk_importer("edge_tts", feature="tts.edge")
 _import_elevenlabs = _sdk_importer("elevenlabs.client", "ElevenLabs", feature="tts.elevenlabs")
-_import_openai_client = _sdk_importer("openai", "OpenAI")
+from agent.sdk_boundary import openai_client_type as _import_openai_client
 _import_mistral_client = _sdk_importer("mistralai.client", "Mistral", feature="tts.mistral")
-_import_sounddevice = _sdk_importer("sounddevice")
+def _import_sounddevice():
+    from agent.sdk_boundary import bundled
+    if bundled():
+        from hermes_platform.audio import native_audio_io
+        return native_audio_io()
+    return _sdk_importer("sounddevice")()
 _import_kittentts = _sdk_importer("kittentts", "KittenTTS")
-_import_piper = _sdk_importer("piper", "PiperVoice")  # piper-tts wheels embed espeak-ng
+def _import_piper():
+    from agent.sdk_boundary import bundled
+    if bundled():
+        from standalone.local_piper_voice import PiperVoice
+        return PiperVoice
+    return _sdk_importer("piper", "PiperVoice")()
 
 
 def _importable(importer: Callable[[], Any]) -> bool:
@@ -98,7 +112,9 @@ def _package_installed(name: str) -> bool:
 
 def _check_neutts_available() -> bool: return _package_installed("neutts")
 def _check_kittentts_available() -> bool: return _package_installed("kittentts")
-def _check_piper_available() -> bool: return _package_installed("piper")
+def _check_piper_available() -> bool:
+    from agent.sdk_boundary import bundled
+    return _importable(_import_piper) if bundled() else _package_installed("piper")
 
 
 # --- Defaults / config ---
@@ -571,6 +587,9 @@ def _pm_extra_available(extra: str) -> bool:
     counts a module already in ``sys.modules`` as installed, which is how every other feature in
     the tree reports availability.
     """
+    from agent.sdk_boundary import bundled
+    if bundled() and extra in ("tts-premium", "mistral"):
+        return True
     try:
         from pm.extras import available
     except Exception:
