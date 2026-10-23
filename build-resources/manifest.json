@@ -1,0 +1,88 @@
+{
+  "assets": [
+    {
+      "chunks": [
+        {
+          "path": "build-resources/g2pw-model.xz.000",
+          "sha256": "2c129ee1cbc228372484380e448972eceea6a6184a9bfff876e7ce553b04e75e",
+          "size": 16777216
+        },
+        {
+          "path": "build-resources/g2pw-model.xz.001",
+          "sha256": "9ec8c2c79ee404f0e9473c82dd23537c8c2693756b31c4e39366e0b02a2fd34f",
+          "size": 16777216
+        },
+        {
+          "path": "build-resources/g2pw-model.xz.002",
+          "sha256": "03cd5fe11317565b42885393a48cdec56110997e557097c71ab9486451928c8c",
+          "size": 16777216
+        },
+        {
+          "path": "build-resources/g2pw-model.xz.003",
+          "sha256": "fe3ca1389a7752f4ac7201611d681b41594792605bfd4e3b881cd6a6279b158f",
+          "size": 16777216
+        },
+        {
+          "path": "build-resources/g2pw-model.xz.004",
+          "sha256": "d4bd89f0f56faa4e678194958253d0510b6236f882b02936985b42d174634572",
+          "size": 16777216
+        },
+        {
+          "path": "build-resources/g2pw-model.xz.005",
+          "sha256": "a2f8602a7bb3ba0b60ec927498b04a53c654160bb839723f66824bdea6746f6e",
+          "size": 16777216
+        },
+        {
+          "path": "build-resources/g2pw-model.xz.006",
+          "sha256": "cd6a7d27cc35d374ab02f9ba5bc2b988eff8cdf264198ccd14e7945b6c8dce8d",
+          "size": 10216076
+        }
+      ],
+      "compressed_sha256": "90b8728ca8237d2cad9d18068ba254838b96a3f87d51b0ac6570085c594b5310",
+      "compressed_size": 110879372,
+      "path": "standalone/piper_chinese_data/model/g2pw.onnx",
+      "sha256": "367b87bfb59826590d1d85bd19a21d46aad3332fb364eca0c61d93cabe1d0323",
+      "size": 159287362
+    },
+    {
+      "chunks": [
+        {
+          "path": "build-resources/openjtalk-dictionary.xz.000",
+          "sha256": "702e2b817e6344d33eefe253585a7e9f7d6d11f6e45522003dea9b48ac7c1ca9",
+          "size": 15055268
+        }
+      ],
+      "compressed_sha256": "702e2b817e6344d33eefe253585a7e9f7d6d11f6e45522003dea9b48ac7c1ca9",
+      "compressed_size": 15055268,
+      "path": "standalone/local_piper_japanese/data/openjtalk/dictionary/sys.dic",
+      "sha256": "23287ce5d518164b8b97683b1d9534df095556e446f3470a6c52bd737be74527",
+      "size": 103305451
+    },
+    {
+      "chunks": [
+        {
+          "path": "build-resources/sudachi-dictionary.xz.000",
+          "sha256": "6eb26607ab58a9b8513a0bebaa9507fe2e2446c16f8804c1b2d81c97489fc2e5",
+          "size": 16777216
+        },
+        {
+          "path": "build-resources/sudachi-dictionary.xz.001",
+          "sha256": "87476da36b580d88830b1ebd10ecc33fb4da1188f2a0eb3583210c54013f698d",
+          "size": 16777216
+        },
+        {
+          "path": "build-resources/sudachi-dictionary.xz.002",
+          "sha256": "5efe7e6209ca6de68bacc3eeb20af603b29cf6c18c7c5372b9b10d11e57390d9",
+          "size": 15426088
+        }
+      ],
+      "compressed_sha256": "d3b8111efe2d1cec868d8df7284e90a2bd7b3f1213e8ca9c0dc19829a1753ff6",
+      "compressed_size": 48980520,
+      "path": "standalone/local_piper_japanese/data/sudachi/system.dic",
+      "sha256": "e815659f6ad6f6118725103d47d317d660276ff3a15f668f8fc123ec3c4e6646",
+      "size": 202236003
+    }
+  ],
+  "compression": "xz",
+  "format_version": 1
+}

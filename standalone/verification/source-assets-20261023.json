@@ -1,0 +1,53 @@
+{
+  "all_passed": true,
+  "records": [
+    {
+      "all_passed": true,
+      "files": {
+        "standalone/local_piper_japanese/data/openjtalk/dictionary/sys.dic": {
+          "sha256": "23287ce5d518164b8b97683b1d9534df095556e446f3470a6c52bd737be74527",
+          "size": 103305451
+        },
+        "standalone/local_piper_japanese/data/sudachi/system.dic": {
+          "sha256": "e815659f6ad6f6118725103d47d317d660276ff3a15f668f8fc123ec3c4e6646",
+          "size": 202236003
+        },
+        "standalone/piper_chinese_data/model/g2pw.onnx": {
+          "sha256": "367b87bfb59826590d1d85bd19a21d46aad3332fb364eca0c61d93cabe1d0323",
+          "size": 159287362
+        }
+      },
+      "python": "3.11.2",
+      "scope": "All three complete original source resources restored offline in an owned disposable checkout; every byte compared independently to original files, cold/hit/verify and hit mtime preserved. Native/network/process imports and operations are blocked.",
+      "seconds": 18.951463430999866,
+      "source_sha256": {
+        "build-resources/manifest.json": "2853ebbb8706fbf6f36aa546a731b11a8ff34c20da2c4ca9c53863739ca479fb",
+        "scripts/standalone_assets.py": "2398fd952e65076545fd1a17833e9779dd19fff973155ffb87ba2cde6e879c4a"
+      }
+    },
+    {
+      "all_passed": true,
+      "files": {
+        "standalone/local_piper_japanese/data/openjtalk/dictionary/sys.dic": {
+          "sha256": "23287ce5d518164b8b97683b1d9534df095556e446f3470a6c52bd737be74527",
+          "size": 103305451
+        },
+        "standalone/local_piper_japanese/data/sudachi/system.dic": {
+          "sha256": "e815659f6ad6f6118725103d47d317d660276ff3a15f668f8fc123ec3c4e6646",
+          "size": 202236003
+        },
+        "standalone/piper_chinese_data/model/g2pw.onnx": {
+          "sha256": "367b87bfb59826590d1d85bd19a21d46aad3332fb364eca0c61d93cabe1d0323",
+          "size": 159287362
+        }
+      },
+      "python": "3.14.7",
+      "scope": "All three complete original source resources restored offline in an owned disposable checkout; every byte compared independently to original files, cold/hit/verify and hit mtime preserved. Native/network/process imports and operations are blocked.",
+      "seconds": 13.770712869999443,
+      "source_sha256": {
+        "build-resources/manifest.json": "2853ebbb8706fbf6f36aa546a731b11a8ff34c20da2c4ca9c53863739ca479fb",
+        "scripts/standalone_assets.py": "2398fd952e65076545fd1a17833e9779dd19fff973155ffb87ba2cde6e879c4a"
+      }
+    }
+  ]
+}

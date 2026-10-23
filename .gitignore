@@ -161,6 +161,19 @@ models-dev-upstream/
 .cursor/
 .gemini/
 .zed/
+
+# Standalone distribution build inputs and generated artifacts.
+/dist/
+/standalone/.cache/
+/RISK_REGISTER.md
+# Local model cache; the reviewed Chinese model has its own canonical path.
+/g2pW/
+# Oversized original source data is restored from checked build-resources chunks.
+/standalone/piper_chinese_data/model/g2pw.onnx
+!/standalone/local_piper_japanese/data/
+!/standalone/local_piper_japanese/data/**
+/standalone/local_piper_japanese/data/openjtalk/dictionary/sys.dic
+/standalone/local_piper_japanese/data/sudachi/system.dic
 .mcp.json
 opencode.json
 config/mcporter.json

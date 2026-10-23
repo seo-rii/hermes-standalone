@@ -35,3 +35,13 @@ docker/entrypoint.sh text eol=lf
 *.html  text eol=lf
 *.svg   text eol=lf
 *.ps1   text eol=crlf
+
+# Reviewed original resources and comparison fixtures are byte-hash pinned.
+# Preserve their original bytes on every host, including source-like data.
+standalone/assets/** -text
+standalone/piper_chinese_data/** -text
+standalone/local_piper_japanese/data/** -text
+standalone/local_piper_japanese/controller/** -text
+standalone/licenses/** -text
+standalone/tests/fixtures/** -text
+build-resources/*.xz.* -text
