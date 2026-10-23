@@ -31,7 +31,7 @@ def thumbnail_data_url(max_size: tuple[int, int] = THUMB_MAX, quality: int = 72)
         return "data:image/jpeg;base64," + base64.b64encode(jpeg).decode("ascii") if jpeg else None
     if runtime._launcher_pid() is None:
         return None
-    from PIL import ImageGrab  # Pillow is a hard dependency; import lazily to keep status calls cheap
+    from hermes_platform.images import ImageGrab
 
     # Xlib reads XAUTHORITY from the process env; the launcher publishes a per-profile cookie file.
     # The swap is process-wide, so two profiles grabbed on worker threads at once serialise here or

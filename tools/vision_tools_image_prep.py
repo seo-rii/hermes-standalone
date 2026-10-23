@@ -62,7 +62,7 @@ def _detect_image_mime_type_from_bytes(data: bytes) -> Optional[str]:
         # Reject corrupt PNGs before they can be embedded. Pillow is optional —
         # without it fall back to header-only sniffing; only a failed verify() rejects.
         try:
-            from PIL import Image
+            from hermes_platform.images import Image
         except ImportError:
             return "image/png"
         try:
@@ -213,7 +213,7 @@ def _normalize_to_supported_image(
         except Exception:
             logger.debug("pillow-heif unavailable; relying on Pillow for %s", detected_mime)
     try:
-        from PIL import Image as _PILImage
+        from hermes_platform.images import Image as _PILImage
         with _PILImage.open(image_path) as _img:
             if _img.mode not in ("RGB", "RGBA", "L"):
                 _img = _img.convert("RGBA")
@@ -256,7 +256,7 @@ def _validate_raster_image_decodable(
     only inspect containers: a timed-out download can look like a valid PNG with a truncated pixel
     stream. Without Pillow the image passes unvalidated rather than rejecting everything."""
     try:
-        from PIL import Image as _PILImage, ImageSequence as _PILImageSequence
+        from hermes_platform.images import Image as _PILImage, ImageSequence as _PILImageSequence
     except ImportError:
         return None
     try:
@@ -289,7 +289,7 @@ def _image_exceeds_dimension(image_path: Path, max_dimension: int) -> bool:
     independent of bytes). False without Pillow or on unreadable files — a missing soft
     dependency must never break the embed path."""
     try:
-        from PIL import Image as _PILImage
+        from hermes_platform.images import Image as _PILImage
         with _PILImage.open(image_path) as _img:
             return max(_img.size) > max_dimension
     except Exception:
@@ -305,7 +305,7 @@ def _crop_image_region(
     mime, None)`` — caller owns cleanup — or ``(None, None, error)``.
     Ported from QwenLM/qwen-code zoom-image.ts (Apache-2.0)."""
     try:
-        from PIL import Image
+        from hermes_platform.images import Image
     except ImportError:
         return None, None, (
             "region cropping requires Pillow (run `hermes pm repair`); "

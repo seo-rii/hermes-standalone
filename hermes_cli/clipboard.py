@@ -350,7 +350,7 @@ def _convert_to_png(path: Path) -> bool:
     """Convert an image file to PNG in-place: Pillow first (likely in the venv), then ImageMagick.
     When neither works the file is left as-is — BMP is still usable for most APIs."""
     try:
-        from PIL import Image
+        from hermes_platform.images import Image
         Image.open(path).save(path, "PNG")
         return True
     except ImportError:

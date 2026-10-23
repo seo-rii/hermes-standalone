@@ -1,0 +1,20 @@
+{
+  "repository": "https://github.com/webmproject/libwebp",
+  "commit": "1844042d1ca751e62e61df7617dba19c98588339",
+  "license": "BSD-3-Clause",
+  "license_path": "licenses/libwebp-COPYING",
+  "source_files": [
+    {
+      "path": "src/demux/anim_decode.c",
+      "sha256": "dcbde550e50ca08b2dd548b857f4e767fce2c0293f3cb2b199fec324b4af4653"
+    },
+    {
+      "path": "src/dsp/yuv.h",
+      "sha256": "b98d88716ce25b096f91a71e29c1780f6cb816c564d12a9baa253b5d9776d9bf"
+    },
+    {
+      "path": "src/dsp/upsampling.c",
+      "sha256": "3ff4ad5455948efda407e16dee38a2a55c436bc657f815313f55c93ba3c5e86d"
+    }
+  ]
+}

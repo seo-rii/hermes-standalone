@@ -1,0 +1,22 @@
+{
+  "implementation": "Original bounded standard-library TIFF, BigTIFF, CCITT fax and ICO/CUR implementation",
+  "primary_specifications": [
+    "https://www.itu.int/itudoc/itu-t/com16/tiff-fx/docs/tiff6.pdf",
+    "https://libtiff.gitlab.io/libtiff/specification/bigtiff.html",
+    "https://libtiff.gitlab.io/libtiff/specification/technote2.html",
+    "https://www.rfc-editor.org/rfc/rfc804.txt",
+    "https://www.itu.int/rec/dologin_pub.asp?id=T-REC-T.4-199607-S!!PDF-E&lang=e&type=items",
+    "https://learn.microsoft.com/en-us/previous-versions/ms997538(v=msdn.10)"
+  ],
+  "tables": "raster_fax.py contains the normative binary code-word assignments (format facts), not specification prose or upstream implementation code.",
+  "fixture_oracle": "Pillow 12.1.1 using native libtiff and ICO decoders, and libtiff TIFFReadRGBAImageOriented for the valid big-endian BigTIFF unsupported by Pillow's IFD parser. Native libraries are used only to generate committed independent pixels, never at runtime or by tests.",
+  "unsupported": [
+    "TIFF CCITT optional uncompressed extension modes",
+    "TIFF floating-point predictor 3",
+    "TIFF planar sample depths other than 8 bits",
+    "TIFF custom YCbCr coefficients and reference black/white",
+    "TIFF CIELAB, LogL/LogLuv, JPEG 2000, JBIG, WebP and Zstandard compression",
+    "Old-style TIFF JPEG layouts lacking a complete JPEG stream",
+    "TIFF output beyond a single 8-bit raw or Deflate page"
+  ]
+}

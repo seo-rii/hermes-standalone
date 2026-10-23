@@ -6,7 +6,7 @@ from __future__ import annotations
 import os
 import threading
 
-from PIL import Image, ImageGrab
+from hermes_platform.images import Image, ImageGrab
 
 from tools.bot_desktop import runtime, thumbnail
 

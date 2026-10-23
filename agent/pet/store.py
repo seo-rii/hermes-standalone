@@ -245,7 +245,7 @@ def thumbnail_png(slug: str, *, source_url: str = "", timeout: float = 30.0) -> 
     if not sheet_bytes:
         return None
     try:
-        from PIL import Image
+        from hermes_platform.images import Image
 
         with Image.open(io.BytesIO(sheet_bytes)) as im:
             frame = im.convert("RGBA").crop((0, 0, min(_THUMB_FRAME_W, im.width), min(_THUMB_FRAME_H, im.height)))

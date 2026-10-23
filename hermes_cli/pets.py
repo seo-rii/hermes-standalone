@@ -239,7 +239,7 @@ def _cmd_doctor(args) -> int:
         print("  → pet display is disabled. Run: hermes pets select " + active.slug)
 
     try:
-        import PIL
+        from hermes_platform.images import Image
     except ImportError:
         print("  ✗ Pillow not importable — sprite decoding will be unavailable")
         ok = False

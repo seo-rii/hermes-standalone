@@ -15,7 +15,7 @@ from collections import Counter, deque
 from itertools import groupby
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageFilter
+from hermes_platform.images import Image, ImageChops, ImageFilter
 
 from agent.pet.constants import FRAME_H, FRAME_W
 

@@ -1,0 +1,36 @@
+{
+  "implementation": "Original bounded screenshot clients using the Python standard library",
+  "x11": {
+    "transport": "X11 socket protocol with scoped Xauthority MIT-MAGIC-COOKIE-1, TrueColor root GetImage and format/mask validation",
+    "specifications": [
+      "https://xorg.freedesktop.org/archive/X11R7.7/doc/xproto/x11protocol.html",
+      "https://www.x.org/Development/Documentation/Security/",
+      "https://xorg.freedesktop.org/releases/X11R6.8.2/doc/Xsecurity.7.html"
+    ],
+    "validation": "New private authenticated Xvfb display, two screens (24/16-bit), bbox, original and AST-minified standalone worker, original sandbox_host flow through a local exec-transport fixture. Existing user displays and credentials are never used by tests."
+  },
+  "windows": {
+    "transport": "ctypes OS user32/gdi32 APIs, scoped thread DPI awareness, BitBlt/PrintWindow and top-down 32-bit GetDIBits with handle cleanup",
+    "specifications": [
+      "https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-getdibits",
+      "https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-bitblt",
+      "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-printwindow"
+    ],
+    "validation": "Portable fixed-width ABI/layout and byte conversion fixtures. A native Windows host capture has not been tested."
+  },
+  "macos": {
+    "transport": "ctypes OS CoreGraphics/CoreFoundation APIs, selected display/window bounds, permission preflight, CGImage data provider and validated alpha/byte order conversion",
+    "specifications": [
+      "https://developer.apple.com/documentation/coregraphics/cgwindowlistcreateimage",
+      "https://developer.apple.com/documentation/coregraphics/cgbitmapinfo",
+      "https://developer.apple.com/documentation/coregraphics/cgimage"
+    ],
+    "validation": "Portable 64-bit CGRect ABI/layout and byte conversion fixtures. Native macOS capture, Retina coordinate behavior and availability of deprecated CoreGraphics capture APIs have not been tested."
+  },
+  "unsupported": [
+    "Wayland compositor/portal capture when no X11 server exposes the requested desktop",
+    "X11 non-TrueColor visual classes and optional authentication schemes other than MIT-MAGIC-COOKIE-1",
+    "X11 window-only capture",
+    "macOS HDR/float and non-RGB screenshot formats"
+  ]
+}

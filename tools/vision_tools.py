@@ -404,7 +404,7 @@ def _import_pillow_for_resize():
     a blocking input() deadlocks the CLI where prompt_toolkit owns stdin; the install is already
     gated by security.allow_lazy_installs."""
     try:
-        from PIL import Image
+        from hermes_platform.images import Image
     except ImportError:
         try:
             # pm-era wiring: never raise a blocking input() prompt mid-session. Under the
@@ -414,7 +414,7 @@ def _import_pillow_for_resize():
             from pm import ensure_import
 
             ensure_import("vision")
-            from PIL import Image
+            from hermes_platform.images import Image
         except Exception:
             return None
     return Image

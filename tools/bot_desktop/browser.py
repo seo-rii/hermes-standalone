@@ -163,7 +163,8 @@ def _launched_by_session(chromium_pid: int) -> Optional[str]:
 
 
 def _pid_alive(pid: int) -> bool:
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     return psutil.pid_exists(pid)
 
 

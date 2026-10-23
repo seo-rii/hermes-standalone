@@ -1,0 +1,15 @@
+{
+  "repository": "https://github.com/python-pillow/Pillow",
+  "commit": "bb1d8e8ab8d29048624d96e3ee53cecf7c13d13d",
+  "tag": "12.3.0",
+  "source_file": "src/PIL/ImageFont.py",
+  "source_sha256": "24fa5feeb91b4bf63eaad0ebba08a8161e9c889d9fd056a37c928134097b9649",
+  "font_name": "Aileron Regular subset",
+  "font_author": "Sora Sagano",
+  "font_sha256": "69853909b940023570964e29cffe30da95aea8de3627736b5cd15ab30143169f",
+  "font_size": 12676,
+  "font_copyright": "No Rights Reserved.",
+  "font_license": "CC0-1.0",
+  "font_source": "https://dotcolon.net/fonts/aileron",
+  "upstream_license_path": "licenses/pillow-LICENSE"
+}

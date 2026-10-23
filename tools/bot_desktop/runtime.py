@@ -162,7 +162,8 @@ def _read(path: Path) -> Optional[str]:
 def _pid_alive(pid: int) -> bool:
     """A zombie is dead for our purposes: a SIGKILLed launcher stays a zombie in the gateway until the next
     Popen reaps it, and reporting it as running would hide its orphaned X server behind a live status."""
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     try:
         return psutil.Process(pid).status() != psutil.STATUS_ZOMBIE
     except psutil.Error:
@@ -170,7 +171,8 @@ def _pid_alive(pid: int) -> bool:
 
 
 def _create_time(pid: int) -> Optional[float]:
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     try:
         return psutil.Process(pid).create_time()
     except (psutil.Error, OverflowError, ValueError):
@@ -238,7 +240,8 @@ def _reap_orphaned_server(sd: Path) -> bool:
     socket. When a /tmp reaper took the lock too (or the failed launch dropped ``display``), the socket path
     on the Xvnc command line is the remaining handle — without it one X server leaks per occurrence. Kill it
     (group first), drop the state it left, and report whether anything was signalled."""
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
 
     def _binds_our_socket(cmdline: list) -> bool:
         return "Xvnc" in Path(cmdline[0] if cmdline else "").name and str(sd / "rfb.sock") in cmdline

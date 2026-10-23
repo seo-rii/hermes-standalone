@@ -83,7 +83,7 @@ def _frame_is_blank(frame) -> bool:
 def _raw_frames(sheet_path: str, state_value: str, frame_w: int, frame_h: int, frames_per_state: int) -> tuple:
     """Cropped RGBA frames for one state row, stopping at the first blank column; ``()`` on any decode failure."""
     try:
-        from PIL import Image
+        from hermes_platform.images import Image
 
         sheet = Image.open(Path(sheet_path)).convert("RGBA")
         cols, rows = max(1, sheet.width // frame_w), max(1, sheet.height // frame_h)
@@ -102,7 +102,7 @@ def _frames_for(sheet_path: str, state_value: str, frame_w: int, frame_h: int, f
     raw = _raw_frames(sheet_path, state_value, frame_w, frame_h, frames_per_state)
     if not raw or (scale_w, scale_h) == (frame_w, frame_h):
         return list(raw)
-    from PIL import Image
+    from hermes_platform.images import Image
 
     return [f.resize((scale_w, scale_h), Image.LANCZOS) for f in raw]
 
@@ -131,7 +131,7 @@ def _fit_frames_to_cell_grid(frames):
 
     kitty paints transparent margins too, so an untrimmed pet looks small and adrift.
     """
-    from PIL import Image
+    from hermes_platform.images import Image
 
     boxes = [b for b in (f.getchannel("A").getbbox() for f in frames) if b]
     if boxes:
@@ -214,7 +214,7 @@ def _encode_iterm(frame) -> str:
 
 def _encode_sixel(frame) -> str:
     """DEC sixel via a compact hand-rolled encoder (Pillow has none); ≤255 adaptive colors, transparent pixels skipped."""
-    from PIL import Image
+    from hermes_platform.images import Image
 
     pal = frame.convert("RGB").quantize(colors=255, method=Image.MEDIANCUT)
     palette = pal.getpalette() or []
@@ -243,7 +243,7 @@ Cell = tuple[tuple[int, int, int, int], tuple[int, int, int, int]]
 
 def _downscale_cells(frame, *, target_cols: int) -> list[list[Cell]]:
     """Downscale to rows of half-block cells (one terminal row = two pixel rows); shared by the ANSI encoder and Ink."""
-    from PIL import Image
+    from hermes_platform.images import Image
 
     target_cols = max(4, target_cols)
     target_rows = max(2, round(target_cols * (frame.height / max(1, frame.width)) * 0.5) * 2)

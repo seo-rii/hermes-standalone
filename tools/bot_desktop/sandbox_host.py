@@ -158,19 +158,40 @@ sys.stdout.buffer.write(buf.getvalue())
 
 def grab_jpeg(env: Any, published: dict[str, str], max_size: tuple[int, int], quality: int) -> Optional[bytes]:
     """One JPEG of the sandbox screen, grabbed INSIDE the sandbox (the X socket and its cookie live there).
-    Needs Pillow in the image (the published desktop image ships it); None when the grab fails."""
+    Standalone sends a stdlib X11 client and encodes its validated pixels on the host."""
     display = published.get("DISPLAY")
     if not display:
         return None
     child_env = {k: v for k, v in published.items() if k in ("DISPLAY", "XAUTHORITY")}
+    from agent.sdk_boundary import bundled
+    if bundled():
+        from standalone.raster_grab import worker_script, from_worker
+        script, arguments = worker_script(), [display]
+    else:
+        script, arguments = _GRAB_SCRIPT, [display, str(max_size[0]), str(max_size[1]), str(quality)]
     try:
-        proc = streams.run_in(env, ["python3", "-c", _GRAB_SCRIPT, display, str(max_size[0]), str(max_size[1]),
-                                    str(quality)], child_env=child_env, user=_user_for(env), timeout=20)
+        proc = streams.run_in(env, ["python3", "-I", "-S", "-c", script, *arguments] if bundled() else
+                              ["python3", "-c", script, *arguments],
+                              child_env=child_env, user=_user_for(env), timeout=20)
     except (OSError, subprocess.SubprocessError) as exc:
         logger.debug("sandbox screen grab failed: %s", exc)
         return None
-    if proc.returncode != 0 or not proc.stdout.startswith(b"\xff\xd8"):
+    if proc.returncode != 0:
         logger.debug("sandbox screen grab failed: %s", proc.stderr.decode("utf-8", "replace")[-300:])
+        return None
+    if bundled():
+        import io
+        import zlib
+        try:
+            image = from_worker(proc.stdout)
+            image.thumbnail(max_size)
+            output = io.BytesIO()
+            image.save(output, "JPEG", quality=quality, optimize=True)
+            return output.getvalue()
+        except (OSError, ValueError, zlib.error) as exc:
+            logger.debug("sandbox screenshot pixels were refused: %s", exc)
+            return None
+    if not proc.stdout.startswith(b"\xff\xd8"):
         return None
     return proc.stdout
 
