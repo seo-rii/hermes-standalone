@@ -42,7 +42,11 @@ def _run_ddgs_search(query: str, safe_limit: int) -> list[dict[str, Any]]:
     ``DDGS(timeout=…)`` bounds each individual HTTP request; the overall wall-clock cap is enforced by the
     parent via process timeout (#68096).
     """
-    from ddgs import DDGS  # type: ignore
+    from standalone.packages import active
+    if active():
+        from standalone.web_ddgs import DDGS
+    else:
+        from ddgs import DDGS  # type: ignore
     results: list[dict[str, Any]] = []
     with DDGS(timeout=10) as client:
         for i, hit in enumerate(client.text(query, max_results=safe_limit)):
@@ -109,12 +113,17 @@ def _spawn_worker(env: dict[str, str]) -> subprocess.Popen:
     if path_entry and path_entry not in child_pythonpath.split(os.pathsep):
         env["PYTHONPATH"] = path_entry + os.pathsep + child_pythonpath if child_pythonpath else path_entry
     worker_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_search_worker.py")
+    command = None
+    from standalone.packages import active
+    if active():
+        from hermes_cli.runtime_module import python_module_command
+        command = python_module_command("plugins.web.ddgs._search_worker")
     # Own process group/session so terminate/kill also reach a hung primp grandchild.
     extra_kwargs: dict[str, Any] = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if sys.platform == "win32" else {"start_new_session": True}
     # stdin/stdout/stderr stay explicit keyword args so scripts/check_subprocess_stdin.py sees them
     # (TUI gateway inherits stdin). stderr=DEVNULL: a chatty child would deadlock a stdout-only drain.
     return subprocess.Popen(
-        [sys.executable, worker_path], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+        command or [sys.executable, worker_path], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
         env=env, text=True, encoding="utf-8", errors="replace", **extra_kwargs,
     )
 
@@ -190,6 +199,9 @@ class DDGSWebSearchProvider(BaseWebSearchProvider):
     def is_available(self) -> bool:
         """True when ``ddgs`` is importable. Must NOT do network I/O — runs at
         tool-registration time and on every ``hermes tools`` paint."""
+        from standalone.packages import active
+        if active():
+            return True
         try:
             import ddgs
             return True

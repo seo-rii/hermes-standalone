@@ -23,7 +23,11 @@ _MISSING_KEY = "PARALLEL_API_KEY environment variable not set. Get your API key 
 
 def _client(slot: str, cls_name: str) -> Any:
     def _factory(api_key: str) -> Any:
-        import parallel  # deliberately lazy
+        from standalone.packages import active
+        if active():
+            from standalone import web_providers as parallel
+        else:
+            import parallel  # deliberately lazy
         return getattr(parallel, cls_name)(api_key=api_key)
 
     # The key is checked before the SDK is ensured (cached_sdk_client): without a key the

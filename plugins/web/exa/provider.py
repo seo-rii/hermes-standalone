@@ -21,7 +21,11 @@ _MISSING_KEY = "EXA_API_KEY environment variable not set. Get your API key at ht
 
 def _get_exa_client() -> Any:
     def _factory(api_key: str) -> Any:
-        from exa_py import Exa  # deliberately lazy
+        from standalone.packages import active
+        if active():
+            from standalone.web_providers import Exa
+        else:
+            from exa_py import Exa  # deliberately lazy
         client = Exa(api_key=api_key)
         client.headers["x-exa-integration"] = "hermes-agent"
         return client

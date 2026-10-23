@@ -31,6 +31,11 @@ def _load_firecrawl_cls() -> type:
     """Import and cache ``firecrawl.Firecrawl`` (lazy_deps install hint → ImportError)."""
     global _FIRECRAWL_CLS_CACHE
     if _FIRECRAWL_CLS_CACHE is None:
+        from standalone.packages import active
+        if active():
+            from standalone.web_providers import Firecrawl as _cls
+            _FIRECRAWL_CLS_CACHE = _cls
+            return _cls
         try:
             from pm import ensure_import as _lazy_ensure
 

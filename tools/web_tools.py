@@ -193,6 +193,9 @@ def _get_extract_backend() -> str:
 
 def _ddgs_package_importable() -> bool:
     """ddgs is the only backend gated on package presence; single symbol so tests can patch it."""
+    from standalone.packages import active
+    if active():
+        return True
     try:
         import ddgs
         return True
