@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 from typing import Any, Dict, List, Literal, Optional, Union
 
-from pydantic import BaseModel, Field, SecretStr, StrictBool, StrictInt, field_validator
+from hermes_cli.web_framework import BaseModel, Field, SecretStr, StrictBool, StrictInt, field_validator
 
 
 class ConfigUpdate(BaseModel):

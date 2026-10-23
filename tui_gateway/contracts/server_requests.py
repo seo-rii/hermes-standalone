@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import Field
+from tui_gateway.contracts.model import Field
 
 from tools.tour_presets import TourPreset
 

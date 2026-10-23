@@ -12,7 +12,7 @@ import sqlite3
 import time
 from typing import Any, Callable, Dict, Optional
 
-from fastapi import HTTPException
+from hermes_cli.web_framework import HTTPException
 
 from hermes_cli.web_deps import LateState, late
 from hermes_cli.web_server_profiles import _profile_cli_args

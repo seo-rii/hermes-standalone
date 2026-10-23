@@ -13,8 +13,8 @@ import logging
 import threading
 from typing import Awaitable, Callable, Optional, Tuple
 
-from fastapi import Request
-from fastapi.responses import JSONResponse, Response
+from hermes_cli.web_framework import Request
+from hermes_cli.web_framework import JSONResponse, Response
 
 from hermes_cli.dashboard_auth import list_token_providers
 from hermes_cli.dashboard_auth.audit import AuditEvent, audit_log

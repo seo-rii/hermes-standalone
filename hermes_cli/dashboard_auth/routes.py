@@ -25,9 +25,9 @@ from collections import OrderedDict, deque
 from typing import Any, Deque, Dict
 from urllib.parse import quote, unquote, urlencode, urlparse, urlunparse
 
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
-from pydantic import BaseModel, Field
+from hermes_cli.web_framework import APIRouter, HTTPException, Request
+from hermes_cli.web_framework import HTMLResponse, JSONResponse, RedirectResponse
+from hermes_cli.web_framework import BaseModel, Field
 from starlette.concurrency import run_in_threadpool
 
 from hermes_cli.dashboard_auth import (

@@ -14,7 +14,7 @@ import subprocess
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException
+from hermes_cli.web_framework import APIRouter, HTTPException
 
 from hermes_cli.web_deps import late
 from hermes_cli.web_server_dashboard import _invalidate_plugins_hub_cache

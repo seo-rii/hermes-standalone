@@ -16,7 +16,7 @@ import threading
 import urllib.request
 from typing import Optional
 
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
+from hermes_cli.web_framework import FastAPI, Request, WebSocket, WebSocketDisconnect
 from pathlib import Path
 from typing import Optional
 from hermes_cli.pty_session import PtySessionRegistry
@@ -181,7 +181,7 @@ def _ws_request_view(ws: WebSocket) -> Request:
     constructing a real ASGI request inside the upgrade. ``scan_session_providers``
     itself never sees the request — only the provider callbacks do.
     """
-    from fastapi import Request
+    from hermes_cli.web_framework import Request
 
     return Request({
         "type": "http",
@@ -374,7 +374,11 @@ def _resolve_chat_argv(
     if requested and requested.lower() != "current":
         profile_dir = _resolve_profile_dir(requested)
 
-    argv, cwd = _make_tui_argv(PROJECT_ROOT / "ui-tui", tui_dev=False)
+    from hermes_cli.runtime_module import python_module_command
+    from agent.sdk_boundary import bundled
+    classic = bundled()
+    argv, cwd = (python_module_command("hermes_cli.main", ["chat", "--cli"]), workspace_cwd or os.getcwd()) \
+        if classic else _make_tui_argv(PROJECT_ROOT / "ui-tui", tui_dev=False)
     # Secrets kept — the spawned agent needs provider creds.  An explicit profile
     # scope overrides HERMES_HOME before config is bridged into the env.
     from tools.environments.local import build_subprocess_env
@@ -433,6 +437,12 @@ def _resolve_chat_argv(
     # it never spawns a standalone `tui_gateway.entry` writer.
     if profile_dir is None and (gateway_ws_url := _build_gateway_ws_url()):
         env["HERMES_TUI_GATEWAY_URL"] = gateway_ws_url
+
+    if classic:
+        if resume:
+            argv.extend(["--resume", resume])
+        if workspace_cwd:
+            argv.extend(["--in", workspace_cwd])
 
     return list(argv), str(cwd) if cwd else None, env
 

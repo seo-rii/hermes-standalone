@@ -9,7 +9,7 @@ The pet wire predates the snake_case rule and travels camelCase (``displayName``
 
 from __future__ import annotations
 
-from pydantic import Field
+from tui_gateway.contracts.model import Field
 
 from .base import JsonValue, Params, Result
 from .common import OkResult, OpenModel, ProfileParams, StoredSessionRow

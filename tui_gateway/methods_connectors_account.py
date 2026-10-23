@@ -18,7 +18,7 @@ def _account_method(params_model=None, *, invalid="", invalid_reason=ConnectorEr
                     unavailable, unavailable_message):
     def decorate(fn):
         def handler(rid, params):
-            from pydantic import ValidationError
+            from tui_gateway.contracts.model import ValidationError
             from tools.connectors.gateway.errors import GatewayAuthError
 
             with _desktop_page_vars():

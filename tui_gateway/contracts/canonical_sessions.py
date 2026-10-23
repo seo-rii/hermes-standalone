@@ -4,7 +4,7 @@ Reuse upstream authority-only value shapes; these overrides do not widen METHODS
 """
 from typing import Literal
 
-from pydantic import RootModel
+from tui_gateway.contracts.model import RootModel
 
 from .base import JsonValue, Params, Result
 from .common import ProfileParams, TranscriptMessage

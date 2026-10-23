@@ -9,7 +9,7 @@ import concurrent.futures
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from hermes_cli.web_framework import APIRouter, HTTPException
 
 from hermes_cli.web_deps import LateState, late
 from hermes_cli.web_server_config import (

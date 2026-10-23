@@ -15,8 +15,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import JSONResponse
+from hermes_cli.web_framework import APIRouter, HTTPException, Request
+from hermes_cli.web_framework import JSONResponse
 
 from hermes_cli.web_deps import late
 from hermes_cli.config import cfg_get

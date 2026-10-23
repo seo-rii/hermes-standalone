@@ -13,11 +13,11 @@ import asyncio
 import os
 import sys
 import time
-from fastapi import APIRouter
+from hermes_cli.web_framework import APIRouter
 from hermes_cli.web_deps import LateState, late
 from hermes_cli.web_server_gateway import _display_system_platform
 from starlette.concurrency import run_in_threadpool
-from fastapi import HTTPException, Request
+from hermes_cli.web_framework import HTTPException, Request
 from gateway.status import (
     derive_gateway_busy, derive_gateway_drainable, normalize_updated_at, parse_active_agents,
     profile_platforms_from_multiplexer, resolve_gateway_liveness,
@@ -618,7 +618,8 @@ async def get_system_stats():
 
     # psutil enriches the picture when present; every probe below is optional.
     try:
-        import psutil  # type: ignore
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         vm = psutil.virtual_memory()
         info["memory"] = {"total": vm.total, "available": vm.available, "used": vm.used,
                           "percent": vm.percent}
@@ -627,7 +628,8 @@ async def get_system_stats():
                 fill()
             except Exception:
                 pass
-        info["psutil"] = True
+        info["psutil"] = True  # Legacy dashboard key means detailed statistics are available.
+        info["process_backend"] = psutil.__name__
     except Exception:
         info["psutil"] = False
         # stdlib-only fallbacks for load average where the kernel exposes it.

@@ -13,8 +13,8 @@ import logging
 from typing import Awaitable, Callable
 from urllib.parse import quote
 
-from fastapi import Request
-from fastapi.responses import JSONResponse, RedirectResponse, Response
+from hermes_cli.web_framework import Request
+from hermes_cli.web_framework import JSONResponse, RedirectResponse, Response
 from starlette.concurrency import run_in_threadpool
 
 from hermes_cli.dashboard_auth import list_session_providers

@@ -1,7 +1,7 @@
 """Canonical projections with demonstrated differences from standalone wire."""
 from typing import Literal
 
-from pydantic import model_validator
+from tui_gateway.contracts.model import model_validator
 
 from .base import JsonValue, Params, Result
 from .common import ProfileParams

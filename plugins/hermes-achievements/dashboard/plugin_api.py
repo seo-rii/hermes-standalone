@@ -14,7 +14,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
 
-from fastapi import APIRouter
+from hermes_cli.web_framework import APIRouter
 
 from hermes_constants import get_hermes_home
 

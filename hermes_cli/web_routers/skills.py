@@ -10,7 +10,7 @@ seam so ``monkeypatch.setattr(<owning module>, ...)`` keeps working.
 import asyncio
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from hermes_cli.web_framework import APIRouter, HTTPException
 
 from hermes_cli.web_deps import late
 from hermes_cli.web_server_profiles import _hub_action_name, _installed_hub_identifiers

@@ -19,7 +19,7 @@ from datetime import datetime, timezone, UTC
 from pathlib import Path
 from typing import Any, Optional
 
-from fastapi import APIRouter, HTTPException
+from hermes_cli.web_framework import APIRouter, HTTPException
 
 from gateway.status import resolve_gateway_liveness, retained_gateway_state
 from hermes_cli._subprocess_compat import windows_hide_flags

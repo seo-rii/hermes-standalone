@@ -7,7 +7,7 @@ import contextlib
 import logging
 import inspect
 import re
-from fastapi import HTTPException
+from hermes_cli.web_framework import HTTPException
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 from hermes_cli.config import cfg_get

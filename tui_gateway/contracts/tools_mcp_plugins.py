@@ -8,7 +8,7 @@ Every ``mcp.servers.*``, ``mcp.catalog``, ``skills.manage`` and ``plugins.manage
 
 from __future__ import annotations
 
-from pydantic import Field
+from tui_gateway.contracts.model import Field
 
 from .base import JsonValue, Params, Result, WireEnum
 from .common import OpenModel, ProfileParams, SessionLiveInfo

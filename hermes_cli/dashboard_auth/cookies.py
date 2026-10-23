@@ -21,8 +21,8 @@ import re
 from typing import Literal, Optional, Tuple
 from urllib.parse import unquote
 
-from fastapi import Request
-from fastapi.responses import Response
+from hermes_cli.web_framework import Request
+from hermes_cli.web_framework import Response
 
 SESSION_AT_COOKIE = "hermes_session_at"
 SESSION_RT_COOKIE = "hermes_session_rt"

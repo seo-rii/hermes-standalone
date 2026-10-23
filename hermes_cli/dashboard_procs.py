@@ -126,7 +126,8 @@ def _ledger_serve_binds() -> dict[int, tuple[str, int]]:
 def _pid_environ(pid: int) -> dict[str, str] | None:
     """Exec-time environment of *pid* (psutil, then /proc); ``None`` when unreadable."""
     with contextlib.suppress(Exception):
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         return dict(psutil.Process(pid).environ())
     try:
         raw = Path(f"/proc/{pid}/environ").read_bytes()
@@ -150,7 +151,8 @@ def _pid_passwd_home(pid: int) -> str | None:
     """
     uid: int | None = None
     with contextlib.suppress(Exception):
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         uid = psutil.Process(pid).uids().real
     if uid is None:
         with contextlib.suppress(OSError):
@@ -188,7 +190,8 @@ def _hermes_home_for_pid(pid: int, *, require_launch_identity: bool = False) -> 
     argv = _dashboard_cmdline_for_pid(pid)
     if require_launch_identity and argv is None:
         # The dashboard argv reader has no Windows implementation; psutil does.
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         argv = psutil.Process(pid).cmdline()
     if require_launch_identity and not argv:
         return None
@@ -386,7 +389,8 @@ def _caller_ancestor_pids() -> set[int]:
     from. psutil is primary; the ``/proc`` walk keeps the answer when psutil is unusable.
     """
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
 
         return {p.pid for p in psutil.Process().parents()}
     except Exception:
@@ -414,7 +418,8 @@ def _caller_ancestor_pids() -> set[int]:
 def _argv_head_command(pid: int) -> str | None:
     """Basename of *pid*'s first argv token, best-effort; ``None`` when unreadable."""
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
 
         argv = psutil.Process(pid).cmdline()
         if argv:
@@ -950,7 +955,9 @@ def _process_age_seconds(pid: int) -> float:
     """Process age from psutil's cross-platform start timestamp."""
     import time as _time
 
-    import psutil as _psutil
+    from hermes_platform.processes import process_api
+
+    _psutil = process_api()
     return max(0.0, _time.time() - _psutil.Process(pid).create_time())
 
 
@@ -1014,7 +1021,8 @@ def _reap_orphaned_desktop_local_serves(
             failed.append(pid)
     # Brief grace, then SIGKILL survivors (psutil.pid_exists: os.kill(pid, 0) is a Windows footgun).
     sleep_fn(1.5)
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     for pid in matched:
         if pid in failed:
             continue

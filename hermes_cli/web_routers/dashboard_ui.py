@@ -9,8 +9,8 @@ import logging
 from pathlib import Path
 from typing import Callable, Optional
 
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import FileResponse
+from hermes_cli.web_framework import APIRouter, HTTPException, Request
+from hermes_cli.web_framework import FileResponse
 
 from hermes_cli.web_deps import LateState, late
 from hermes_cli.config import cfg_get

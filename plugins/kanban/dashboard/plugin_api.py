@@ -23,10 +23,9 @@ from functools import partial
 from pathlib import Path
 from typing import Any, Callable, Iterator, Optional
 
-from fastapi import (
-    APIRouter, File, Form, HTTPException, Query, UploadFile, WebSocket, WebSocketDisconnect, status as http_status)
-from fastapi.responses import FileResponse
-from pydantic import BaseModel, Field
+from hermes_cli.web_framework import APIRouter, File, Form, HTTPException, Query, UploadFile, WebSocket, WebSocketDisconnect, status as http_status
+from hermes_cli.web_framework import FileResponse
+from hermes_cli.web_framework import BaseModel, Field
 
 from hermes_cli import kanban_db
 from hermes_cli import kanban_workflow
@@ -912,7 +911,8 @@ def list_diagnostics(
 # --- Worker visibility — active-worker list, per-run inspect/terminate -------
 
 try:
-    import psutil as _psutil
+    from hermes_platform.processes import process_api
+    _psutil = process_api()
 except ImportError:
     _psutil = None  # type: ignore[assignment]
 

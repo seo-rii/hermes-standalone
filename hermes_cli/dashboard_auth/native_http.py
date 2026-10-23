@@ -9,7 +9,7 @@ from __future__ import annotations
 from contextlib import contextmanager
 from pathlib import Path
 
-from fastapi import HTTPException
+from hermes_cli.web_framework import HTTPException
 from starlette.responses import JSONResponse
 
 HEADER = 'x-hermes-gateway-ticket'

@@ -14,8 +14,8 @@ import threading
 import time
 from typing import Any, Dict, Optional
 
-from fastapi import APIRouter, HTTPException, Request
-from fastapi.responses import HTMLResponse
+from hermes_cli.web_framework import APIRouter, HTTPException, Request
+from hermes_cli.web_framework import HTMLResponse
 
 from hermes_cli.web_deps import late
 from hermes_cli.web_server_mcp import _mcp_oauth_flows, _mcp_server_summary, _normalize_mcp_server_create

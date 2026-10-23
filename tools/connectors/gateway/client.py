@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from typing import Any, Callable, Mapping, Optional, Protocol, Sequence
 
 import requests
-from pydantic import ValidationError
+from hermes_platform.models import ValidationError
 
 from tools.connectors.gateway import wire
 from tools.connectors.gateway.config import session_platform

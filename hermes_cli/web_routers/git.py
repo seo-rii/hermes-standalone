@@ -13,7 +13,7 @@ from functools import partial
 from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Request
+from hermes_cli.web_framework import APIRouter, HTTPException, Request
 
 from hermes_cli import web_git as _web_git
 from hermes_cli._subprocess_compat import bounded_probe_run

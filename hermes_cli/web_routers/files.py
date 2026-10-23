@@ -22,8 +22,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
-from fastapi.responses import FileResponse, StreamingResponse
+from hermes_cli.web_framework import APIRouter, File, Form, HTTPException, Request, UploadFile
+from hermes_cli.web_framework import FileResponse, StreamingResponse
 
 from hermes_cli._subprocess_compat import windows_hide_flags
 from hermes_cli.sqlite_safe_read import LiveConnectionError, offline_file_access

@@ -10,7 +10,7 @@ import re
 import asyncio
 import time
 import urllib.parse
-from fastapi import APIRouter
+from hermes_cli.web_framework import APIRouter
 from hermes_cli.web_routers._common import (
     REDACTED_CREDENTIAL_WRITE_DETAIL, http_failure, is_redacted_credential_preview,
     redacted_credential_preview, scoped_to_thread,
@@ -23,7 +23,7 @@ from hermes_cli.web_server_config import (
 from hermes_cli.web_server_profiles import (
     _approval_mode_of, _broadcast_gateway_session_info, _is_other_profile, _parse_model_entries,
 )
-from fastapi import HTTPException, Request
+from hermes_cli.web_framework import HTTPException, Request
 from hermes_cli.config import DEFAULT_CONFIG, OPTIONAL_ENV_VARS, read_raw_config, require_readable_config_before_write, custom_endpoint_key_env, coerce_provider_id, find_provider_entry, get_compatible_custom_providers, _ENV_REF_RE, _deep_merge
 from hermes_cli.config_providers import _canonical_api_mode, _custom_provider_entry_to_provider_config
 from hermes_cli.web_models import ConfigUpdate, EnvVarUpdate, EnvVarDelete, EnvVarReveal, CustomEndpointUpdate

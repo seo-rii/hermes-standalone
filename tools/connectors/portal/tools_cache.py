@@ -8,7 +8,7 @@ import json
 import time
 from typing import Callable, Literal, Protocol
 
-from pydantic import ValidationError
+from hermes_platform.models import ValidationError
 
 from hermes_constants import get_hermes_home
 from tools.connectors.gateway.errors import GatewayAuthError, GatewayUnavailable, ToolGatewayError

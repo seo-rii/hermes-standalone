@@ -903,6 +903,9 @@ class CLISessionMixin:
             from hermes_cli.terminal_breadcrumbs import write_breadcrumb
 
             write_breadcrumb(self.session_id)
+        with contextlib.suppress(OSError):
+            from hermes_cli.standalone_terminal import write_active_session
+            write_active_session(self.session_id)
 
     def _is_session_yolo_active(self) -> bool:
         """Whether YOLO bypass is on for this session: reads ``tools.approval._session_yolo``

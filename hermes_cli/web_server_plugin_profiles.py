@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import Any, Callable, Iterator, Optional
 from urllib.parse import parse_qsl, urlencode
 
-from fastapi.responses import JSONResponse, Response
+from hermes_cli.web_framework import JSONResponse, Response
 from starlette import status
 from starlette._utils import get_route_path
 from starlette.websockets import WebSocket
@@ -184,7 +184,7 @@ def plugin_request_scope(scope) -> Iterator[None]:
     """Bind a plugin request's ``?profile=`` selection for its routing decision (the route
     dependency binds it again for the handler). An unknown profile binds nothing: the route
     dependency answers it as for any other route."""
-    from fastapi import HTTPException
+    from hermes_cli.web_framework import HTTPException
     from hermes_cli.web_server_profiles import _config_profile_scope, _is_current_profile
     profile = dict(parse_qsl(scope.get("query_string", b"").decode("latin-1"))).get("profile")
     with ExitStack() as stack:

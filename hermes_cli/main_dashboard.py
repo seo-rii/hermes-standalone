@@ -991,15 +991,15 @@ def _route_named_profile_dashboard(
         f"Routing to the machine dashboard (profile '{_launch_profile}' "
         f"preselected). Use --isolated for a dedicated per-profile server."
     )
-    reexec_argv = [
-        sys.executable, "-m", "hermes_cli.main",
+    from hermes_cli.runtime_module import python_module_command
+    reexec_argv = python_module_command("hermes_cli.main", [
         "-p", "default",
         # Preserve the lean serve path so a named-profile `serve` doesn't
         # silently rebuild the UI as `dashboard`.
         "serve" if _headless_backend else "dashboard",
         "--port", str(args.port),
         "--host", args.host,
-        "--open-profile", _launch_profile]
+        "--open-profile", _launch_profile])
     for enabled, extra in (
         (_ssh_owner_nonce, ["--ssh-owner-nonce", _ssh_owner_nonce]),
         (_token_file, ["--ssh-session-token-file", _token_file]),
@@ -1044,6 +1044,13 @@ def _resolve_dashboard_web_dist(args, _headless_backend: bool) -> None:
     skip_build = getattr(args, "skip_build", False)
     if _headless_backend:
         os.environ["HERMES_SERVE_HEADLESS"] = "1"  # set before web_server import
+    elif (runtime := sys.modules.get("standalone.runtime")) is not None and runtime.is_active_bundle(PROJECT_ROOT):
+        dist = Path(os.environ.get("HERMES_WEB_DIST", PROJECT_ROOT / "hermes_cli" / "web_dist")).expanduser()
+        if not (dist / "index.html").is_file():
+            print(f"No dashboard assets found at: {dist}", file=sys.stderr)
+            print("Use a standalone artifact containing the web assets, or set HERMES_WEB_DIST to an existing build.", file=sys.stderr)
+            raise SystemExit(1)
+        os.environ["HERMES_WEB_DIST"] = str(dist.resolve())
     elif "HERMES_WEB_DIST" not in os.environ and not skip_build:
         if not _build_web_ui(PROJECT_ROOT / "web", fatal=True):
             sys.exit(1)

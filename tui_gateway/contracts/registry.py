@@ -12,7 +12,7 @@ import logging
 import os
 from dataclasses import dataclass
 
-from pydantic import ValidationError
+from tui_gateway.contracts.model import ValidationError
 
 from .base import Params, Payload, Result
 

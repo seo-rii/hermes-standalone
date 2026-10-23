@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Annotated, Literal
 
-from pydantic import Field, model_validator
+from tui_gateway.contracts.model import Field, model_validator
 
 from .base import Result, WireEnum
 from .common import ConnectorOwner, ProfileParams

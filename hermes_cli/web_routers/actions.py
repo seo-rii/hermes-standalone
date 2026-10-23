@@ -14,7 +14,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, Request
+from hermes_cli.web_framework import APIRouter, HTTPException, Request
 
 from hermes_cli.config import format_docker_update_message, recommended_update_command_for_method
 from hermes_cli.update_contract import COMMIT_BUILD_UPDATE_MESSAGE, is_commit_build

@@ -9,7 +9,7 @@ import re
 import sys
 import threading
 from contextlib import contextmanager, nullcontext
-from fastapi import HTTPException
+from hermes_cli.web_framework import HTTPException
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 from hermes_cli.config import DEFAULT_CONFIG, get_process_hermes_home

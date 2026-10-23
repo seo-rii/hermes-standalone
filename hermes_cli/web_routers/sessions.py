@@ -14,9 +14,9 @@ import time
 from pathlib import Path
 from typing import Callable, List, Optional
 
-from fastapi import APIRouter, HTTPException, Query, Request
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import StreamingResponse
+from hermes_cli.web_framework import APIRouter, HTTPException, Query, Request
+from hermes_cli.web_framework import jsonable_encoder
+from hermes_cli.web_framework import StreamingResponse
 
 from hermes_cli.session_listing import subagent_listing_scope
 from hermes_cli.web_deps import late

@@ -10,7 +10,7 @@ import time
 from typing import Any, Dict, List, Optional
 
 import hermes_yaml as yaml
-from fastapi import APIRouter, HTTPException, Query
+from hermes_cli.web_framework import APIRouter, HTTPException, Query
 
 from hermes_cli.config import get_config_path, read_raw_config
 from hermes_cli.web_deps import late

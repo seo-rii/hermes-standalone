@@ -16,7 +16,7 @@ import time
 from datetime import datetime, timezone, UTC
 from typing import Any, Callable, Dict, Optional
 
-from fastapi import APIRouter, HTTPException, Request
+from hermes_cli.web_framework import APIRouter, HTTPException, Request
 
 from hermes_cli.auth_constants import _codex_err
 from hermes_cli.web_deps import LateState, late

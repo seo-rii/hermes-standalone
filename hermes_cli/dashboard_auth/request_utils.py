@@ -5,8 +5,8 @@ import logging
 import time
 from typing import Callable, Optional
 
-from fastapi import Request
-from fastapi.responses import JSONResponse
+from hermes_cli.web_framework import Request
+from hermes_cli.web_framework import JSONResponse
 
 from hermes_cli.dashboard_auth import list_session_providers
 from hermes_cli.dashboard_auth.base import DashboardAuthProvider, ProviderError

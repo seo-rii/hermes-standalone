@@ -8,7 +8,7 @@ known to emit plus ``extra="allow"`` so a new upstream key never trips the stric
 
 from __future__ import annotations
 
-from pydantic import Field
+from tui_gateway.contracts.model import Field
 
 from .base import JsonValue, Params, Result, WireEnum
 from .registry import canonical_method, method

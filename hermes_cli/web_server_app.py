@@ -6,7 +6,7 @@ import logging
 import os
 import threading
 
-from fastapi import FastAPI
+from hermes_cli.web_framework import FastAPI
 from hermes_cli.pty_session import run_reaper
 
 logger = logging.getLogger("hermes_cli.web_server")

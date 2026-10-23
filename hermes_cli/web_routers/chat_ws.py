@@ -13,7 +13,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from fastapi import APIRouter, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from hermes_cli.web_framework import APIRouter, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 
 from agent.interrupt_scope import InterruptScope, bind_interrupt_scope
 from hermes_cli.active_sessions import ActiveSessionRegistryError, active_session_registry_snapshot

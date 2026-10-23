@@ -16,12 +16,12 @@ import json
 import os
 import urllib.parse
 import urllib.request
-from fastapi import APIRouter
+from hermes_cli.web_framework import APIRouter
 from hermes_cli.web_routers._common import http_failure
 from hermes_cli.web_deps import late
 from hermes_cli.web_server_chat import _ws_auth_ok, _ws_request_is_allowed
 from hermes_cli.web_server_gateway import _read_dashboard_json_response, _split_text_for_speak_stream
-from fastapi import HTTPException, WebSocket, WebSocketDisconnect
+from hermes_cli.web_framework import HTTPException, WebSocket, WebSocketDisconnect
 from hermes_cli.web_models import (
     AudioTranscriptionRequest,
     STTLeaseRequest,

@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from typing import Any, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from hermes_platform.models import BaseModel, ConfigDict, Field
 
 CONNECTORS_PATH = "v1/connectors"
 CONNECTOR_SEARCH_PATH = f"{CONNECTORS_PATH}/search"

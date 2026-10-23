@@ -24,7 +24,7 @@ from __future__ import annotations
 from enum import StrEnum
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict
+from tui_gateway.contracts.model import BaseModel, ConfigDict
 
 JsonValue = Any  # a JSON scalar/array/object the contract deliberately leaves open (renders ``unknown``)
 

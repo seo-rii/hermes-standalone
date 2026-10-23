@@ -6,7 +6,7 @@ from typing import Any, Callable, Mapping, Protocol
 from urllib.parse import quote
 
 import requests
-from pydantic import ValidationError
+from hermes_platform.models import ValidationError
 
 from hermes_cli.nous_account import resolve_nous_portal_base_url
 from tools.connectors.gateway.errors import (

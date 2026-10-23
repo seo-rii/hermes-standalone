@@ -9,7 +9,7 @@ log), or empty (``RegistryFull``). Turn each into what happened + what to do.
 
 from __future__ import annotations
 
-from fastapi import HTTPException
+from hermes_cli.web_framework import HTTPException
 
 from hermes_cli.pty_session import RegistryFull
 

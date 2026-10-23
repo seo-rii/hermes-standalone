@@ -6,7 +6,7 @@ import json
 import os
 import shlex
 import subprocess
-from fastapi import HTTPException
+from hermes_cli.web_framework import HTTPException
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 

@@ -8,7 +8,7 @@ import stat
 import urllib.request
 from contextlib import contextmanager
 from dataclasses import dataclass
-from fastapi import HTTPException, Request
+from hermes_cli.web_framework import HTTPException, Request
 from pathlib import Path
 from typing import Any, Dict, Iterator, Optional
 

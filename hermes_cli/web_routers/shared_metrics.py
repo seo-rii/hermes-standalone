@@ -10,8 +10,8 @@ from __future__ import annotations
 import asyncio
 from typing import Optional
 
-from fastapi import APIRouter
-from pydantic import BaseModel
+from hermes_cli.web_framework import APIRouter
+from hermes_cli.web_framework import BaseModel
 
 from hermes_cli.web_routers._common import config_write_scope, scoped_to_thread
 

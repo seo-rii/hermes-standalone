@@ -11,7 +11,7 @@ import subprocess
 import sys
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException
+from hermes_cli.web_framework import APIRouter, HTTPException
 
 from hermes_cli.web_deps import late
 from hermes_cli.web_server_profiles import _plugin_terminal_backend_rows

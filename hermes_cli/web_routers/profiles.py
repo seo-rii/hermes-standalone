@@ -26,7 +26,7 @@ from collections import OrderedDict
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
-from fastapi import APIRouter, HTTPException, Query
+from hermes_cli.web_framework import APIRouter, HTTPException, Query
 
 from hermes_cli.session_listing import subagent_listing_scope
 from hermes_cli.web_deps import late

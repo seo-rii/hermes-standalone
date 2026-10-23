@@ -885,7 +885,7 @@ def _status_update(sid: str, kind: str, text: str | None = None):
 def _image_meta(path: Path) -> dict:
     meta = {"name": path.name}
     with contextlib.suppress(Exception):
-        from PIL import Image
+        from hermes_platform.images import Image
         with Image.open(path) as img:
             width, height = (int(v) for v in img.size)
         # Rough attachment-display token estimate: 512px tiles at ~85 tokens/tile (cross-provider hint).
@@ -1789,7 +1789,7 @@ def _clone_pet_payload(payload: dict) -> dict:
 def _pet_row_frame_counts(spritesheet) -> dict:
     """Real frame count per concrete spritesheet row name."""
     with contextlib.suppress(Exception):
-        from PIL import Image
+        from hermes_platform.images import Image
         from agent.pet import constants, render
         with Image.open(spritesheet) as opened:
             image = opened.convert("RGBA")
@@ -1876,7 +1876,7 @@ def _pet_state_rows(spritesheet) -> list[str]:
     """Row taxonomy for the concrete sheet (legacy 8-row or current 9-row atlas), in the renderer's `PetState` names."""
     from agent.pet import constants
     with contextlib.suppress(Exception):
-        from PIL import Image
+        from hermes_platform.images import Image
         with Image.open(spritesheet) as image:
             row_count = max(1, image.height // constants.FRAME_H)
         return list(constants.state_rows_for_grid(row_count))
@@ -1904,7 +1904,7 @@ def _pet_gen_sweep(root, *, max_age_s: float = 3600.0) -> None:
 def _pet_png_data_uri(path, *, max_px: int = 160) -> str:
     """Downscaled PNG data URI for a draft image (small preview payload)."""
     import base64, io
-    from PIL import Image
+    from hermes_platform.images import Image
     with Image.open(path) as opened:
         img = opened.convert("RGBA")
     img.thumbnail((max_px, max_px), Image.LANCZOS)

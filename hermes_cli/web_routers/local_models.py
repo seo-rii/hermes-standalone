@@ -24,8 +24,8 @@ import uuid
 from pathlib import Path
 from typing import Any, Callable, Dict, Optional
 
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from hermes_cli.web_framework import APIRouter, HTTPException
+from hermes_cli.web_framework import BaseModel
 
 from starlette.concurrency import run_in_threadpool
 

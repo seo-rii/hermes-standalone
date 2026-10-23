@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import Field
+from tui_gateway.contracts.model import Field
 
 from hermes_cli.plugin_install_phase import InstallPhase
 

@@ -17,8 +17,8 @@ from datetime import datetime, timezone, UTC
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-from fastapi.responses import FileResponse
+from hermes_cli.web_framework import APIRouter, File, Form, HTTPException, UploadFile
+from hermes_cli.web_framework import FileResponse
 
 from hermes_cli.config import redact_key
 from hermes_cli.web_deps import late

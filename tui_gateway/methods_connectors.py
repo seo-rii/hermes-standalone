@@ -93,7 +93,7 @@ def _account_identity_error(rid):
 
 
 def _parse_params(rid, params, model):
-    from pydantic import ValidationError
+    from tui_gateway.contracts.model import ValidationError
 
     try:
         return model.model_validate(params), None
@@ -348,7 +348,7 @@ def _(rid, params):
 @method("connection.respond")
 @_connector_guard
 def _(rid, params):
-    from pydantic import ValidationError
+    from tui_gateway.contracts.model import ValidationError
 
     from tui_gateway.connector_refusals import INVALID_ANSWER
     from tui_gateway.contracts.connectors_operation import ConnectionAnswer

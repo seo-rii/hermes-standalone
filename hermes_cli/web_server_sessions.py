@@ -84,7 +84,7 @@ def _session_latest_descendant(session_id: str, db):
 
 def _session_mutation_context(request, profile):
     """Use the same principal and profile boundary for prepare and apply."""
-    from fastapi import HTTPException
+    from hermes_cli.web_framework import HTTPException
     from gateway.session_contract import Principal
     from hermes_cli.web_server import _has_valid_session_token
     from hermes_cli.web_server_cron import _cron_profile_home
@@ -157,7 +157,7 @@ def _mutate_offline_store(profile, actor, params):
     Runs under the exact owner lock (409 while any gateway owns the store, never a
     second writer beside it); revision/generation/idle guards are the gateway's own.
     """
-    from fastapi import HTTPException
+    from hermes_cli.web_framework import HTTPException
     from hermes_state_runtime import begin_runtime_epoch, mutate_runtime_session
 
     def run():
@@ -207,7 +207,7 @@ async def _mutate_via_gateway_owner(profile, actor, params):
     row's stored owner, so a cold row owned by a dashboard account only takes
     the mutation when the forward acts as that account.
     """
-    from fastapi import HTTPException
+    from hermes_cli.web_framework import HTTPException
     from hermes_cli.gateway_client import GatewayClientError, GatewayRPCError, connect_gateway
     from hermes_cli.gateway_runtime import discover_gateway_endpoint
     from hermes_cli.gateway_runtime_discovery import DiscoveryError
@@ -254,7 +254,7 @@ async def _mutate_session_request(request, profile, session_id, *, request_id,
                                   expected_revision, operation, payload, expected_generation=None):
     """Resolve the authenticated principal and owner; never open a second writer."""
     import sqlite3
-    from fastapi import HTTPException
+    from hermes_cli.web_framework import HTTPException
     from gateway.session_contract import SessionRef
     from gateway.session_mutations import mutate_session
     from hermes_cli.gateway_client import GatewayClientError
@@ -304,7 +304,7 @@ async def _mutate_session_request(request, profile, session_id, *, request_id,
 
 def _with_session_maintenance(profile, operation, *args):
     """Offline bulk actions reserve the exact owner lock through final DB close."""
-    from fastapi import HTTPException
+    from hermes_cli.web_framework import HTTPException
     from gateway.runtime_ownership import OwnershipConflict, exclusive_maintenance
     from hermes_cli.web_server_cron import _cron_profile_home
     from hermes_state import _default_db_path
@@ -338,7 +338,7 @@ def _open_session_db_at_path(db_path: Path, *, read_only: bool):
     """
     import sqlite3
 
-    from fastapi import HTTPException
+    from hermes_cli.web_framework import HTTPException
     from hermes_state import SessionDB
     from hermes_state_errors import is_transient_sqlite_error
     from hermes_state_registry import acquire

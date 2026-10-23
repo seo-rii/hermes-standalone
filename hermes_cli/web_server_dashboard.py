@@ -11,9 +11,9 @@ import threading
 import time
 from contextlib import contextmanager
 import hermes_yaml as yaml
-from fastapi import Depends, FastAPI, HTTPException, Request, WebSocketException
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
-from fastapi.staticfiles import StaticFiles
+from hermes_cli.web_framework import Depends, FastAPI, HTTPException, Request, WebSocketException
+from hermes_cli.web_framework import FileResponse, HTMLResponse, JSONResponse, Response
+from hermes_cli.web_framework import StaticFiles
 from starlette import status
 from starlette._utils import get_route_path
 from starlette.requests import HTTPConnection

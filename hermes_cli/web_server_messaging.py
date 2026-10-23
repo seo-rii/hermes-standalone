@@ -7,7 +7,7 @@ import os
 import subprocess
 import threading
 from dataclasses import dataclass
-from fastapi import HTTPException
+from hermes_cli.web_framework import HTTPException
 from pathlib import Path
 from typing import Any, Optional
 from hermes_cli.config import OPTIONAL_ENV_VARS, write_platform_config_field

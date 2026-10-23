@@ -37,9 +37,9 @@ from hermes_cli.config import load_config
 from hermes_cli.version_info import get_version_info
 
 try:
-    from fastapi import FastAPI, HTTPException, Request
-    from fastapi.middleware.cors import CORSMiddleware
-    from fastapi.responses import JSONResponse
+    from hermes_cli.web_framework import FastAPI, HTTPException, Request
+    from hermes_cli.web_framework import CORSMiddleware
+    from hermes_cli.web_framework import JSONResponse
 except ImportError:
     # First try lazy-installing the dashboard extras. Only the user actually
     # running `hermes dashboard` needs fastapi+uvicorn; lazy install keeps
@@ -47,11 +47,9 @@ except ImportError:
     try:
         from pm import ensure_import
         ensure_import("web")
-        from fastapi import (
-            FastAPI, HTTPException, Request,
-        )
-        from fastapi.middleware.cors import CORSMiddleware
-        from fastapi.responses import JSONResponse
+        from hermes_cli.web_framework import FastAPI, HTTPException, Request
+        from hermes_cli.web_framework import CORSMiddleware
+        from hermes_cli.web_framework import JSONResponse
     except Exception:
         raise SystemExit(
             "Web UI requires fastapi and uvicorn.\n"

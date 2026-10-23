@@ -25,7 +25,7 @@ import logging
 from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+from hermes_cli.web_framework import APIRouter, WebSocket, WebSocketDisconnect
 
 from hermes_cli.web_server_chat import _ws_request_is_allowed
 

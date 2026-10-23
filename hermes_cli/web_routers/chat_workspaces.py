@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from hermes_cli.web_framework import APIRouter, HTTPException
 
 from hermes_cli.web_deps import late
 from hermes_cli.web_routers._common import http_failure, scoped_to_thread
