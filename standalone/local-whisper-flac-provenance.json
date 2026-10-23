@@ -1,0 +1,141 @@
+{
+  "authoring_inputs": [
+    {
+      "bytes": 35786210,
+      "sha256": "8a032e8d8ebc73dec079364b9b4a6837638a2d106e8472314e685ffbf163e700",
+      "url": "https://files.pythonhosted.org/packages/27/3a/204dbfc3e08eb4cdc6e6ff57be02150bc44523ebdb50182d10025792ebd9/av-18.1.0-cp311-abi3-manylinux_2_28_x86_64.whl"
+    },
+    {
+      "bytes": 4451061,
+      "sha256": "47bfc286e1bc9de7ab4681fc2b575cd2460a66919d31ffe1bd5aa54fae531a28",
+      "url": "https://files.pythonhosted.org/packages/8d/f4/f22114d30d3435e38c6af2b4870f37b864403dca6ae7af747a289ce0a18e/av-18.1.0.tar.gz"
+    }
+  ],
+  "ffmpeg_source": {
+    "archive_bytes": 16894057,
+    "archive_sha256": "2ae7e42343cfffb811d15cfe98b6d005f082595fcdf034d30a4ff90cfed9f9c6",
+    "archive_url": "https://codeload.github.com/FFmpeg/FFmpeg/tar.gz/38b88335f99e76ed89ff3c93f877fdefce736c13",
+    "commit": "38b88335f99e76ed89ff3c93f877fdefce736c13",
+    "metadata_url": "https://api.github.com/repos/FFmpeg/FFmpeg/git/ref/tags/n8.1.2",
+    "source_directory": "FFmpeg-38b88335f99e76ed89ff3c93f877fdefce736c13",
+    "tag": "n8.1.2"
+  },
+  "fixture_sha256": "3ae55769831b5890f4e2349f6028d325a4eb7a52c69d966a9db892cea96f1e97",
+  "license": "GNU LGPL2.1-or-later; original FFmpeg notices and complete license retained in licenses/local-whisper-flac-notices.txt",
+  "native_oracle": {
+    "ffmpeg_version": "8.1.2",
+    "library_configurations": {},
+    "library_versions": {
+      "libavcodec": [
+        62,
+        28,
+        102
+      ],
+      "libavdevice": [
+        62,
+        3,
+        102
+      ],
+      "libavfilter": [
+        11,
+        14,
+        102
+      ],
+      "libavformat": [
+        62,
+        12,
+        102
+      ],
+      "libavutil": [
+        60,
+        26,
+        102
+      ],
+      "libswresample": [
+        6,
+        3,
+        102
+      ],
+      "libswscale": [
+        9,
+        5,
+        102
+      ]
+    },
+    "pyav_version": "18.1.0"
+  },
+  "rfc9639": {
+    "bytes": 225770,
+    "sha256": "8906404937771aba300e1f7810534efbb8ef722a5a9970e11beaee858c966a13",
+    "url": "https://www.rfc-editor.org/rfc/rfc9639.txt"
+  },
+  "runtime_sha256": "78d2411901dcf9870a3f865ab42372e889d51ec371b3829e81b08934bb70c9ac",
+  "schema": 1,
+  "scope": "Native FLAC files to exact original-depth signed planar integer PCM, with CRC8/CRC16/MD5/sample-count/frame-budget validation; single fixed output format and RFC/default or explicit channel mask. The caller handles containers/ID3 and SWR conversion. No native codec, subprocess or network operation at runtime.",
+  "source_files_sha256": {
+    "libavcodec/flac.c": "23cc2c8d957b48c3513c6a9b65ae587372ea459197aaf1fa099c48714139402c",
+    "libavcodec/flac.h": "aaaff0512c9514597503c5cbcf4cfe72f57fdeea8d91990db212df95c1c381ec",
+    "libavcodec/flac_parse.h": "6b2a1d24dce7c1815910e3d4c9666f91038f23cc010319b0fc447fb1036f55b8",
+    "libavcodec/flacdec.c": "2af469f5b9213df66bbc5d90619fcd293240855b97849ee447ee53405b67fe69",
+    "libavcodec/flacdsp.c": "df7cbc89fdbf998a31488b8dac0610c6bdef97d1808457c47af2cf7c6b5ae6b8",
+    "libavcodec/flacdsp_lpc_template.c": "d3128b4beed3bd1039e97cbc6eca7db6fe93d0e21dfeb0d10f01380d28c183ad",
+    "libavcodec/flacdsp_template.c": "235694b88b4b2297c30cf6bff2cde4f3eab81baa13601db96ae292c47e7bcb3b"
+  },
+  "validation": {
+    "bit_depths": [
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      31,
+      32
+    ],
+    "channels": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "comparison": "All original signed PCM samples, output sample rate, bit depth and channel mask exact",
+    "extra_file_checks": "FFmpeg does not enforce whole-file PCM MD5 and declared sample totals; these are additionally validated against RFC9639.",
+    "frame_features": [
+      "CRC8",
+      "CRC16",
+      "constant",
+      "verbatim",
+      "fixed orders0\u20134",
+      "LPC orders1\u201332",
+      "Rice4/5-bit parameters",
+      "Rice escape incl zero-width",
+      "wasted bits",
+      "33-bit decorrelated side data",
+      "all block/rate/depth header codes",
+      "variable coded sample numbers through6bytes",
+      "short final block",
+      "unknown total/MD5",
+      "explicit Vorbis channel masks"
+    ],
+    "invalid_file_cases": 26,
+    "native36_bit_number_limitation": "RFC9639 supports seven-byte coded numbers; pinned FFmpeg8.1.2 rejects this prefix. Three separate normative bitstream fixtures validate the Python support without claiming native parity on these headers.",
+    "native_encoded_files": 80,
+    "native_files": 257,
+    "native_original_pcm_samples": 1901543,
+    "native_output_formats": [
+      "s16",
+      "s32"
+    ],
+    "native_strict_rejections": 24,
+    "physical_audio_hardware": false,
+    "rfc36_bit_number_cases": 3,
+    "versions": [
+      "3.11.2",
+      "3.14.7"
+    ]
+  }
+}

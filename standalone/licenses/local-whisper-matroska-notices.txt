@@ -1,0 +1,51 @@
+Matroska/WebM audio and LZO1X Python adaptation for hermes-standalone (2026)
+Derived from FFmpeg8.1.2 pinned commit38b88335f99e76ed89ff3c93f877fdefce736c13.
+The adapted Python modules are LGPL-2.1-or-later. Complete license text:
+standalone/licenses/ffmpeg-LGPL-2.1.txt. All corresponding Python source ships.
+Native FFmpeg, PyAV and libopus are authoring-only reference tools.
+Codec sources and their notices are retained separately in this directory.
+
+Original source: libavformat/matroskadec.c
+/*
+ * Matroska file demuxer
+ * Copyright (c) 2003-2008 The FFmpeg Project
+ *
+ * This file is part of FFmpeg.
+ *
+ * FFmpeg is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * FFmpeg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with FFmpeg; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
+
+Original source: libavutil/lzo.c
+/*
+ * LZO 1x decompression
+ * Copyright (c) 2006 Reimar Doeffinger
+ *
+ * This file is part of FFmpeg.
+ *
+ * FFmpeg is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * FFmpeg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with FFmpeg; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
+

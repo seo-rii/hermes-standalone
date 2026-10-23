@@ -1,0 +1,41 @@
+Qualified Python port of FFmpeg 8.1.2 libswresample/WAVE algorithms.
+Original source: https://github.com/FFmpeg/FFmpeg/tree/38b88335f99e76ed89ff3c93f877fdefce736c13
+
+libswresample/resample.c, resample_template.c, swresample.c:
+Copyright (c) 2004-2012 Michael Niedermayer <michaelni@gmx.at>
+libswresample/rematrix.c, rematrix_template.c, options.c:
+Copyright (C) 2011-2013 Michael Niedermayer <michaelni@gmx.at>
+libswresample/audioconvert.c:
+Copyright (c) 2006 Michael Niedermayer <michaelni@gmx.at>
+libswresample/x86/resample.asm:
+Copyright (c) 2012 Michael Niedermayer
+Copyright (c) 2014 James Almer <jamrial <at> gmail.com>
+Copyright (c) 2014 Ronald S. Bultje <rsbultje@gmail.com>
+libavformat/wavdec.c:
+Copyright (c) 2001, 2002 Fabrice Bellard
+Copyright (c) 2009 Daniel Verkamp (Sony Wave64 and RF64)
+libavutil/mathematics.c:
+Copyright (c) 2005-2012 Michael Niedermayer <michaelni@gmx.at>
+The av_bessel_i0 numerical approximation retains the Boost Software License
+separately in boost-software-license-1.0.txt.
+
+FFmpeg-derived routines are free software under the GNU Lesser General
+Public License version 2.1 or, at your option, any later version. They are
+distributed without any warranty of merchantability or fitness. The full
+license is retained in ffmpeg-LGPL-2.1.txt. The corresponding Python source
+is embedded and available in standalone/local_whisper_audio*.py. The
+reviewed original C source archive URL and hashes are recorded in
+standalone/local-whisper-audio-provenance.json.
+
+Ogg Opus framing follows RFC7845 and Xiph Ogg framing documentation;
+the codec routines and their original notices remain in the separately
+qualified Opus port (licenses/opus*.txt, opus-provenance.json).
+The original Faster-Whisper interface is MIT, retained in faster-whisper.txt.
+PyAV is used only as an ignored native authoring oracle and is not shipped.
+
+WAVE IMA/Microsoft ADPCM decoder and step/adaptation tables:
+Copyright (c) 2001-2003 The FFmpeg project
+First version by Francois Revol <revol@free.fr>.
+The MS adaptation/coefficient tables are credited by FFmpeg to libsndfile.
+The corresponding routines are ported from libavcodec/adpcm.c,
+adpcm_data.c and adpcm_data.h under the same LGPL2.1-or-later license.

@@ -1,0 +1,428 @@
+{
+  "authoring": [
+    {
+      "path": "standalone/.cache/local_audio_vorbis_recovery_work/native_recovery.py",
+      "sha256": "d767e702fd628d1f86584c70a6df34f4d4c2b5f1cba18731bcbf556df8dea3aa"
+    },
+    {
+      "path": "standalone/.cache/local_audio_vorbis_recovery_work/check_recovery.py",
+      "sha256": "2e7735ba930f01712470ada373873c336295a06715240d543332533746ebe968"
+    },
+    {
+      "path": "standalone/.cache/local_audio_vorbis_recovery_work/pack_fixture.py",
+      "sha256": "87a125bfa6dfbd4e7331d7959147a11eb5ac18cbbcb70963c7c3af7a70803a80"
+    },
+    {
+      "path": "standalone/.cache/local_audio_vorbis_recovery_work/regress_original.py",
+      "sha256": "b01e408af840cafb74f83cde440dfb008599d80437536b793288fc907f9b263a"
+    },
+    {
+      "path": "standalone/.cache/local_audio_vorbis_recovery_work/check_proposal.py",
+      "sha256": "d45582472ebc2856b4dfc44e59c257a987390e07a645d77bedc11bbd10f840f0"
+    },
+    {
+      "path": "standalone/.cache/local_audio_vorbis_recovery_work/finish_proposal.py",
+      "sha256": "0a8cc279df6cd590dc22e314b3582fb9b01bab8a52ef339ad1061fc2dacd638a"
+    }
+  ],
+  "behavior": {
+    "original_frontend": "PyAV container.decode generator closes on InvalidDataError. Original _ignore_invalid_frames retries that closed generator and receives StopIteration. Preserve all PCM before the first invalid packet and stop; direct packet decoder remains able to decode later packets after its caller catches the error.",
+    "packet_type_bit_set": {
+      "errno": 1094995529,
+      "ffmpeg_error": "AVERROR_INVALIDDATA",
+      "pyav_error": "InvalidDataError",
+      "source": "libavcodec/vorbisdec.c:1627"
+    },
+    "safe_bit_reader": "Audio bits only use zero padding and clamp bit position to size_in_bits+8, matching get_bits.h SAFE SKIP_COUNTER. Header/setup parser remains strict."
+  },
+  "complexity": {
+    "functions": [
+      {
+        "branch_bound": 13,
+        "function": "_decode_container",
+        "path": "standalone/local_whisper_audio.py"
+      },
+      {
+        "branch_bound": 17,
+        "function": "decode_audio",
+        "path": "standalone/local_whisper_audio.py"
+      },
+      {
+        "branch_bound": 8,
+        "function": "probe_vorbis",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 3,
+        "function": "decode_vorbis",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 1,
+        "function": "__init__",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 17,
+        "function": "header",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 8,
+        "function": "_configure",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 3,
+        "function": "duration",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 20,
+        "function": "packet",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 2,
+        "function": "finish",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 1,
+        "function": "__init__",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 6,
+        "function": "read",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 1,
+        "function": "__init__",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 10,
+        "function": "page",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 8,
+        "function": "_check_output",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 4,
+        "function": "_end_link",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 11,
+        "function": "finish",
+        "path": "standalone/local_whisper_audio_vorbis.py"
+      },
+      {
+        "branch_bound": 4,
+        "function": "unpack_float",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 14,
+        "function": "codes_from_lengths",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 1,
+        "function": "__init__",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 1,
+        "function": "__init__",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 5,
+        "function": "read",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 2,
+        "function": "index",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 6,
+        "function": "__init__",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 9,
+        "function": "_lengths",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 10,
+        "function": "_lookup_vectors",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 7,
+        "function": "_tree",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 4,
+        "function": "read",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 2,
+        "function": "vector",
+        "path": "standalone/local_whisper_audio_vorbis_bits.py"
+      },
+      {
+        "branch_bound": 20,
+        "function": "__init__",
+        "path": "standalone/local_whisper_audio_vorbis_codec.py"
+      },
+      {
+        "branch_bound": 10,
+        "function": "__init__",
+        "path": "standalone/local_whisper_audio_vorbis_codec.py"
+      },
+      {
+        "branch_bound": 20,
+        "function": "__init__",
+        "path": "standalone/local_whisper_audio_vorbis_codec.py"
+      },
+      {
+        "branch_bound": 8,
+        "function": "decode",
+        "path": "standalone/local_whisper_audio_vorbis_codec.py"
+      },
+      {
+        "branch_bound": 7,
+        "function": "_spectrum",
+        "path": "standalone/local_whisper_audio_vorbis_codec.py"
+      },
+      {
+        "branch_bound": 8,
+        "function": "_residues",
+        "path": "standalone/local_whisper_audio_vorbis_codec.py"
+      },
+      {
+        "branch_bound": 8,
+        "function": "_inverse_coupling",
+        "path": "standalone/local_whisper_audio_vorbis_codec.py"
+      },
+      {
+        "branch_bound": 4,
+        "function": "_overlap",
+        "path": "standalone/local_whisper_audio_vorbis_codec.py"
+      },
+      {
+        "branch_bound": 2,
+        "function": "read",
+        "path": "standalone/local_whisper_audio_vorbis_codec.py"
+      },
+      {
+        "branch_bound": 2,
+        "function": "find_spec",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      },
+      {
+        "branch_bound": 9,
+        "function": "setUpClass",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      },
+      {
+        "branch_bound": 1,
+        "function": "tearDownClass",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      },
+      {
+        "branch_bound": 1,
+        "function": "_bytes",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      },
+      {
+        "branch_bound": 2,
+        "function": "_values",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      },
+      {
+        "branch_bound": 6,
+        "function": "_restore",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      },
+      {
+        "branch_bound": 4,
+        "function": "_packet_pcm",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      },
+      {
+        "branch_bound": 5,
+        "function": "test_direct_packet_decoder_matches_native_state_before_and_after_errors",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      },
+      {
+        "branch_bound": 4,
+        "function": "_frontend_case",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      },
+      {
+        "branch_bound": 3,
+        "function": "test_original_frontend_retains_prefix_and_stops_at_first_invalid_packet",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      },
+      {
+        "branch_bound": 8,
+        "function": "test_strict_file_refuses_invalid_packets_and_opted_prefix_is_native_exact",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      },
+      {
+        "branch_bound": 2,
+        "function": "test_lossless_pool_restores_the_complete_original_native_document",
+        "path": "standalone/tests/test_local_whisper_audio_vorbis_recovery.py"
+      }
+    ],
+    "maximum": 20,
+    "metric": "Inclusive AST branch bound; includes Boolean expressions and comprehensions."
+  },
+  "component": "Vorbis audio safe bitreader and original Faster Whisper invalid-frame prefix semantics.",
+  "fixture": {
+    "deterministic_repeat_identical": true,
+    "fixture_bytes": 462196,
+    "fixture_sha256": "5f2574fc2cfb6d7d673b46714a10dd2da2247802b9ded80ba3c6adc08f9e3933",
+    "metadata_sha256": "6b97a034cd8fc176ed292d4503eaa286f01bd15e62c8f31fd5904c2a5f935f63",
+    "native_bytes": 8152043,
+    "native_sha256": "9ac9c49e1f2d462fffa0bd6df455bcd5e4ee81afa32a9bdc72a05f382d0db077",
+    "pool_sha256": "cc3db7cd3a4ee063d8cb3676cca8980de158c643d161aadf55610f4d0f037002",
+    "raw_pool_bytes": 1165568
+  },
+  "integration": {
+    "common_frontend_change": "Pass stop_on_invalid=True to decode_vorbis only.",
+    "default_direct_decoder_behavior": "stop_on_invalid=False preserves error propagation.",
+    "dependencies": "Owned Ogg and AAC DSP/SBR dependencies and resampler unchanged.",
+    "prior1040_grid": "Not rerun. All 260 original source PCM files rechecked exactly, with the existing converter unchanged; original 1040 native references retained."
+  },
+  "limitations": [
+    "Bounded malformed-packet corpus, not an exhaustive malformed-file equivalence claim.",
+    "Native host float observations are retained separately; exact comparisons target GENERIC.",
+    "No pure Whisper neural model rerun or live microphone claim.",
+    "Fixture compression measures test data, not final single-file artifact size."
+  ],
+  "lossless_encoding": "Deduplicated original binary blobs, zero-aligned to four-byte words, reversible four-byte-plane shuffle, XZ with a 16 MiB dictionary, zlib metadata. Full original native JSON is restored byte-for-byte and SHA256 verified. Two independent encodings produce identical fixture bytes.",
+  "native_scope": {
+    "actual_invalid_data_errors": 14,
+    "direct_packet_state": "Finite GENERIC float32 output exact, including later packets after the caller catches a direct packet error.",
+    "frontend": "Original public frontend automatically opts into prefix stop; 128 original outputs within 1 S16 LSB at 16 kHz mono or 22.05 kHz stereo.",
+    "mutated_ogg_files": 64,
+    "opted_file": "All 14 prefix PCM results exact against native per-packet prefix.",
+    "original_frontend_cases": 128,
+    "original_profiles": [
+      "GENERIC",
+      "native host"
+    ],
+    "packet_events": 632,
+    "strict_file": "Default direct file decoder refuses the 14 invalid packet files.",
+    "truncation": "Original one-byte/truncated audio packets accepted with zero padding; header/setup readers remain strict."
+  },
+  "original_ffmpeg_commit": "38b88335f99e76ed89ff3c93f877fdefce736c13",
+  "original_native_fixture": {
+    "bytes": 8152043,
+    "path": "standalone/.cache/local_audio_vorbis_recovery_work/native-recovery.json",
+    "sha256": "9ac9c49e1f2d462fffa0bd6df455bcd5e4ee81afa32a9bdc72a05f382d0db077"
+  },
+  "original_private_proof_sha256": "960de31081f19319fa597cbd39d2e5604a4fc39e7e63a5498002e9c4b618087b",
+  "original_regressions": {
+    "both_python_versions": true,
+    "codebooks": 1210,
+    "floor_render_cases": 1600,
+    "header_errors": 23,
+    "rare_streams": 594,
+    "table_words": 8416,
+    "unmodified_original_methods": 10,
+    "whole_files": 260
+  },
+  "public_checks": [
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-vorbis-recovery-public311-bfr84rce.log",
+      "name": "vorbis-recovery-public311",
+      "seconds": 42.12362575531006,
+      "status": "validation-logs/hermes-vorbis-recovery-public311-bfr84rce.log.status.json"
+    },
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-vorbis-recovery-public314-qw5_y9w3.log",
+      "name": "vorbis-recovery-public314",
+      "seconds": 38.63475680351257,
+      "status": "validation-logs/hermes-vorbis-recovery-public314-qw5_y9w3.log.status.json"
+    }
+  ],
+  "qualification_receipts": [
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-vorbis-recovery-original311-_iwmcysk.log",
+      "name": "vorbis-recovery-original311",
+      "python": "311",
+      "receipt": "standalone/.cache/local_audio_vorbis_recovery_work/original-regression-311.json",
+      "receipt_sha256": "290058128f0859193a9d3e3de2823cbab56cd513ad4d6744186cff4ea6aefc62",
+      "seconds": 415.81443667411804,
+      "status": "validation-logs/hermes-vorbis-recovery-original311-_iwmcysk.log.status.json",
+      "tests": 10
+    },
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-vorbis-recovery-original314-7aysz1sp.log",
+      "name": "vorbis-recovery-original314",
+      "python": "314",
+      "receipt": "standalone/.cache/local_audio_vorbis_recovery_work/original-regression-314.json",
+      "receipt_sha256": "14bf4248d2c0f224c47809b8ddfc1d68486b188b5a577373f7449a21f69285fa",
+      "seconds": 451.6869065761566,
+      "status": "validation-logs/hermes-vorbis-recovery-original314-7aysz1sp.log.status.json",
+      "tests": 10
+    },
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-vorbis-recovery-proposal311-m2zynuzz.log",
+      "name": "vorbis-recovery-proposal311",
+      "python": "311",
+      "receipt": "standalone/.cache/local_audio_vorbis_recovery_work/proposal-qualified-311.json",
+      "receipt_sha256": "b0aeedf6e741e96ff11d0b43aad802bcb2257e0027950d12c11eebf3f1b69723",
+      "seconds": 63.67764163017273,
+      "status": "validation-logs/hermes-vorbis-recovery-proposal311-m2zynuzz.log.status.json",
+      "tests": 4
+    },
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-vorbis-recovery-proposal314-cfz59_3p.log",
+      "name": "vorbis-recovery-proposal314",
+      "python": "314",
+      "receipt": "standalone/.cache/local_audio_vorbis_recovery_work/proposal-qualified-314.json",
+      "receipt_sha256": "dfc6c21caa88c9e01f2beca4c2626847a8c6d212b3ddfa15a1fd3e81864c143f",
+      "seconds": 61.64834499359131,
+      "status": "validation-logs/hermes-vorbis-recovery-proposal314-cfz59_3p.log.status.json",
+      "tests": 4
+    }
+  ],
+  "schema": 1,
+  "sources": [
+    {
+      "path": "standalone/.cache/local_audio_work/FFmpeg-38b88335f99e76ed89ff3c93f877fdefce736c13/libavcodec/get_bits.h",
+      "sha256": "95b0adcce85eadad9b98719658c049f4fe00bac2846ec27a2309a17bc03033c4"
+    },
+    {
+      "path": "standalone/.cache/local_audio_work/FFmpeg-38b88335f99e76ed89ff3c93f877fdefce736c13/libavcodec/vorbisdec.c",
+      "sha256": "31482e9e88c0e5603e7b21cf5c658e944a5b63af798192152581c338b565fe71"
+    },
+    {
+      "path": "standalone/.cache/local_whisper_work/review/faster_whisper/audio.py",
+      "sha256": "60a1d8638f718cbf6d245aed3e5a5aa61c1f822a0b0fe9b48a7c928d47c23909"
+    }
+  ],
+  "status": "Public original closed-generator prefix and safe audio bitreader behavior; root-reviewed proposal and public checks pass both interpreters."
+}

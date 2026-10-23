@@ -1,0 +1,397 @@
+{
+  "api": "decode_vorbis(data, max_frames=None, max_seconds=3600) -> (source_rate, planar_float32, fltp, channel_mask_or_None)",
+  "dependencies": {
+    "local_whisper_audio_aac_dsp.py": {
+      "bytes": 6665,
+      "sha256": "c49814ee025f3bdde728d21729701b6121258468eecab2dfe69164b604755a07"
+    },
+    "local_whisper_audio_aac_sbr_transform.py": {
+      "bytes": 7169,
+      "sha256": "fd4f157ab2e29209d07371f17fb40bea09ee13afb3128290ab4d001f3f0d720d"
+    },
+    "local_whisper_audio_aac_sbr_transform_tables.py": {
+      "bytes": 46748,
+      "sha256": "ba0311a23fed0037912e397589206d65303983237e19282810dd605e9c0705f6"
+    },
+    "local_whisper_audio_ogg.py": {
+      "bytes": 8734,
+      "sha256": "40ca1401c4b5c4d240a98a12e284a583fecf14b9c2fdfeae72d1ad538db39458"
+    }
+  },
+  "error_contract": "VorbisError.invalid_frame marks only decoder-initialization INVALIDDATA after successful source Ogg ID and reverse setup duration-parser validation. Original Faster-Whisper filters all such failed frames and returns empty normalized float32; demux/open failures remain unmarked errors.",
+  "fixture": {
+    "bytes": 10944066,
+    "compressed_pcm_bytes": 6844416,
+    "compression": "Exact native per-plane PCM byte deduplication, reversible four-byte-column shuffle and XZ. Every original PCM byte and canonical native record is restored and SHA-checked; no quantization or golden removal.",
+    "distinct_blobs": 2713,
+    "format": "native-pcm-deduplicate-byteplanes4-xz-v1",
+    "metadata_sha256": "41c6547aa4516e727755f88a223e2226299605bc17cd9bc068be2027162c190b",
+    "original_pcm_bytes": 67648112,
+    "originals": {
+      "container": {
+        "bytes": 8058646,
+        "canonical_sha256": "ce8a691d9f96195f72f2e5aba15c09268258231215eda00f1730d53ad9954b29",
+        "path": "containers-native.json",
+        "sha256": "c8ab176016fdcc451fdff51d239356e291405209e512ae0cef1cfe8cec212d61"
+      },
+      "ffmpeg": {
+        "bytes": 2466502,
+        "canonical_sha256": "973f29f8f977436ccf86aea84b0672e72bcfeda1aa009ea10e384826c2390d9b",
+        "path": "ffmpeg-native.json",
+        "sha256": "5ad589c62cf8322e97c5de2fefc2cf5dd03ba83d6414021fc21a556377f636d4"
+      },
+      "frontend_headers": {
+        "bytes": 5143,
+        "canonical_sha256": "71686e60c7197ce5fadd7c5d1e2edd6e6f3e5be216d8320c584121a03857ca2b",
+        "path": "frontend-header-native.json",
+        "sha256": "c8f6ae4868812c62588e96539e65c0f6e62b7d932e1b17d387a9b68b2c1f3857"
+      },
+      "headers": {
+        "bytes": 22836,
+        "canonical_sha256": "94c6df8c4ba7eb46f528f0fdc86253424d3c60dd30dedebf3fc17b7732e9558e",
+        "path": "invalid-native.json",
+        "sha256": "a1a48ef0a9a729a10a5ba87b162030b75289f359e11edf901dd8f3329b15a441"
+      },
+      "syntax_blocks": {
+        "bytes": 1110647,
+        "canonical_sha256": "90ffd5d03f1a5a2f4ca1a2174f08407c9fe02fdc5e978ec3e1620f3a85ab4fe8",
+        "path": "synthetic-blocks-native.json",
+        "sha256": "8fc50402f7edd1ab238d12602bd3fa729858fec968131404da2883e474a9b684"
+      },
+      "syntax_finite": {
+        "bytes": 23731607,
+        "canonical_sha256": "baf1855d00ea0ba8abd9febbb02a87bf45c5ce78c40b6cd1ae10256f5c689f2d",
+        "path": "synthetic-finite-native.json",
+        "sha256": "184a5fbbb75ed1fb2c2a0917ca43566ef921b183d6aff75faee47db08965c143"
+      },
+      "syntax_singular": {
+        "bytes": 23731607,
+        "canonical_sha256": "03a1c1c6199a00f2d3ade99096102f09a0d6247b89533f568ed0da212327bfe1",
+        "path": "synthetic-native.json",
+        "sha256": "acfa561150d52508597e53ce89383ce4a322cb9b16de6604ee876680ff90de26"
+      },
+      "units": {
+        "bytes": 1767828,
+        "canonical_sha256": "49ff7e35706a2759f8132b932aa6c8d02b869ff8697b1916923b7aa0ea5d3b07",
+        "path": "units-native.json",
+        "sha256": "fd3a1e419db5c076f58bd53187f26e372d51a7ad463f69d5534bee66b0139f40"
+      },
+      "xiph": {
+        "bytes": 35874513,
+        "canonical_sha256": "89ad2c2c125aa46adab75e8d2c30439e287abddb9ae7897a4b413b484393c980",
+        "path": "native-full.json",
+        "sha256": "c44f09a2ffccf017501f16ee76fe6e7783357d18e1e4506d26c9c9eefc80bbc2"
+      }
+    },
+    "path": "standalone/tests/fixtures/local_whisper_audio_vorbis.json",
+    "pool_sha256": "5c79d2a366c055fcfa3cbf30994f009714534538290768e75fd8c7c872c357bd",
+    "pooled_pcm_bytes": 17233220,
+    "sha256": "afdd32e37908fd1782fad0dafbce657bc6f3f255678d0a66fd3c7c67ef41e0c2"
+  },
+  "format_version": 1,
+  "implementation": "Standard-library Python Vorbis I decoder; source-order float32 GENERIC AVTX, floor, residue, coupling and retained overlap; no native or process runtime.",
+  "license": {
+    "bytes": 13993,
+    "complete_license": "standalone/licenses/ffmpeg-LGPL-2.1.txt",
+    "complete_license_sha256": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30",
+    "license": "LGPL-2.1-or-later with retained MIT Ogg source notice",
+    "path": "standalone/licenses/local-whisper-vorbis-notices.txt",
+    "sha256": "a2b4fafb06d62e2cbd0720bfa555b20f003885858f1806ccfd3d4249a0d4159a"
+  },
+  "limits": [
+    "Public container entry supports Ogg Vorbis I. Other Ogg codecs and Vorbis in other containers are not implicitly claimed.",
+    "Lookup2 and nonzero mapping/time transforms are rejected at the original pinned decoder boundary; lookup0/1, floor0/1 and residue0/1/2 are implemented.",
+    "Compatible Ogg chains retain the original decoder overlap/header history. Output rate/channel/layout changes are rejected for the fixed-format Faster-Whisper consumer.",
+    "Ogg page CRC, packet continuation and sequence are checked. Corrupt/truncated streams may raise ValueError where native FFmpeg tries concealment.",
+    "Singular source-valid floor0 LSP products can produce original NaN/infinity values. Those native cases remain in qualification and are not silently discarded.",
+    "A source-rate frame/seconds limit bounds decoded output; this Python GENERIC implementation has no real-time throughput guarantee."
+  ],
+  "modules": {
+    "local_whisper_audio_vorbis.py": {
+      "bytes": 10643,
+      "sha256": "13b3ace4cc591641b277bc6738ec7f8f31c0b593ce43e8638c9ed962299ab6c0"
+    },
+    "local_whisper_audio_vorbis_bits.py": {
+      "bytes": 6558,
+      "sha256": "522b83a78cfccc6bcd43d78742e88d110526becaee3be7281f1f58d538d70b4b"
+    },
+    "local_whisper_audio_vorbis_codec.py": {
+      "bytes": 9911,
+      "sha256": "a77ec415fc8c649db2f4fe593168fd25518cfc5b7b76742be7f7caca5a8076d2"
+    },
+    "local_whisper_audio_vorbis_floor.py": {
+      "bytes": 8375,
+      "sha256": "69979955783d99335bd091c7698fa909a7102cec1d82d4ae89b1a679c4df3bf6"
+    },
+    "local_whisper_audio_vorbis_residue.py": {
+      "bytes": 4647,
+      "sha256": "ca0140db2d57682bc40e68868fd411767a33e38cce9214a04521e64e5a04e22b"
+    },
+    "local_whisper_audio_vorbis_tables.py": {
+      "bytes": 39367,
+      "sha256": "b8e8d5450045badff9a635dbcc25b4573cb0bebc8b4630b61bbfa4f583ad689c"
+    }
+  },
+  "numerical_profile": {
+    "comparison": "Every finite PCM value equals the original GENERIC reference; signed zeros compare by value. Original NaN/infinity outputs are preserved by classification, without a NaN-payload promise.",
+    "max_original_generic_host_error": 2.384185791015625e-07,
+    "original_generic_host_changed_values": 1308440,
+    "reference": "Pinned actual FFmpeg native CPU flags0 / GENERIC with source-order float32 operations.",
+    "warning": "Native SIMD profiles have different arithmetic order. Retained host goldens are not misrepresented as universal bit parity."
+  },
+  "source": {
+    "ffmpeg": {
+      "archive_bytes": 16894057,
+      "archive_sha256": "2ae7e42343cfffb811d15cfe98b6d005f082595fcdf034d30a4ff90cfed9f9c6",
+      "archive_url": "https://codeload.github.com/FFmpeg/FFmpeg/tar.gz/38b88335f99e76ed89ff3c93f877fdefce736c13",
+      "commit": "38b88335f99e76ed89ff3c93f877fdefce736c13",
+      "metadata_url": "https://api.github.com/repos/FFmpeg/FFmpeg/git/ref/tags/n8.1.2",
+      "source_directory": "FFmpeg-38b88335f99e76ed89ff3c93f877fdefce736c13",
+      "tag": "n8.1.2"
+    },
+    "files": {
+      "libavcodec/vorbis.c": {
+        "bytes": 6382,
+        "sha256": "c3fda10300e23b09932ed0b8c89af02be46821e37ca9740c305d7a79e5216a10"
+      },
+      "libavcodec/vorbis.h": {
+        "bytes": 1571,
+        "sha256": "08c05e80eee1cb4ffba15a211d4f37231cfe93bb1193207b9eabc84ef4e8e5dd"
+      },
+      "libavcodec/vorbis_data.c": {
+        "bytes": 137138,
+        "sha256": "404e2fdbf9bcf7fd39207d9b96095aba8e45127e68da598bb77f5d80c4a86f0a"
+      },
+      "libavcodec/vorbis_data.h": {
+        "bytes": 1235,
+        "sha256": "2229493faaee6a562a91c8352e04844f7a1b2633c9d58d9552814c5754d0f1ca"
+      },
+      "libavcodec/vorbis_parser.c": {
+        "bytes": 10800,
+        "sha256": "36b1b3fdd7015e95ed397078cf37e6c3861ae7ce6128845defb661078728099d"
+      },
+      "libavcodec/vorbisdec.c": {
+        "bytes": 71004,
+        "sha256": "31482e9e88c0e5603e7b21cf5c658e944a5b63af798192152581c338b565fe71"
+      },
+      "libavcodec/vorbisdsp.c": {
+        "bytes": 1816,
+        "sha256": "dfcdf80fe9e9ae28031235b36bc3a9b4f9da71acaaa3feab53fc4aa12256ef81"
+      },
+      "libavformat/oggparsevorbis.c": {
+        "bytes": 19839,
+        "sha256": "a11ec3562e733f21565c491ab56b7f1d4a6865fc1ddbdc372ed9cb29b13ca7fb"
+      },
+      "libavutil/float_dsp.c": {
+        "bytes": 4604,
+        "sha256": "349126b23468d502bfa65bb31710600a8e5eb614004c2bcfd5be8545a58fe3d8"
+      },
+      "libavutil/tx_float.c": {
+        "bytes": 827,
+        "sha256": "52f854b317d0e4fc8360332a0b1a478af6adb1c8a5a0bd4c6c6af880106ce75c"
+      },
+      "libavutil/tx_template.c": {
+        "bytes": 90636,
+        "sha256": "b3c4becdffefd82321069775b80bb542e577fb6ad229ea6bda3570d98d76e130"
+      }
+    },
+    "native_oracle": {
+      "inputs": [
+        {
+          "bytes": 35786210,
+          "sha256": "8a032e8d8ebc73dec079364b9b4a6837638a2d106e8472314e685ffbf163e700",
+          "url": "https://files.pythonhosted.org/packages/27/3a/204dbfc3e08eb4cdc6e6ff57be02150bc44523ebdb50182d10025792ebd9/av-18.1.0-cp311-abi3-manylinux_2_28_x86_64.whl"
+        },
+        {
+          "bytes": 4451061,
+          "sha256": "47bfc286e1bc9de7ab4681fc2b575cd2460a66919d31ffe1bd5aa54fae531a28",
+          "url": "https://files.pythonhosted.org/packages/8d/f4/f22114d30d3435e38c6af2b4870f37b864403dca6ae7af747a289ce0a18e/av-18.1.0.tar.gz"
+        }
+      ],
+      "versions": {
+        "ffmpeg_version": "8.1.2",
+        "library_configurations": {},
+        "library_versions": {
+          "libavcodec": [
+            62,
+            28,
+            102
+          ],
+          "libavdevice": [
+            62,
+            3,
+            102
+          ],
+          "libavfilter": [
+            11,
+            14,
+            102
+          ],
+          "libavformat": [
+            62,
+            12,
+            102
+          ],
+          "libavutil": [
+            60,
+            26,
+            102
+          ],
+          "libswresample": [
+            6,
+            3,
+            102
+          ],
+          "libswscale": [
+            9,
+            5,
+            102
+          ]
+        },
+        "pyav_version": "18.1.0"
+      }
+    },
+    "xiph_authoring_headers": [
+      {
+        "authoritative_hash_url": "https://ftp.osuosl.org/pub/xiph/releases/vorbis/SHA256SUMS",
+        "bytes": 1203792,
+        "sha256": "b33cc4934322bcbf6efcbacf49e3ca01aadbea4114ec9589d1b1e9d20f72954b",
+        "url": "https://ftp.osuosl.org/pub/xiph/releases/vorbis/libvorbis-1.3.7.tar.xz"
+      },
+      {
+        "authoritative_hash_url": "https://ftp.osuosl.org/pub/xiph/releases/ogg/SHA256SUMS",
+        "bytes": 429076,
+        "sha256": "c4d91be36fc8e54deae7575241e03f4211eb102afb3fc0775fbbc1b740016705",
+        "url": "https://ftp.osuosl.org/pub/xiph/releases/ogg/libogg-1.3.5.tar.xz"
+      }
+    ],
+    "xiph_authoring_libraries": {
+      "/usr/lib/x86_64-linux-gnu/libogg.so.0.8.5": {
+        "bytes": 38752,
+        "sha256": "e694b4995fcb1e3372029899504d1faf976d25af6d70f0939caa205ed383592f"
+      },
+      "/usr/lib/x86_64-linux-gnu/libvorbis.so.0.4.9": {
+        "bytes": 178088,
+        "sha256": "efe5d67767878529ab895d8185c89f971408b98416284936f087f172dac5db82"
+      },
+      "/usr/lib/x86_64-linux-gnu/libvorbisenc.so.2.0.12": {
+        "bytes": 694248,
+        "sha256": "39121c4b0e7864c7f10d99aca4945608fc134c227d9f736f278148c58587ee4f"
+      }
+    }
+  },
+  "source_surface": {
+    "block_sizes": [
+      64,
+      128,
+      256,
+      512,
+      1024,
+      2048,
+      4096,
+      8192
+    ],
+    "floor_types": [
+      0,
+      1
+    ],
+    "lookup_types": [
+      0,
+      1
+    ],
+    "mapping_types": [
+      0
+    ],
+    "residue_types": [
+      0,
+      1,
+      2
+    ]
+  },
+  "verification": {
+    "codebook_cases": 1210,
+    "guard": "NoNative meta-path guard covers candidate imports and every test, blocking native SDKs, ctypes, subprocess and audio executables.",
+    "independent_ffmpeg_encoder_files": 21,
+    "ogg_page_granule_header_chain_cases": 71,
+    "original_accepted_unknown_headers": 1,
+    "original_faster_whisper_empty_header_cases": 10,
+    "original_faster_whisper_raised_header_cases": 13,
+    "original_floor1_lines": 1600,
+    "original_frontend_component": {
+      "actual_common_dispatch": "Root-owned separate public frontend checks; no claim that the private component grid replaced dispatch tests.",
+      "boundary": "Vorbis decode once per input + actual public convert_audio grid",
+      "cases": 1040,
+      "files": 260,
+      "max_error_lsb": 1,
+      "max_host_profile_difference_lsb": 1
+    },
+    "original_rejected_headers": 23,
+    "original_table_words": 8416,
+    "public_checks": [
+      {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-local-vorbis-refactor311-final-cllaiz2r.log",
+        "methods": 10,
+        "name": "local-vorbis-refactor311-final",
+        "seconds": 476.6216378211975
+      },
+      {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-local-vorbis-refactor314-final-zkm3xww9.log",
+        "methods": 10,
+        "name": "local-vorbis-refactor314-final",
+        "seconds": 547.5041880607605
+      }
+    ],
+    "qualification_pending": false,
+    "rare_finite_streams": 276,
+    "rare_syntax_frames": 4752,
+    "rates": [
+      8000,
+      16000,
+      22050,
+      32000,
+      44100,
+      48000,
+      96000
+    ],
+    "retained_singular_streams": 276,
+    "signals": [
+      "silence",
+      "tone",
+      "deterministic noise"
+    ],
+    "static_complexity": {
+      "functions": 49,
+      "maximum": 20,
+      "metric": "Conservative AST count including branches, expression branches, comprehensions, boolean operands and nested functions",
+      "required_maximum": 20
+    },
+    "supplemental_block_streams": 42,
+    "syntax_channels": [
+      1,
+      2,
+      3,
+      6,
+      9
+    ],
+    "trained_staged_frontend": {
+      "candidate_frontend_sha256": "cdfeca0ff31bd64e2991060b00c46d4126313ae3ee33c8a1db98fc5e7c9865c1",
+      "cases": 2,
+      "max_error_lsb": 1.0,
+      "model": "Actual trained tiny.en / CT2 float32",
+      "scope": "Actual original file consumer and candidate file frontend/controller compared through the same true trained CT2 engine; full pure-engine E2E is separately qualified."
+    },
+    "xiph_channel_counts": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "xiph_files": 168
+  }
+}

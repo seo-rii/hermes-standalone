@@ -1,0 +1,169 @@
+{
+  "codec": "MPEG-1/2/2.5 Layer III",
+  "contracts": {
+    "api": "decode_mp3(data, *, max_frames=None) -> (rate, planar_float, 'fltp', channel_mask)",
+    "channel_masks": {
+      "mono": 4,
+      "stereo": 3
+    },
+    "float_contract": "normalized IEEE-754 binary32 output without pre-SWR PCM16 quantization; double precision intermediate math",
+    "format_change": "explicit ValueError for rate/channel changes; MPEG Layer I/II are separate codecs and are rejected",
+    "free_format": "Four native minimp3 scalar authoring cases; pinned PyAV mp3 demuxer rejects these free-format streams. The Python decoder supports the minimp3-derived free-format superset.",
+    "invalid_input": "Strict errors for malformed headers, truncated frames, impossible entropy/scalefactor lengths, missing bit reservoir and bad CRC. Native FFmpeg may conceal or skip corrupt packets instead.",
+    "mpeg25_mixed_8khz": "Uses pinned FFmpeg long scalefactor/reorder and 36-line antialias/IMDCT boundaries, rather than the incompatible minimp3 8k mixed table. FFmpeg marks this rare combination as requesting a sample.",
+    "native_runtime": "none; native oracle libraries are ignored authoring inputs only",
+    "probe_api": "probe_mp3(data) -> bool: complete consistent frame chain after tags/junk, with known-other-container rejection; CRC/entropy validated by decode_mp3",
+    "sample_budget": "max_frames counts output per channel at source sample rate"
+  },
+  "ffmpeg_reference_files": {
+    "COPYING.LGPLv2.1": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30",
+    "libavcodec/mpegaudio_parser.c": "c3ebefdce56d8ace2b13af332b4c3b47dbd66f658c2e5f1285edb58d3da68e9f",
+    "libavcodec/mpegaudiodec_common.c": "e6a415c3c47670217b49a97ca71adbbed4d98433d852e276539293465cb67151",
+    "libavcodec/mpegaudiodec_template.c": "b6006d76b4e80926ab3c473fafd32a8c6bedbe368c34d7a31e11b32767660e66",
+    "libavcodec/mpegaudiodecheader.c": "fdac326a769d9fc3dd4bd52bf46f0628c11469f43909a5714befb50657201464",
+    "libavcodec/mpegaudiodecheader.h": "8bd871413c866a7431595b61d13ee9254f972fe9948cc63e266625eeb06b1af6",
+    "libavcodec/mpegaudiodsp_template.c": "f00126a38287a2d95d04294420e20ecf67f2fa3a9bb5b10c4ccefd6159bc0907",
+    "libavformat/mp3dec.c": "2f398719c1566866d4f25c98337cf1440e9d62642b4f54b4bd2146b651636f22"
+  },
+  "ffmpeg_source": {
+    "archive_bytes": 16894057,
+    "archive_sha256": "2ae7e42343cfffb811d15cfe98b6d005f082595fcdf034d30a4ff90cfed9f9c6",
+    "archive_url": "https://codeload.github.com/FFmpeg/FFmpeg/tar.gz/38b88335f99e76ed89ff3c93f877fdefce736c13",
+    "commit": "38b88335f99e76ed89ff3c93f877fdefce736c13",
+    "metadata_url": "https://api.github.com/repos/FFmpeg/FFmpeg/git/ref/tags/n8.1.2",
+    "source_directory": "FFmpeg-38b88335f99e76ed89ff3c93f877fdefce736c13",
+    "tag": "n8.1.2"
+  },
+  "fixture": {
+    "compression": "Lossless exact-byte deduplication and byte-column shuffle of exact native IEEE754 float32 words, XZ/LZMA2 dictionary 8MiB; decoded with memory limit32MiB; separate zlib metadata. All bytes recover exactly to SHA256.",
+    "decoded_sha256": "d6cc4a46f430bf9b478241be9b3304bde5f391f3f4e782ada774c3ff4a10d03c",
+    "format": "native-float-planar-byte-shuffle-v2",
+    "metadata_sha256": "76177c6b43cf1a08056c6011c8aca9832333da128f5213545aa0f8f47196f35d",
+    "native_pcm_bytes": 10392724,
+    "native_pcm_sha256": "023acee4436e916af3adee32d03ac64d066c15a6d33aa0422020bb8dc427cf5d",
+    "path": "tests/fixtures/local_whisper_audio_mp3.json",
+    "sha256": "4ff4eb0598ce28eee6cbd4409962def9005b9d30bf71b6abf54b6d62b1807066"
+  },
+  "format": 1,
+  "license_notice": {
+    "path": "licenses/local-whisper-mp3-notices.txt",
+    "sha256": "bef9831984e444e0448e9a4a6de8b7d9cbd66b31a4c6f288ef43c72e55ea7bbd"
+  },
+  "minimp3_source": {
+    "commit": "ea99364f61c14656440e8d77e9c233ccf3124633",
+    "commit_date": "2026-07-27T17:59:32Z",
+    "commit_metadata_url": "https://api.github.com/repos/lieff/minimp3/commits/master",
+    "files": {
+      "LICENSE": {
+        "bytes": 6556,
+        "sha256": "6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01",
+        "url": "https://raw.githubusercontent.com/lieff/minimp3/ea99364f61c14656440e8d77e9c233ccf3124633/LICENSE"
+      },
+      "minimp3.h": {
+        "bytes": 76831,
+        "sha256": "57e437c5c1f0e8b243885d3929c8973b5e6c778451e0100ab4251d19915cb3ad",
+        "url": "https://raw.githubusercontent.com/lieff/minimp3/ea99364f61c14656440e8d77e9c233ccf3124633/minimp3.h"
+      },
+      "minimp3_ex.h": {
+        "bytes": 50696,
+        "sha256": "8437f3fc1d4d8ab2269a1624f5380a08df1967a048f8887789bae6e25db7db79",
+        "url": "https://raw.githubusercontent.com/lieff/minimp3/ea99364f61c14656440e8d77e9c233ccf3124633/minimp3_ex.h"
+      }
+    },
+    "repository": "https://github.com/lieff/minimp3"
+  },
+  "native_pyav_input": [
+    {
+      "bytes": 35786210,
+      "sha256": "8a032e8d8ebc73dec079364b9b4a6837638a2d106e8472314e685ffbf163e700",
+      "url": "https://files.pythonhosted.org/packages/27/3a/204dbfc3e08eb4cdc6e6ff57be02150bc44523ebdb50182d10025792ebd9/av-18.1.0-cp311-abi3-manylinux_2_28_x86_64.whl"
+    },
+    {
+      "bytes": 4451061,
+      "sha256": "47bfc286e1bc9de7ab4681fc2b575cd2460a66919d31ffe1bd5aa54fae531a28",
+      "url": "https://files.pythonhosted.org/packages/8d/f4/f22114d30d3435e38c6af2b4870f37b864403dca6ae7af747a289ce0a18e/av-18.1.0.tar.gz"
+    }
+  ],
+  "native_versions": {
+    "ffmpeg_version": "8.1.2",
+    "library_configurations": {},
+    "library_versions": {
+      "libavcodec": [
+        62,
+        28,
+        102
+      ],
+      "libavdevice": [
+        62,
+        3,
+        102
+      ],
+      "libavfilter": [
+        11,
+        14,
+        102
+      ],
+      "libavformat": [
+        62,
+        12,
+        102
+      ],
+      "libavutil": [
+        60,
+        26,
+        102
+      ],
+      "libswresample": [
+        6,
+        3,
+        102
+      ],
+      "libswscale": [
+        9,
+        5,
+        102
+      ]
+    },
+    "pyav_version": "18.1.0"
+  },
+  "qualification": {
+    "features": [
+      "all 30 legal pair Huffman tables and both count1 tables",
+      "MPEG1 and MPEG2/2.5 scalefactor compression, reuse, preflag and subblock gains",
+      "bit reservoir, MS and intensity stereo, long/start/short/stop/mixed blocks",
+      "CRC16 protected MPEG side information",
+      "Xing/Info and LAME/Lavf/Lavc start delay and end padding",
+      "VBR/ABR/CBR, ID3v2.2/2.3/2.4/footer, ID3v1/extended, APEv2",
+      "1 to 1153 sample gapless clips and long continuous VBR streams",
+      "decoded source-rate frame budget for known, unknown and forged Xing duration",
+      "strict reusable whole-chain probe; leading junk, false headers and APEv2 prefixes; other-container rejection"
+    ],
+    "float_test_absolute_tolerance": 2e-05,
+    "maximum_normalized_float_error": 6.556510925292969e-06,
+    "mpeg_sample_rates": [
+      8000,
+      11025,
+      12000,
+      16000,
+      22050,
+      24000,
+      32000,
+      44100,
+      48000
+    ],
+    "native_crc_rejections": 6,
+    "native_minimp3_freeformat_files": 4,
+    "native_pcm_samples": 3049821,
+    "native_pyav_files": 315,
+    "native_scalefactor_cases": 3168,
+    "other_explicit_rejections": 11,
+    "rate_channels_frame_counts": "exact for all native fixtures",
+    "scalefactor_relative_tolerance": 4e-07
+  },
+  "runtime_algorithm": "stdlib-only scalar entropy, inverse quantization, hybrid IMDCT and polyphase synthesis",
+  "runtime_sha256": {
+    "local_whisper_audio_mp3.py": "188afdaef0b6ab894a4c30e154d1989bfe0fd664d45b1ee1939b988a96ffefef",
+    "local_whisper_audio_mp3_dsp.py": "a799d41ef2a73c62f5ef807f00998421609b127e22b30edcdf440566e7febf65",
+    "local_whisper_audio_mp3_tables.py": "00e380a7901fa7b05a06dd855ed85d23f6ca835cf0f9b01b193d9292a8a7c890"
+  }
+}

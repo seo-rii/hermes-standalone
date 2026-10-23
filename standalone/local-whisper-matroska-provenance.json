@@ -1,0 +1,221 @@
+{
+  "component": "Matroska/WebM demux and actual Whisper Opus/Vorbis file frontend",
+  "fixtures": {
+    "local_whisper_matroska_lzo.json.zlib": {
+      "bytes": 444555,
+      "sha256": "9d939f4f8aa7b1c9d882caba5684c9729434174f8539152a46581747f31d960a"
+    },
+    "local_whisper_matroska_lzo_containers.json.zlib": {
+      "bytes": 673080,
+      "sha256": "d662ff0e8eaabaf3d3e4ddd96d0be78a965e929c50292a6ce99f7a2793edcd1d"
+    },
+    "local_whisper_matroska_lzo_containers_profiles.json.zlib": {
+      "bytes": 2008782,
+      "sha256": "7dca798ddb57399a01706f1dc911a456ba50b110e0a3093c2aec46cb323bd1b8"
+    },
+    "local_whisper_matroska_remux.json.zlib": {
+      "bytes": 5004348,
+      "sha256": "6c6fed1ed5507a6419898d722796547ae74d6b49684152d38ea88c37746cf540"
+    },
+    "local_whisper_matroska_remux_profiles.json.zlib": {
+      "bytes": 14342116,
+      "sha256": "8ccdcd18c8a82a7a1521b5565eb7df8e47060f7cb9bf986cdd5642dd34606cf8"
+    },
+    "local_whisper_matroska_variants.json.zlib": {
+      "bytes": 3631806,
+      "sha256": "253395140e73acb46f6256aa618ff7c643550650c731c84c8cfc3afdfe55edec"
+    },
+    "local_whisper_matroska_variants_profiles.json.zlib": {
+      "bytes": 10666891,
+      "sha256": "5e45464f7b9c935aced89aff9f890b8d5709c35ea4690d8ec432ac49501e3f69"
+    }
+  },
+  "full_parity_verified": false,
+  "license_notice": "standalone/licenses/local-whisper-matroska-notices.txt",
+  "maximum_observed_original_ffmpeg_pcm_error_lsb": {
+    "lzo-containers": {
+      "generic": 8746,
+      "host": 8746
+    },
+    "remux": {
+      "generic": 4587,
+      "host": 4587
+    },
+    "variants": {
+      "generic": 20509,
+      "host": 20509
+    }
+  },
+  "no_native_runtime_or_package_installer": true,
+  "open_gap": "Original FW/PyAV FFmpeg Opus decoder PCM is not equivalent to the libopus1.3.1 profile used by this port. Real voip remux fixtures differ up to4587LSB; synthetic unsupported-bzip packet cases up to20509LSB and compressed/laced cases up to8746LSB. These are retained observations, not relaxed original-FW conformance checks.",
+  "original_ffmpeg_commit": "38b88335f99e76ed89ff3c93f877fdefce736c13",
+  "original_sources": {
+    "libavcodec/decode.c": "eafcee430808383a2f6546fda9ee7ebf5569c022df7382924c526ef7ef9d845a",
+    "libavformat/matroska.c": "40eaeb64621cdc7cec3e42627fe81ad336ae8bf030bd5918e2b0c742972b7a34",
+    "libavformat/matroska.h": "64ea810800acd516c65ba1860755c2fdd14ba5283e1708cc73e650e6d889ceb1",
+    "libavformat/matroskadec.c": "45261fc3f0bc3f3cce0395966eeadfdacc4779d97fb4b31d2ae490a2ce99e093",
+    "libavutil/lzo.c": "3387377704e9b9402173b35c42ce32c68f796cc5d53b825657c25eaec66feee0",
+    "libavutil/lzo.h": "61e89928dee9d83030adececac06aa6c1ae2aada06c5682fde52c52015c53556"
+  },
+  "private_checks": [
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-matroska-remux-candidate311-ers6a29t.log",
+      "name": "matroska-remux-candidate311",
+      "seconds": 314.1783618927002,
+      "status": "validation-logs/hermes-matroska-remux-candidate311-ers6a29t.log.status.json"
+    },
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-matroska-remux-candidate314-8plg3pj6.log",
+      "name": "matroska-remux-candidate314",
+      "seconds": 289.808482170105,
+      "status": "validation-logs/hermes-matroska-remux-candidate314-8plg3pj6.log.status.json"
+    },
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-matroska-variants-candidate311-4h8k5gkq.log",
+      "name": "matroska-variants-candidate311",
+      "seconds": 248.80601048469543,
+      "status": "validation-logs/hermes-matroska-variants-candidate311-4h8k5gkq.log.status.json"
+    },
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-matroska-variants-candidate314-jst5a61m.log",
+      "name": "matroska-variants-candidate314",
+      "seconds": 242.60924410820007,
+      "status": "validation-logs/hermes-matroska-variants-candidate314-jst5a61m.log.status.json"
+    },
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-matroska-lzo-candidate311-r2431ers.log",
+      "name": "matroska-lzo-candidate311",
+      "seconds": 22.937178134918213,
+      "status": "validation-logs/hermes-matroska-lzo-candidate311-r2431ers.log.status.json"
+    },
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-matroska-lzo-candidate314-7nkptthk.log",
+      "name": "matroska-lzo-candidate314",
+      "seconds": 21.609290838241577,
+      "status": "validation-logs/hermes-matroska-lzo-candidate314-7nkptthk.log.status.json"
+    }
+  ],
+  "public_checks": [
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-matroska-public311-hn_k5gx9.log",
+      "name": "matroska-public311",
+      "seconds": 226.82198977470398,
+      "status": "validation-logs/hermes-matroska-public311-hn_k5gx9.log.status.json"
+    },
+    {
+      "exit_code": 0,
+      "log": "validation-logs/hermes-matroska-public314-1zlgb59g.log",
+      "name": "matroska-public314",
+      "seconds": 222.66953492164612,
+      "status": "validation-logs/hermes-matroska-public314-1zlgb59g.log.status.json"
+    }
+  ],
+  "publication_import_rebinding": {
+    "candidate_decode.py": {
+      "original_sha256": "e7f4011a595fbe197ca25f9346b9687ae734c0665129027588962fa785dafb6d",
+      "published": "local_whisper_audio_matroska.py",
+      "published_sha256": "50ff1f26ea085d45ad1c2bcdb1208bb41395abe704518039ca991ae6aeb2498c"
+    },
+    "candidate_demux.py": {
+      "original_sha256": "f26b3adcb9043ddb2c1a3c01730877484d857d3bd3a8e4d85fe258778e0b5e31",
+      "published": "local_whisper_audio_matroska_demux.py",
+      "published_sha256": "a7687aa10e316c6c5cbc3ff7f2d50fd5d3afe3dfd570c9c0ed43d4213dbb5e7f"
+    },
+    "candidate_lzo.py": {
+      "original_sha256": "629c78b58fdf2039f8cafac3fdf2f5f1451299dc911a007a4d616a508d17430d",
+      "published": "local_whisper_audio_matroska_lzo.py",
+      "published_sha256": "629c78b58fdf2039f8cafac3fdf2f5f1451299dc911a007a4d616a508d17430d"
+    }
+  },
+  "qualification_counts": {
+    "content_encoding_files": 30,
+    "independent_lzo_streams": 93,
+    "lzo_raw_bytes": 1468492,
+    "native_boundary_files_accepted": 175,
+    "native_boundary_files_refused": 5,
+    "native_pcm_rate_split_combinations": 952,
+    "packets_byte_exact": 2138,
+    "real_remuxed_files": 33
+  },
+  "runtime_source_closure": {
+    "standalone/local_whisper_audio.py": "cc473df25375d196ab35736bcb0c0a732fa828830a99129ffad8b38b5d178f7c",
+    "standalone/local_whisper_audio_aac.py": "98faef40259ffa16b6bc965d2f40b35d3148fafb8529366ad09d8460c777cbde",
+    "standalone/local_whisper_audio_aac_bits.py": "1d70e4ec110d7d4d8d350108409169d73440142ffdfa6687f3d2cb862d3d4802",
+    "standalone/local_whisper_audio_aac_codec.py": "a60161fad102c75f66a2e8fe31b609f8a2aa9bdcf20a19f7b675f7ac6f9bef34",
+    "standalone/local_whisper_audio_aac_config.py": "7072766778f622082aa80869b6c19a87495b2416c49d8561992b18f4b02924af",
+    "standalone/local_whisper_audio_aac_dsp.py": "c49814ee025f3bdde728d21729701b6121258468eecab2dfe69164b604755a07",
+    "standalone/local_whisper_audio_aac_mp4.py": "3943c39cfbbfbe621c62cd94e6cab158018b229bf3c30ed2f3a6594e12b587b9",
+    "standalone/local_whisper_audio_aac_ps.py": "7aff98dd2806f99aa51812cb3f63c284c09e0dea1e7f7f0c40d32132956a6a70",
+    "standalone/local_whisper_audio_aac_ps_bits.py": "c87cce3a6dc1f932c0665d989d7a748819d3837f4e75a418f092b7b262d571e6",
+    "standalone/local_whisper_audio_aac_ps_tables.py": "c56cf97e62ee8436d2f0543f9508aac62e80cdc34e896c8a32d8bf69003a022b",
+    "standalone/local_whisper_audio_aac_sbr_bits.py": "f04dc36891a1a275b98de629813a2f041bc9e5c70c8d8319b87c2cc78b3e8511",
+    "standalone/local_whisper_audio_aac_sbr_dsp.py": "5d391fcb8913b5b635357cba8dbd71373cc2bf1379f07d36af6b761190cdae3e",
+    "standalone/local_whisper_audio_aac_sbr_frequency.py": "0c5a832c52e2b654082955678d26c66bccb355e0d3eadafd26ecfd0548715aa7",
+    "standalone/local_whisper_audio_aac_sbr_qmf.py": "4d169cd8ae497a5aa2ca958c50ce93b44388deeb79d762f7ac7c450c7544127d",
+    "standalone/local_whisper_audio_aac_sbr_tables.py": "28386db4c71f3f5ff1782194f10a1a7db4877b52ade6b1f96c8888a34e4f1dbd",
+    "standalone/local_whisper_audio_aac_sbr_transform.py": "fd4f157ab2e29209d07371f17fb40bea09ee13afb3128290ab4d001f3f0d720d",
+    "standalone/local_whisper_audio_aac_sbr_transform_tables.py": "ba0311a23fed0037912e397589206d65303983237e19282810dd605e9c0705f6",
+    "standalone/local_whisper_audio_aac_tables.py": "40bcf8e6f30b2b3895e56f9c050b874dcb3a22c1c2ee99fe312ceb81adc75ecf",
+    "standalone/local_whisper_audio_adpcm.py": "352a9366b669c0edcb0a4498ddbb7b11aa849d1e1ec033d9ea9c2c1de6e64529",
+    "standalone/local_whisper_audio_flac.py": "78d2411901dcf9870a3f865ab42372e889d51ec371b3829e81b08934bb70c9ac",
+    "standalone/local_whisper_audio_matroska.py": "50ff1f26ea085d45ad1c2bcdb1208bb41395abe704518039ca991ae6aeb2498c",
+    "standalone/local_whisper_audio_matroska_demux.py": "a7687aa10e316c6c5cbc3ff7f2d50fd5d3afe3dfd570c9c0ed43d4213dbb5e7f",
+    "standalone/local_whisper_audio_matroska_lzo.py": "629c78b58fdf2039f8cafac3fdf2f5f1451299dc911a007a4d616a508d17430d",
+    "standalone/local_whisper_audio_mp3.py": "188afdaef0b6ab894a4c30e154d1989bfe0fd664d45b1ee1939b988a96ffefef",
+    "standalone/local_whisper_audio_mp3_dsp.py": "a799d41ef2a73c62f5ef807f00998421609b127e22b30edcdf440566e7febf65",
+    "standalone/local_whisper_audio_mp3_tables.py": "00e380a7901fa7b05a06dd855ed85d23f6ca835cf0f9b01b193d9292a8a7c890",
+    "standalone/local_whisper_audio_ogg.py": "40ca1401c4b5c4d240a98a12e284a583fecf14b9c2fdfeae72d1ad538db39458",
+    "standalone/local_whisper_audio_resample.py": "5e5dfe6a950ebc27185ad7e10cae90342c89e6faadbdf5c8b09a41b49cc7041b",
+    "standalone/local_whisper_audio_vorbis.py": "63f36f17978d939b81125215fcefc57c6fa0941d445fd03b9980c0b19526e9aa",
+    "standalone/local_whisper_audio_vorbis_bits.py": "e9882165dd5b56b7a91f4702ff5d12441cd5205b21eba9e39639e7ee6deb61a8",
+    "standalone/local_whisper_audio_vorbis_codec.py": "6d60dd6a5687604f9ffd249015e4a95700c776b4af473fa50ba133495e3bee24",
+    "standalone/local_whisper_audio_vorbis_floor.py": "69979955783d99335bd091c7698fa909a7102cec1d82d4ae89b1a679c4df3bf6",
+    "standalone/local_whisper_audio_vorbis_residue.py": "ca0140db2d57682bc40e68868fd411767a33e38cce9214a04521e64e5a04e22b",
+    "standalone/local_whisper_audio_vorbis_tables.py": "b8e8d5450045badff9a635dbcc25b4573cb0bebc8b4630b61bbfa4f583ad689c",
+    "standalone/local_whisper_audio_wave.py": "d1b04d9bd9843e4d8c9177bacf37500083ee13a35f73b72bd0ef6478a2aea181",
+    "standalone/opus.py": "d60cb86c625166a5cab850cba9d19ad391915c68e21394153ae40c8133dcf232",
+    "standalone/opus_celt.py": "e8a861ab7a1595e70050708df787efaae3c9b75ceac7322c6f29b06930404fb5",
+    "standalone/opus_celt_alloc.py": "6fec8e7831f75f5b3cab703f391e3711f985ab618c9fbe2f98b1ca3f0e48a434",
+    "standalone/opus_celt_bands.py": "7acdd2cf4e6df1374c3978cedf04657a229ed102d8fc812eb8ea18aec84b5a9f",
+    "standalone/opus_celt_dsp.py": "b7cbc68a1f24e150bf23a393f9e61a34fd8bc87f13a8c49b66ed036174bec906",
+    "standalone/opus_celt_encoder.py": "57b7d5755de6e6e9f72a330c1d158be36faeac950e8e0c93895fd6107dbcc2b8",
+    "standalone/opus_celt_energy.py": "2c73accf95ecdf367ae4f99007e3f63c4179bf7d16ea7db553e271f62f1566ae",
+    "standalone/opus_celt_plc.py": "d50baf8cd0fe9077f12c7dfa32f3e203c94ddd9aac03b941b76173382d2d4490",
+    "standalone/opus_celt_pvq.py": "2ff3ede201b95a72a4d10191cee0ab5aeccb2cbb3aa22ec9b12450b6779b63ad",
+    "standalone/opus_decoder.py": "ec32760733d106af36535136333292de27cf1b2eb49a40a752f704294c5765ad",
+    "standalone/opus_discord.py": "8c8ffbf2e6196fe46b1a2d5ab99afb62805e0033ef90908f3da8f5186d853020",
+    "standalone/opus_range.py": "693a5490c0c0c325f0a7ddf7f47c1bc8bb2fee5b4e639d27a727ddab8d648a98",
+    "standalone/opus_silk.py": "3ee28e7267e93b9c2e90d5aa2118eb1fd5dfc63fce3adfbd58547ae5194b6c13",
+    "standalone/opus_silk_lpc.py": "1c605f588202285e0d714b8dbc20cde1459b9f73a703be94e496e566a07da1b1",
+    "standalone/opus_silk_params.py": "5a6c69df20426289a2cd0478e4210104433568ddd3c54ad004fdc87716807916",
+    "standalone/opus_silk_resample.py": "df42f981d29828126279f83c5444640266cb7b9e73b4bce31d4f0ed5a1052c69",
+    "standalone/opus_silk_stereo.py": "082c4c08499df8b8c096bafa8dc4545daf6074c11cb3dd105838481bf0b27f9a",
+    "standalone/opus_silk_synthesis.py": "41e53b6fe328d0301c354f0e4419492a913a884479ab56036bfb61b1584ef0d9",
+    "standalone/opus_silk_tables.py": "00547f83e7f08efbd2ea82a25a0b6652a8ef8a5541d258fad417950bbb0981dd",
+    "standalone/opus_tables.py": "e350d363a6f5fa63d3f46f46b47b0231e18d0512acd7336b668029ddec94fde0",
+    "standalone/silk.py": "d2bd1214b097fbc5b3675e24232aeeb1339f4a96b505622d94574c540df2a2ac",
+    "standalone/silk_entropy.py": "042006d4252999bc633fe02c8c2ae869419917fd789ca0bbdcff430434ac6651",
+    "standalone/silk_fixed.py": "ad13d2eb43095d5d2f3d68b3edc97f47cbb7469e4d07ef8cba9418aa50a3b36b",
+    "standalone/silk_lpc.py": "c49bceccb8b3c890ccfb1506fa542765038f51a03f9907ef67d53db5645f6341",
+    "standalone/silk_params.py": "673961ab977d0f178c4342b71ed9ee97f6a572d918eee67b9ba1ad2e24bc50e5",
+    "standalone/silk_resample.py": "b1939908a38a42d5a63f415a68c8a0e92910c4b3f1d62b5af050ebe02f654748",
+    "standalone/silk_synthesis.py": "bbec8e98ab365abfdf92573750e75692e4e96874fd243c86a75d1847dba4606e",
+    "standalone/silk_tables.py": "388baaeeefabec26c5596c9210f11b7d8e8b9c74adc149486dc001c040468798"
+  },
+  "schema_version": 1,
+  "scope": [
+    "First original audio stream in track order, finite/unknown-sized segments/clusters, allthree lacing modes, packet ordering, full CodecPrivate, CodecDelay/OpusHead preskip, initial Vorbis overlap discard and positive/negative per-lace DiscardPadding.",
+    "Content encodings support the pinned FFmpeg profile: zlib, LZO1X and header stripping in packet/private scopes. Original build has no bzip2 support; original private-header failures are retained.",
+    "Actual native FFmpegGENERIC Vorbis output is float32 exact. Opus uses the separately qualified native libopus1.3.1 float profile; resampled PCM is within1LSB of that codec reference. Original FFmpegGENERIC/host decoder outputs are retained independently and may differ, especially on Opus voip.",
+    "Common stream/path frontend returns normalized float32 and preserves caller stream ownership. Codec INVALIDDATA retains prior PCM and stops at the original closed-generator boundary.",
+    "No AAC/MP3/FLAC/PCM Matroska route, trained Matroska transcription trace, all malformed EBML cases or universal CPU arithmetic claim. Other containers and pure Whisper engine have separate evidence."
+  ],
+  "status": "Public consumed Opus/Vorbis route; four canonical guarded checks pass on both interpreters. Original FFmpeg Opus PCM differences remain open."
+}

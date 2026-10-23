@@ -1,0 +1,407 @@
+{
+  "external_validation": {
+    "bytes": 163514,
+    "generic_exact_packets": 12,
+    "max_generic_error": 0.0,
+    "max_host_error": 3.5762786865234375e-07,
+    "packets": 12,
+    "retained_audio_or_pcm": false,
+    "sha256": "e1890d642f7703961caa4954d59d858d755248d6118cb42c7d15c90bdf8b26a4",
+    "url": "https://samples.ffmpeg.org/A-codecs/AAC/ct_nero-heaac.mp4"
+  },
+  "fixture": {
+    "compression": "Lossless SHA-checked per-channel exact-byte deduplication and aligned substring reuse; GENERIC words XOR with retained same-input native host words; reversible four byte-column shuffle; XZ/LZMA2 dictionary8MiB pb0 with32MiB decoder memory limit. Every original host and GENERIC PCM byte is restored and individually SHA checked.",
+    "deduplicated_bytes": 21511168,
+    "format": "native-f32-exact-xor-word-shuffle-v1",
+    "path": "standalone/tests/fixtures/local_whisper_audio_he_aac.json",
+    "sha256": "4b0b4d620690d7e525c8fb576ea7648cd054971b7000a3a36d1479c4182cd30a",
+    "word_pool_bytes": 36470784,
+    "word_pool_sha256": "7c2b8a33405268269b7f13002fa5d0645cc91f7bb24a9ea14555b7b1c74fdaff"
+  },
+  "format_version": 1,
+  "implementation": "Pure Python standard-library LC core with complete source SBR high-frequency reconstruction, QMF, full PS and source-order float32 GENERIC power-of-two AVTX/window profile. No runtime native/ctypes/subprocess/decoder executable.",
+  "license": {
+    "license": "LGPL-2.1-or-later",
+    "path": "standalone/licenses/local-whisper-he-aac-notices.txt",
+    "sha256": "f941ae84f66cefa824dd5e78d4d50b1b68839ea2f4afa70ba64d0883e160897c"
+  },
+  "limits": [
+    "AAC-LC core plus HE-AAC SBR and HE-AACv2 full Parametric Stereo. Main/SSR/LTP/ER/LD/ELD/USAC and other core object types remain explicitly unsupported.",
+    "Like the original decoder, SBR with960 core frames is disabled rather than implemented; active SBR uses1024 core samples.",
+    "ADTS and SBR CRC fields are consumed but not checked, matching the pinned source. Protected multi-RDB ADTS remains explicitly unsupported.",
+    "Malformed SBR/PS can raise ValueError where native FFmpeg conceals; never returns an incomplete component as supported HE output.",
+    "Actual changing ADTS output rate/layout is rejected like original AudioResampler, preserving the original file consumer error boundary.",
+    "MP4 core-rate residual edit skip quirk, sample-rate metadata, header histories and explicit downsample policy follow the actual source/native references.",
+    "The GENERIC Python algorithm has no real-time throughput guarantee. Host-SIMD output differences are recorded separately and never hidden by weakening the regular2e-6 native file bound."
+  ],
+  "modules": {
+    "local_whisper_audio_aac.py": {
+      "bytes": 8846,
+      "sha256": "98faef40259ffa16b6bc965d2f40b35d3148fafb8529366ad09d8460c777cbde"
+    },
+    "local_whisper_audio_aac_codec.py": {
+      "bytes": 26281,
+      "sha256": "a60161fad102c75f66a2e8fe31b609f8a2aa9bdcf20a19f7b675f7ac6f9bef34"
+    },
+    "local_whisper_audio_aac_config.py": {
+      "bytes": 9020,
+      "sha256": "7072766778f622082aa80869b6c19a87495b2416c49d8561992b18f4b02924af"
+    },
+    "local_whisper_audio_aac_ps.py": {
+      "bytes": 13541,
+      "sha256": "7aff98dd2806f99aa51812cb3f63c284c09e0dea1e7f7f0c40d32132956a6a70"
+    },
+    "local_whisper_audio_aac_ps_bits.py": {
+      "bytes": 5961,
+      "sha256": "c87cce3a6dc1f932c0665d989d7a748819d3837f4e75a418f092b7b262d571e6"
+    },
+    "local_whisper_audio_aac_ps_tables.py": {
+      "bytes": 110427,
+      "sha256": "c56cf97e62ee8436d2f0543f9508aac62e80cdc34e896c8a32d8bf69003a022b"
+    },
+    "local_whisper_audio_aac_sbr_bits.py": {
+      "bytes": 11851,
+      "sha256": "f04dc36891a1a275b98de629813a2f041bc9e5c70c8d8319b87c2cc78b3e8511"
+    },
+    "local_whisper_audio_aac_sbr_dsp.py": {
+      "bytes": 16905,
+      "sha256": "5d391fcb8913b5b635357cba8dbd71373cc2bf1379f07d36af6b761190cdae3e"
+    },
+    "local_whisper_audio_aac_sbr_frequency.py": {
+      "bytes": 7078,
+      "sha256": "0c5a832c52e2b654082955678d26c66bccb355e0d3eadafd26ecfd0548715aa7"
+    },
+    "local_whisper_audio_aac_sbr_qmf.py": {
+      "bytes": 3060,
+      "sha256": "4d169cd8ae497a5aa2ca958c50ce93b44388deeb79d762f7ac7c450c7544127d"
+    },
+    "local_whisper_audio_aac_sbr_tables.py": {
+      "bytes": 55070,
+      "sha256": "28386db4c71f3f5ff1782194f10a1a7db4877b52ade6b1f96c8888a34e4f1dbd"
+    },
+    "local_whisper_audio_aac_sbr_transform.py": {
+      "bytes": 7169,
+      "sha256": "fd4f157ab2e29209d07371f17fb40bea09ee13afb3128290ab4d001f3f0d720d"
+    },
+    "local_whisper_audio_aac_sbr_transform_tables.py": {
+      "bytes": 46748,
+      "sha256": "ba0311a23fed0037912e397589206d65303983237e19282810dd605e9c0705f6"
+    }
+  },
+  "numerical_profile": {
+    "float_value_equality": "Nonzero float32 words match exactly in GENERIC-active streams. Signed zeros are compared by value; four isolated negative-scale all-zero transform vectors differ in one zero sign word.",
+    "host_generic_max_float_difference": 0.004425048828125,
+    "host_generic_max_s16_difference": 125,
+    "reference": "Actual pinned FFmpeg GENERIC original native CPU flags0, with every split-radix, MDCT, window, QMF and SBR/PS arithmetic operation rounded in source float32 order.",
+    "source_warning": "Original aacsbr.c explicitly describes hf_inverse_filter as numerically unstable; SIMD/GENERIC float order differences can be amplified. No bit parity to every native CPU profile is claimed.",
+    "stress_host_reference": "All48 pre-existing host-SIMD native PCM goldens retained alongside original GENERIC native PCM; neither stress vectors nor source data discarded."
+  },
+  "source": {
+    "fdk_encoder_authoring_only": {
+      "archive_bytes": 2520416,
+      "archive_sha256": "63048f3c3595f161309ea967531d2b99de71c41ecb1f173d44eaccd89c8133c3",
+      "archive_url": "https://codeload.github.com/mstorsjo/fdk-aac/tar.gz/716f4394641d53f0d79c9ddac3fa93b03a49f278",
+      "commit": "716f4394641d53f0d79c9ddac3fa93b03a49f278",
+      "license_path": "NOTICE",
+      "license_sha256": "95ec80da40b4af12ad4c4f3158c9cfb80f2479f3246e4260cb600827cc8c7836",
+      "scope": "Authoring-only AAC/HE-AAC/HE-AACv2 encoder. No FDK library, executable, or native invocation is shipped or used at runtime.",
+      "tag_metadata": "https://api.github.com/repos/mstorsjo/fdk-aac/git/ref/tags/v2.0.3",
+      "version": "2.0.3"
+    },
+    "ffmpeg": {
+      "archive_bytes": 16894057,
+      "archive_sha256": "2ae7e42343cfffb811d15cfe98b6d005f082595fcdf034d30a4ff90cfed9f9c6",
+      "archive_url": "https://codeload.github.com/FFmpeg/FFmpeg/tar.gz/38b88335f99e76ed89ff3c93f877fdefce736c13",
+      "commit": "38b88335f99e76ed89ff3c93f877fdefce736c13",
+      "metadata_url": "https://api.github.com/repos/FFmpeg/FFmpeg/git/ref/tags/n8.1.2",
+      "source_directory": "FFmpeg-38b88335f99e76ed89ff3c93f877fdefce736c13",
+      "tag": "n8.1.2"
+    },
+    "files": {
+      "libavcodec/aac/aacdec.c": {
+        "bytes": 93810,
+        "sha256": "1047e01648ca3ea39bfe52f47a3a5f1f626a566867c8d7e6bafb9a9fedb52780"
+      },
+      "libavcodec/aac/aacdec_tab.c": {
+        "bytes": 50436,
+        "sha256": "8fea4b4fe51a20c934502fce3b271fcba36c356b7787107b03637f9eee3c70d3"
+      },
+      "libavcodec/aacps.c": {
+        "bytes": 29173,
+        "sha256": "b9e523daa96413ed819d46f3e3ebbc6be3a55bf2202b46c0927b75780ba38265"
+      },
+      "libavcodec/aacps.h": {
+        "bytes": 3920,
+        "sha256": "2f8dbd1c5d4ed9d2c4d82a178493e4b4e5519362da3799e1b37746a600d9ebc1"
+      },
+      "libavcodec/aacps_common.c": {
+        "bytes": 10187,
+        "sha256": "0fc080c9d4e32f91c324f7468229c7da56fa829162c5494ef4167587df1dec1c"
+      },
+      "libavcodec/aacps_float.c": {
+        "bytes": 916,
+        "sha256": "600abbb031a52a65de359ab09a5c7833749b27d92639bcab8cf8ca63912ade30"
+      },
+      "libavcodec/aacps_tablegen.c": {
+        "bytes": 954,
+        "sha256": "807d52895b66d4fd8f2ea151f6efe0f3baf75ef6736da23bac2a4b040ad1ae63"
+      },
+      "libavcodec/aacps_tablegen.h": {
+        "bytes": 8639,
+        "sha256": "8ceaf054605635c0a448b0632ec4cacba21874c84e8830480e42b36fc87eadc4"
+      },
+      "libavcodec/aacps_tablegen_template.c": {
+        "bytes": 3554,
+        "sha256": "a1ecefad8bb9ce0b6b721ce2342f48fdea8d2c8222614b4d8331a803922da31f"
+      },
+      "libavcodec/aacpsdata.c": {
+        "bytes": 5846,
+        "sha256": "5a5b8d9cb3afc3c8a141b4a27086725f98d6132605cac720cf2ea795e39cbd1e"
+      },
+      "libavcodec/aacpsdsp.h": {
+        "bytes": 2531,
+        "sha256": "bbfeb669fab7cfdaac678992cf672208b077940df02c4423adb2af283cd145b2"
+      },
+      "libavcodec/aacpsdsp_float.c": {
+        "bytes": 881,
+        "sha256": "391e02c18bba1ddc12bd257f5de647ab8cf03045ba088f58b8a2fa7357485576"
+      },
+      "libavcodec/aacpsdsp_template.c": {
+        "bytes": 8544,
+        "sha256": "e8cc8f425e450e979b5783dd37fe11e76080af50053cf42a60ae17cb763051bf"
+      },
+      "libavcodec/aacsbr.c": {
+        "bytes": 15085,
+        "sha256": "d904091b3b6cd1660d989e458bcfd4164bed972145277a676bf793745af52956"
+      },
+      "libavcodec/aacsbr.h": {
+        "bytes": 3611,
+        "sha256": "232c2af7e74f7be340098dbe67d3119e41a75a7b8ebc703c4d95ce9ac9650dcc"
+      },
+      "libavcodec/aacsbr_template.c": {
+        "bytes": 66046,
+        "sha256": "16b09873a74fd95fb60bed2a219ef9eb5fac7e45cd23bf7f34b8ce7ad8e0e503"
+      },
+      "libavcodec/aacsbrdata.h": {
+        "bytes": 23920,
+        "sha256": "11034ae4e076e8de7a853da50dc132c62ddf8ac9abad173f55ef038693a0ade5"
+      },
+      "libavcodec/kbdwin.c": {
+        "bytes": 2058,
+        "sha256": "a2009e3577b0e890eba200e542f6bc625aa9c3656c9f9667b3213421df4b475e"
+      },
+      "libavcodec/mpeg4audio.c": {
+        "bytes": 5691,
+        "sha256": "e37da22204ba6b570bb6827caa943b2481a0c0dfa4e5ea844ac9e50358caaf02"
+      },
+      "libavcodec/sbr.h": {
+        "bytes": 7981,
+        "sha256": "4c215c844a2f593aafc02737207435621c942ef55528e82db19878a39f2029d9"
+      },
+      "libavcodec/sbrdsp.c": {
+        "bytes": 7637,
+        "sha256": "1d9acd2641f9b0d41e9d22c531134a09f14914e4101b92135fa8c472c788f1ab"
+      },
+      "libavcodec/sbrdsp.h": {
+        "bytes": 2252,
+        "sha256": "462383c20694fc46d2e15ecbe9cd26959fe577549cfadff725546f97763f4be3"
+      },
+      "libavcodec/sbrdsp_template.c": {
+        "bytes": 32260,
+        "sha256": "a4eadb66a958f63e300b1376edb1c657ce2183aaa6181adadd87d45961a146fd"
+      },
+      "libavcodec/sinewin.c": {
+        "bytes": 815,
+        "sha256": "515494ac041df33d492da0ed3e0cd99d7953db608106141c33a3f46bf44c6101"
+      },
+      "libavutil/float_dsp.c": {
+        "bytes": 4604,
+        "sha256": "349126b23468d502bfa65bb31710600a8e5eb614004c2bcfd5be8545a58fe3d8"
+      },
+      "libavutil/tx.c": {
+        "bytes": 29484,
+        "sha256": "591dda843b5dc47876b89227c4e2e360bbb1fa4e782aa56071cc3c5783d5a6ad"
+      },
+      "libavutil/tx_priv.h": {
+        "bytes": 17874,
+        "sha256": "c3db88b6eb58c8837bfcf3992872376244142d155efe1b03a8b0fe83825434ac"
+      },
+      "libavutil/tx_template.c": {
+        "bytes": 90636,
+        "sha256": "b3c4becdffefd82321069775b80bb542e577fb6ad229ea6bda3570d98d76e130"
+      }
+    },
+    "native_oracle": {
+      "inputs": [
+        {
+          "bytes": 35786210,
+          "sha256": "8a032e8d8ebc73dec079364b9b4a6837638a2d106e8472314e685ffbf163e700",
+          "url": "https://files.pythonhosted.org/packages/27/3a/204dbfc3e08eb4cdc6e6ff57be02150bc44523ebdb50182d10025792ebd9/av-18.1.0-cp311-abi3-manylinux_2_28_x86_64.whl"
+        },
+        {
+          "bytes": 4451061,
+          "sha256": "47bfc286e1bc9de7ab4681fc2b575cd2460a66919d31ffe1bd5aa54fae531a28",
+          "url": "https://files.pythonhosted.org/packages/8d/f4/f22114d30d3435e38c6af2b4870f37b864403dca6ae7af747a289ce0a18e/av-18.1.0.tar.gz"
+        }
+      ],
+      "versions": {
+        "ffmpeg_version": "8.1.2",
+        "library_configurations": {},
+        "library_versions": {
+          "libavcodec": [
+            62,
+            28,
+            102
+          ],
+          "libavdevice": [
+            62,
+            3,
+            102
+          ],
+          "libavfilter": [
+            11,
+            14,
+            102
+          ],
+          "libavformat": [
+            62,
+            12,
+            102
+          ],
+          "libavutil": [
+            60,
+            26,
+            102
+          ],
+          "libswresample": [
+            6,
+            3,
+            102
+          ],
+          "libswscale": [
+            9,
+            5,
+            102
+          ]
+        },
+        "pyav_version": "18.1.0"
+      }
+    }
+  },
+  "validation": {
+    "changing_format_errors": 27,
+    "files": 361,
+    "frequency_parameters_authoring": 28672,
+    "frequency_retained": 1425,
+    "generic_exact_files": 307,
+    "generic_lc_inactive_max_error": 1.7881393432617188e-07,
+    "generic_stress_frames": 192,
+    "generic_stress_streams": 48,
+    "host_regular_max_error": 1.8328428268432617e-06,
+    "native_he_frontend_swr": {
+      "authoring_records": "standalone/.cache/local_audio_he_aac_work/he-aac-swr-native.json",
+      "cases": 1444,
+      "changing_format_errors": 27,
+      "exit_code": 0,
+      "host_profile_max_difference_lsb": 58.0,
+      "input_files": 361,
+      "log": "hermes-local-he-aac-native-frontend-jnnvyyff.log",
+      "max_error_lsb": 1.0,
+      "numerical_profile": "Actual original av_force_cpu_flags(0): GENERIC codec and SWR; host CPU profile retained separately",
+      "output_rates": [
+        16000,
+        22050
+      ],
+      "public_input_fixture": "standalone/tests/fixtures/local_whisper_audio_he_aac.json",
+      "public_input_fixture_sha256": "4b0b4d620690d7e525c8fb576ea7648cd054971b7000a3a36d1479c4182cd30a",
+      "records_sha256": "37e5771065c14adde97826a19ce90a9b16032e3bd08af8e2c314e4680b1d70e4",
+      "seconds": 1509.1870377063751,
+      "split_stereo": [
+        false,
+        true
+      ]
+    },
+    "native_he_trained_file_consumers": {
+      "all_segments_and_transcription_info_identical": true,
+      "authoring_records": "standalone/.cache/local_audio_he_aac_work/file-consumer-native.json",
+      "cases": 2,
+      "exit_code": 0,
+      "host_profile_max_difference_lsb": 1.0,
+      "log": "hermes-local-he-aac-file-consumer-o8b6fww_.log",
+      "max_error_lsb": 1.0,
+      "model": "tiny.en",
+      "numerical_profile": "FFmpeg8.1.2 GENERIC cpu_flags0 (codec and SWR)",
+      "profiles": [
+        {
+          "file": "jfk-he5-16000-1ch.m4a",
+          "format": "fltp",
+          "frames": 19,
+          "input_sha256": "6a91ad5e9e0e7dade8effbb214eca3631a72baad794336f82e334a63e3c19cfd",
+          "layout": "mono",
+          "profile": "HE-AAC",
+          "rate": 16000,
+          "samples": 38912
+        },
+        {
+          "file": "jfk-he29-44100-2ch.aac",
+          "format": "fltp",
+          "frames": 47,
+          "input_sha256": "ab84ad69060e2c86886e74727fe4a6db8eb57773a7cab74ef65557835acccce4",
+          "layout": "stereo",
+          "profile": "HE-AACv2",
+          "rate": 44100,
+          "samples": 96256
+        }
+      ],
+      "records_sha256": "cb1b8648c3d46a283d6eb28366be83e750ff3cb101634c36e5a6b8d8e29c583f",
+      "reference": "Actual original Faster-Whisper transcribe.py with trained native CT2 float32 engine; candidate stdlib file codec/frontend/orchestration compared through the same real native engine. Pure production inference is qualified separately.",
+      "seconds": 33.25725340843201
+    },
+    "ps_parser_and_dsp_frames": 354,
+    "ps_synthetic_dsp_sha_frames": 192,
+    "qmf_vectors": 60,
+    "sbr_identical_input_operations": {
+      "chirp": 320,
+      "dequant": 192,
+      "energy": 320,
+      "gain": 320,
+      "inverse": 320
+    },
+    "source_generic_mdct_vectors": 96,
+    "stdlib_import_guard": "Each public HE test installs and cleans up an independent MetaPathFinder rejecting av, numpy, ctranslate2, tokenizers, onnxruntime, torch, ctypes, subprocess, pydub, and soundfile imports. Native authoring is separate from runtime golden playback.",
+    "stdlib_public_candidate_tests": [
+      {
+        "exit_code": 0,
+        "log": "hermes-local-he-aac-public-311-ac5jgvy9.log",
+        "python": "3.11",
+        "seconds": 294.80018377304077,
+        "test_selection": "Actual standalone/check.py discovers test_local_whisper_audio_*aac.py in public sources; NoNative guard active",
+        "tests": 13
+      },
+      {
+        "exit_code": 0,
+        "log": "hermes-local-he-aac-public-314-2mbiumtb.log",
+        "python": "3.14",
+        "seconds": 309.66591572761536,
+        "test_selection": "Actual standalone/check.py discovers test_local_whisper_audio_*aac.py in public sources; NoNative guard active",
+        "tests": 13
+      }
+    ],
+    "stdlib_staged_candidate_tests": [
+      {
+        "exit_code": 0,
+        "log": "hermes-local-he-aac-staged-311-73jhc1pc.log",
+        "python": "3.11",
+        "seconds": 230.08262848854065,
+        "tests": 13
+      },
+      {
+        "exit_code": 0,
+        "log": "hermes-local-he-aac-staged-314-bnol60ai.log",
+        "python": "3.14",
+        "seconds": 270.18125796318054,
+        "tests": 13
+      }
+    ]
+  }
+}

@@ -1,0 +1,569 @@
+{
+  "deliberate_reference_differences": {
+    "binary_cursor": "The owned binary-file API treats its current cursor as the logical start. Pinned PyAV can seek to absolute offsets of a prefixed underlying file and read header bytes as PCM; that nonzero-cursor prefix bug is not reproduced.",
+    "ffmpeg_default_celt_max_difference_lsb": 2,
+    "ffmpeg_default_silk_max_difference_lsb": 4546,
+    "ffmpeg_default_silk_max_rms_difference_lsb": 884.7370448317696,
+    "he_aac_cpu_profiles": {
+      "actual_file_swr_cases": 1444,
+      "both_original_native_profiles_retained": true,
+      "generic_pcm_tolerance_lsb": 1,
+      "observed_host_profile_difference_lsb": 58,
+      "raw_stress_codec_profile_difference_lsb": 125,
+      "reference": "Original FFmpeg8.1.2 GENERIC codec and SWR (av_force_cpu_flags(0)); same original source-order float32 AVTX split-radix operation graph."
+    },
+    "ogg_chaining_and_silence": "RFC link reset and silent-channel mapping are checked with the independent native libopus multistream oracle. FFmpeg8.1.2 internal Opus preserves old decoder history on the tested new logical link and its silent-map out-buffer assignment can overwrite the active buffer; those source behaviors are not imitated.",
+    "opus_decoder": "Pinned PyAV defaults to the separate FFmpeg float Opus/SILK decoder. This port uses the authorized existing libopus1.3.1 codec, whose SILK fixed-point synthesis/upsampling is a different valid RFC6716 decoding implementation. The independent libopus oracle passes max1LSB, but it is not claimed bit equivalent to FFmpeg internal SILK.",
+    "real_speech_comparison_scope": "Actual two-second JFK speech, original Faster-Whisper decoder/orchestration and trained tiny.en model vs owned libopus1.3.1 audio + stdlib frontend/orchestration through actual same CT2. Words/tokens/times match; confidence metrics differ and are not claimed equivalent.",
+    "real_speech_comparisons": [
+      {
+        "avg_logprob_max_difference": 0.0011110380291938782,
+        "bitrate": 12000,
+        "packet_modes": [
+          "silk"
+        ],
+        "pcm_max_difference_lsb": 8851.0,
+        "same_segment_seek_and_times": true,
+        "same_text_and_tokens": true,
+        "sample_rate": 16000,
+        "text": " And so am I fellow America."
+      },
+      {
+        "avg_logprob_max_difference": 0.0011852383613586426,
+        "bitrate": 20000,
+        "packet_modes": [
+          "hybrid"
+        ],
+        "pcm_max_difference_lsb": 8963.0,
+        "same_segment_seek_and_times": true,
+        "same_text_and_tokens": true,
+        "sample_rate": 48000,
+        "text": " And so my fellow American"
+      }
+    ],
+    "rifx": "As pinned wavdec actually does, header integer byte order is big endian while its WAVE codec table selects little-endian PCM/float payload decoding."
+  },
+  "fixtures_sha256": {
+    "local_whisper_audio.json": "e9496644061c6ba8c710ff89cc88b1c83ae1f31ca95f9b239ef8f33601178fd6"
+  },
+  "interfaces": {
+    "decode_audio": "decode_audio(path_or_binary_file,sampling_rate=16000,split_stereo=False) -> array(f) or (left array(f),right array(f)); normalized PCM values are signed_s16/32768. Caller-owned binary files remain open and read from their current cursor.",
+    "formats": [
+      "RIFF/RIFX/RF64/BW64/Sony Wave64 PCM8/16/24/32/64",
+      "IEEE float32/64 WAVE",
+      "G.711 A-law and mu-law WAVE",
+      "IMA ADPCM2/3/4/5-bit and Microsoft ADPCM WAVE; qualification in local-whisper-adpcm-provenance.json",
+      "FLAC original4-32bit and1-8ch via local_whisper_audio_flac",
+      "Ogg Opus mapping families0/1/255, mono/surround multistream1-8ch, silent/copy mappings, pre-skip/gain/end trim, packet continuation and compatible chains",
+      "MPEG-1/2/2.5 Layer III MP3, mono/stereo all nine sample rates, ID3/APE, gapless/Xing/VBR/ABR via local_whisper_audio_mp3; qualification in local-whisper-mp3-provenance.json",
+      "AAC-LC ADTS and M4A/MP4 (including 960-sample frames, PCE/CCE, fragments, edit lists and iTunes delay) via local_whisper_audio_aac; qualification in local-whisper-aac-provenance.json",
+      "ID3v2 audio prefixes",
+      "HE-AACv1 SBR and HE-AACv2 Parametric Stereo ADTS/M4A; original source-order FFmpeg GENERIC transform/QMF/PS, including retained history, edit lists and iTunes delay. Qualification: local-whisper-he-aac-provenance.json.",
+      "Ogg Vorbis floor0/1, residue0/1/2, all legal block sizes, multichannel mappings, page/continuation/granule trimming and compatible chain overlap; qualification in local-whisper-vorbis-provenance.json"
+    ],
+    "resampling": "FFmpeg8.1.2 default SWR Kaiser beta9/filter_size32/cutoff.97/phase_shift10/exact rational; filter length scales with downsampling ratio. Source format controls S16/float32/float64 internal processing. Original rematrix coefficients, integer quantization/cast behavior, rematrix-vs-resample order, initial/final reflection and flush length are retained. The original 22.2 layout special case compacts its selected first nine channels before matrix construction; all 868 AAC file/rate/downmix results match independent original s16 output within one LSB."
+  },
+  "licenses": {
+    "boost-software-license-1.0.txt": "3da48d8813e2fd70972260bb2019403294a9d92635dfe641213793b3e04880d7",
+    "faster-whisper.txt": "af6798135e729f8aa6c853936d037dfdea449734d26b8ea6a89805fca758c0d5",
+    "ffmpeg-LGPL-2.1.txt": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30",
+    "ffmpeg-swr-notices.txt": "b4f967055c215c5a12af86ec3128a9e03972f7ff4def56f254cedc8dd5f207b8",
+    "local-whisper-aac-notices.txt": "48a98a7f12274f5659df9cc685752b5f757b09e0c9b395d891eddecbe22aee22",
+    "local-whisper-he-aac-notices.txt": "f941ae84f66cefa824dd5e78d4d50b1b68839ea2f4afa70ba64d0883e160897c",
+    "local-whisper-mp3-notices.txt": "bef9831984e444e0448e9a4a6de8b7d9cbd66b31a4c6f288ef43c72e55ea7bbd",
+    "local-whisper-vorbis-notices.txt": "a2b4fafb06d62e2cbd0720bfa555b20f003885858f1806ccfd3d4249a0d4159a"
+  },
+  "limits": [
+    "Additional compressed containers/codecs and network protocols from PyAV are not implemented by this slice. Opus projection/ambisonic mappings, AAC Main/LD/USAC, encrypted MP4 and other unported codecs fail explicitly.",
+    "Damaged Ogg CRC/sequence/continuation is rejected explicitly instead of implementing every FFmpeg damaged-stream recapture heuristic.",
+    "Finite normalized float PCM is verified through amplitudes1.25 and filter overshoot. Native SIMD/scalar integer conversion of NaN/Inf or values outside representable integer ranges has architecture/frame-boundary-dependent results; such non-audio overflow is not claimed bit equivalent.",
+    "The existing frontend one-hour decoded waveform bound remains; no external program, native codec or hosted transcription fallback is introduced.",
+    "HE-AAC/SBR/PS uses the original FFmpeg GENERIC CPU profile. All1,444 original file/SWR comparisons pass within1LSB, while the independently retained optimized host profile differs by up to58LSB on stress inputs. Generic agreement is not universal CPU-bit equivalence.",
+    "Vorbis corrupt AUDIO packet handling and original generator termination with retained partial PCM have separate pending qualification; the proven decoder-init filter applies only after successful original demux/duration-header validation."
+  ],
+  "native_authoring_only": {
+    "file_consumer": "Original transcribe.py and actual trained tiny.en/CT2v4.8.1 model decode real file paths, independently compared with candidate audio/frontend/orchestration through the same real native engine. Production always selects the qualified pure Whisper engine; full stdlib inference E2E is recorded separately in local-whisper-segments-provenance.json.",
+    "inputs": [
+      {
+        "bytes": 35786210,
+        "sha256": "8a032e8d8ebc73dec079364b9b4a6837638a2d106e8472314e685ffbf163e700",
+        "url": "https://files.pythonhosted.org/packages/27/3a/204dbfc3e08eb4cdc6e6ff57be02150bc44523ebdb50182d10025792ebd9/av-18.1.0-cp311-abi3-manylinux_2_28_x86_64.whl"
+      },
+      {
+        "bytes": 4451061,
+        "sha256": "47bfc286e1bc9de7ab4681fc2b575cd2460a66919d31ffe1bd5aa54fae531a28",
+        "url": "https://files.pythonhosted.org/packages/8d/f4/f22114d30d3435e38c6af2b4870f37b864403dca6ae7af747a289ce0a18e/av-18.1.0.tar.gz"
+      }
+    ],
+    "oracle": "Original faster-whisper1.2.1 audio.py with actual pinned PyAV18.1.0/FFmpeg8.1.2. Ogg Opus codec-independent PCM is additionally verified by actual native libopus1.3.1 multistream decoder, original PyAV demux, then original SWR. Only ignored cache contains native wheels, source archives and authoring shared objects; no native library/process/download is used in runtime or public tests.",
+    "versions": {
+      "ffmpeg_version": "8.1.2",
+      "library_configurations": {},
+      "library_versions": {
+        "libavcodec": [
+          62,
+          28,
+          102
+        ],
+        "libavdevice": [
+          62,
+          3,
+          102
+        ],
+        "libavfilter": [
+          11,
+          14,
+          102
+        ],
+        "libavformat": [
+          62,
+          12,
+          102
+        ],
+        "libavutil": [
+          60,
+          26,
+          102
+        ],
+        "libswresample": [
+          6,
+          3,
+          102
+        ],
+        "libswscale": [
+          9,
+          5,
+          102
+        ]
+      },
+      "pyav_version": "18.1.0"
+    }
+  },
+  "runtime_modules_sha256": {
+    "local_whisper_audio.py": "cdfeca0ff31bd64e2991060b00c46d4126313ae3ee33c8a1db98fc5e7c9865c1",
+    "local_whisper_audio_adpcm.py": "352a9366b669c0edcb0a4498ddbb7b11aa849d1e1ec033d9ea9c2c1de6e64529",
+    "local_whisper_audio_ogg.py": "40ca1401c4b5c4d240a98a12e284a583fecf14b9c2fdfeae72d1ad538db39458",
+    "local_whisper_audio_resample.py": "5e5dfe6a950ebc27185ad7e10cae90342c89e6faadbdf5c8b09a41b49cc7041b",
+    "local_whisper_audio_vorbis.py": "13b3ace4cc591641b277bc6738ec7f8f31c0b593ce43e8638c9ed962299ab6c0",
+    "local_whisper_audio_vorbis_bits.py": "522b83a78cfccc6bcd43d78742e88d110526becaee3be7281f1f58d538d70b4b",
+    "local_whisper_audio_vorbis_codec.py": "a77ec415fc8c649db2f4fe593168fd25518cfc5b7b76742be7f7caca5a8076d2",
+    "local_whisper_audio_vorbis_floor.py": "69979955783d99335bd091c7698fa909a7102cec1d82d4ae89b1a679c4df3bf6",
+    "local_whisper_audio_vorbis_residue.py": "ca0140db2d57682bc40e68868fd411767a33e38cce9214a04521e64e5a04e22b",
+    "local_whisper_audio_vorbis_tables.py": "b8e8d5450045badff9a635dbcc25b4573cb0bebc8b4630b61bbfa4f583ad689c",
+    "local_whisper_audio_wave.py": "d1b04d9bd9843e4d8c9177bacf37500083ee13a35f73b72bd0ef6478a2aea181"
+  },
+  "schema": 1,
+  "scope": "Qualified standard-library local Whisper file audio input: WAVE linear PCM/IEEE float/G.711/ADPCM, FLAC, MPEG-1/2/2.5 Layer III MP3, AAC-LC/HE-AAC/SBR/PS ADTS/M4A, Ogg Vorbis, and Ogg Opus with the separately ported complete libopus 1.3.1 decoder. The original no-dither s16 resampling/downmix contract is preserved; this is not the complete FFmpeg/PyAV codec/protocol surface.",
+  "source_contract_hashes": {
+    "libavcodec/opus/dec.c": "c1015373ea5d17c644ec8a9745cd6f8f86b9f5fd0f137cdfc8a0873a62427234",
+    "libavcodec/opus/parse.c": "453abe91a90d34d70a8fcbe8b3ff5b0351f02a9793ce54c83cde1262c5f347ee",
+    "libavformat/oggparseopus.c": "7d597c24800b3ce1f8edf8863c5f48c63ee48089429cc3f8a03770d53343a0d0",
+    "libavformat/riffdec.c": "82d96d995ce3e26661d04131c64a0bcd3d5f5929237b0afad45bffc77657edee",
+    "libavformat/wavdec.c": "2ade6622dff01e11ed6731116741ffa0b80b6f516547a2b71d7aaa3b26feadd4",
+    "libavutil/mathematics.c": "c38b36d09a886b8a0471fa1c8f0174a1a852f437011d818569ece3824b1d4b6b",
+    "libswresample/audioconvert.c": "7f7246765fe5c841e0c65556c502735834630e20910e3edc3e9e0717b373333b",
+    "libswresample/options.c": "82b3a882ff3b812517153ab3a1b9e991fcd4903043baad1f038493d958de6c7f",
+    "libswresample/rematrix.c": "7bf9eb216ed30ad66a9620746733c1115d2ad1ae508ff34a277a83ffe7515a7f",
+    "libswresample/rematrix_template.c": "b6a3280b0352c752ff47d03d7d13ad91d5f47c40921dfdd6ff1509876c39863b",
+    "libswresample/resample.c": "35625e023415fdeee2219932126bdd7e5bfd94496c1c5c00c98261cbef695b6b",
+    "libswresample/resample_template.c": "938ac72b954320a35bb15d0ad76ee94a780117b5ffcb8e8abb85e9f65a5b7470",
+    "libswresample/swresample.c": "1ed883c6eb8303337cc5d2b779af1115533be72c3b25d5d66325e54d1c1f3bf1",
+    "libswresample/x86/rematrix.asm": "a305e6585d220b235fb0c7241e5fad6c6fdf96594f51c0cde67e176c19b96ead",
+    "libswresample/x86/rematrix_init.c": "9a6bb73ddd3131ceed753f60ce0309862fa311577da5390e681e78ff0a9d5a11",
+    "libswresample/x86/resample.asm": "dfea4d9dd59d675cbeb24398080b54302831605c65ddcce3fa2ac898393d9d5d",
+    "libswresample/x86/resample_init.c": "812542416f8120035da217643f298c4475c0bc3c3ad7b1fc24a7b2b708f86647"
+  },
+  "upstream": {
+    "aac": {
+      "runtime_reference": "local-whisper-aac-provenance.json",
+      "sample_format": "Original FFmpeg AAC planar float values are retained through original SWR conversion, including native 22.2 compact matrix behavior."
+    },
+    "faster_whisper": {
+      "audio_py_sha256": "60a1d8638f718cbf6d245aed3e5a5aa61c1f822a0b0fe9b48a7c928d47c23909",
+      "license": "licenses/faster-whisper.txt",
+      "version": "1.2.1"
+    },
+    "ffmpeg": {
+      "archive_bytes": 16894057,
+      "archive_sha256": "2ae7e42343cfffb811d15cfe98b6d005f082595fcdf034d30a4ff90cfed9f9c6",
+      "archive_url": "https://codeload.github.com/FFmpeg/FFmpeg/tar.gz/38b88335f99e76ed89ff3c93f877fdefce736c13",
+      "commit": "38b88335f99e76ed89ff3c93f877fdefce736c13",
+      "metadata_url": "https://api.github.com/repos/FFmpeg/FFmpeg/git/ref/tags/n8.1.2",
+      "tag": "n8.1.2"
+    },
+    "he_aac": {
+      "runtime_reference": "local-whisper-he-aac-provenance.json",
+      "sample_format": "Original Generic planar float survives to original no-dither signed16 SWR; optimized host differences are retained explicitly."
+    },
+    "mp3": {
+      "runtime_reference": "local-whisper-mp3-provenance.json",
+      "sample_format": "Original FFmpeg mp3float planar normalized floats are retained through the SWR input; no early signed16 quantization."
+    },
+    "opus": {
+      "runtime_reference": "opus-provenance.json",
+      "source_archive_sha256": "65b58e1e25b2a114157014736a3d9dfeaad8d41be1c8179866f144a2fb44ff9d",
+      "source_archive_url": "https://downloads.xiph.org/releases/opus/opus-1.3.1.tar.gz",
+      "version": "1.3.1"
+    },
+    "standards": [
+      "https://www.rfc-editor.org/rfc/rfc7845.html",
+      "https://xiph.org/ogg/doc/framing.html"
+    ]
+  },
+  "verified": {
+    "aac_frontend_public_tests": {
+      "exit_codes": [
+        0,
+        0
+      ],
+      "logs": [
+        "validation-logs/hermes-aac-full-frontend-public-311-uyh7btkk.log",
+        "validation-logs/hermes-aac-full-frontend-public-314-zu7jexhx.log"
+      ],
+      "methods": 16,
+      "python_versions": [
+        "3.11.2",
+        "3.14.7"
+      ],
+      "scope": "Complete audio frontend and AAC codec corpus, including868 native AAC\u2192SWR cases, all7 trained native speech-file traces and ADTS/M4A magic/path/current-cursor handling. The frontend guard forbids native codec/numerical/process imports.",
+      "seconds": [
+        249.41202020645142,
+        242.589537858963
+      ],
+      "stdlib_only": true
+    },
+    "aac_native_authoring": {
+      "consumer_cases": 2,
+      "consumer_exit_code": 0,
+      "consumer_log": "validation-logs/hermes-aac-trained-file-consumers4-fknh2lqu.log",
+      "consumer_seconds": 13.08756399154663,
+      "file_inputs": 217,
+      "output_rates": [
+        16000,
+        22050
+      ],
+      "pcm_tolerance_lsb": 1,
+      "reference_output": "Original faster-whisper audio.decode_audio using actual pinned PyAV18.1.0 and FFmpeg8.1.2; no candidate-produced expectations.",
+      "resample_cases": 868,
+      "resample_exit_code": 0,
+      "resample_log": "validation-logs/hermes-aac-original-swr-final-3oii_se_.log",
+      "resample_seconds": 147.11789393424988,
+      "split_stereo": [
+        false,
+        true
+      ]
+    },
+    "aac_native_swr_cases": 868,
+    "extended_wave_g711_header_cases": 212,
+    "fifo_boundary_cases": [
+      {
+        "max_error": 0,
+        "output_samples": 166666,
+        "rate": 48000,
+        "same_length": true,
+        "size": 499999
+      },
+      {
+        "max_error": 0,
+        "output_samples": 166667,
+        "rate": 48000,
+        "same_length": true,
+        "size": 500000
+      },
+      {
+        "max_error": 0,
+        "output_samples": 166667,
+        "rate": 48000,
+        "same_length": true,
+        "size": 500001
+      },
+      {
+        "max_error": 0,
+        "output_samples": 362813,
+        "rate": 44100,
+        "same_length": true,
+        "size": 1000003
+      }
+    ],
+    "file_consumer_cases": [
+      {
+        "file": "stereo44100.wav",
+        "pcm_max_error_lsb": 0.0,
+        "text": " And so my fellow American."
+      },
+      {
+        "file": "native16k.flac",
+        "pcm_max_error_lsb": 0.0,
+        "text": " And so my fellow American"
+      },
+      {
+        "file": "speech48k.opus",
+        "pcm_max_error_lsb": 1.0,
+        "text": " And so my fellow American"
+      },
+      {
+        "file": "speech16000-1ch.mp3",
+        "pcm_max_error_lsb": 1.0,
+        "text": " And so my fellow American"
+      },
+      {
+        "file": "speech44100-2ch.mp3",
+        "pcm_max_error_lsb": 1.0,
+        "text": " And so my fellow American."
+      },
+      {
+        "file": "speech16000-1ch.aac",
+        "pcm_max_error_lsb": 1.0,
+        "text": " And so my fellow American."
+      },
+      {
+        "file": "speech44100-2ch.m4a",
+        "pcm_max_error_lsb": 1.0,
+        "text": " And so my fellow American."
+      },
+      {
+        "file": "jfk-he5-16000-1ch.m4a",
+        "host_profile_max_difference_lsb": 1.0,
+        "native_profile": "FFmpeg8.1.2 GENERIC cpu_flags0 (codec and SWR)",
+        "pcm_max_error_lsb": 0.0,
+        "text": " And so my fellow American."
+      },
+      {
+        "file": "jfk-he29-44100-2ch.aac",
+        "host_profile_max_difference_lsb": 1.0,
+        "native_profile": "FFmpeg8.1.2 GENERIC cpu_flags0 (codec and SWR)",
+        "pcm_max_error_lsb": 1.0,
+        "text": " And so my fellow American."
+      },
+      {
+        "file": "jfk-vorbis-16000-1ch.ogg",
+        "host_profile_max_difference_lsb": 1.0,
+        "native_profile": "FFmpeg8.1.2 GENERIC av_force_cpu_flags(0), actual original Faster-Whisper and trained tiny.en / CT2 float32",
+        "pcm_max_error_lsb": 0.0,
+        "text": " And so my fellow mirror"
+      },
+      {
+        "file": "jfk-vorbis-44100-2ch.ogg",
+        "host_profile_max_difference_lsb": 1.0,
+        "native_profile": "FFmpeg8.1.2 GENERIC av_force_cpu_flags(0), actual original Faster-Whisper and trained tiny.en / CT2 float32",
+        "pcm_max_error_lsb": 1.0,
+        "text": " And so my fellow American."
+      }
+    ],
+    "he_aac_frontend_public_tests": {
+      "corrected_refusal_public_tests": [
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-he-aac-refusals311-69r3d70f.log",
+          "methods": 1,
+          "refusals": 27,
+          "seconds": 1.5329315662384033,
+          "status": "validation-logs/hermes-he-aac-refusals311-69r3d70f.log.status.json"
+        },
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-he-aac-refusals314-6nmwwfjg.log",
+          "methods": 1,
+          "refusals": 27,
+          "seconds": 1.6009109020233154,
+          "status": "validation-logs/hermes-he-aac-refusals314-6nmwwfjg.log.status.json"
+        }
+      ],
+      "full_attempts": [
+        {
+          "exit_code": 1,
+          "failed_method": "test_he_aac_all_27_original_changing_format_refusals",
+          "failure": "New fixture incorrectly asserted exact ValueError name instead of the recorded AacError subclass; all27 same assertion, no PCM failures.",
+          "log": "validation-logs/hermes-he-aac-common-public311-zgt0nqs8.log",
+          "methods": 12,
+          "passed_methods": 11,
+          "seconds": 1401.8022820949554,
+          "status": "validation-logs/hermes-he-aac-common-public311-zgt0nqs8.log.status.json"
+        },
+        {
+          "exit_code": 1,
+          "failed_method": "test_he_aac_all_27_original_changing_format_refusals",
+          "failure": "New fixture incorrectly asserted exact ValueError name instead of the recorded AacError subclass; all27 same assertion, no PCM failures.",
+          "log": "validation-logs/hermes-he-aac-common-public314-x4p4my34.log",
+          "methods": 12,
+          "passed_methods": 11,
+          "seconds": 1476.2418200969696,
+          "status": "validation-logs/hermes-he-aac-common-public314-x4p4my34.log.status.json"
+        }
+      ],
+      "methods": 12,
+      "no_native_import_guard": true,
+      "scope": "All1,444HE file/rate/downmix goldens and other11common frontend methods, including4AACpath/cursor files and all9trained traces, passed both interpreters in the recorded full attempt. Only new exact-type fixture assertion failed; corrected original ValueError/candidate AacError subtype+message boundary passes27cases both. A fresh full run remains pending.",
+      "status": "all_unmodified_pcm_consumer_methods_passed_and_corrected_refusal_method_passed; fresh full run pending",
+      "stdlib_only": true,
+      "test_module_sha256": "8885f95e0e158b1393c0bc16f0fb1af3d22d4d2205769b64bff9eaecf612487f"
+    },
+    "he_aac_native_authoring": {
+      "changing_format_refusals": 27,
+      "file_inputs": 361,
+      "max_error_lsb": 1.0,
+      "max_host_profile_difference_lsb": 58.0,
+      "numerical_profile": "Actual original av_force_cpu_flags(0): GENERIC codec and SWR; host CPU profile retained separately",
+      "receipts": [
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-he-aac-public-311-ac5jgvy9.log",
+          "name": "local-he-aac-public-311",
+          "seconds": 294.80018377304077,
+          "status": "validation-logs/hermes-local-he-aac-public-311-ac5jgvy9.log.status.json"
+        },
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-he-aac-public-314-2mbiumtb.log",
+          "name": "local-he-aac-public-314",
+          "seconds": 309.66591572761536,
+          "status": "validation-logs/hermes-local-he-aac-public-314-2mbiumtb.log.status.json"
+        },
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-he-aac-native-frontend-jnnvyyff.log",
+          "name": "local-he-aac-native-frontend",
+          "seconds": 1509.1870377063751,
+          "status": "validation-logs/hermes-local-he-aac-native-frontend-jnnvyyff.log.status.json"
+        },
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-he-aac-file-consumer-o8b6fww_.log",
+          "name": "local-he-aac-file-consumer",
+          "seconds": 33.25725340843201,
+          "status": "validation-logs/hermes-local-he-aac-file-consumer-o8b6fww_.log.status.json"
+        }
+      ],
+      "reference": "Original Faster-Whisper audio.decode_audio + pinned PyAV18.1.0/FFmpeg8.1.2",
+      "resample_cases": 1444,
+      "source_proposal_sha256": "d52d57f1ca60aca794adb7f8851d03b3bcc466648935b306bb8dbbc12b2d774b",
+      "trained_file_consumers": 2
+    },
+    "he_aac_native_swr_cases": 1444,
+    "mp3_extension_public_tests": {
+      "exit_codes": [
+        0,
+        0
+      ],
+      "logs": [
+        "validation-logs/hermes-local-audio-mp3-public311-s9q0ugjo.log",
+        "validation-logs/hermes-local-audio-mp3-public314-m_52ppan.log"
+      ],
+      "methods": 3,
+      "python_versions": [
+        "3.11.2",
+        "3.14.7"
+      ],
+      "scope": "All72 original mp3float\u2192SWR noise cases, file/path/cursor/container dispatch, all5 actual trained Whisper native consumer traces with independent native PCM. The prior full audio6method checks remain recorded separately.",
+      "stdlib_only": true
+    },
+    "mp3_native_authoring": {
+      "consumer_cases": 2,
+      "consumer_exit_code": 0,
+      "consumer_log": "validation-logs/hermes-local-audio-mp3-file-consumer-native4-jti7r5sc.log",
+      "consumer_seconds": 12.424454689025879,
+      "pcm_tolerance_lsb": 1,
+      "resample_cases": 72,
+      "resample_exit_code": 0,
+      "resample_log": "validation-logs/hermes-local-audio-mp3-swr-noise-native-ozs9qm4j.log"
+    },
+    "mp3_native_swr_cases": 72,
+    "native_libopus_multistream_cases": 32,
+    "nonstandard_phase_ratio_cases": 36,
+    "opus_max_raw_float_error": 1.817282199167991e-07,
+    "opus_metadata_framing_cases": 38,
+    "pcm_tolerance_lsb": 1,
+    "public_tests": {
+      "exit_codes": [
+        0,
+        0
+      ],
+      "logs": [
+        "validation-logs/hermes-local-audio-public311-2_gbgv0f.log",
+        "validation-logs/hermes-local-audio-public314-pzivy2cr.log"
+      ],
+      "methods": 6,
+      "no_native_guard": "Blocks native SDK/numerical/codec/process imports. Real recorded model results are test-only finite traces; public file tests verify every original generation prompt/option and resulting Segment/Info as well as independently recorded PCM.",
+      "python_versions": [
+        "3.11.2",
+        "3.14.7"
+      ],
+      "source_runtime_connection": true,
+      "stdlib_only": true
+    },
+    "real_file_whisper_consumers": 11,
+    "short_resampler_cases": 180,
+    "signed_pcm64_cases": 12,
+    "vorbis_common_frontend": {
+      "controller_scope": "All eleven native speech-file traces pass exact original prompts/options/segments/info. Tests use test-only RecordedEngine responses captured from real native CT2. Actual trained native comparisons use the same true native engine on each file frontend; complete pure Whisper inference has a separate E2E proof.",
+      "direct_grid_receipts": "The exact generated-file checkpoint records the separate 1,040-case direct common-dispatch shard. The original component grid decodes once per file and then exercises all four original SWR output combinations.",
+      "header_boundaries": {
+        "demux_or_open_errors": 13,
+        "empty_float32": 10
+      },
+      "native_consumer_sha256": "036bf1001a35a7795b39aa9494965878224e264186bebd51d9841941a1334341",
+      "native_files": 260,
+      "native_swr_sha256": "4fbe0d547941526f7cc653b43c7bc183c4b24d8582de81c9d04efdd5195fed27",
+      "output_cases": 1040,
+      "output_rates": [
+        16000,
+        22050
+      ],
+      "pcm_tolerance_lsb": 1,
+      "public_checks": [
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-vorbis-common-preflight311-acqv9jd8.log",
+          "name": "vorbis-common-preflight311",
+          "seconds": 6.181336879730225,
+          "status": "validation-logs/hermes-vorbis-common-preflight311-acqv9jd8.log.status.json"
+        },
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-vorbis-common-preflight314-dkhd_i9b.log",
+          "name": "vorbis-common-preflight314",
+          "seconds": 5.2287187576293945,
+          "status": "validation-logs/hermes-vorbis-common-preflight314-dkhd_i9b.log.status.json"
+        },
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-vorbis-common-grid311-lmkl51s2.log",
+          "name": "vorbis-common-grid311",
+          "seconds": 1737.9885613918304,
+          "status": "validation-logs/hermes-vorbis-common-grid311-lmkl51s2.log.status.json"
+        },
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-vorbis-common-grid314-wna0jbin.log",
+          "name": "vorbis-common-grid314",
+          "seconds": 1730.7572326660156,
+          "status": "validation-logs/hermes-vorbis-common-grid314-wna0jbin.log.status.json"
+        },
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-vorbis-common-consumers311-gdbqy1pp.log",
+          "name": "vorbis-common-consumers311",
+          "seconds": 424.2548701763153,
+          "status": "validation-logs/hermes-vorbis-common-consumers311-gdbqy1pp.log.status.json"
+        },
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-vorbis-common-consumers314-y8k1azdw.log",
+          "name": "vorbis-common-consumers314",
+          "seconds": 317.8411748409271,
+          "status": "validation-logs/hermes-vorbis-common-consumers314-y8k1azdw.log.status.json"
+        }
+      ],
+      "source_frontend_sha256": "cdfeca0ff31bd64e2991060b00c46d4126313ae3ee33c8a1db98fc5e7c9865c1",
+      "source_proposal_sha256": "92a6b1216f2143738b80c5b7d6c20c77057ed8a88a589ff8ff5772b7d90e216b",
+      "source_test_sha256": "af373bb6493133d547e1c31e1778af7bf728f0b12bff550cec77b5c350d75e51",
+      "split_stereo": [
+        false,
+        true
+      ],
+      "stdlib_only": true
+    },
+    "vorbis_native_swr_cases": 1040,
+    "wave_format_rate_channels_cases": 672
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "fixtures_sha256": {
+    "local_whisper_audio_adpcm.json": "dff0b9e3fed51e7a10fbe49cc94dd71a1b525d7229f160d6a585d84c6cb6376c"
+  },
+  "licenses": {
+    "ffmpeg-LGPL-2.1.txt": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30",
+    "ffmpeg-swr-notices.txt": "b4f967055c215c5a12af86ec3128a9e03972f7ff4def56f254cedc8dd5f207b8"
+  },
+  "limits": [
+    "Damaged compressed block headers/step indices fail explicitly. Every FFmpeg malformed-packet concealment/iterator-exhaustion behavior is not replicated.",
+    "Other WAVE codecs are explicitly unimplemented unless listed by local-whisper-audio-provenance.json."
+  ],
+  "oracle": "Actual pinned PyAV18.1.0/FFmpeg8.1.2 native decoder raw planarS16, independently followed by original Faster-Whisper1.2.1 audio.py/native SWR. Authoring binaries are ignored cache only.",
+  "runtime_modules_sha256": {
+    "local_whisper_audio_adpcm.py": "352a9366b669c0edcb0a4498ddbb7b11aa849d1e1ec033d9ea9c2c1de6e64529",
+    "local_whisper_audio_wave.py": "d1b04d9bd9843e4d8c9177bacf37500083ee13a35f73b72bd0ef6478a2aea181"
+  },
+  "schema": 1,
+  "scope": "Qualified valid WAVE IMA ADPCM2/3/4/5-bit mono/stereo and Microsoft ADPCM4-bit1-6ch decoding, connected to original default SWR. No native library/program/fallback.",
+  "source": {
+    "commit": "38b88335f99e76ed89ff3c93f877fdefce736c13",
+    "source_archive_sha256": "2ae7e42343cfffb811d15cfe98b6d005f082595fcdf034d30a4ff90cfed9f9c6",
+    "source_files": {
+      "libavcodec/adpcm.c": "6c4322dc3677bc5c74eeeb3c33ec2b076e25f454e6f1f1ef3d2d7ce6bf8cfbc2",
+      "libavcodec/adpcm_data.c": "47ba6b4638586c34d6f34eaf27e1925a51c1e9a8cc2ae2666e2cb7cdf4638181",
+      "libavcodec/adpcm_data.h": "fefd9f420a5bd2b70684739725a3a02fd596fe2d123b1ab757f39ff0f1f0c231"
+    },
+    "version": "FFmpeg8.1.2"
+  },
+  "verified": {
+    "all_raw_pcm_exact": true,
+    "all_resampled_pcm_exact": true,
+    "coverage": [
+      "IMA2/3/4/5-bit little-endian packing, channel interleave, predictors-32768/-1/0/1/32767 and step indices0/1/44/87/88",
+      "All7 Microsoft predictors, initial signed deltas, clipping/adaptation clamp and1-6channel packet layout",
+      "Actual encoded short/multiple-block mono/stereo at8kHz/44.1kHz",
+      "Original SWR output and decoded frame budgets"
+    ],
+    "native_encoder_files": 24,
+    "native_files": 434,
+    "native_raw_samples": 180072,
+    "public_tests": {
+      "exit_codes": [
+        0,
+        0
+      ],
+      "logs": [
+        "validation-logs/hermes-local-audio-adpcm-public311-_ufu3zve.log",
+        "validation-logs/hermes-local-audio-adpcm-public314-ju3qmec7.log"
+      ],
+      "methods": 2,
+      "python_versions": [
+        "3.11.2",
+        "3.14.7"
+      ],
+      "status": "passed"
+    }
+  }
+}
