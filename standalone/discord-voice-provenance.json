@@ -1,0 +1,57 @@
+{
+  "implementation": "Qualified XChaCha20-Poly1305 and historical XSalsa20-Poly1305 Discord RTP boxes; original discord.py packet construction, original Hermes receiver and PCM mixer with explicit float32 operations. This is not a complete Discord voice backend.",
+  "consumer": {
+    "name": "discord-py",
+    "version": "2.7.1",
+    "filename": "discord_py-2.7.1.tar.gz",
+    "url": "https://files.pythonhosted.org/packages/ef/57/9a2d9abdabdc9db8ef28ce0cf4129669e1c8717ba28d607b5ba357c4de3b/discord_py-2.7.1.tar.gz",
+    "sha256": "24d5e6a45535152e4b98148a9dd6b550d25dc2c9fb41b6d670319411641249da"
+  },
+  "embedded_primitives": {
+    "name": "tlslite-ng",
+    "version": "0.8.2",
+    "filename": "tlslite_ng-0.8.2.tar.gz",
+    "url": "https://files.pythonhosted.org/packages/ff/d1/f6572100f6d6ddb31d7356d7c670599bf404b744ce9bb3c6728bde3665f3/tlslite_ng-0.8.2.tar.gz",
+    "sha256": "9ac377526c60a7d6e7625bd49e7a5ae551b12b0465b07d691342c64a0b3e8440"
+  },
+  "references": [
+    "https://www.rfc-editor.org/rfc/rfc8439",
+    "https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-xchacha-03",
+    "https://cr.yp.to/snuffle/xsalsa-20081128.pdf",
+    "https://docs.discord.com/developers/topics/voice-connections",
+    "https://github.com/discord/libdave"
+  ],
+  "runtime_boundaries": [
+    "discord.voice_client imports standalone.discord_crypto for its four transport modes. No nacl or davey namespace is installed.",
+    "Hermes VoiceReceiver preserves the complete credential-generation tuple, authentication failures, rekey threshold, RTP extensions/padding, DAVE state guards and per-SSRC decoder lifetime.",
+    "discord.voice_state and discord.gateway import the qualified standalone.dave Session. DAVE v1 MLS and Opus frame encryption are implemented and independently validated; unsupported protocol versions and authentication failures refuse explicitly. See dave-provenance.json.",
+    "The bundled discord.opus native loader refuses loading; both default discovery and explicit third-party native library loading are disabled.",
+    "Original mixer children, locking, fade counters, duck/release and pause/resume lifecycle remain in the adapter; explicit PCM helpers handle sample arithmetic."
+  ],
+  "oracles": [
+    {
+      "path": "tests/fixtures/discord-voice-crypto.json",
+      "sha256": "50074323a831c76ba3ba102085cfc29dc8dc5ebafbef7852c730788f34d2297d",
+      "description": "Locally executed libsodium 1.0.18: 30 HChaCha/HSalsa derivations, 30 boxes including authentication corruption, 15 native libopus 1.3.1 packets and decoded PCM, plus 60 native encrypted RTP outputs."
+    },
+    {
+      "path": "tests/fixtures/discord-pcm.json",
+      "sha256": "8ff38ab754c1be8886cbd191663cb157a9e78abda2884e48fad7a34ed4caf76f",
+      "description": "Native libm fmaf IEEE float32 gain and sum for eight complete 20 ms stereo frames; clipping and signed PCM16 conversion."
+    },
+    {
+      "path": "tests/fixtures/silk_resample.json",
+      "sha256": "4f7ed35d53be3acb128b3706ece35053ab182bf67bc3a0b433d92194d569f511",
+      "description": "Reviewed native Skype SILK SDK resampling vectors reused by the WAV consumer tests."
+    }
+  ],
+  "limits": [
+    "The DAVE v1 MLS and Opus frame-encryption path is implemented; full Discord voice still requires the separate complete pure Opus codec. DAVE video packetizer transforms and general MLS private-message/external-commit features are outside the Hermes Opus consumer. See dave-provenance.json for exact coverage.",
+    "A full pure Opus SILK/CELT encoder and decoder is not implemented. The 15 native Opus packet/PCM fixtures verify 60 RTP encrypted wire outputs and future codec work; they do not constitute a Python codec.",
+    "Standalone audio-file conversion currently accepts uncompressed mono/stereo integer PCM WAV at 8-48 kHz; compressed formats remain unsupported.",
+    "WAV resampling matches the reviewed native Skype SILK SDK vectors; waveform equality with FFmpeg libswresample is not claimed.",
+    "Mixer multiply/add/clip retains float32 numerical output. Synthesized ambient noise uses deterministic stdlib Random(7) Gaussian samples, so its noise waveform differs from NumPy PCG64/Ziggurat.",
+    "Python integer/stream-cipher arithmetic does not claim constant-time execution."
+  ],
+  "dave_provenance": "dave-provenance.json"
+}

@@ -1,0 +1,101 @@
+{
+  "protocol": "DAVE v1 MLS suite 0x0002 and Opus audio frame encryption",
+  "runtime": "Python standard library plus the already embedded pure ecdsa 0.19.2 and tlslite-ng 0.8.2 sources; no native code, process, package installation, or runtime network fetch",
+  "upstream": {
+    "python_binding": "davey 0.1.6",
+    "core": "davey 0.1.4",
+    "source_url": "https://files.pythonhosted.org/packages/a2/5a/fba4f241463db9cfb6ebc536147ae7820abcb9709034e12f6640e312cf14/davey-0.1.6.tar.gz",
+    "source_sha256": "e067b22f30b27f48b28e2ab0b8d89a8f8adcfa6da3e8a0fec31a5eabbf7e9c98",
+    "git_commit": "a1e2e741bea06bc3b7167a5c3792844b8975993c",
+    "openmls": "0.8.1",
+    "openmls_crate_sha256": "dcb512bfe6a55777518853ea535c6241f069cb0e8984678c117151d2a1e7e903",
+    "license": "MIT",
+    "license_file": "licenses/davey-MIT.txt",
+    "license_url": "https://raw.githubusercontent.com/Snazzah/davey/a1e2e741bea06bc3b7167a5c3792844b8975993c/LICENSE"
+  },
+  "standards": [
+    "https://www.rfc-editor.org/rfc/rfc9180",
+    "https://www.rfc-editor.org/rfc/rfc9420"
+  ],
+  "reference_vectors": {
+    "hpke_commit": "5f503c564da00b0687b3de75f1dfbdfc4079ad31",
+    "hpke_url": "https://github.com/cfrg/draft-irtf-cfrg-hpke/blob/5f503c564da00b0687b3de75f1dfbdfc4079ad31/test-vectors.json",
+    "mls_commit": "2034fe72e0c805a683ba76165660c834f2a8142a",
+    "mls_url": "https://github.com/mlswg/mls-implementations/tree/2034fe72e0c805a683ba76165660c834f2a8142a/test-vectors"
+  },
+  "implemented": [
+    "P-256 DHKEM/HKDF-SHA256/AES-128-GCM HPKE base mode and DER ECDSA-SHA256",
+    "MLS TLS encoding, KeyPackage and leaf signatures, parent hashes, complete ratchet-tree authentication, external sender proposals, proposal references/revocation, member commits and Welcome, TreeKEM, epoch confirmation, PSK scheduling, exporter",
+    "davey Session lifecycle consumed by discord.py: pending/awaiting/active, reinit, epoch transitions, user media key derivation, verification fingerprints and privacy codes",
+    "DAVE Opus framing with eight-byte AES-GCM tags, ULEB128 nonce, authenticated ranges on receive, ratchet generation, replay/out-of-order protection, ten-second epoch grace, explicitly negotiated passthrough expiry"
+  ],
+  "tests": {
+    "hpke_ciphertexts": 257,
+    "hpke_exporters": 3,
+    "mls_tree_examples": 14,
+    "mls_tree_nodes": 454,
+    "mls_epoch_key_schedules": 5,
+    "mls_passive_welcomes": 21,
+    "mls_passive_commit_epochs": 26,
+    "native_ratchet_vectors": 21,
+    "native_frame_vectors": 30,
+    "original_davey_python_test_functions": 32,
+    "native_session_interop": "Original Rust davey Session and Python Session exchanged Welcome, Commit, Remove, self UpdatePath and frame ciphertexts; original A and C plus Python B agreed on exporters through epochs 1–4",
+    "native_oracle": "Built only in ignored cache with the original pinned dependency lock (removed sdist-absent NAPI workspace entries without changing any retained version/checksum); visibility-only instrumentation exposes original frame cryptor and a nonce setter for boundary fixtures; no compiled oracle is shipped",
+    "native_nested_rtp": "Valid Opus from native libopus 1.3.1, original Rust davey Session and libsodium 1.0.18 produce exact inner AES-GCM frame and outer XChaCha20-Poly1305 RTP bytes in both directions.",
+    "sdk_consumer": "Original discord.py VoiceClient, VoiceConnectionState and DiscordVoiceWebSocket over an owned TLS WebSocket plus actual UDP SocketReader/VoiceReceiver: KeyPackage/Welcome/transition/proposals/CommitWelcome/own commit, authenticated payload and user identity, replay/MAC/plaintext refusal, invalid commit recovery. The Opus decoder remains a separately reported codec boundary.",
+    "sdk_consumer_tests": [
+      "tests/test_dave_voice.py",
+      "tests/test_discord_voice.py"
+    ],
+    "negotiated_passthrough": "Original gateway prepare/downgrade/execute/upgrade messages enable passthrough; authentication errors never trigger a plaintext fallback in the qualified adapter.",
+    "member_removal": "Original native Session refuses an incoming Commit that evicts itself; the qualified Session drops retained media keys, refuses frames and signals the original SDK reinitialization path."
+  },
+  "limits": [
+    "This is the concrete Hermes Discord Opus consumer, not a general-purpose MLS implementation: encrypted MLS PrivateMessage, external commits, ReInit/branch transitions and other cipher suites are rejected.",
+    "DAVE video codec packetizer transforms are not implemented.",
+    "Python scalar/AES operations do not provide constant-time secret arithmetic.",
+    "Live Discord infrastructure and bot credentials are not required by, or exercised in, the deterministic fixture suite. Live service credentials are kept outside fixture tests.",
+    "Bounds: 16 MiB MLS messages, 4096 MLS leaves, 1 MiB media frames, 128 retained KeyPackages; an exhausted key-package bound explicitly requires reinitialization."
+  ],
+  "files": {
+    "mls_codec.py": "2ba34a5ad737b6fd9337789040c8c5ef040f63d94bb2977d6dd2a50892e8f04c",
+    "mls_crypto.py": "e2f7b17f62279bc20da256c70270c583bdc861dc6387101dcf7b1e40af391726",
+    "mls_schedule.py": "d4194a39735d3c385bd89753521dcfd38d7e2cc84d1651df2ed577358bc924ac",
+    "mls_types.py": "bd9b247e2fbc32b35889668d1cc5c2cf4eeefdfbed45f51ee0515e7b80e54ea8",
+    "mls_tree.py": "5592afea320e6c96ce4887fa2b9814bda43a19d37410a94ac101d2285567a856",
+    "mls_group.py": "077edce20dab2c39e88973b7faad715ae6589c445a5fd208e98041851386c76a",
+    "dave_frames.py": "0f85487c847520a86077fecc60e20ff73eef35676e3423b202eafdb8f8c589a8",
+    "dave.py": "830b95de6e5eda9c8225eb50360db3a6e9b17de01e1178a1adbbae9e0eb35d6b"
+  },
+  "fixtures": {
+    "tests/fixtures/dave/dave-mls.json": "c8598fb01bbe998715c9c0a33fac09b8a8c7afc466cb8a61188d0bdfe5d03447",
+    "tests/fixtures/dave/test_displayable_code.py.txt": "8648887ed567ef526e46ce2ae60f3a3850dbff6543587e47bb93a92c87458c96",
+    "tests/fixtures/dave/test_fingerprint.py.txt": "8b0f11ebe4c9e5ef5f0265594827ff24e283f7825b2af805fd4c37ee2cd5ba13",
+    "tests/fixtures/dave/test_session.py.txt": "fb2c8ebb60ec8227bb032e639381f5709ce0d630349b7770c3fec68738b3ac0c",
+    "tests/fixtures/dave/test_signing_key_pair.py.txt": "b0ae7864728de8fb25484d700c12650230a624bf9ecc6db531ee6b8c0bfdf273",
+    "tests/fixtures/dave/test_version.py.txt": "d28b1662229b04d6bf62a2bd17f0249a7920d807bcdb4b637bde1d8c30b2e401"
+  },
+  "sdk_source_patches": {
+    "discord/opus.py": {
+      "original_sha256": "d252126c36a071772421cd57c82b8e1900d27dd722e777dd259e4bc2e677fb30",
+      "patched_sha256": "659507c919d41b26873c799731f6d21651ac8d33b11009b666a5fefbfc2610fe"
+    },
+    "discord/player.py": {
+      "original_sha256": "15ec5e23a5e6a6523475d2a91c45359d888f6bce25f49c925ed28822f6df8a74",
+      "patched_sha256": "59a6f5eb5750d822419a3727a554e9cf760e558fbed3d408c05315d29193dfd3"
+    },
+    "discord/voice_client.py": {
+      "original_sha256": "668ff75fb1330e8be79b6b43f273cbcda058daf50144caf83332e9fa210ee341",
+      "patched_sha256": "2181e62cefcff0d3f3192c9a01ce3674ad499d292ef170f999a0d5c978c361cc"
+    },
+    "discord/voice_state.py": {
+      "original_sha256": "a21c5bf73fabb61898be711dd997bd02b1d0513fac92b0f644e96dafa6a2a17d",
+      "patched_sha256": "c0ee1c77ca929d059635393a0d5a78462e5ca598311af6dbd761fb06a3b63374"
+    },
+    "discord/gateway.py": {
+      "original_sha256": "8caa45cacdd5814fea651c262a0a2f4d54f8ce08ece58de2a1b614ae01537012",
+      "patched_sha256": "93a8c7c0a65d88b6e6e67e687aa8f43ae64f0afb492e2eeb6cb49e8b72e92673"
+    }
+  }
+}

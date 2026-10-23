@@ -8,14 +8,16 @@ integration (install on join, play routing, ack) is tested with the standard
 """
 
 import os
+import struct
 import sys
 from unittest.mock import MagicMock, patch
 
 import pytest
 
-# numpy ships only in the optional "audio-io" extra (not [all,dev]); the mixer
-# math needs it, so skip this whole module when it isn't installed.
-np = pytest.importorskip("numpy")
+from standalone.packages import active as standalone_active
+
+if not standalone_active():
+    pytest.importorskip("numpy")
 
 # voice_mixer lives inside the discord plugin package dir; import by path the
 # same way the adapter does.
@@ -51,7 +53,7 @@ class TestVoiceMixerCore:
         amb = vm.synth_ambient_pcm(seconds=0.5)
         assert len(amb) % vm.FRAME_SIZE == 0  # frame-aligned for seamless loop
         mx.set_ambient(amb)
-        peaks = [int(np.max(np.abs(np.frombuffer(mx.read(), dtype=np.int16))))
+        peaks = [max(abs(sample[0]) for sample in struct.iter_unpack("<h", mx.read()))
                  for _ in range(100)]  # 2s >> 0.5s loop
         # Produces audio after the fade-in and stays under the configured gain.
         assert any(p > 0 for p in peaks[10:])

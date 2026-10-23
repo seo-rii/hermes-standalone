@@ -98,6 +98,7 @@ def fake_nacl(monkeypatch):
     nacl_mod.secret = secret_mod
     monkeypatch.setitem(sys.modules, "nacl", nacl_mod)
     monkeypatch.setitem(sys.modules, "nacl.secret", secret_mod)
+    monkeypatch.setattr("standalone.discord_crypto.Aead", _FakeAead)
     return _FakeAead
 
 

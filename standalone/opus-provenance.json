@@ -1,0 +1,360 @@
+{
+  "celt_vectors": {
+    "allocation_cases": 300,
+    "arbitrary_payload_authoring_cases": 480,
+    "coarse_energy_cases": 300,
+    "float32_autocorrelation_lpc_cases": 80,
+    "loss_and_recovery_frames": 800,
+    "loss_max_absolute_float_error": 0.00023184964679856535,
+    "loss_pcm_int16_test_tolerance_lsb": 8,
+    "loss_samples": 243000,
+    "loss_streams": 40,
+    "native_oracle": "Verified Opus 1.3.1 scalar floating point; no intrinsics, no float approximations. Compiled authoring inputs excluded from runtime. Native integer entropy/codec state compared exactly; FFT/PCM float arithmetic compared with stated tolerances, not claimed bit exact.",
+    "noise_loss_frames": 160,
+    "normal_frames": 640,
+    "normal_max_absolute_float_error": 2.7533846336247336e-07,
+    "normal_pcm_int16_test_tolerance_lsb": 2,
+    "normal_samples": 432000,
+    "normal_streams": 128,
+    "pitch_loss_frames": 240,
+    "pvq_decode_cases": 1480,
+    "pvq_encode_cases": 112,
+    "python_versions": [
+      "3.11.2",
+      "3.14.7"
+    ],
+    "recursive_band_cases": 300,
+    "retained_shared_range_and_arbitrary_payload_cases": 160
+  },
+  "checksum_url": "https://downloads.xiph.org/releases/opus/SHA256SUMS.txt",
+  "decoder_notice_file": "licenses/opus-decoder-notices.txt",
+  "decoder_vectors": {
+    "float_samples": 1475940,
+    "frames": 1384,
+    "int16_samples": 390600,
+    "max_absolute_float_error": 4.619721191112536e-05,
+    "max_pcm16_error_lsb": 1,
+    "native_error_recovery_cases": 88,
+    "native_soft_clip_frames_exact": 128,
+    "native_wrapper_integer_states_exact": true,
+    "python_versions": [
+      "3.11.2",
+      "3.14.7"
+    ],
+    "redundancy_celt_to_silk_packets": 24,
+    "redundancy_silk_to_celt_packets": 8,
+    "scope": "All three modes, all five API rates, mono/stereo output conversion, 2.5\u2013120ms packets, FEC, repeated and short PLC/recovery, mode transitions, both redundancy directions, gain, stateful soft clipping, reset retention and phase control. Original scalar full opus_decode/opus_decode_float authoring oracle; no native library in runtime or tests.",
+    "streams": 307,
+    "test_tolerance_pcm16_lsb": 2,
+    "transition_fade_packets": 16
+  },
+  "discord_consumer": {
+    "adapter_sha256": "8c8ffbf2e6196fe46b1a2d5ab99afb62805e0033ef90908f3da8f5186d853020",
+    "default_bitrate_bps": 131072,
+    "default_packets_native_decoded": 30,
+    "default_pcm16_max_error_lsb": 1,
+    "effective_send_fec": false,
+    "fec_policy": "Native forced-CELT FEC=0/1 is byte identical at three applications and three bitrates. The adapter records fec_requested, always reports fec_enabled=False, and logs the CELT-only limitation. SILK LBRR/FEC sending remains unimplemented; received FEC decoding is qualified separately. No C-function-shaped fake _lib is used.",
+    "native_forced_celt_fec_control_packets": 108,
+    "native_forced_celt_fec_control_pairs": 9,
+    "native_loading_refused": true,
+    "original_consumer_qualification": {
+      "external_discord_service": false,
+      "original_components": [
+        "discord.opus.Encoder",
+        "discord.opus.Decoder",
+        "discord.VoiceClient",
+        "discord.AudioPlayer",
+        "Hermes VoiceMixer",
+        "Hermes VoiceReceiver",
+        "original voice TLS/MLS negotiation",
+        "authenticated DAVE frame encryption and RTP",
+        "recording to STT WAV",
+        "WAV replay through real codec/transport"
+      ],
+      "physical_audio_hardware": false,
+      "platform": "Linux; isolated standard-library bundle, local TLS WebSocket/UDP peers, empty PATH and an audit hook refusing native loads and external networking",
+      "python": "3.14.7",
+      "real_pcm_frames_each_direction": 30,
+      "recording_duration_seconds": 0.6
+    },
+    "original_sdk_error_contract": true,
+    "requested_fec": true,
+    "sdk_original_sha256": "d252126c36a071772421cd57c82b8e1900d27dd722e777dd259e4bc2e677fb30",
+    "sdk_patched_sha256": "63c827925e5a9385934090fe42ac1bd73526cff7defe3dc996b10cb65d146a38"
+  },
+  "encoder_policy": {
+    "format": "48 kHz PCM16 little endian or normalized float; mono/stereo; CBR",
+    "mode": "CELT only; no SILK/hybrid/FEC audio encoding",
+    "other_choices": "Normal spreading, trim=5, no pitch postfilter/dynamic band boosts. These are legal encoder choices; perceptual and byte parity with the native encoder are not claimed.",
+    "stereo": "Dual stereo; required intensity stereo when the bit budget cannot reserve stereo parameters",
+    "transforms": "Long MDCT or short transient MDCTs selected by subframe energy contrast"
+  },
+  "encoder_synthetic_quality": {
+    "method": "12x20ms streams: two silence frames followed by tones, impulses and white noise; output aligned by the CELT 120-sample lookahead. Signal SNR includes deliberate 20kHz band limiting. Native comparison: Opus 1.3.1 restricted low delay, full-band request, CBR, force channels, complexity10. Synthetic diagnostic only, not perceptual listening certification.",
+    "rows": [
+      {
+        "bitrate": 16000,
+        "channels": 1,
+        "mixed_native_snr_db": 4.061398988919195,
+        "mixed_pure_snr_db": 4.538165453159446
+      },
+      {
+        "bitrate": 32000,
+        "channels": 1,
+        "mixed_native_snr_db": 6.833742937170747,
+        "mixed_pure_snr_db": 7.130273744515179
+      },
+      {
+        "bitrate": 64000,
+        "channels": 1,
+        "mixed_native_snr_db": 10.67974214811661,
+        "mixed_pure_snr_db": 9.96580517996819
+      },
+      {
+        "bitrate": 128000,
+        "channels": 1,
+        "mixed_native_snr_db": 13.985347890027102,
+        "mixed_pure_snr_db": 13.948594702131103
+      },
+      {
+        "bitrate": 256000,
+        "channels": 1,
+        "mixed_native_snr_db": 14.817927633319112,
+        "mixed_pure_snr_db": 14.835246749237063
+      },
+      {
+        "bitrate": 512000,
+        "channels": 1,
+        "mixed_native_snr_db": 15.147310332202723,
+        "mixed_pure_snr_db": 15.187068606997958
+      },
+      {
+        "bitrate": 16000,
+        "channels": 2,
+        "mixed_native_snr_db": 1.2622474154395524,
+        "mixed_pure_snr_db": 3.594342951195861
+      },
+      {
+        "bitrate": 32000,
+        "channels": 2,
+        "mixed_native_snr_db": 5.28598344757121,
+        "mixed_pure_snr_db": 4.681226022657282
+      },
+      {
+        "bitrate": 64000,
+        "channels": 2,
+        "mixed_native_snr_db": 7.394820068830508,
+        "mixed_pure_snr_db": 7.265186389690644
+      },
+      {
+        "bitrate": 128000,
+        "channels": 2,
+        "mixed_native_snr_db": 10.593607896323151,
+        "mixed_pure_snr_db": 10.002103683495028
+      },
+      {
+        "bitrate": 256000,
+        "channels": 2,
+        "mixed_native_snr_db": 14.099725331322244,
+        "mixed_pure_snr_db": 13.845468855912507
+      },
+      {
+        "bitrate": 512000,
+        "channels": 2,
+        "mixed_native_snr_db": 14.675083030994877,
+        "mixed_pure_snr_db": 14.705802305892838
+      }
+    ]
+  },
+  "encoder_vectors": {
+    "control_bandwidths": [
+      "narrow",
+      "medium (mapped to wide as in Opus CELT)",
+      "wide",
+      "superwide",
+      "full"
+    ],
+    "control_bitrates_bps": [
+      32000,
+      64000,
+      128000,
+      524288
+    ],
+    "control_max_absolute_float_error": 2.473049847684372e-07,
+    "control_packets": 100,
+    "control_samples": 352800,
+    "control_streams": 10,
+    "forward_mdct_max_absolute_float_error": 0.0006385922506524366,
+    "frames": 576,
+    "internal_frame_samples": [
+      120,
+      240,
+      480,
+      960
+    ],
+    "max_supported_bitrate_bps": 524288,
+    "mono_stereo": true,
+    "multi_frame_samples": [
+      1920,
+      2880,
+      5760
+    ],
+    "native_decode_max_absolute_float_error": 3.128034995469875e-07,
+    "native_forward_mdct_cases": 16,
+    "python_versions": [
+      "3.11.2",
+      "3.14.7"
+    ],
+    "samples": 388800,
+    "streams": 48,
+    "test_method": "Actual packets encoded by the standard-library implementation, independently decoded by official native Opus 1.3.1. Frozen PCM/range checks and byte deterministic replay on both Python versions. Native library is an authoring oracle only.",
+    "tested_bitrates_bps": [
+      16000,
+      32000,
+      64000,
+      128000,
+      256000,
+      512000
+    ]
+  },
+  "fixtures_sha256": {
+    "opus_celt_components.json": "967d21e5db97570caac1e1f2c419beabbf96a7dd10a0fabdbff69470243d532b",
+    "opus_celt_encoder.json": "06df89bd14a29d360b240d201aed98fc3d6a65ea777c64dc64b00454176027b5",
+    "opus_celt_encoder_extra.json": "bab5750acd32d466787bfdef22ca914354f43bc9f17bb53ebdadc5db4a8fc002",
+    "opus_celt_extra.json": "334a1ac48055af673b2725fb9b6c842e0cf56d8839c6879ca9d4a81d112660fa",
+    "opus_celt_loss.json": "531f0510a12daab62ba85a1f5d9bdf627f8a5bcf241db5fa55f4db2de75d1054",
+    "opus_celt_pcm.json": "5b584d29a596ac7f22bd9ecf5b766631c2c48c68aa3e8a05fbf9cd13bc9a3726",
+    "opus_decoder.json": "45d510af143620fd619c8527d4b9bc510f032a17b548f9f1d4812e44af332d06",
+    "opus_decoder_extra.json": "696456e2cf053431a38fbc8ab495f5ada122a0d0923ec0a0f8e1295c0e2961ba",
+    "opus_discord.json": "1cbfe79870065365b590b8517c55b0baa9c62ee13d5273ed61da23a2692eeece",
+    "opus_packets.json": "c22b2e0ae552225531a4b56fc5ac8a276ed87a2c2b461fa019001aeeefebe447",
+    "opus_range.json": "eb2d69e54b09a57633a5540c8bdc112bc9359dbbbf88ca6957d7dc4e0999fa3c"
+  },
+  "host_benchmark": {
+    "scope": "Local synthetic diagnostic only, no microphone/speaker activated; simultaneous authoring jobs may influence timing. No hardware or universal real-time guarantee.",
+    "vectors": [
+      {
+        "bitrate": 128000,
+        "channels": 2,
+        "decoder_cpu_mean_ms": 5.188602220000001,
+        "decoder_wall_mean_ms": 5.188065371767152,
+        "decoder_wall_p95_ms": 5.858510994585231,
+        "encoded_packet_min_max": [
+          320,
+          320
+        ],
+        "encoder_cpu_mean_ms": 6.923607918181818,
+        "encoder_wall_mean_ms": 6.558717360894661,
+        "encoder_wall_p95_ms": 8.594059996539727,
+        "frame_ms": 20,
+        "frames": 100,
+        "python": "3.11.2",
+        "rate": 48000
+      },
+      {
+        "bitrate": 128000,
+        "channels": 2,
+        "decoder_cpu_mean_ms": 6.594553970000001,
+        "decoder_wall_mean_ms": 6.651599280303344,
+        "decoder_wall_p95_ms": 8.723909995751455,
+        "encoded_packet_min_max": [
+          320,
+          320
+        ],
+        "encoder_cpu_mean_ms": 9.967303954545455,
+        "encoder_wall_mean_ms": 9.932949249923695,
+        "encoder_wall_p95_ms": 11.540239007445052,
+        "frame_ms": 20,
+        "frames": 100,
+        "python": "3.14.7",
+        "rate": 48000
+      }
+    ]
+  },
+  "license_file": "licenses/opus.txt",
+  "license_sha256": "8338ce8d922bb4416ce3dd1e5680173332435e3f0755007ac7801ccd674fe682",
+  "native_vectors": {
+    "all_internal_range_states_compared": true,
+    "decoded_symbols": 8775,
+    "decoder_only_cases": 24,
+    "encoder_cases": 133,
+    "laplace_clamps": 350,
+    "malformed_uint_error_states": 153,
+    "python_versions": [
+      "3.11.2",
+      "3.14.7"
+    ]
+  },
+  "packet_vectors": {
+    "cases": 3512,
+    "native_invalid": 2238,
+    "native_valid": 1274,
+    "original_payload_packing": 512,
+    "python_versions": [
+      "3.11.2",
+      "3.14.7"
+    ]
+  },
+  "pending": [
+    "Opus SILK/hybrid and FEC audio encoding"
+  ],
+  "runtime_modules_sha256": {
+    "opus.py": "d60cb86c625166a5cab850cba9d19ad391915c68e21394153ae40c8133dcf232",
+    "opus_celt.py": "e8a861ab7a1595e70050708df787efaae3c9b75ceac7322c6f29b06930404fb5",
+    "opus_celt_alloc.py": "6fec8e7831f75f5b3cab703f391e3711f985ab618c9fbe2f98b1ca3f0e48a434",
+    "opus_celt_bands.py": "7acdd2cf4e6df1374c3978cedf04657a229ed102d8fc812eb8ea18aec84b5a9f",
+    "opus_celt_dsp.py": "b7cbc68a1f24e150bf23a393f9e61a34fd8bc87f13a8c49b66ed036174bec906",
+    "opus_celt_encoder.py": "57b7d5755de6e6e9f72a330c1d158be36faeac950e8e0c93895fd6107dbcc2b8",
+    "opus_celt_energy.py": "2c73accf95ecdf367ae4f99007e3f63c4179bf7d16ea7db553e271f62f1566ae",
+    "opus_celt_plc.py": "d50baf8cd0fe9077f12c7dfa32f3e203c94ddd9aac03b941b76173382d2d4490",
+    "opus_celt_pvq.py": "2ff3ede201b95a72a4d10191cee0ab5aeccb2cbb3aa22ec9b12450b6779b63ad",
+    "opus_decoder.py": "ec32760733d106af36535136333292de27cf1b2eb49a40a752f704294c5765ad",
+    "opus_discord.py": "8c8ffbf2e6196fe46b1a2d5ab99afb62805e0033ef90908f3da8f5186d853020",
+    "opus_range.py": "693a5490c0c0c325f0a7ddf7f47c1bc8bb2fee5b4e639d27a727ddab8d648a98",
+    "opus_tables.py": "e350d363a6f5fa63d3f46f46b47b0231e18d0512acd7336b668029ddec94fde0"
+  },
+  "schema": 1,
+  "scope": "Pure Python Opus entropy and packet framing; full single-stream SILK/CELT/hybrid packet decoding, FEC/loss concealment, transitions/redundancy, gain, soft clipping, phase control and original Discord Decoder PCM integration. Original VoiceMixer/AudioPlayer/VoiceClient sends interoperable 48kHz stereo CELT CBR packets over qualified MLS/DAVE/RTP/UDP. VoiceReceiver records and replays real decoded PCM. The sender explicitly uses its CELT policies; SILK/hybrid/FEC audio encoding is not implemented.",
+  "source_archive_sha256": "65b58e1e25b2a114157014736a3d9dfeaad8d41be1c8179866f144a2fb44ff9d",
+  "source_files": {
+    "celt/arch.h": "84b9d05ab9b444e58b0e73f64012ef408f72e897313ce249cd897e95488029d3",
+    "celt/bands.c": "f239f17425581df19006df72bb1de2e9b0172edb6d6fc6a90d4a356afd1aaa90",
+    "celt/bands.h": "66148fa2b890edf76608a45f4ee92743be57078a6f1447528361699a7479c62c",
+    "celt/celt.c": "5a6ccbc8e3d8c00ac016374c5bf8f8ef8201105f6a63b322d6ec1f9335dc68f9",
+    "celt/celt.h": "3f6328998a7ac070dbd78d7ebd9e9fa678aeb3dc4cf27c95d0d913def0d87665",
+    "celt/celt_decoder.c": "71bdfc680ec73b5a0365935ac0ed04eca6b7087bdd906f173576cf410d09f6aa",
+    "celt/celt_encoder.c": "eea8182c1eeee9faac822cc0cb14c17615b15eb0121f845a8730bfe5354a1d62",
+    "celt/celt_lpc.c": "b4cf60a5680fc0c3033d448fad94b80fdefbb08ccf1dda22ba9008784b40586e",
+    "celt/celt_lpc.h": "84f34c88313304d6837d78d2a9115dbfe9387e1afb6ab2f50ae3f67aaceb477d",
+    "celt/cwrs.c": "2080bc580870ef59b4382400ea79cbf0c4041d93e3e53175b01c1ac981ac4a8b",
+    "celt/cwrs.h": "7705be67d58e7fbdea384dde5f3c404ef814fbb8ecbfca61f731d11e8201bdc7",
+    "celt/entcode.c": "fb52778fb752126b6da6366d29d532ee98d66eb366a28e913562eb9520ba9208",
+    "celt/entcode.h": "08b8432b85d844efe4357a1ab6a3b4573d325d50ea918179b5d38384ee256d0c",
+    "celt/entdec.c": "0b0542909f1b21934f73b9464137e7ec1192ef0b30f0caaad7787f86b2ffd147",
+    "celt/entdec.h": "c2253726085795e5d5df332c5a704df2754d347827d7831f76f91e2526218a2d",
+    "celt/entenc.c": "c6d8287d6d0992c6607aa4aeb83e4dca02799ac193f250ce7554d1125830db63",
+    "celt/entenc.h": "bc1d3a13076da0c29256079f55ee53d4326907838b17276d31f0fb34b2a7e3a9",
+    "celt/kiss_fft.c": "badf5056eb5eb8ee79d78cd88ffe3b3a39d84ba27e28c90ccda48b503acdb465",
+    "celt/kiss_fft.h": "6ad018d5223c6e88015ac166fbd4593cd348eff80b4b0565398cc2688d4da458",
+    "celt/laplace.c": "a46d602528d70f0b635a3e679ac5e8eac69fcdd6c368bfe5c705299176a9c2f9",
+    "celt/laplace.h": "cb3ddf5ee52fb16dffdf10f2c10a4935782622db99de3e97b75e64081bbbb677",
+    "celt/mathops.h": "09311b479c07dc666f867d95aa741b65015c9d5f5176e3daa9d6051b42e5e90b",
+    "celt/mdct.c": "03f60fbde8d658d552e26cb2b5b89110eca4f7d1864fe8f3f687c940409b172b",
+    "celt/mdct.h": "c70bd44adeaccc26aa70c8678acb4f0ecb6371c2290741ffe87c44ab3f03ab3a",
+    "celt/modes.c": "f95956d28e755c67a48808ff97175ceac011c23059c521ca4fb4905465426364",
+    "celt/modes.h": "c38ac61f218a9ff27a0222bb2ebffe9bd8203041fa0a38fe733ece7f1bed0b1a",
+    "celt/pitch.c": "915a7dc50034fa464e074005fd728760ecc7d041c7fb66a906f3cfc2a94cb0c6",
+    "celt/pitch.h": "76f858f0b7aaf1b2687a5c000d46d0b54fbca7b56767bcd66f8a5c10f2e2c83a",
+    "celt/quant_bands.c": "17c2db926b90cc5984a5885a9c4bcd491b85320ddaffb2880094b4470888ad57",
+    "celt/quant_bands.h": "fbe7d733d3dcfd7d2fd3436fb50a62c62a327997b479c9c72770900b7e6abfe0",
+    "celt/rate.c": "cd0231834989886c35a06087ac9e66d3ed071b50543baab252d8017b1b340178",
+    "celt/rate.h": "fd7d4e7263e57fe57f6d0e2d9c8bf0e59a98ade0d5af561ebbc2df40328a28a6",
+    "celt/static_modes_float.h": "65fdb130c42cce36caa4bf29dd65ebebb65a6ba5c1325bcf3d67a548e876ed72",
+    "src/opus.c": "3cdf4b2fdee7433a205f07c24f6bd48fc5676af4e4695b53cee0993e2a8a5077",
+    "src/opus_decoder.c": "48697fe2d1548b6bd3c0cbeb39a310d83ae342896ec4837a16e8c60bdbc0cc44",
+    "src/opus_encoder.c": "733bf1151592b362cf78322b78c814c8ad10dfd5d6f46ee3c83bb2a8bdc60b99",
+    "src/opus_private.h": "a54aa5beb9cf2e8f5e291559cd16a9f0720ddb62174e44516810f142356087f3"
+  },
+  "source_url": "https://downloads.xiph.org/releases/opus/opus-1.3.1.tar.gz"
+}

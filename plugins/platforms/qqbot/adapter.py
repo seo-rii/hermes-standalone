@@ -1114,7 +1114,7 @@ class QQAdapter(OwnAccessPolicyMixin, BasePlatformAdapter):
         return result
 
     _MAGIC_EXTS = (
-        (b"#!SILK", ".silk"), (b"\x02!", ".silk"), (b"RIFF", ".wav"), (b"fLaC", ".flac"),
+        (b"#!SILK", ".silk"), (b"\x02#!SILK", ".silk"), (b"\x02!", ".silk"), (b"RIFF", ".wav"), (b"fLaC", ".flac"),
         (b"\xff\xfb", ".mp3"), (b"\xff\xf3", ".mp3"), (b"\xff\xf2", ".mp3"),
         (b"\x30\x26\xb2\x75", ".ogg"), (b"\x4f\x67\x67\x53", ".ogg"))
 
@@ -1130,7 +1130,8 @@ class QQAdapter(OwnAccessPolicyMixin, BasePlatformAdapter):
     async def _convert_silk_to_wav(self, src_path: str, wav_path: str) -> Optional[str]:
         """Convert to WAV with pilk: as-is first, then copied to .silk (pilk checks the extension)."""
         try:
-            import pilk
+            from hermes_platform.audio import silk_codec
+            pilk = silk_codec()
         except ImportError:
             logger.warning("[%s] pilk not installed — cannot decode SILK audio. Run: "
                            f"{install_hint('silk')}", self._log_tag)
@@ -1140,7 +1141,7 @@ class QQAdapter(OwnAccessPolicyMixin, BasePlatformAdapter):
         try:
             for path, label, how in ((src_path, "", "direct"), (silk_path, " (as .silk)", ".silk")):
                 try:
-                    if path == silk_path:
+                    if path == silk_path and path != src_path:
                         import shutil
 
                         shutil.copy2(src_path, silk_path)

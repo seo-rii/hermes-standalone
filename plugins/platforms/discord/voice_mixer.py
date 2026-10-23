@@ -50,8 +50,8 @@ class MixerChild:
         self.fade_frames = max(0, fade_in_ms // FRAME_LENGTH_MS)
         self._finished = False
 
-    def read_frame(self) -> Optional[np.ndarray]:
-        """Next 20 ms frame as a float32 ndarray, or None when done."""
+    def read_frame(self) -> Optional[np.ndarray | list[float]]:
+        """Next 20 ms frame as float32 samples, or None when done."""
         if self._finished:
             return None
         if self._pos >= len(self._pcm):
@@ -60,16 +60,20 @@ class MixerChild:
             else:
                 self._finished = True
                 return None
-        np = _require_numpy()
         chunk = self._pcm[self._pos:self._pos + FRAME_SIZE]
         self._pos += FRAME_SIZE
         if len(chunk) < FRAME_SIZE:
             chunk = chunk + b"\x00" * (FRAME_SIZE - len(chunk))
-        samples = np.frombuffer(chunk, dtype=np.int16).astype(np.float32)
         gain = self.gain
         if self.fade_frames and self._fade_done < self.fade_frames:
             self._fade_done += 1
             gain *= self._fade_done / self.fade_frames
+        from standalone.packages import active as standalone_active
+        if standalone_active():
+            from standalone.discord_pcm import float_frame
+            return float_frame(chunk, gain)
+        np = _require_numpy()
+        samples = np.frombuffer(chunk, dtype=np.int16).astype(np.float32)
         if gain != 1.0:
             samples = samples * gain
         return samples
@@ -139,7 +143,12 @@ class VoiceMixer(discord.AudioSource):
         with self._lock:
             if self._closed:
                 return SILENCE_FRAME
-            np = _require_numpy()
+            from standalone.packages import active as standalone_active
+            portable = standalone_active()
+            if portable:
+                from standalone import discord_pcm
+            else:
+                np = _require_numpy()
             acc: Optional[np.ndarray] = None
             # Speech children (drop exhausted ones; release duck when last ends)
             if self._speech:
@@ -148,7 +157,7 @@ class VoiceMixer(discord.AudioSource):
                     frame = child.read_frame()
                     if frame is None:
                         continue
-                    acc = frame if acc is None else acc + frame
+                    acc = frame if acc is None else (discord_pcm.add_float_frames(acc, frame) if portable else acc + frame)
                     still_live.append(child)
                 self._speech = still_live
                 if not self._speech and self._speech_active:
@@ -163,9 +172,11 @@ class VoiceMixer(discord.AudioSource):
                     self._ambient.gain = self._ambient_gain
                 amb = self._ambient.read_frame()
                 if amb is not None:
-                    acc = amb if acc is None else acc + amb
+                    acc = amb if acc is None else (discord_pcm.add_float_frames(acc, amb) if portable else acc + amb)
             if acc is None:
                 return SILENCE_FRAME
+            if portable:
+                return discord_pcm.float_frame_bytes(acc)
             np.clip(acc, -32768, 32767, out=acc)
             return acc.astype(np.int16).tobytes()
 
@@ -178,6 +189,15 @@ class VoiceMixer(discord.AudioSource):
 
 def decode_to_pcm(path: str, *, timeout: float = 30.0) -> Optional[bytes]:
     """Decode any audio file to 48 kHz / stereo / s16le PCM via ffmpeg; None on failure."""
+    from standalone.packages import active as standalone_active
+    if standalone_active():
+        import wave
+        from standalone.discord_pcm import decode_wav
+        try:
+            return decode_wav(path) or None
+        except (EOFError, OSError, ValueError, wave.Error) as exc:
+            logger.warning("Discord standalone PCM WAV decode failed for %s: %s", path, exc)
+            return None
     import subprocess
     try:
         proc = subprocess.run(
@@ -199,6 +219,10 @@ def decode_to_pcm(path: str, *, timeout: float = 30.0) -> Optional[bytes]:
 def synth_ambient_pcm(seconds: float = 4.0) -> bytes:
     """Synthesise a subtle looping ambient bed: two detuned sine partials with a slow tremolo
     plus filtered noise; whole-cycle frequencies make the loop point click-free. Mono -> stereo."""
+    from standalone.packages import active as standalone_active
+    if standalone_active():
+        from standalone.discord_pcm import synth_ambient_pcm as synth_pcm
+        return synth_pcm(seconds)
     np = _require_numpy()
     n = int(SAMPLE_RATE * seconds)
     t = np.arange(n, dtype=np.float64) / SAMPLE_RATE

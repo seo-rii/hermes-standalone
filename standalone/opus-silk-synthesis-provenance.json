@@ -1,0 +1,72 @@
+{
+  "fixtures_sha256": {
+    "opus_silk_synthesis.json": "3fa370606e3bc19bd96074fce18afaf9c8006b5494c25667e547d226e7a4721e"
+  },
+  "license_file": "licenses/opus.txt",
+  "license_sha256": "8338ce8d922bb4416ce3dd1e5680173332435e3f0755007ac7801ccd674fe682",
+  "oracle": {
+    "authoring_comparisons": {
+      "analysis": 288,
+      "cng_gain": 192,
+      "decode_core": 1440,
+      "energy": 208,
+      "full_lost": 2880,
+      "full_normal": 720,
+      "full_recover": 720,
+      "glue": 120,
+      "initial_loss": 36,
+      "initialize": 6,
+      "rate_change": 48,
+      "sequence_lost": 123,
+      "sequence_normal": 102
+    },
+    "authoring_oracle_source_sha256": "0cb9d48f4f91cec2a5a5ec779abdb4ac899adbba681e089af2aafc0cc91b9f6f",
+    "comparison": "All integer PCM and serialized state/control fields are compared exactly.",
+    "coverage": [
+      "8/12/16 kHz internal rates and 2/4 subframes",
+      "Zero and nonzero excitation/LPC/pitch history, all three signal classes, gain changes and NLSF interpolation",
+      "Initial loss, up to six consecutive lost frames, voiced-to-unvoiced recovery and CNG accumulation",
+      "Both CNG gain arithmetic branches, clipped PCM and LPC saturation, zero-energy recovery and sample-rate changes"
+    ],
+    "implementation": "Pinned original Opus 1.3.1 C functions, scalar arch=0; original static library plus a state serialization shim used only in ignored authoring cache. No compiled code is shipped or loaded at runtime or by public tests.",
+    "public_fixture_cases": {
+      "analysis": 288,
+      "dsp": 1101,
+      "energy": 208,
+      "initialize": 6
+    },
+    "public_tests": "standalone.tests.test_opus_silk_synthesis: three methods, all exact golden comparisons pass under -I -S on both Python versions.",
+    "python_versions": [
+      "3.11.2",
+      "3.14.7"
+    ],
+    "state_components_compared_per_frame": 1296
+  },
+  "pending": [
+    "Complete Opus public decode/encode, stereo, packet/FEC/hybrid integration and resampling are tracked by the owning Opus port, not claimed by this DSP component."
+  ],
+  "runtime_modules_sha256": {
+    "opus_silk_synthesis.py": "41e53b6fe328d0301c354f0e4419492a913a884479ab56036bfb61b1584ef0d9"
+  },
+  "schema": 1,
+  "scope": "Qualified pure Python Opus SILK Q14 synthesis, voiced/unvoiced packet-loss concealment, comfort noise, saturating LPC analysis, recovery glue, and native-compatible initialization. This component does not parse complete Opus packets or encode audio.",
+  "shared_arithmetic": "Explicit signed 16/32-bit width, rounding, saturating shifts and reciprocal helpers from silk_fixed; 16-bit bwexpander and identical sqrt_approx from the legacy SILK port. Energy, main synthesis, PLC and CNG follow Opus sources independently, preserving their version-specific differences.",
+  "source_archive_sha256": "65b58e1e25b2a114157014736a3d9dfeaad8d41be1c8179866f144a2fb44ff9d",
+  "source_files": {
+    "silk/CNG.c": "e13b36027af0602db2c384587fe71d2e236b36f361c90654d824723f8462ae75",
+    "silk/Inlines.h": "d8d637375bd1e1525ba20dfb9103781becabd9aef9decd64cc3a5402cbc2e838",
+    "silk/LPC_analysis_filter.c": "5cd8edb8558515d477f7c65c4f597d15c68d65b6d90cc303965d317666821c23",
+    "silk/PLC.c": "88ac5b96d1c9fe1d081743592b860a167eed4af6233c1ca0c8a04914aea6e1c0",
+    "silk/PLC.h": "f67f0d84ddaea37bed02aed78466a1cb33204be2b840cb4c87a5ecc44124a398",
+    "silk/decode_core.c": "36e9a0fe7474ffd295f7a591b9940e36b493b2e8267ed838a3f538ff34fd9c56",
+    "silk/decoder_set_fs.c": "853a596348620d11ede0f2d4390dba8a732c93b4bcb985a39ba17d211ccaf310",
+    "silk/define.h": "c6ce4c7f5df6eab693db9d0e66f55ed4e8bf3d8914865c4084ba82dee1a5268e",
+    "silk/init_decoder.c": "b89c51b04b8ddb342b5c64e6cd02b57c18bcf6935c899dd59e1ed5f681e47e64",
+    "silk/macros.h": "ea2a68f2cf066934c08454840906b7c10cb5156c0f81e574ed054d7b7b17a346",
+    "silk/structs.h": "e2c28f7f8ab907196f25d873f6239e4f60770b696601f7cbdc0cca2e023dd178",
+    "silk/sum_sqr_shift.c": "710b83c924582cebeb38af168383a4aa57a943bd1faf52267f8b883e59cd9d90",
+    "silk/tables_other.c": "4402cc477476ebe44385af6817dbea0d214fe15b3ca4ee01304a2db14d88c70a"
+  },
+  "source_url": "https://downloads.xiph.org/releases/opus/opus-1.3.1.tar.gz",
+  "source_version": "Opus 1.3.1"
+}

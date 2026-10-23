@@ -440,6 +440,10 @@ def _format_privileged_intents_guidance(*, needs_members: bool) -> str:
 def _load_opus_codec() -> None:
     """Try bundled (Windows) opus, then ``ctypes.util.find_library``, then Homebrew paths
     (find_library misses Homebrew libs on macOS); warn once if none loads."""
+    from standalone.packages import active as standalone_active
+    if standalone_active():
+        logger.debug("The standalone distribution requires a complete pure Opus codec for Discord voice")
+        return
     import ctypes.util
     opus_candidates = []
     bundled_opus = _find_discord_windows_bundled_opus(discord)
@@ -1000,8 +1004,12 @@ class VoiceReceiver:
         nonce[:4] = payload_with_nonce[-4:]
         encrypted = bytes(payload_with_nonce[:-4])
         try:
-            import nacl.secret
-            box = nacl.secret.Aead(secret_key)
+            from standalone.packages import active as standalone_active
+            if standalone_active():
+                from standalone.discord_crypto import Aead
+            else:
+                from nacl.secret import Aead
+            box = Aead(secret_key)
             decrypted = box.decrypt(encrypted, header, bytes(nonce))
             self._nacl_fail_streak = 0
         except Exception as e:
@@ -1053,13 +1061,17 @@ class VoiceReceiver:
                     user_id = self._infer_user_for_ssrc(ssrc)
             if user_id:
                 try:
-                    import davey
+                    if standalone_active():
+                        from standalone import dave as davey
+                    else:
+                        import davey
                     decrypted = dave_session.decrypt(
                         user_id, davey.MediaType.audio, decrypted
                     )
                 except Exception as e:
-                    # Unencrypted passthrough — use NaCl-decrypted data as-is
-                    if "Unencrypted" not in str(e):
+                    # The qualified session returns plaintext only during an
+                    # explicitly negotiated transition; failures always drop.
+                    if standalone_active() or "Unencrypted" not in str(e):
                         if self._packet_debug_count <= 10:
                             logger.warning("DAVE decrypt failed for ssrc=%d: %s", ssrc, e)
                         return
@@ -1184,6 +1196,10 @@ class VoiceReceiver:
     def pcm_to_wav(pcm_data: bytes, output_path: str, src_rate: int = 48000, src_channels: int = 2):
         """Convert raw PCM to 16kHz mono WAV via ffmpeg into *output_path* (not stdout: ffmpeg
         can't seek a pipe, so piped WAV carries placeholder RIFF sizes strict readers misreport)."""
+        from standalone.packages import active as standalone_active
+        if standalone_active():
+            from standalone.discord_pcm import write_stt_wav
+            return write_stt_wav(pcm_data, output_path, src_rate, src_channels)
         from hermes_cli._subprocess_compat import windows_hide_flags
         subprocess.run(
             [
@@ -3646,6 +3662,14 @@ class DiscordAdapter(DiscordAuthorizationMixin, DiscordMediaMixin, DiscordThread
 
     def _probe_audio_duration_seconds(self, audio_path: str) -> Optional[float]:
         """Best-effort audio duration probe used to size playback timeouts."""
+        from standalone.packages import active as standalone_active
+        if standalone_active():
+            import wave
+            try:
+                with wave.open(audio_path, "rb") as audio:
+                    return audio.getnframes() / audio.getframerate()
+            except (EOFError, OSError, ValueError, wave.Error):
+                return None
         try:
             import importlib
             mutagen = importlib.import_module("mutagen")
@@ -3910,9 +3934,17 @@ class DiscordAdapter(DiscordAuthorizationMixin, DiscordMediaMixin, DiscordThread
                     lead_ms = 0
                 if lead_ms > 0:
                     ffmpeg_opts["options"] = f"-af adelay={lead_ms}:all=1"
-                source = discord.FFmpegPCMAudio(
-                    audio_path, executable=resolve_ffmpeg_executable(), **ffmpeg_opts,
-                )
+                from standalone.packages import active as standalone_active
+                if standalone_active():
+                    import io
+                    pcm = await asyncio.to_thread(_voice_mixer_module().decode_to_pcm, audio_path)
+                    if not pcm:
+                        return False
+                    source = discord.PCMAudio(io.BytesIO(self._lead_silence_bytes() + pcm))
+                else:
+                    source = discord.FFmpegPCMAudio(
+                        audio_path, executable=resolve_ffmpeg_executable(), **ffmpeg_opts,
+                    )
                 source = discord.PCMVolumeTransformer(source, volume=1.0)
                 vc.play(source, after=_after)
                 try:
