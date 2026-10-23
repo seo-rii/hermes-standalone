@@ -517,7 +517,7 @@ class SimplexAdapter(BasePlatformAdapter):
         png_path = str(p.with_suffix(".png")) if needs_png else file_path
         thumb_uri = ""
         try:
-            from PIL import Image
+            from hermes_platform.images import Image
             import io
             img = Image.open(file_path)
             if needs_png:

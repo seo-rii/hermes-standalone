@@ -88,7 +88,8 @@ def _pid_looks_like_node_bridge(pid: int) -> bool:
     kill.
     """
     try:
-        import psutil
+        from hermes_platform.processes import process_api
+        psutil = process_api()
         proc = psutil.Process(pid)
         return "node" in (proc.name() or "").lower() or "node" in " ".join(proc.cmdline() or []).lower().split(" ", 1)[0]
     except Exception:
@@ -198,7 +199,8 @@ def _terminate_bridge_process(proc, *, force: bool = False) -> None:
         if result.returncode != 0:
             raise OSError((result.stderr or result.stdout or "").strip() or f"taskkill failed for PID {proc.pid}")
         return
-    import psutil
+    from hermes_platform.processes import process_api
+    psutil = process_api()
     with suppress(psutil.NoSuchProcess):
         parent = psutil.Process(proc.pid)
         for child in parent.children(recursive=True):

@@ -38,6 +38,9 @@ def _probe_teams_sdk_available() -> bool:
     ``.env`` at import, so ``check_teams_requirements()`` binds symbols behind a dotenv no-op.
     Sibling packages share the namespace, so probe the parent first — ``find_spec`` of the child
     raises on 3.11+ if the parent is absent."""
+    from standalone.packages import active
+    if active():
+        return True
     try:
         find_spec = importlib.util.find_spec
         return find_spec("microsoft_teams") is not None and find_spec("microsoft_teams.apps") is not None
@@ -298,6 +301,13 @@ def check_teams_requirements() -> bool:
     """
     if App is not None and AIOHTTP_AVAILABLE:
         return True
+
+    from standalone.packages import active
+    if active():
+        from standalone.platform_teams import bindings
+        globals().update(bindings())
+        globals()["TEAMS_SDK_AVAILABLE"] = True
+        return AIOHTTP_AVAILABLE
 
     def _import() -> dict:
         from aiohttp import web as _web
@@ -603,7 +613,11 @@ class TeamsAdapter(BasePlatformAdapter):
 
     async def _send_card(self, chat_id: str, card: AdaptiveCard) -> Any:
         """Send an AdaptiveCard, using a stored ConversationReference when available."""
-        from microsoft_teams.api import MessageActivityInput
+        from standalone.packages import active
+        if active():
+            from standalone.platform_teams import MessageActivityInput
+        else:
+            from microsoft_teams.api import MessageActivityInput
         if not self._app:
             return None
         return await self._send_via_conv_ref(chat_id, MessageActivityInput().add_card(card), card)
@@ -744,7 +758,11 @@ class TeamsAdapter(BasePlatformAdapter):
         try:
             import base64
             import mimetypes
-            from microsoft_teams.api import Attachment, MessageActivityInput
+            from standalone.packages import active
+            if active():
+                from standalone.platform_teams import Attachment, MessageActivityInput
+            else:
+                from microsoft_teams.api import Attachment, MessageActivityInput
 
             if source.startswith(("http://", "https://")):
                 content_url = source

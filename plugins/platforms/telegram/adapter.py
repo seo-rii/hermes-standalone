@@ -5050,7 +5050,7 @@ class TelegramAdapter(TelegramHeldInboundMixin, TelegramTopicRoutingMixin, BaseP
             return None
 
         try:
-            from PIL import Image
+            from hermes_platform.images import Image
         except Exception:
             # Pillow missing: fall back to uploading the original (may timeout)
             logger.warning("[%s] Pillow not available for image compression", self.name)

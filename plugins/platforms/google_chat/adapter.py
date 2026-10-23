@@ -110,9 +110,14 @@ def _load_google_modules() -> bool:
         return GOOGLE_CHAT_AVAILABLE
     _google_modules_loaded = True
     try:
+        from standalone.packages import active as standalone_active
+        imports = _GOOGLE_IMPORTS
+        if standalone_active():
+            imports = tuple((name, "standalone.google_pubsub" if name == "pubsub_v1" else module, attr)
+                            for name, module, attr in imports)
         loaded = {
             name: getattr(importlib.import_module(module), attr) if attr else importlib.import_module(module)
-            for name, module, attr in _GOOGLE_IMPORTS
+            for name, module, attr in imports
         }
     except ImportError:
         GOOGLE_CHAT_AVAILABLE = False

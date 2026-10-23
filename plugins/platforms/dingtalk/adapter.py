@@ -35,10 +35,16 @@ except ImportError:
     httpx = None  # type: ignore[assignment]
 
 try:
-    from alibabacloud_dingtalk.card_1_0 import client as dingtalk_card_client, models as dingtalk_card_models
-    from alibabacloud_dingtalk.robot_1_0 import client as dingtalk_robot_client, models as dingtalk_robot_models
-    from alibabacloud_tea_openapi import models as open_api_models
-    from alibabacloud_tea_util import models as tea_util_models
+    from standalone.packages import active as _bundled_packages_active
+    if _bundled_packages_active():
+        from standalone import platform_dingtalk as dingtalk_card_models, platform_dingtalk as dingtalk_robot_models
+        from standalone import platform_dingtalk as tea_util_models
+        dingtalk_card_client = dingtalk_robot_client = open_api_models = None
+    else:
+        from alibabacloud_dingtalk.card_1_0 import client as dingtalk_card_client, models as dingtalk_card_models
+        from alibabacloud_dingtalk.robot_1_0 import client as dingtalk_robot_client, models as dingtalk_robot_models
+        from alibabacloud_tea_openapi import models as open_api_models
+        from alibabacloud_tea_util import models as tea_util_models
 
     CARD_SDK_AVAILABLE = True
 except Exception:
@@ -235,11 +241,16 @@ class DingTalkAdapter(BasePlatformAdapter):
             self._http_client = httpx.AsyncClient(timeout=30.0, limits=platform_httpx_limits())
             self._stream_client = dingtalk_stream.DingTalkStreamClient(dingtalk_stream.Credential(self._client_id, self._client_secret))
             if CARD_SDK_AVAILABLE:
-                sdk_config = open_api_models.Config()
-                sdk_config.protocol, sdk_config.region_id = "https", "central"
-                if self._card_template_id:
-                    self._card_sdk = dingtalk_card_client.Client(sdk_config)
-                self._robot_sdk = dingtalk_robot_client.Client(sdk_config)  # needed for media download even without cards
+                if _bundled_packages_active():
+                    if self._card_template_id:
+                        self._card_sdk = dingtalk_card_models.CardClient()
+                    self._robot_sdk = dingtalk_robot_models.RobotClient()
+                else:
+                    sdk_config = open_api_models.Config()
+                    sdk_config.protocol, sdk_config.region_id = "https", "central"
+                    if self._card_template_id:
+                        self._card_sdk = dingtalk_card_client.Client(sdk_config)
+                    self._robot_sdk = dingtalk_robot_client.Client(sdk_config)  # needed for media download even without cards
                 if self._card_template_id:
                     logger.info("[%s] Card SDK initialized with template: %s", self.name, self._card_template_id)
                 else:

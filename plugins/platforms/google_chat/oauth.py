@@ -221,8 +221,14 @@ def _ensure_deps() -> None:
 def _missing_required_packages() -> list[str]:
     """Return exact requirements absent or stale in this interpreter."""
     missing = []
+    from standalone.packages import active as standalone_active
+    bundled = standalone_active()
     for spec in _REQUIRED_PACKAGES:
         requirement = Requirement(spec)
+        if bundled and requirement.name == "google-cloud-pubsub":
+            # The verified bundle has an explicit REST subscriber, not a global
+            # replacement SDK or a native gRPC distribution to version-probe.
+            continue
         try:
             installed = _distribution_version(requirement.name)
             satisfied = requirement.specifier.contains(installed, prereleases=True)

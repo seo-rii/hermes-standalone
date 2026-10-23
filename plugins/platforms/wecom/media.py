@@ -166,11 +166,11 @@ class WeComMediaMixin:
         if len(key) != 32:
             raise ValueError(f"Invalid WeCom AES key length: expected 32 bytes, got {len(key)}")
         try:
-            from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+            from standalone.crypto_backend import aes_cbc_decrypt
+
+            decrypted = aes_cbc_decrypt(key, key[:16], encrypted_data)
         except ImportError as exc:  # pragma: no cover - dependency is environment-specific
             raise RuntimeError("cryptography is required for WeCom media decryption") from exc
-        decryptor = Cipher(algorithms.AES(key), modes.CBC(key[:16])).decryptor()
-        decrypted = decryptor.update(encrypted_data) + decryptor.finalize()
         pad_len = decrypted[-1]
         if pad_len < 1 or pad_len > 32 or pad_len > len(decrypted):
             raise ValueError(f"Invalid PKCS#7 padding value: {pad_len}")
