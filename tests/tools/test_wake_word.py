@@ -75,6 +75,7 @@ def test_looks_like_path():
 ])
 @pytest.mark.parametrize("saved", [None, "wake_word: {}\n", "wake_word:\n  provider: auto\n"])
 def test_loaded_wake_defaults_resolve_supported_provider(tmp_path, monkeypatch, system, machine, expected, saved):
+    monkeypatch.setattr("standalone.packages.active", lambda: False)
     from functools import partial
 
     from pm.extras import extra_supported
@@ -143,6 +144,7 @@ def test_engine_construction_ensures_audio_io_only_for_local_capture(monkeypatch
     wake_word shadowed the extracted classes.
     """
     from tools import wake_word_engines as engines
+    monkeypatch.setattr(engines, "_bundled_openwakeword", lambda: False)
 
     ensured: list[str] = []
 
@@ -337,6 +339,7 @@ def test_requirements_fresh_install_lazy_allowed(monkeypatch):
 @pytest.mark.parametrize("capture", ["local", "client"])
 @pytest.mark.parametrize("provider", ["openwakeword", "oww", "local"])
 def test_requirements_reject_unsupported_engine_without_attempting_install(monkeypatch, capture, provider):
+    monkeypatch.setattr("standalone.packages.active", lambda: False)
     from pm import extras
 
     _voice_loop_ready(monkeypatch)
@@ -366,6 +369,9 @@ def test_requirements_lazy_disabled_returns_remedy_not_nameerror(monkeypatch):
     referenced the deleted lazy-deps module by bare name — a NameError crashed
     the status probe instead of returning ``hint``.
     """
+    from standalone import packages
+
+    monkeypatch.setattr(packages, "active", lambda: False)
     _voice_loop_ready(monkeypatch)
     monkeypatch.setattr(ww, "_audio_available", lambda: True)
     monkeypatch.setattr(pm, "available", lambda f: False)
@@ -397,6 +403,8 @@ def test_openwakeword_custom_model_path_used(monkeypatch):
     # shared feature models come from the wheel (from_builtin) — there is no
     # download_models step to regress.
     captured = {}
+    from tools import wake_word_engines as engines
+    monkeypatch.setattr(engines, "_bundled_openwakeword", lambda: False)
 
     class _FakeModel:
         def __init__(self, model_path, libtensorflowlite_c_path=None):

@@ -1,0 +1,31 @@
+{
+  "algorithm_sources": {
+    "openwakeword.py": "c7558168729bc13a9b10330206fc8573871f8d7fe9f94e32655e0aa7969659e9",
+    "wakeword.py": "4cdc1daad709a004f42f242c0c2031120eff91bef67c0c4b12e49854c56708f6"
+  },
+  "excluded": "Bundled tensorflowlite_c native library and third-party classifiers are not included. Existing Hermes hey_hermes classifier and explicitly configured classifier paths are unchanged.",
+  "feature_model_license_source": "https://github.com/dscripka/openWakeWord/blob/main/README.md#model-architecture",
+  "format_version": 1,
+  "models": {
+    "standalone/wake_models/embedding_model.tflite": {
+      "sha256": "c0aea21eb84a4ce90a08c870da41b7a7173b45269e6a3207c71d67c40f3a59d8",
+      "size": 1330312
+    },
+    "standalone/wake_models/melspectrogram.tflite": {
+      "sha256": "96fa0adccb6e8cf95cb14465409a1a2898ee4a96a85bb9ed3c7eb0e68bf163e8",
+      "size": 1092516
+    }
+  },
+  "schema": {
+    "license": "Apache-2.0",
+    "sha256": "20685cadade475c2a5cccf29339ecd2bf27755da50dc3d2c092f1ee2e21ff7d3",
+    "url": "https://raw.githubusercontent.com/tensorflow/tensorflow/v2.19.0/tensorflow/compiler/mlir/lite/schema/schema.fbs"
+  },
+  "source_distribution": {
+    "license": "standalone/licenses/pyopen-wakeword.txt",
+    "name": "pyopen-wakeword",
+    "sha256": "080c0bda64d9aa4dd254413ba6fa417bd090c566c0610ebbb571d81f27851602",
+    "url": "https://files.pythonhosted.org/packages/52/3e/37c8601f87173acfed77a3133c69eb350d2563f41174d70129ff51e6b297/pyopen_wakeword-1.1.0.tar.gz",
+    "version": "1.1.0"
+  }
+}

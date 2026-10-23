@@ -28,7 +28,16 @@ def _ww():
     return wake_word
 
 
+def _bundled_openwakeword() -> bool:
+    from agent.sdk_boundary import bundled
+    return bundled()
+
+
 def _ensure_dep(feature: str, cfg: dict[str, Any]) -> None:
+    if feature == "wake-openwakeword" and _bundled_openwakeword():
+        # This qualified implementation reads the same existing model files.
+        # OS audio is selected separately; neither path installs a dependency.
+        return
     import pm
 
     pm.ensure_import(feature)
@@ -85,7 +94,10 @@ class _OpenWakeWordEngine(_Engine):
     feature, section = "wake-openwakeword", "openwakeword"
 
     def _build(self, cfg, sub, ww) -> None:
-        from pyopen_wakeword import OpenWakeWord, OpenWakeWordFeatures
+        if _bundled_openwakeword():
+            from standalone.wake_openword import OpenWakeWord, OpenWakeWordFeatures
+        else:
+            from pyopen_wakeword import OpenWakeWord, OpenWakeWordFeatures
 
         model_ref = str(sub.get("model") or ww._BUNDLED_MODEL_NAME).strip()
         # Default (or explicit "hey_hermes") → the bundled model; a custom path

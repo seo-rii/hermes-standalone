@@ -218,6 +218,10 @@ def enrolled_profile_phrases() -> dict[str, str]:
 # ── Audio capture (lazy — never import sounddevice at module load) ──
 
 def _import_audio():
+    from agent.sdk_boundary import bundled
+    if bundled():
+        from hermes_platform.audio import native_audio_io
+        return native_audio_io(), None
     import numpy as np
     import sounddevice as sd
     return sd, np
@@ -257,6 +261,9 @@ def _describe_input_device(selector: int | str | None, sd=None) -> dict[str, Any
 
 def _resample_audio_frame(np, frame, output_length: int):
     """Convert one native-rate capture block to an exact engine frame."""
+    if np is None:
+        from standalone.wake_audio import resample_frame
+        return resample_frame(frame, output_length)
     source = np.asarray(frame, dtype=np.float64).reshape(-1)
     if source.size == output_length:
         return np.asarray(frame, dtype=np.int16).reshape(-1)
@@ -525,6 +532,11 @@ class WakeWordDetector:
         zero-padded to ``engine.frame_length``, long ones split; on overflow the oldest is dropped."""
         if not self.external_audio:
             return
+        from agent.sdk_boundary import bundled
+        if bundled():
+            from standalone.wake_audio import frames
+            self._enqueue_frames(frames(pcm_int16, int(self.engine.frame_length)))
+            return
         try:
             import numpy as np
         except Exception:
@@ -536,10 +548,13 @@ class WakeWordDetector:
         fl = int(self.engine.frame_length)
         if fl <= 0:
             return
-        for offset in range(0, int(arr.shape[0]), fl):
-            chunk = arr[offset : offset + fl]
-            if chunk.shape[0] < fl:
-                chunk = np.pad(chunk, (0, fl - chunk.shape[0]))
+        chunks = (arr[offset:offset + fl] for offset in range(0, int(arr.shape[0]), fl))
+        self._enqueue_frames(chunk if chunk.shape[0] == fl else np.pad(chunk, (0, fl - chunk.shape[0]))
+                             for chunk in chunks)
+
+    def _enqueue_frames(self, chunks) -> None:
+        """Keep the original bounded queue and discard its oldest frame on overflow."""
+        for chunk in chunks:
             try:
                 self._audio_q.put_nowait(chunk)
             except Exception:
@@ -648,7 +663,12 @@ class WakeWordDetector:
         """Track consecutive near-zero frames; flag/unflag ``audio_silent``. ``frame`` is None when
         no client frame arrived (counts as silence for status, but is never logged as a dead mic)."""
         try:
-            peak = 0 if frame is None or not len(frame) else int(abs(frame).max())
+            from agent.sdk_boundary import bundled
+            if frame is not None and bundled():
+                from standalone.wake_audio import peak as pcm_peak
+                peak = pcm_peak(frame)
+            else:
+                peak = 0 if frame is None or not len(frame) else int(abs(frame).max())
         except Exception:
             peak = _SILENCE_PEAK + 1
         if peak <= _SILENCE_PEAK:
