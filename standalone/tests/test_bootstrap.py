@@ -145,7 +145,11 @@ def write_artifact(
         TEMPLATE.replace("__HERMES_BUNDLE_INFO_LITERAL__", repr(info)).replace(
             "__HERMES_BUNDLE_PAYLOAD_LITERAL__", repr(base64.b85encode(payload).decode())
         ).replace("__HERMES_WINDOWS_ACL_SOURCE__", repr((STANDALONE / "windows_acl.py").read_text(encoding="utf-8")))
-         .replace('__HERMES_DICTIONARY_PACK_SOURCE__', (STANDALONE / 'dictionary_pack.py').read_text(encoding='utf8')),
+         .replace('__HERMES_DICTIONARY_PACK_SOURCE__', (STANDALONE / 'dictionary_pack.py').read_text(encoding='utf8'))
+         .replace('__HERMES_RESOURCE_PACK_SOURCE__', '\n'.join(
+             (STANDALONE / name).read_text(encoding='utf8')
+             for name in ('mecab_pack.py', 'model_pack.py', 'pickle_pack.py')
+         )),
         encoding="utf-8",
     )
 

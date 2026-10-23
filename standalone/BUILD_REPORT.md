@@ -179,3 +179,89 @@ including the shared base with the actual solid-compression settings makes it
 patches plus decoder/manifests. The smaller shared-original layout is retained.
 These figures are not whole-artifact savings. No resource, dictionary entry,
 model weight or precision is discarded.
+
+## Further lossless resource packing
+
+Three additional length-preserving transforms improve the existing XZ payload:
+MeCab feature columns are grouped together, one G2PW byte embedding is
+transposed, and TLTK protocol-3 LONG_BINPUT operands use reversible uint32
+differences. The pickle is parsed with `pickletools`, never unpickled by the
+packer or bootstrap. All original opcodes, model values and dictionary fields
+are restored before the existing original-size and SHA256 checks.
+
+The new ZIP application is 249,809,397 bytes, SHA256
+`fc6ffade6cea2e768da7b38658f57bcbad1f0f465e7876d319b2f171ac7c0346`.
+Against the matched 252,751,498-byte public-source ZIP baseline above, this
+saves 2,942,101 bytes, or 1.1640%, including the added bootstrap decoders.
+The offline build took 950.02 seconds with network and external processes
+blocked. Its payload is 249,753,400 bytes with SHA256
+`b7889e95fde10bedd61dbbe737c5148f072d687b4d8896e8c10cb90d66f49bf1`.
+
+Every original path, size and SHA256 matches the baseline: 4,795 app files and
+21,402 vendor files, totaling 830,645,471 bytes before archive/manifest overhead.
+The sorted compact original-file map has digest
+`c4c2aace601de73804cc15ed38721bbb2ec1f6768c36d04f3f6d2ceb220e82f6`.
+Dependency records, capabilities, licenses, runtime sources and the AST
+minifier's equivalence checks are unchanged. The same preset 8, 48 MiB dictionary,
+`pb=0` and 64 MiB XZ decoder memory limit remain in use.
+
+Rendering the same two frozen payloads as default format-4 text source gives
+255,803,935 bytes before and 252,824,883 bytes after: a saving of 2,979,052 bytes
+(1.1646%). The new source artifact has SHA256
+`a83df45754162ab5848fe24bad3c6375d359d035e131103fa78e9e7e1349f662`.
+No second payload compression is involved in this envelope comparison.
+
+Isolated input comparisons explain the transforms; their sum is not the
+whole-artifact saving:
+
+| Input | Original XZ bytes | Transformed XZ bytes |
+| --- | ---: | ---: |
+| Complete MeCab dictionary | 15,055,268 | 13,629,140 |
+| One G2PW 21,128 × 768 byte tensor | 9,938,072 | 9,582,580 |
+| Complete TLTK trigram pickle | 3,315,752 | 2,063,420 |
+
+The builder proves exact inverse equality for each transformed resource.
+Complete resources also round-trip and repeat identically on Python 3.11
+and 3.14. This full new compressed payload was built once; repeated helper,
+small-build and envelope results do not constitute two full builds.
+
+The final 117-method focused source selection passes in uninterrupted runs
+on both interpreters: Python 3.11 in 94.09 seconds and Python 3.14 in 89.33 seconds.
+It covers the five container formats, original-byte restoration, child reentry,
+cache corruption, malformed/unauthorized resources and the existing minifier.
+A missing-decoder-placeholder regression first failed, then passes after the
+builder guard correction; rendering the valid full ZIP artifact remains byte
+identical. Minimal templates without a decoder registry remain supported.
+
+Independent extraction checks on both interpreters verify the size and SHA256
+of all 26,197 restored files, reuse the validated cache without rewriting its
+manifest, then reject a modified original-resource cache without repairing it.
+The same checks pass for the baseline. Network and external processes are
+blocked throughout these byte checks.
+
+The additional inverses increase cold work. Single-process Linux observations
+include loading the artifact, decoding XZ and the first complete extraction:
+
+| Python / artifact | Cold CPU seconds | Cold wall seconds | Peak RSS, KiB |
+| --- | ---: | ---: | ---: |
+| 3.14 / baseline ZIP | 30.49 | 36.73 | 835,312 |
+| 3.14 / new ZIP | 42.65 | 57.58 | 832,916 |
+| 3.11 / new ZIP | 50.73 | 61.29 | 835,644 |
+
+These are one sample per case under host contention, not latency guarantees.
+Existing caches contain original bytes and skip the inverse transforms;
+payload and cache verification still run. The separately recorded warm
+`_extract` timings exclude payload decoding and interpreter startup.
+
+Four unchanged copied-ZIP acceptance methods pass in one continuous
+313.06-second run with their original assertions and deadlines. They exercise
+the relocated selftest, real Thai resources/phonemization, Chinese and Japanese
+resources/voice PCM, and the managed gateway/worker HTTP tool turn with durable
+receipts. Their empty owned profiles are outside all Git ancestors. This is a
+focused artifact selection, not a new full-source regression run.
+
+The default source artifact also passes ordinary launch, isolated reentry and
+`doctor --json --require-agent` in 142.75 seconds with the original 300-second
+bound. All six serial qualification phases complete with exit status 0.
+Portable hashes, measurements and the exact validation scope are recorded in
+[verification/lossless-resource-packing-20261023.json](verification/lossless-resource-packing-20261023.json).

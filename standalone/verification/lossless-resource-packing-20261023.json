@@ -1,0 +1,229 @@
+{
+  "baseline_byte_check_python314": {
+    "all_original_file_hashes_verified": true,
+    "artifact_sha256": "5bc4caa2b56aa981bdb7cde53776b3934f868fa38d7cfd5b85c58e138ecc2dfa",
+    "cold_cpu_seconds": 30.492589257,
+    "cold_seconds": 36.73407313899952,
+    "file_map_sha256": "c4c2aace601de73804cc15ed38721bbb2ec1f6768c36d04f3f6d2ceb220e82f6",
+    "files": 26197,
+    "network_and_external_processes_blocked": true,
+    "original_bytes": 830645471,
+    "peak_rss_kib": 835312,
+    "python": [
+      3,
+      14,
+      7
+    ],
+    "tampered_cache_rejected_without_repair": true,
+    "warm_cache_unchanged": true,
+    "warm_extract_seconds": 6.41790074399978
+  },
+  "baseline_project_commit": "1485e42664237c830114e8a6e06d2f70c7ec6128",
+  "build_seconds": 950.0167546550001,
+  "compression": {
+    "decoder_memlimit": 67108864,
+    "dict_size": 50331648,
+    "format": "XZ/LZMA2",
+    "pb": 0,
+    "preset": 8
+  },
+  "copied_acceptance": {
+    "all_passed": true,
+    "artifact_sha256_unchanged": "fc6ffade6cea2e768da7b38658f57bcbad1f0f465e7876d319b2f171ac7c0346",
+    "original_copied_test_assertions_and_deadlines_unchanged": true,
+    "phases": [
+      {
+        "exit_code": 0,
+        "name": "source-envelope-export-and-renderer-identity",
+        "seconds": 101.11112704900006
+      },
+      {
+        "exit_code": 0,
+        "name": "matched-baseline-all-original-files-python314",
+        "seconds": 50.3480559940017
+      },
+      {
+        "exit_code": 0,
+        "name": "all-original-files-and-tampered-cache-python311",
+        "seconds": 72.54850225500013
+      },
+      {
+        "exit_code": 0,
+        "name": "all-original-files-and-tampered-cache-python314",
+        "seconds": 67.84333501500078
+      },
+      {
+        "exit_code": 0,
+        "name": "unchanged-four-copied-resource-and-managed-http-tests",
+        "seconds": 313.05691380700046
+      },
+      {
+        "exit_code": 0,
+        "name": "default-source-envelope-normal-reentry",
+        "seconds": 142.74843210399922
+      }
+    ],
+    "profiles_outside_git_ancestors": true
+  },
+  "date": "2026-10-23",
+  "default_source": {
+    "baseline": {
+      "payload_sha256": "bc6ad069556a97acfdc112a4f925f569c49d8de8ce555524d0782bbcbf89f5b9",
+      "same_compressed_payload_as_zipapp": true,
+      "seconds": 57.52479151300031,
+      "sha256": "27e7ab12774d3303c8f57925b2153914113ad82742bcea46f56170aab4ed30b7",
+      "size": 255803935
+    },
+    "lossless": {
+      "payload_sha256": "b7889e95fde10bedd61dbbe737c5148f072d687b4d8896e8c10cb90d66f49bf1",
+      "same_compressed_payload_as_zipapp": true,
+      "seconds": 42.62761813299949,
+      "sha256": "a83df45754162ab5848fe24bad3c6375d359d035e131103fa78e9e7e1349f662",
+      "size": 252824883
+    },
+    "saving_bytes": 2979052,
+    "saving_percent": 1.1645841179104615,
+    "valid_zipapp_renderer_identity_after_guard": true
+  },
+  "focused_tests": {
+    "311": {
+      "exit_code": 0,
+      "methods": 117,
+      "seconds": 94.091
+    },
+    "314": {
+      "exit_code": 0,
+      "methods": 117,
+      "seconds": 89.33
+    }
+  },
+  "format_version": 1,
+  "full_artifact_byte_checks": {
+    "311": {
+      "all_original_file_hashes_verified": true,
+      "artifact_sha256": "fc6ffade6cea2e768da7b38658f57bcbad1f0f465e7876d319b2f171ac7c0346",
+      "cold_cpu_seconds": 50.733946144,
+      "cold_seconds": 61.28803325300032,
+      "file_map_sha256": "c4c2aace601de73804cc15ed38721bbb2ec1f6768c36d04f3f6d2ceb220e82f6",
+      "files": 26197,
+      "network_and_external_processes_blocked": true,
+      "original_bytes": 830645471,
+      "peak_rss_kib": 835644,
+      "python": [
+        3,
+        11,
+        2
+      ],
+      "tampered_cache_rejected_without_repair": true,
+      "warm_cache_unchanged": true,
+      "warm_extract_seconds": 4.103070958999524
+    },
+    "314": {
+      "all_original_file_hashes_verified": true,
+      "artifact_sha256": "fc6ffade6cea2e768da7b38658f57bcbad1f0f465e7876d319b2f171ac7c0346",
+      "cold_cpu_seconds": 42.653880188,
+      "cold_seconds": 57.58164938899972,
+      "file_map_sha256": "c4c2aace601de73804cc15ed38721bbb2ec1f6768c36d04f3f6d2ceb220e82f6",
+      "files": 26197,
+      "network_and_external_processes_blocked": true,
+      "original_bytes": 830645471,
+      "peak_rss_kib": 832916,
+      "python": [
+        3,
+        14,
+        7
+      ],
+      "tampered_cache_rejected_without_repair": true,
+      "warm_cache_unchanged": true,
+      "warm_extract_seconds": 3.932687831000294
+    }
+  },
+  "limitations": [
+    "Cold observations are one Linux sample per case under host contention, not latency guarantees.",
+    "Warm extract timing excludes payload decoding and interpreter startup.",
+    "Copied acceptance covers four unchanged ZIP artifact methods and source doctor/reentry, not the entire source suite.",
+    "No new native Windows/macOS, hardware or live-provider equivalence claim; full parity remains false.",
+    "Isolated compression savings are not additive estimates of the whole-artifact result."
+  ],
+  "matched_originals": {
+    "all_original_files_identical": true,
+    "app_files": 4795,
+    "file_map_sha256": "c4c2aace601de73804cc15ed38721bbb2ec1f6768c36d04f3f6d2ceb220e82f6",
+    "files": 26197,
+    "original_bytes": 830645471,
+    "vendor_files": 21402
+  },
+  "network_and_external_processes_blocked_during_build_and_byte_checks": true,
+  "proof": {
+    "ast_and_compiled_code_minify_proofs_unchanged": true,
+    "bootstrap_parses_pickle_opcodes_without_unpickling": true,
+    "builder_checks_direct_original_byte_equality_of_inverse": true,
+    "complete_resource_repeats_identical_on_python311_and314": true,
+    "every_transform_length_preserving": true,
+    "full_new_payload_built_once_not_a_second_full_build_reproducibility_run": true,
+    "no_values_precision_dictionary_entries_or_notices_removed": true,
+    "small_fixture_builds_and_envelopes_repeat_identically": true,
+    "valid_zipapp_renderer_identical_after_missing_marker_guard_fix": true
+  },
+  "scope": "Additional deterministic lossless resource packing, unchanged app and vendor originals",
+  "source_sha256": {
+    "standalone/bootstrap.py": "1c028d936cef76fe3b8bd1067acd4a8de16fa7fe6d4cc9b44a48271aeaf07971",
+    "standalone/build.py": "092469543cf54afcde2200f87fe55f406d9f3e7f86b4066a82fd19ef8d0ffa1e",
+    "standalone/mecab_pack.py": "d77e761bb7f36c34e3f997855fb16b46fe8cd6dec72e2b6bed34c8b74541b2c1",
+    "standalone/model_pack.py": "3da93951245e8fa727e321be2d493dd48429f19bbed114bdbacfe43f93d47398",
+    "standalone/pickle_pack.py": "3e93678bb82dc6e1ee2ca9f0bb6603395f106e335169be22bd2d73d892583326",
+    "standalone/tests/test_bootstrap.py": "84ecc8630e64966635ae72a3f44c0af3888abc3139ff479f79f5499d29b586e2",
+    "standalone/tests/test_mecab_pack.py": "601f05cb260cc6c815a0d82f542471b7dad86b12df4e54ec825536b5653ed155",
+    "standalone/tests/test_model_pack.py": "d89882219ef77205f7411ad3e667678e9de5471182e5d2db7813cf5835ad2381",
+    "standalone/tests/test_pickle_pack.py": "ecabed0d1bf3610fe8a80e6ea78519a0a5d0ac9e8fd630a9a0c97c10ade94119",
+    "standalone/tests/test_resource_pack.py": "ddeaf670f2f90399fc622773100497c5bec56ed76612bffdf4d0434b2e35f280"
+  },
+  "template_guard_regression": {
+    "minimal_templates_without_decoder_registry_remain_supported": true,
+    "missing_and_duplicate_markers_rejected_after_fix": true,
+    "missing_marker_failed_before_fix": true
+  },
+  "transforms": [
+    {
+      "encoding": "mecab-columns-v1",
+      "isolated_comparison_scope": "complete dictionary",
+      "isolated_original_xz_bytes": 15055268,
+      "isolated_transformed_xz_bytes": 13629140,
+      "original_bytes": 103305451,
+      "original_sha256": "23287ce5d518164b8b97683b1d9534df095556e446f3470a6c52bd737be74527",
+      "packed_sha256": "6f75989d8f7980ac4f48e9e021d1e7af91b464cb60d3a508f345560da9346fc2",
+      "path": "app/standalone/local_piper_japanese/data/openjtalk/dictionary/sys.dic"
+    },
+    {
+      "encoding": "g2pw-embedding-v1",
+      "isolated_comparison_scope": "one complete 21128 by 768 uint8 tensor, not whole model",
+      "isolated_original_xz_bytes": 9938072,
+      "isolated_transformed_xz_bytes": 9582580,
+      "original_bytes": 159287362,
+      "original_sha256": "367b87bfb59826590d1d85bd19a21d46aad3332fb364eca0c61d93cabe1d0323",
+      "packed_sha256": "279189083fa033cb608968ea8929c1a7bada2f8af9718a324fa6d8700e64bb2f",
+      "path": "app/standalone/piper_chinese_data/model/g2pw.onnx"
+    },
+    {
+      "encoding": "pickle-memo-delta-v1",
+      "isolated_comparison_scope": "complete protocol-3 trigram pickle; no pickle execution",
+      "isolated_original_xz_bytes": 3315752,
+      "isolated_transformed_xz_bytes": 2063420,
+      "original_bytes": 15795689,
+      "original_sha256": "3450baabc27dbb078939eb0729083e60d51c7b13363d3641cc605faaf32b502e",
+      "packed_sha256": "44343961319214eb61224f72eff8a19a221e7f2b19ab0ccc4cbabd11cb5c24ba",
+      "path": "vendor/hermes_tltk/sylseg.3g"
+    }
+  ],
+  "upstream_commit": "bd3cbe91a90097f9804f16ea5c1768f5cbaaf0b7",
+  "zipapp": {
+    "baseline_bytes": 252751498,
+    "baseline_sha256": "5bc4caa2b56aa981bdb7cde53776b3934f868fa38d7cfd5b85c58e138ecc2dfa",
+    "output_bytes": 249809397,
+    "output_sha256": "fc6ffade6cea2e768da7b38658f57bcbad1f0f465e7876d319b2f171ac7c0346",
+    "payload_bytes": 249753400,
+    "payload_sha256": "b7889e95fde10bedd61dbbe737c5148f072d687b4d8896e8c10cb90d66f49bf1",
+    "saving_bytes": 2942101,
+    "saving_percent": 1.1640291049827922
+  }
+}

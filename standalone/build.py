@@ -46,6 +46,7 @@ EXCLUDED_STANDALONE_FILES = {
     "build.py", "vendor.py", "bootstrap.py", "check.py", "audit.py", "minify.py", "size_report.py",
     "offline_agent_probe.py", "upstream_check.py", "web_assets.py", "acp_port.py", "deflate_pack.py",
     "dictionary_pack.py",
+    "mecab_pack.py", "model_pack.py", "pickle_pack.py",
 }
 ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 PAYLOAD_LITERAL_WIDTH = 8192
@@ -62,6 +63,15 @@ PIPER_RESOURCE_SHA256 = {
 PIPER_ESPEAK_MANIFEST = "piper-espeak-resources-provenance.json"
 PIPER_ESPEAK_MANIFEST_SHA256 = "16c885906be9b0aa5295961d2f2d67d5a531bc4ce5cf0c1a66a4ba5cd2267fc4"
 SUDACHI_DICTIONARY = "app/standalone/local_piper_japanese/data/sudachi/system.dic"
+PACKED_RESOURCES = {
+    SUDACHI_DICTIONARY: ("dictionary_pack.py", "transform_dictionary", "sudachi-v1-blocks"),
+    "app/standalone/local_piper_japanese/data/openjtalk/dictionary/sys.dic":
+        ("mecab_pack.py", "transform_mecab", "mecab-columns-v1"),
+    "app/standalone/piper_chinese_data/model/g2pw.onnx":
+        ("model_pack.py", "transform_g2pw_embedding", "g2pw-embedding-v1"),
+    "vendor/hermes_tltk/sylseg.3g":
+        ("pickle_pack.py", "transform_pickle_memo", "pickle-memo-delta-v1"),
+}
 PIPER_REVIEWED_RESOURCE_MANIFESTS = (
     ("local_piper_japanese/__init__.py", "piper-japanese-resources-provenance.json",
      "99b3d3cd6364f117f8d31d476f0f4dfa7648abfdce996cacfa723888f1502e68"),
@@ -108,17 +118,20 @@ def _pack_data_files(files: dict[str, bytes]) -> tuple[dict, dict]:
     packed = {path: _pack_model_planes(content) for path, content in files.items()
               if path.removeprefix("app/standalone/") in PIPER_RESOURCE_SHA256 and path.endswith(".onnx")}
     encodings = {path: 'byteplanes4' for path in packed}
-    if SUDACHI_DICTIONARY in files:
+    for path, (filename, function, encoding) in PACKED_RESOURCES.items():
+        if path not in files:
+            continue
         spec = importlib.util.spec_from_file_location(
-            '_hermes_dictionary_pack', Path(__file__).with_name('dictionary_pack.py'))
+            '_hermes_' + Path(filename).stem, Path(__file__).with_name(filename))
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        original = files[SUDACHI_DICTIONARY]
-        transformed = module.transform_dictionary(original)
-        if len(transformed) != len(original) or module.transform_dictionary(transformed, inverse=True) != original:
-            raise BuildError('Dictionary packing failed its exact inverse')
-        packed[SUDACHI_DICTIONARY] = transformed
-        encodings[SUDACHI_DICTIONARY] = 'sudachi-v1-blocks'
+        transform = getattr(module, function)
+        original = files[path]
+        transformed = transform(original)
+        if len(transformed) != len(original) or transform(transformed, inverse=True) != original:
+            raise BuildError('Resource packing failed its exact inverse: ' + path)
+        packed[path] = transformed
+        encodings[path] = encoding
     return packed, encodings
 
 
@@ -510,6 +523,14 @@ def _render_encoded(
         if template.count(dictionary_marker) != 1:
             raise BuildError('Bootstrap must contain exactly one dictionary decoder placeholder')
         replacements[dictionary_marker] = Path(__file__).with_name('dictionary_pack.py').read_text(encoding='utf8')
+    resource_marker = '__HERMES_RESOURCE_PACK_SOURCE__'
+    if resource_marker in template or re.search(r'(?m)^_FILE_CODECS\s*=', template):
+        if template.count(resource_marker) != 1:
+            raise BuildError('Bootstrap must contain exactly one resource decoder placeholder')
+        replacements[resource_marker] = '\n'.join(
+            Path(__file__).with_name(name).read_text(encoding='utf8')
+            for name in ('mecab_pack.py', 'model_pack.py', 'pickle_pack.py')
+        )
     # Replace template tokens once; opaque data may itself contain a token.
     rendered = re.sub("|".join(map(re.escape, replacements)), lambda m: replacements[m[0]], template)
     encoding = "latin-1" if payload_encoding.startswith("latin1") else "utf-8"

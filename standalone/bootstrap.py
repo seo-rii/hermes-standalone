@@ -389,14 +389,8 @@ def _close_archive_on_error(reader):
 def _approved_file_encoding(name, encoding):
     if encoding == 'identity':
         return True
-    if encoding == 'byteplanes4':
-        return name in (
-            'app/standalone/assets/piper/hebrew/nakdimon.onnx',
-            'app/standalone/assets/piper/tashkeel/model.onnx',
-        )
-    if encoding == 'sudachi-v1-blocks':
-        return name == 'app/standalone/local_piper_japanese/data/sudachi/system.dic'
-    return False
+    return (isinstance(encoding, str) and encoding in _FILE_CODECS
+            and name in _FILE_CODECS[encoding][0])
 
 
 @_close_archive_on_error
@@ -684,8 +678,11 @@ def _restore_encoded_file(source, item, name):
     content = source.read(item['size'] + 1)
     if len(content) != item['size']:
         raise BundleError('encoded model size differs: ' + name)
-    decoded = (_restore_model_planes(content) if item['encoding'] == 'byteplanes4'
-               else transform_dictionary(content, inverse=True))
+    _, decoder, options = _FILE_CODECS[item['encoding']]
+    try:
+        decoded = decoder(content, **options)
+    except ValueError as error:
+        raise BundleError('invalid packed resource ' + name + ': ' + str(error)) from None
     if len(decoded) != item['size']:
         raise BundleError('restored resource size differs: ' + name)
     if any(decoded.startswith(magic) for magic in _NATIVE_MAGIC):
@@ -715,7 +712,7 @@ def _extract(archive, files, manifest_bytes, cache):
             with archive.open(name) as source, os.fdopen(
                 os.open(target, flags, 0o600), "wb"
             ) as destination:
-                if item.get('encoding') in ('byteplanes4', 'sudachi-v1-blocks'):
+                if item.get('encoding', 'identity') != 'identity':
                     destination.write(_restore_encoded_file(source, item, name))
                     continue
                 prefix = source.read(8)
@@ -755,6 +752,27 @@ def _extract(archive, files, manifest_bytes, cache):
 
 
 __HERMES_DICTIONARY_PACK_SOURCE__
+
+__HERMES_RESOURCE_PACK_SOURCE__
+
+_FILE_CODECS = {
+    'byteplanes4': ((
+        'app/standalone/assets/piper/hebrew/nakdimon.onnx',
+        'app/standalone/assets/piper/tashkeel/model.onnx',
+    ), _restore_model_planes, {}),
+    'sudachi-v1-blocks': ((
+        'app/standalone/local_piper_japanese/data/sudachi/system.dic',
+    ), transform_dictionary, {'inverse': True}),
+    'mecab-columns-v1': ((
+        'app/standalone/local_piper_japanese/data/openjtalk/dictionary/sys.dic',
+    ), transform_mecab, {'inverse': True}),
+    'g2pw-embedding-v1': ((
+        'app/standalone/piper_chinese_data/model/g2pw.onnx',
+    ), transform_g2pw_embedding, {'inverse': True}),
+    'pickle-memo-delta-v1': ((
+        'vendor/hermes_tltk/sylseg.3g',
+    ), transform_pickle_memo, {'inverse': True}),
+}
 
 
 def _main(argv):
