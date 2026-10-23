@@ -1,0 +1,21 @@
+Piper eSpeak dictionary, rule, word and phoneme-rendering port
+
+Adapted from eSpeak NG commit 724808c5a83f9ef95fdd0db886ba7ba537ff224a,
+pinned by OHF-Voice/piper1-gpl commit 639388b6317fc4731e91d53da42aea68fd4166ff.
+Copyright (C) 2005-2015 Jonathan Duddington.
+Copyright (C) 2013-2017, 2020 Reece H. Dunn.
+
+This Python adaptation and the original eSpeak sources are licensed under
+the GNU General Public License, version 3 or (at your option) any later
+version. The complete license is in piper-gpl3.txt.
+
+Source archive:
+https://codeload.github.com/espeak-ng/espeak-ng/tar.gz/724808c5a83f9ef95fdd0db886ba7ba537ff224a
+SHA256: 7d8ebd78201923a443245362a928999977d1721c3eeba596eafc6ea8db7e243c
+
+Compiled dictionaries and phoneme data are included separately under
+assets/piper/espeak-ng-data with their original resource notices. These
+Python modules execute original lookup, rule, stress, spelling, morphology,
+mnemonic conversion and IPA rendering algorithms. Their test fixtures are
+expected original native results, not runtime word/sentence caches.
+No native library, executable or third-party SDK namespace is shipped here.

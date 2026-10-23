@@ -134,6 +134,8 @@ class TestGeneratePiperTts:
         Regression guard: has_advanced must include speaker_id, otherwise
         this knob gets silently dropped on the simplest configuration.
         """
+        from agent import sdk_boundary
+        monkeypatch.setattr(sdk_boundary, "bundled", lambda: False)
         model = self._prepare_voice_files(tmp_path)
         monkeypatch.setattr(tts_tool, "_import_piper", lambda: _StubPiperVoice)
 

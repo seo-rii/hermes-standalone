@@ -1,0 +1,24 @@
+eSpeakNG ReadClause source port
+
+Source: https://github.com/espeak-ng/espeak-ng
+Immutable commit:724808c5a83f9ef95fdd0db886ba7ba537ff224a
+Archive SHA256:7d8ebd78201923a443245362a928999977d1721c3eeba596eafc6ea8db7e243c
+The unmodified Piper1.8.0 bridge/data wheel is the independent native reference,
+SHA25625b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3.
+
+Adapted original: src/libespeak-ng/readclause.c and translate.h.
+Copyright (C)2005 to2014 Jonathan Duddington <jonsd@users.sourceforge.net>
+Copyright (C)2015-2018 Reece H.Dunn
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version3 of the License, or (at your option)
+any later version. This program is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See piper-gpl3.txt
+in this directory for the complete GNU GPLv3 license.
+
+Original Unicode11 tables and classifications are separately attributed in
+local-piper-phoneme-unicode-notices.txt. Only reviewed source/data and original
+native-captured test vectors are shipped; all original native libraries and
+source-observation executables are ignored authoring inputs, never runtime.

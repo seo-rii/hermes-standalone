@@ -1,0 +1,84 @@
+{
+  "coverage": {
+    "case_maps": 2,
+    "category_and_properties": true,
+    "compiled_actual_consumer_macros": true,
+    "maximum_allowed_difference": 0,
+    "native_full_semantic_rows_sha256": "bec0db0eca4b19c06a9427fb635dc257bfe77d80dd7682cf286f2a8ae8955f51",
+    "native_full_utf8_rows_sha256": "6686a0d8bfe01717ead88bd783c9922fc203cd05a3f60c9f95213ae36cd33c55",
+    "outside_unicode_codepoints": 4,
+    "predicates": 12,
+    "unicode_codepoints": 1114112,
+    "utf8_encoding_codepoints": 1114112,
+    "utf8_permissive_and_backward_decodes": 7048,
+    "zwj_is_not_wide_punctuation": true
+  },
+  "fixture_sha256": "915270b960cd063f0341d23f68237e579a30838411e040f35b4db45a6f8ab47f",
+  "format_version": 1,
+  "licenses": {
+    "local-piper-phoneme-unicode-notices.txt": "b7652fce1d90bb69e8eafbf8ae9a4a0edf5c9253a619b530a9d677cbf8d66fa0"
+  },
+  "limitations": [
+    "This independent primitive module does not enable the incomplete full eSpeak phonemizer or Piper factory.",
+    "The source wide-character predicates are the actual ucd-tools mappings selected by its compatibility header. They preserve original Unicode11 behavior independently of host locale or Python Unicode version.",
+    "Tables encode primitive Unicode facts only. They do not cache word or sentence pronunciations. Runtime and tests do not load native libraries, execute inference processes, install packages, or contact remote services."
+  ],
+  "native_reference": {
+    "bridge_sha256": "7ec4a80efda263303c257e77749c18f1d544b5ea3f5102c06b2c4fe2a6323fe6",
+    "consumer_macro_names": {
+      "iswalnum": "ucd_isalnum",
+      "iswalpha": "ucd_isalpha",
+      "iswblank": "ucd_isblank",
+      "iswdigit": "ucd_isdigit",
+      "iswlower": "ucd_islower",
+      "iswpunct": "ucd_ispunct",
+      "iswspace": "ucd_isspace",
+      "iswupper": "ucd_isupper"
+    },
+    "piper_version": "1.8.0",
+    "source_wctype_profile": {
+      "compat_header": "src/include/compat/wctype.h",
+      "implementation": "ucd-tools",
+      "unicode_version": "11.0.0"
+    },
+    "ucd_version": "11.0.0",
+    "wheel_sha256": "25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3"
+  },
+  "runtime_modules_sha256": {
+    "local_piper_phoneme_unicode.py": "da7b6c01e8d3bd3cac61a1f34802f6c30fad6948c9bebbdae248ac1ddb35a4fb"
+  },
+  "source": {
+    "archive_sha256": "7d8ebd78201923a443245362a928999977d1721c3eeba596eafc6ea8db7e243c",
+    "commit": "724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+    "files_sha256": {
+      "src/CMakeLists.txt": "0fe2ec0b7c600c15b082213862f5302b64ddf1d199a9ff6198ed34016f6de03b",
+      "src/include/compat/wctype.h": "f8ab95de710053139fab05fc57fdd6c41b020126051ca540dbb64e81cfaecf06",
+      "src/libespeak-ng/dictionary.c": "1339d284ec273956d7a5beaa1cf7f3a0cfd0c81dcb168df7e3f7903ca6f9763b",
+      "src/libespeak-ng/readclause.c": "5d110a4478727f16509519de3c4c11c536577ae83c967a04ddd92d01bc712432",
+      "src/libespeak-ng/translate.c": "8ce75a2e76ff5c0216d2eb938d6a6bc7794daab5c72afa958627429c51b298b6",
+      "src/ucd-tools/src/case.c": "04622da7360518fb8feb94a0e53e75f281b2a530690626a142d9522767bda3d7",
+      "src/ucd-tools/src/categories.c": "edd26047254c98d65936f1f4237feb2389acb1cce3733a2b693e1a9b9f333880",
+      "src/ucd-tools/src/ctype.c": "7c3a160f572c19d9b429aff57cfec9eb526b47535bcb96f747fadc5601d6ba93",
+      "src/ucd-tools/src/include/ucd/ucd.h": "4d0f07930384e2a57a4abeb433bd3fef35a5904b2c5ce6ad6ee30f72ddfde67f",
+      "src/ucd-tools/src/proplist.c": "6a96e07b90ca58a9b807f6cf8ece6294f4864ba017e99c0574aeb235b0d41053"
+    },
+    "project": "espeak-ng"
+  },
+  "validation": {
+    "native_payloads_shipped": false,
+    "original_compatibility_header_compiled": true,
+    "pending": false,
+    "public_stdlib_tests": {
+      "python3.11": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-unicode-consumer-public-311-g0rfi0zj.log",
+        "methods": 3
+      },
+      "python3.14": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-unicode-consumer-public-314-8wvh9zrp.log",
+        "methods": 3
+      }
+    }
+  }
+}

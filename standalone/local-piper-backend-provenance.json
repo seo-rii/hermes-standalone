@@ -1,0 +1,188 @@
+{
+  "fixture_sha256": "24643a77d0ba45477dc89b2b3b0f5154e5328fe7b7ee1a4497c1eb631ce0c3a4",
+  "interfaces": {
+    "arabic": "TashkeelDiacritizer(model_dir=bundled_data).diacritize(text,taskeen_threshold=None); original __call__ accepts but does not forward threshold.",
+    "hebrew": "NakdimonDiacritizer(model_path=bundled_data); HebrewPhonemizer(model_path=bundled_data).phonemize(text); dotted text bypasses neural inference as in the original. Explicit model paths are retained."
+  },
+  "licenses": {
+    "local-piper-backend-notices.txt": "20e28df740ce06128cce427e5a9a03f8df8faf1f704258e89e5522d91968d351",
+    "piper-nakdimon-mit.txt": "c1003f4bcecf823d0604dc4454119a8235fda0d7560e25cde445862253477985"
+  },
+  "limitations": [
+    "Inference is CPU float32 with bounded measured differences from pinned native ORT; complete GPU/ONNX Runtime API parity is not claimed.",
+    "Hebrew recurrence accepts only the original reviewed Nakdimon model SHA, preserving the original bundled model. Arabic graph supports the reviewed standard operator subset and explicitly rejects custom-domain or unsupported operators/activation variants.",
+    "The separately owned eSpeak phonemizer and full PiperVoice/Hermes factory are not enabled by this slice. Neither runtime nor tests install packages or execute native/process fallbacks."
+  ],
+  "model_execution": {
+    "arabic": {
+      "model_sha256": "52c40d42ca094ff9ff07a091d0a1eafd7baa5cf2388e60a9cc89bacd8e5e955f",
+      "ops": {
+        "Add": 77,
+        "ArgMax": 1,
+        "BatchNormalization": 3,
+        "Cast": 46,
+        "Concat": 23,
+        "Constant": 272,
+        "ConstantOfShape": 19,
+        "Conv": 4,
+        "Cos": 1,
+        "Div": 19,
+        "Dropout": 3,
+        "Einsum": 1,
+        "Equal": 1,
+        "Expand": 1,
+        "GRU": 9,
+        "Gather": 47,
+        "Less": 1,
+        "MatMul": 34,
+        "Mul": 49,
+        "Pow": 16,
+        "Range": 11,
+        "ReduceMean": 32,
+        "ReduceProd": 9,
+        "Reshape": 22,
+        "ScatterElements": 9,
+        "Shape": 49,
+        "Sigmoid": 12,
+        "Sin": 1,
+        "Slice": 21,
+        "Softmax": 4,
+        "Split": 3,
+        "Sqrt": 25,
+        "Sub": 16,
+        "Tanh": 12,
+        "TopK": 9,
+        "Transpose": 53,
+        "Unsqueeze": 41,
+        "Where": 4
+      },
+      "recurrence": "Nine bidirectional GRU operations, linear_before_reset=1, trained hidden widths112/112/56, with attention/convolution graph and original uint8 predictions/float confidence."
+    },
+    "hebrew": {
+      "architecture": "Fixed reviewed43x400 embedding, two bidirectional400-cell LSTM layers with SUM direction merge, Dense400 and independent16/3/4 logit heads. Reads original weights from SHA-pinned ONNX data; does not claim generic ONNX Loop execution.",
+      "model_sha256": "9ff491dcc7d66392019d427a98b97d5de10c0d721628ae740858174ae22b190e"
+    }
+  },
+  "resources": {
+    "assets/piper/hebrew/nakdimon.onnx": {
+      "bytes": 21312753,
+      "sha256": "9ff491dcc7d66392019d427a98b97d5de10c0d721628ae740858174ae22b190e",
+      "source": "piper_tts-1.8.0/src/piper/hebrew/nakdimon.onnx"
+    },
+    "assets/piper/tashkeel/hint_id_map.json": {
+      "bytes": 193,
+      "sha256": "80931db53b1f1031609a66f23b64a1c37d79ae4a8a4c785023728636a7fa93e5",
+      "source": "piper_tts-1.8.0/src/piper/tashkeel/hint_id_map.json"
+    },
+    "assets/piper/tashkeel/input_id_map.json": {
+      "bytes": 628,
+      "sha256": "727a49aa3c7e939dc06f32b27c2e06c4c4bbef596dce4bf51276261ca736c3c3",
+      "source": "piper_tts-1.8.0/src/piper/tashkeel/input_id_map.json"
+    },
+    "assets/piper/tashkeel/model.onnx": {
+      "bytes": 4788213,
+      "sha256": "52c40d42ca094ff9ff07a091d0a1eafd7baa5cf2388e60a9cc89bacd8e5e955f",
+      "source": "piper_tts-1.8.0/src/piper/tashkeel/model.onnx"
+    },
+    "assets/piper/tashkeel/target_id_map.json": {
+      "bytes": 181,
+      "sha256": "6da34024bfd4c0ff54f7598bb74d5a00405144d746afe72c141fceeaba21ed30",
+      "source": "piper_tts-1.8.0/src/piper/tashkeel/target_id_map.json"
+    }
+  },
+  "runtime_modules_sha256": {
+    "local_piper_arabic.py": "6fb1f2d4ab0f6bab3c217cab02b217856d6b0943f41f93ae17866dd4bccbd2cb",
+    "local_piper_hebrew.py": "cd3399f10d559ed5c3cb2135ccf9e1c47796fb483878186fa08d6a3e96245fc8",
+    "local_piper_hebrew_ipa.py": "4e394de21ca532ca9aa7cfa9b4cc58a67255361cc466a26fef5b757ac4c72d68",
+    "local_piper_nakdimon.py": "d493ddeb9cc2625515f4953e47ac44abbb9a5d6cf253302a73934baefb8b79f9",
+    "local_piper_phonemize_hebrew.py": "8b80227aea114c7cea6806f4bb4154c488a8982e47e29f7f8de73a28b819e41e",
+    "local_piper_recurrent.py": "bec57e11208c9db1386887f1c3cba3e5efa8957f1486acca5db7c1b9090f8af1"
+  },
+  "schema": 1,
+  "scope": "Qualified stdlib Arabic libtashkeel GRU/attention and Hebrew Nakdimon LSTM/IPA backends. Original auxiliary model data is included; the Hermes Piper provider remains gated until the separately owned phonemizer and complete consumer integration are validated.",
+  "source_contract_sha256": {
+    "onnxruntime/core/providers/cpu/rnn/deep_cpu_gru.cc": "04a6b5a45dfdaba29ec10ae47a2486a9837ce4b65b7355c22ed7ca6546528b6c",
+    "onnxruntime/core/providers/cpu/rnn/deep_cpu_gru.h": "8fa6fe264031c637ec299a791ddb7fcc15910dcd1942de4bbadaba3156479281",
+    "onnxruntime/core/providers/cpu/rnn/rnn_activation_functors.h": "ffd119566eb0b5b31215ce64d9269d8ecfe4d9316d2fa5d89f4d1d704c9126d7",
+    "onnxruntime/core/providers/cpu/rnn/rnn_helpers.cc": "a2e8da6ffd00cdf58e906ebf85dfb469982474e11a161e033e8f4ea7d22b644a",
+    "piper/hebrew/LICENSE": "c1003f4bcecf823d0604dc4454119a8235fda0d7560e25cde445862253477985",
+    "piper/hebrew/SOURCE": "96d57add171bbe458380a9ebabe69723b129558be56a629b987283120b985e66",
+    "piper/hebrew/__init__.py": "77aca97111c59f2c06fa32b7b085b9bb329aff242c16e478f90997a93195a06f",
+    "piper/hebrew/hebrew_ipa.py": "4897c5b8b6dba260b0546cdd17052f49ca5382da97b0660c643bf458cc11e6f3",
+    "piper/phonemize_hebrew.py": "ebc60c33b41b3fedd24b130de4c7a50ae688fafb33b0f69fed723ef3466d0045",
+    "piper/tashkeel/__init__.py": "1517463424d069a8bd5f4efbbe5361e2d14ebd6826d54da521482740a3b9ab4b"
+  },
+  "upstream": {
+    "libtashkeel_license": {
+      "bytes": 1066,
+      "commit": "9b91c2dbc3dc4085dc4f77a9e250e5dd095d7d0c",
+      "sha256": "98dbc9a6a01badb391f2b64161742cb9cd8fcdc5cfc97486be0d49c47e98d1a8",
+      "url": "https://raw.githubusercontent.com/mush42/libtashkeel/9b91c2dbc3dc4085dc4f77a9e250e5dd095d7d0c/LICENSE"
+    },
+    "onnxruntime": {
+      "commit": "2e2543fbe9fae542f921d47a72d21d5a4ef0b710",
+      "version": "1.29.0"
+    },
+    "piper": {
+      "commit": "639388b6317fc4731e91d53da42aea68fd4166ff",
+      "license": "GPL-3.0-or-later",
+      "sdist_sha256": "830588aded347df579c91a32703e0fc2a3685d84f1e3533b14f2de69135d4904",
+      "version": "1.8.0"
+    }
+  },
+  "verified": {
+    "authoring_exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "authoring_logs": [
+      "validation-logs/hermes-local-piper-arabic311-z5m3452r.log",
+      "validation-logs/hermes-local-piper-arabic314-8u7qy4yu.log",
+      "validation-logs/hermes-local-piper-hebrew311-n5xjd87a.log",
+      "validation-logs/hermes-local-piper-hebrew314-h_cc3c9_.log",
+      "validation-logs/hermes-local-piper-recurrent311-5zsit78f.log",
+      "validation-logs/hermes-local-piper-recurrent314-pti9b4fb.log",
+      "validation-logs/hermes-local-piper-lstm311-hv_matcl.log",
+      "validation-logs/hermes-local-piper-lstm314-zowzc5ii.log"
+    ],
+    "native_lstm_cases": 24,
+    "native_lstm_max_error": 1.341104507446289e-07,
+    "native_operator_cases": 47,
+    "native_operator_max_error": 9.834766387939453e-07,
+    "public_tests": {
+      "guard": "Tests reject numpy, onnxruntime, onnx, piper, tensorflow, torch, ctypes and subprocess imports; actual default bundled neural inference is exercised.",
+      "methods": 5,
+      "python3.11": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-local-piper-backend-public311-t1hj0cpc.log",
+        "seconds": 4.7556517124176025
+      },
+      "python3.14": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-local-piper-backend-public314-dziwjxu6.log",
+        "seconds": 2.805229425430298
+      }
+    },
+    "python_versions": [
+      "3.11.2",
+      "3.14.7"
+    ],
+    "trained_arabic": {
+      "cases": 30,
+      "confidence_max_error": 1.8477439880371094e-06,
+      "original_text_exact": true
+    },
+    "trained_hebrew": {
+      "ipa_cases": 17,
+      "logit_max_error": 7.62939453125e-06,
+      "neural_text_cases": 17,
+      "original_text_and_ipa_exact": true
+    }
+  }
+}

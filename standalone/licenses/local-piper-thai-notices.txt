@@ -1,0 +1,27 @@
+Original Piper 1.8.0 Thai phonemization and original TLTK1.10 th2ipa path.
+
+Piper source commit: 639388b6317fc4731e91d53da42aea68fd4166ff
+https://github.com/OHF-Voice/piper1-gpl/tree/639388b6317fc4731e91d53da42aea68fd4166ff
+Piper code is licensed under GPL-3.0-or-later; the complete license is retained
+in piper-gpl3.txt. Original Thai class algorithms are retained unchanged, with
+only the default phoneme-map and reviewed TLTK dependency import locations bound
+to the standalone implementation.
+
+TLTK1.10 source and all consumed resources are included as the privately named
+hermes_tltk package with original BSD-3-Clause and legacy GPL notices, metadata,
+source provenance and RECORD. Copyright (c) 2018 Department of Linguistics,
+Chulalongkorn University. All rights reserved. See the distribution license
+notices for complete conditions and warranty disclaimer.
+
+All four rule/statistic resources used by th2ipa remain original bytes.
+Unrelated optional NLP/ML imports and initialization of three resources never
+read by the transitive th2ipa call closure are omitted through exact reviewed
+source patches. All consumed function ASTs are unchanged. No numpy, pandas,
+NLTK, sklearn, CRF, gensim, compiler or external program is used by this path.
+The private subset does not implement or impersonate those unrelated packages.
+
+unicode-rbnf2.4.0 is included unchanged under its MIT license with original
+Unicode CLDR XML data, distribution metadata and full license text. It provides
+the original Piper number-expansion behavior. Exact source/resource hashes,
+patches, independent original observations and limitations are recorded in
+local-piper-thai-provenance.json and the reviewed dependency manifests.

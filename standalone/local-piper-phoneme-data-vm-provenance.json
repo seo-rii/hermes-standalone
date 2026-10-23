@@ -1,0 +1,99 @@
+{
+  "coverage": {
+    "active_table_transitions": 420,
+    "compiled_dictionaries": 118,
+    "compiled_dictionary_records": 1269305,
+    "context_and_reduction_programs": 3030,
+    "dictionary_hashes": 2061,
+    "fresh_table0_is_empty_sentinel": true,
+    "isolated_phoneme_programs": 18595,
+    "maximum_allowed_difference": 0,
+    "newly_crossed_code_gaps_cleared": true,
+    "phoneme_tables": 140,
+    "remaining_entries_retained": true,
+    "replacement_string_tables": 117
+  },
+  "fixture_sha256": "ed9f4d1a1da3768a43e7011e431f2e73fa39be7c530984d97c26381ddba6bffe",
+  "format_version": 1,
+  "licenses": {
+    "local-piper-phoneme-data-vm-notices.txt": "973853dcb5b07e63133c4f06848be375b04fc9efa23d7ec96ee30103a9b4157f"
+  },
+  "limitations": [
+    "These data and VM primitives do not enable the incomplete full eSpeak phonemizer or Piper factory.",
+    "The VM preserves phoneme instruction semantics and metadata; it does not synthesize an eSpeak waveform.",
+    "Runtime reads the original bundled data. Fixtures are independent expected results for tests, never pronunciation caches."
+  ],
+  "native_reference": {
+    "bridge_sha256": "7ec4a80efda263303c257e77749c18f1d544b5ea3f5102c06b2c4fe2a6323fe6",
+    "piper_version": "1.8.0",
+    "runtime_or_test_native_loading": false,
+    "wheel_sha256": "25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3"
+  },
+  "resource_provenance": "piper-espeak-resources-provenance.json",
+  "runtime_modules_sha256": {
+    "local_piper_phoneme_data.py": "9bd4dff12e66400815166c614ff386a501aec18278be468ef5ed645aa333003f",
+    "local_piper_phoneme_vm.py": "e8189f504b92ad98244d55b4c4bf18152b1fb1e34a5471838899f22e8b2e1d79"
+  },
+  "source": {
+    "archive_sha256": "7d8ebd78201923a443245362a928999977d1721c3eeba596eafc6ea8db7e243c",
+    "commit": "724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+    "files_sha256": {
+      "src/libespeak-ng/dictionary.c": "1339d284ec273956d7a5beaa1cf7f3a0cfd0c81dcb168df7e3f7903ca6f9763b",
+      "src/libespeak-ng/phoneme.h": "9f9d91ed07885b227cce551cdbad9cf620c2945d44a8e90edf910af9646d7d75",
+      "src/libespeak-ng/synthdata.c": "001c5efde1b6ccd12f7dc78a2889270ab411a189145160acd03e4aa28eb34fe8",
+      "src/libespeak-ng/synthesize.h": "f061af0d5109abed46517b367ef4256e5ee38f4ff4adc7ef166f734e2bf853ce",
+      "src/libespeak-ng/translate.h": "8ff32baadc5a45e502e3151f8804a704916d9d9d27ac8a74a78e7e484185d271"
+    },
+    "project": "espeak-ng"
+  },
+  "validation": {
+    "pending": false,
+    "public_stdlib_tests": {
+      "python3.11": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phoneme-data-vm-public-311-5nkw8lo2.log",
+        "methods": 6
+      },
+      "python3.14": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phoneme-data-vm-public-314-syko_ufw.log",
+        "methods": 6
+      }
+    },
+    "source_phase_refactor": {
+      "full_clause_and_piper_facade_consumers_included": true,
+      "maximum_conservative_ast_complexity": 20,
+      "metrics_note": "Counts IfExp in addition to McCabe statement decisions; this is a conservative upper bound rather than an installed Ruff measurement.",
+      "purpose": "Bound original opcode, dictionary, stress, spelling and morphology phases while preserving public APIs and all independently observed native results.",
+      "staged_public_stdlib_tests": {
+        "python3.11": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-piper-phoneme-refactor-staged-311-z2fw100s.log",
+          "methods": 30,
+          "native_import_guards": true,
+          "seconds": 855.5708346366882
+        },
+        "python3.14": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-piper-phoneme-refactor-staged-314-71jb6fls.log",
+          "methods": 30,
+          "native_import_guards": true,
+          "seconds": 811.1760549545288
+        }
+      },
+      "tests_and_native_fixtures_unchanged": true
+    },
+    "stdlib_tests": {
+      "python3.11": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phoneme-data-vm-candidate-311-k21fh4yd.log",
+        "methods": 6
+      },
+      "python3.14": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phoneme-data-vm-candidate-314-xict09zt.log",
+        "methods": 6
+      }
+    }
+  }
+}

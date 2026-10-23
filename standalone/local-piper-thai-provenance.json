@@ -1,0 +1,257 @@
+{
+  "fixture": {
+    "bytes": 27082,
+    "canonical_bytes": 148537,
+    "canonical_sha256": "e453403e4239566893779b5d959c626f04c295dd19fdc290e345766b7d51bac2",
+    "path": "tests/fixtures/local_piper_thai.json.zlib",
+    "sha256": "db212e0daedf896ac2277bd481db9b2d0e73db1229dccb3eee7feaf583d60048"
+  },
+  "licenses": {
+    "local-piper-thai-notices.txt": {
+      "bytes": 1711,
+      "sha256": "65b71034d8ad2360cc7af2bfa11888db9a8d2ae00ff034685f65d3fbaaaa3881"
+    },
+    "piper-gpl3.txt": {
+      "bytes": 35148,
+      "sha256": "0ae0485a5bd37a63e63603596417e4eb0e653334fa6c7f932ca3a0e85d4af227"
+    }
+  },
+  "limitations": [
+    "This subset exposes only the original consumed Thai phonemizer; it does not claim TLTK tagging, parsing, classification, embeddings or other unconsumed APIs.",
+    "Statistical G2P initialization retains the original data and mutable-count behavior; long text is substantially slower than compiled engines.",
+    "Copied-artifact execution has separate receipts; full Hermes parity remains false."
+  ],
+  "runtime_modules": {
+    "local_piper_thai.py": {
+      "bytes": 12647,
+      "sha256": "a0395d9bf15cc44f0bcb1320e550619ad6d673cbdecaad85950f37c4be9d61ff"
+    }
+  },
+  "schema": 1,
+  "scope": "Original Piper1.8.0 Thai phonemization, actual TLTK1.10 th2ipa algorithms and original Unicode CLDR number expansion with stdlib-only runtime.",
+  "source_review": {
+    "consumed_original_resources": {
+      "PhSTrigram.sts": {
+        "bytes": 1400502,
+        "sha256": "b36b0af18d29d16169305c1c76a91cfeb9742e7bc37692ea2235bbf30e916df3"
+      },
+      "sylrule.lts": {
+        "bytes": 3855,
+        "sha256": "58e73cb4eda8c4126a5f9f5ea0aa2a38e8dcc1d6e6d6de324be7d6833d248d1f"
+      },
+      "sylseg.3g": {
+        "bytes": 15795689,
+        "sha256": "3450baabc27dbb078939eb0729083e60d51c7b13363d3641cc605faaf32b502e"
+      },
+      "thaisyl.dict": {
+        "bytes": 31777,
+        "sha256": "90928774b54f00ad7f25cfb13703d5f549f4fa65458002cd75387f3616a1e0fb"
+      }
+    },
+    "initialization_changes": "Only unrelated optional imports and three resource initialization calls outside the consumed th2ipa algorithm are omitted. The exact original source, patched source hashes, replacements, metadata and license texts are retained by the reviewed sdist extraction.",
+    "omitted_unread_resource_bytes": 3263655,
+    "omitted_unread_resources": [
+      "thdict",
+      "sylform_var.pklz",
+      "word.pklz"
+    ],
+    "original_function_asts_retained": [
+      "read_thaidict",
+      "read_thdict",
+      "reset_thaidict",
+      "check_thaidict",
+      "spell_candidates",
+      "known",
+      "edits1",
+      "edits2",
+      "match_Engtext",
+      "MaltParser",
+      "MaltParser_wordlist",
+      "remove_sp_join",
+      "dg_print",
+      "dg_save",
+      "print_dtree",
+      "scan_dtree",
+      "get_tree_depth",
+      "tree_max_depth",
+      "pos_tag",
+      "pos_tag_wordlist",
+      "pos_load",
+      "change_tag",
+      "chunk",
+      "ner_tag",
+      "ner",
+      "ner_load",
+      "wrd_len",
+      "word2features",
+      "sent2features",
+      "sent2labels",
+      "sent2tokens",
+      "pack_ner",
+      "segment",
+      "text_class_model_load",
+      "useg_model_load",
+      "untag",
+      "transform_to_dataset",
+      "features",
+      "distance",
+      "spoonerism",
+      "Pcompose",
+      "SylAna",
+      "WordAna",
+      "TNC_tag",
+      "ARF",
+      "TextAna",
+      "Duplicate_word",
+      "TextAna2json",
+      "TextClass",
+      "TranformData_ChkLevel",
+      "TranformData_ChkGenre",
+      "TranformData",
+      "txt2feat",
+      "g2p",
+      "th2ipa_all",
+      "sylparse",
+      "sylparse_all",
+      "ReplaceSnd",
+      "NotExceptionSyl",
+      "ToneAssign",
+      "DeadSyl",
+      "DeadSylx",
+      "TransformSyl",
+      "wordparse",
+      "SelectPhones",
+      "ProbPhone",
+      "th2read",
+      "PhoneToThai",
+      "th2ipa",
+      "th2roman",
+      "spell_variants",
+      "wordseg_colloc",
+      "word_segment_nbest",
+      "wordsegmm_bn",
+      "chartparse_mm_bn",
+      "word_segment",
+      "word_segment_mm",
+      "wordseg_mm",
+      "chartparse_mm",
+      "chartparse_ngram",
+      "BigramProb",
+      "compute_colloc",
+      "gen_unknown_w",
+      "gen_unknown_thaiw",
+      "eng_abbr",
+      "chart_parse",
+      "syl_segment",
+      "sylseg",
+      "mergekaran",
+      "mergekaran1",
+      "prob_trisyl",
+      "prob_wb",
+      "read_sylpattern",
+      "read_syldict",
+      "read_PhSTrigram",
+      "read_sylvar",
+      "read_wordtier",
+      "read_stat",
+      "preprocess"
+    ],
+    "original_nlp_sha256": "66aa123e77988b51cf76d2f94fab2aadcc20a060ce735c9098d830ec8b6353d0",
+    "private_namespace": "hermes_tltk; no global tltk, numpy, NLTK or ML SDK impersonation",
+    "reviewed_nlp_sha256": "d0b5970a82ee10be770d557462db0bcb09dc5bb40a6aeb6cca974ece3e16f09c",
+    "unicode_rbnf": "Unmodified wheel, Python source, all CLDR XML, distribution metadata and MIT/Unicode notices."
+  },
+  "upstream": {
+    "piper": {
+      "commit": "639388b6317fc4731e91d53da42aea68fd4166ff",
+      "license": "GPL-3.0-or-later",
+      "source": "src/piper/phonemize_thai.py",
+      "source_sha256": "41aa2c20ebda22545ced009d262773d3d710827d9f206dba644e7fccfae2a13d",
+      "url": "https://github.com/OHF-Voice/piper1-gpl",
+      "version": "1.8.0"
+    },
+    "reviewed_dependencies": [
+      {
+        "filename": "tltk-1.10.tar.gz",
+        "metadata_sha256": "0eec888227d23dcc8393e54e909785804cc6482f1a09c9b211c127a52b7b14de",
+        "metadata_url": "https://pypi.org/pypi/tltk/1.10/json",
+        "name": "tltk",
+        "sha256": "f9f9669b64c1e545366b9def4f7d38514f0686f5e1197a91346a2e4166a30b00",
+        "size": 20048983,
+        "url": "https://files.pythonhosted.org/packages/05/76/f24c01a02c2fb7a3e233b6a309ce1dbbc0a71aac66089297dbec37bba910/tltk-1.10.tar.gz",
+        "version": "1.10"
+      },
+      {
+        "filename": "unicode_rbnf-2.4.0-py3-none-any.whl",
+        "metadata_sha256": "515faaacf27b07bcd9ca6fc430ed8d690ccf6173b6793c3a915420c1f295e875",
+        "metadata_url": "https://pypi.org/pypi/unicode-rbnf/2.4.0/json",
+        "name": "unicode-rbnf",
+        "sha256": "0176b30ac9b7b84008d7dc0f23078055dc10d2671fdadfab5747943243e20e2d",
+        "size": 141691,
+        "url": "https://files.pythonhosted.org/packages/4b/21/82f5d435808cba330668a8b69efb180e3ef9739d4998e8cd0381e8c9cb23/unicode_rbnf-2.4.0-py3-none-any.whl",
+        "version": "2.4.0"
+      }
+    ]
+  },
+  "verified": {
+    "checks": {
+      "python311": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-thai-public311-_jl5qu2d.log",
+        "methods": 3,
+        "seconds": 211.06161403656006
+      },
+      "python314": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-thai-public314-eam0s1au.log",
+        "methods": 3,
+        "seconds": 190.76973867416382
+      }
+    },
+    "exception_profiles": "Original untouched th2ipa is also executed by each actual supported interpreter using independently recorded g2p returns. The Python3.14 unpack error includes got4, while3.11 does not; neither message is rewritten in the implementation.",
+    "independent_original_engine_cases": 679,
+    "independent_original_piper_consumers": 310,
+    "mutable_statistics": "Original g2p executes once per th2ipa invocation and its actual intermediate return is recorded; no extra observer call changes the original mutable counts.",
+    "native_free_guards": "Actual isolated children forbid NumPy/ORT/Torch/Piper/TLTK SDKs, unrelated NLP/ML imports, ctypes, sockets and external processes. Private HOME and empty PATH are used.",
+    "original_g2p_return_transcripts_and_th2ipa_results": true,
+    "original_piper_voice_composition": {
+      "native_cases": 40,
+      "native_dependency_binding": "Unmodified original complete PiperVoice and ThaiPhonemizer source; isolated authoring imports resolve to genuine original TLTK1.10 th2ipa/nlp and unicode-rbnf2.4.0. Runtime tests use the actual reviewed owned package, without transcript stubs.",
+      "native_fixture_sha256": "46b074644710c8c8c77deede8af56ae431b6d40573992c2987fb4b10d800ece2",
+      "phase_cc_conservative_ast_upper_bounds": {
+        "_append_espeak_text_part": 7,
+        "_append_raw_phonemes": 6,
+        "_phonemize_espeak": 5,
+        "any_voice_function_maximum": 14,
+        "phonemize": 5
+      },
+      "validations": {
+        "local-piper-voice-thai-original2": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-piper-voice-thai-original2-jjjvvl69.log",
+          "seconds": 16.928271532058716,
+          "status": "validation-logs/hermes-local-piper-voice-thai-original2-jjjvvl69.log.status.json"
+        },
+        "local-piper-voice-thai-public311": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-piper-voice-thai-public311-bk6_dbm9.log",
+          "seconds": 97.27725219726562,
+          "status": "validation-logs/hermes-local-piper-voice-thai-public311-bk6_dbm9.log.status.json"
+        },
+        "local-piper-voice-thai-public314": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-piper-voice-thai-public314-tzoherl7.log",
+          "seconds": 63.39323306083679,
+          "status": "validation-logs/hermes-local-piper-voice-thai-public314-tzoherl7.log.status.json"
+        }
+      }
+    },
+    "piper_fields": [
+      "normalized text",
+      "per-syllable tones",
+      "punctuation",
+      "sentence phonemes",
+      "CLDR numbers enabled and disabled"
+    ]
+  }
+}

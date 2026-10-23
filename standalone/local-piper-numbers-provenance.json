@@ -1,0 +1,166 @@
+{
+  "constants": {
+    "constants_sha256": "be9fb2be7cf54303a3e2cc453e4eca46e6e657fd4d23714180de7d0bd6bd3ded",
+    "count": 174,
+    "source_sha256": {
+      "numbers.c": "7aea9adb38afd5e54422abb4de54ce64c8579f407f8c813775546a807c3c9509",
+      "phoneme.h": "9f9d91ed07885b227cce551cdbad9cf620c2945d44a8e90edf910af9646d7d75",
+      "translate.h": "8ff32baadc5a45e502e3151f8804a704916d9d9d27ac8a74a78e7e484185d271"
+    }
+  },
+  "fixture_sha256": "9b7f3fae90a8190cbde171e81d981a6694a9281c170f97fdbcd1232efb330db1",
+  "interfaces": {
+    "callbacks": "tr.lookup(word)->(flags,phones), lookup_dict_list(buffer,cursor,flags,end_flags,word_table)->LookupResult, translate_rules(...,initial=prior_phones)->RuleResult, translate_word(word)->(flags,phones), set_word_stress(...)->phones, lookup_english(word)->(flags,phones) with original translator/table restore, is_alpha/is_walpha/is_wdigit/is_wspace and phoneme_tab. All callbacks are owned pure Python implementations in production.",
+    "context": "NumberTranslator(option_sayas=0,translator=None) retains source static number_control/speak_missing_thousands/ph_ordinal2/ph_ordinal2x/digit_lookup and dictionary_skipwords. Optional translator is the source primary translator used by M_Variant. The owning word controller synchronizes global skipwords state.",
+    "number": "translate_number(tr,UTF8_bytearray,cursor,flags_list,word_table,control=0,max_output=200)->(success:int,raw_phonemes:bytes)",
+    "roman": "translate_roman(tr,UTF8_bytearray,cursor,word_table,max_output=200)->(success,raw_phonemes); in-place word/dictionary/ordinal flags remain visible."
+  },
+  "licenses": {
+    "local-piper-numbers-notices.txt": "779e5b933c4981519611dba1be7bbb1f88cfc61bab08e7236ba2482d3e5a836b",
+    "piper-gpl3.txt": "0ae0485a5bd37a63e63603596417e4eb0e653334fa6c7f932ca3a0e85d4af227"
+  },
+  "limits": [
+    "The dictionary/rule/clause controller is independently owned and must provide the documented state/callbacks; this slice alone does not complete or enable the eSpeak text pipeline.",
+    "Raw UTF8 buffers and word tables obey the original tokenizer padding/cursor contracts. The port does not emulate native memory corruption from invalid pointers or undersized caller allocations.",
+    "Unicode UTF8 processing and original UCD11 classification are reused from local_piper_phoneme_unicode. The source CMake compat/wctype.h macros select ucd_isalpha/ucd_isdigit/ucd_isspace; the original-source observer forwards those exact targets to the shipped SDK. Neither host libc nor Python host-version Unicode classification is substituted.",
+    "No native library, package installation, subprocess, hosted TTS or silent language/phonemizer fallback is used. The complete original-source semantics are retained in qualified modules, without claiming the entire Piper/ONNX Runtime API is complete."
+  ],
+  "runtime_modules_sha256": {
+    "local_piper_numbers.py": "9b962d37897b41dd8c846ff45547361bc4a59089aa4bf190154ffa47481a0a9f",
+    "local_piper_numbers_tables.py": "be9fb2be7cf54303a3e2cc453e4eca46e6e657fd4d23714180de7d0bd6bd3ded"
+  },
+  "schema": 1,
+  "scope": "Qualified standard-library complete numbers.c numeric, ordinal, decimal, Roman, accented-letter, superscript/subscript and spelling-stress algorithms. Dictionary/word/controller callbacks preserve source state; this slice does not activate the Piper provider.",
+  "source_contract_sha256": {
+    "common.c": "09e86f7da35dfdb9193e8d97d4599fbd58a6fa8066113595a2c5d5ee1e2d645b",
+    "dictionary.h": "05f2b11ae9bf880365fb1d1fa91e1604754787f3fe35fd94bc7741837698ca2d",
+    "numbers.c": "7aea9adb38afd5e54422abb4de54ce64c8579f407f8c813775546a807c3c9509",
+    "numbers.h": "dab5af1259b1466adca72a95403f9df40a90033c327d8b4a3e3c18071b335a8d",
+    "phoneme.h": "9f9d91ed07885b227cce551cdbad9cf620c2945d44a8e90edf910af9646d7d75",
+    "src/CMakeLists.txt": "0fe2ec0b7c600c15b082213862f5302b64ddf1d199a9ff6198ed34016f6de03b",
+    "src/include/compat/wctype.h": "f8ab95de710053139fab05fc57fdd6c41b020126051ca540dbb64e81cfaecf06",
+    "translate.h": "8ff32baadc5a45e502e3151f8804a704916d9d9d27ac8a74a78e7e484185d271"
+  },
+  "upstream": {
+    "espeak_ng": {
+      "archive_sha256": "7d8ebd78201923a443245362a928999977d1721c3eeba596eafc6ea8db7e243c",
+      "archive_url": "https://codeload.github.com/espeak-ng/espeak-ng/tar.gz/724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+      "commit": "724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+      "license": "GPL-3.0-or-later",
+      "url": "https://github.com/espeak-ng/espeak-ng"
+    },
+    "piper": {
+      "bridge_sha256": "7ec4a80efda263303c257e77749c18f1d544b5ea3f5102c06b2c4fe2a6323fe6",
+      "version": "1.8.0",
+      "wheel_sha256": "25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3"
+    }
+  },
+  "verified": {
+    "candidate_exit_codes": [
+      0,
+      0
+    ],
+    "candidate_logs": [
+      "validation-logs/hermes-local-piper-number-initial-candidate311-fqwik1z6.log",
+      "validation-logs/hermes-local-piper-number-initial-candidate314-k9urjq7x.log"
+    ],
+    "candidate_methods": 4,
+    "full_callback_order_flags_word_table_previous_dictionary_state_and_text_mutation_exact": true,
+    "full_languages": 24,
+    "full_number_roman_cases": 3624,
+    "initial_buffer_regressions": [
+      "U+00A7 section sign and U+1F600 grinning face Lookup(flags0,nonemptyphones) -> TranslateRules(initial=phones), both LookupLetter and LookupLetter2"
+    ],
+    "letter_accent_cases": 11180,
+    "letter_languages": 20,
+    "numeric_helper_cases": 11656,
+    "numeric_helper_languages": 31,
+    "oracle": "Expected values come from shipped original native SDK. A cache-only exact original numbers.c observer logs native dictionary/rule/stress callbacks; every observed full/letter result is independently cross-checked against the shipped bridge. Candidate code is not imported to create expected results. Public test callback transcripts are explicit test dependencies, never a runtime translation cache.",
+    "original_source_harness": {
+      "cmake_include_sha256": "0fe2ec0b7c600c15b082213862f5302b64ddf1d199a9ff6198ed34016f6de03b",
+      "command": [
+        "/usr/bin/cc",
+        "-O2",
+        "-shared",
+        "-fPIC",
+        "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/include",
+        "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/include/compat",
+        "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/ucd-tools/src/include",
+        "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/libespeak-ng",
+        "standalone/.cache/local_piper_numbers_work/numbers_trace.c",
+        "-o",
+        "standalone/.cache/local_piper_numbers_work/numbers_trace.so"
+      ],
+      "compat_wctype_sha256": "f8ab95de710053139fab05fc57fdd6c41b020126051ca540dbb64e81cfaecf06",
+      "fragment_sha256": "88b898e258578c8c3858f056a4be9686bdd732b413f59c67bfd3c74a4dc82058",
+      "shim_sha256": "ee8073b34dc91cac3f1faf07d261d9fcffacfbc7c1c1381c6666e5db34cf9ffa",
+      "source_sha256": "7aea9adb38afd5e54422abb4de54ce64c8579f407f8c813775546a807c3c9509",
+      "wide_profile": "Original compat wctype macro targets ucd_isalpha/ucd_isdigit/ucd_isspace, forwarded to shipped SDK native functions; host libc is not substituted."
+    },
+    "plural_variant_cases": 1206,
+    "public_tests": {
+      "jobs": [
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-piper-number-initial-public311-fn2pqdj0.log",
+          "seconds": 2.019883871078491,
+          "status": "validation-logs/hermes-local-piper-number-initial-public311-fn2pqdj0.log.status.json"
+        },
+        {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-piper-number-initial-public314-wq6zud7s.log",
+          "seconds": 2.201681137084961,
+          "status": "validation-logs/hermes-local-piper-number-initial-public314-wq6zud7s.log.status.json"
+        }
+      ],
+      "methods": 4,
+      "runtimes": [
+        "CPython3.11.2",
+        "CPython3.14.7"
+      ],
+      "unicode_callbacks": "Actual public UCD11 callbacks. Rules pre-call phoneme buffer is compared verbatim before native callback output is supplied."
+    },
+    "raw_phonemes_exact": true,
+    "spelling_stress_cases": 600,
+    "stdlib_tests": {
+      "jobs": {
+        "candidate": [
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-number-initial-candidate311-fqwik1z6.log",
+            "seconds": 1.75384521484375,
+            "status": "validation-logs/hermes-local-piper-number-initial-candidate311-fqwik1z6.log.status.json"
+          },
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-number-initial-candidate314-k9urjq7x.log",
+            "seconds": 1.9432735443115234,
+            "status": "validation-logs/hermes-local-piper-number-initial-candidate314-k9urjq7x.log.status.json"
+          }
+        ],
+        "public": [
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-number-initial-public311-fn2pqdj0.log",
+            "seconds": 2.019883871078491,
+            "status": "validation-logs/hermes-local-piper-number-initial-public311-fn2pqdj0.log.status.json"
+          },
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-number-initial-public314-wq6zud7s.log",
+            "seconds": 2.201681137084961,
+            "status": "validation-logs/hermes-local-piper-number-initial-public314-wq6zud7s.log.status.json"
+          }
+        ]
+      },
+      "methods": 4,
+      "runtimes": [
+        "CPython3.11.2",
+        "CPython3.14.7"
+      ]
+    },
+    "superscript_values": 12291,
+    "total_native_cases": 40557,
+    "translate_rules_initial_buffer_observed_and_preserved": true
+  }
+}

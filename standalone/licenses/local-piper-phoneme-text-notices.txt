@@ -1,0 +1,23 @@
+eSpeakNG TranslateClause / TranslateWord2 source port
+
+Source: https://github.com/espeak-ng/espeak-ng
+Immutable commit:724808c5a83f9ef95fdd0db886ba7ba537ff224a
+Archive SHA256:7d8ebd78201923a443245362a928999977d1721c3eeba596eafc6ea8db7e243c
+Adapted: src/libespeak-ng/translate.c, translate.h, phoneme.h, synthesize.h,
+numbers.h, and actual original UCD11/compat-wctype consumers.
+Copyright (C)2005-2014 Jonathan Duddington <jonsd@users.sourceforge.net>
+Copyright (C)2015-2018 Reece H.Dunn
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version3 of the License, or (at your option)
+any later version. This program is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See piper-gpl3.txt
+in this directory for the complete GNU GPLv3 license.
+
+The independent reference is the unmodified Piper1.8.0 bridge and original
+model/data wheel, SHA25625b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3.
+Original source, data, and native-generated test observations are retained;
+native extensions and original observation shims are authoring inputs only,
+not included in the runtime or standalone artifact.

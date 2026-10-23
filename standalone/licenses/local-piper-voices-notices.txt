@@ -1,0 +1,32 @@
+Qualified eSpeak-NG voice/language configuration for the original Piper path.
+Original eSpeak source commit: 724808c5a83f9ef95fdd0db886ba7ba537ff224a
+https://github.com/espeak-ng/espeak-ng/tree/724808c5a83f9ef95fdd0db886ba7ba537ff224a
+
+voices.c and tr_languages.c:
+Copyright (C) 2005 to 2015 Jonathan Duddington
+Copyright (C) 2015-2017, 2020 Reece H. Dunn
+Copyright (C) 2021 Juho Hiltunen
+langopts.c:
+Copyright (C) 2005 to 2015 Jonathan Duddington
+Copyright (C) 2015-2017 Reece H. Dunn
+Copyright (C) 2022 Juho Hiltunen
+setlengths.c:
+Copyright (C) 2005 to 2011 Jonathan Duddington
+Copyright (C) 2015-2016 Reece H. Dunn
+
+These source-derived Python algorithms and static configuration tables are
+provided under GNU GPL version 3 or (at your option) any later version.
+The full license is retained in piper-gpl3.txt. Original eSpeak package data
+(lang/voices, compiled pronunciation dictionaries, phoneme data and intonation
+records) are preserved byte for byte from the pinned Piper1.8.0 distribution;
+individual input paths and SHA-256 values are retained in
+piper-espeak-resources-provenance.json. Original source attribution and source
+archive hashes are recorded in local-piper-voices-provenance.json.
+
+No native shared object, executable, generated phrase lookup or C compiler is
+used at runtime or in public tests. The shipped configuration constants fold
+finite source-defined language branches; native authoring observations are
+independent tests, not the production translation implementation.
+
+This software is provided without warranty, including merchantability or
+fitness for a particular purpose, as described in the retained GPL.

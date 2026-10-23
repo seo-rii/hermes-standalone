@@ -1,0 +1,258 @@
+{
+  "fixture_sha256": "e339ed24bbf514f8da6be342fc2a4331ada4c30c7f335981c820e0663a9767e5",
+  "interfaces": {
+    "owned_arrays": "NumPy ndarray wrappers are replaced by owned array.array sequences/Tensor records; actual Hermes consumes the same PCM/WAV/chunk content without native imports.",
+    "phonemizers": "Actual eSpeak original data, models and phonemizer are qualified and embedded. Thai composes the independently qualified original TLTK th2ipa engine, its four consumed resources and unicode-rbnf number rules. Auxiliary Arabic/Hebrew ONNX resources remain original SHA-pinned packaged data with original optional override APIs. Main TTS voice models are not fetched automatically.",
+    "settings": "PiperConfig/SynthesisConfig/PhonemeType and DEFAULT_PHONEME_ID_MAP preserve original defaults and source semantics; speaker IDs, duration/noise scales and optional alignment outputs retain source argument/state contracts.",
+    "synthesis": "synthesize(text,syn_config=None,include_alignments=False) yields AudioChunk with standard-library float32/int16 arrays and original phonemes/IDs/alignment data. synthesize_wav serializes original little-endian PCM and WAV settings.",
+    "voice": "PiperVoice.load(model_path,config_path=None,use_cuda=False,espeak_data_dir=ESPEAK_DATA_DIR,download_dir=None,include_alignments=False). Original voice/config model data remain user supplied; all inference is qualified pure standard-library CPU code."
+  },
+  "licenses": {
+    "local-piper-voice-notices.txt": "61bd04b098b9727ebcb64e08ea68a145fc9fc50969986f208eef7ca23ee054a6",
+    "piper-gpl3.txt": "0ae0485a5bd37a63e63603596417e4eb0e653334fa6c7f932ca3a0e85d4af227"
+  },
+  "limitations": [
+    "Runtime execution is CPU only; explicit use_cuda=True is rejected rather than silently claiming a GPU provider. Native GPU libraries and external execution are not used.",
+    "Original optional PINYIN/g2pW and JAPANESE/OpenJTalk backends are not yet ported; selecting them raises an explicit unavailable error. The Chinese-specific ID mapper is also explicitly refused rather than using the eSpeak mapping.",
+    "The original fixed voice data has four advertised eSpeak voice entries missing their required dictionary resource; actual dictionary consumption keeps an explicit failure.",
+    "Pure-Python VITS inference is much slower than native ONNX Runtime; trained short Hello reference runs take minutes on the qualified CPU. Main voice .onnx and .json data remain original user inputs, with original licensing, and are not embedded/fetched by this API.",
+    "No native library, ctypes, subprocess, dependency installation, remote TTS, silent algorithm fallback, fixed-phrase cache or quantized replacement is used."
+  ],
+  "runtime_modules_sha256": {
+    "local_piper_config.py": "b5075711b0212bd04cd7f6af8b602081420a39d51cb5246563f6e2270123168e",
+    "local_piper_const.py": "49400cb508d092a28b4c8347e52a659e80c828b9ef723789f6982cfd9cd6bd49",
+    "local_piper_phoneme_ids.py": "a1ccc8b9d061aa0bddb4f5b4e6917b5d9f203bf46b94f6f5a2b597723c111622",
+    "local_piper_voice.py": "96b114851bbbefea9aba3452a6cf3d05cdf379e96ac070fbd8d90a4df458175c"
+  },
+  "schema": 1,
+  "scope": "Actual original CPU PiperVoice API: original voice/config loading, typed phoneme configuration, raw phoneme blocks, real eSpeak/TEXT/Hebrew/Thai phonemization and Arabic neural diacritization, pure reviewed VITS ONNX inference, source noise/duration/speaker inputs, normalization/volume/PCM/WAV and optional phoneme alignment.",
+  "source_contract_sha256": {
+    "src/piper/config.py": "ea60d6d94ffa2724573c9e945b6b942d260b458180f52717b0b284224d4437ae",
+    "src/piper/const.py": "9bf578c2823ccd3e51c266fdcbf061d52e9c87a1c3a31ef05bde58dbc48a6aec",
+    "src/piper/patch_voice_with_alignment.py": "79bb6dadb0fe6c1fa6b02b9385ed94fcb8513d7a9c85542b81a069933771f3fb",
+    "src/piper/phoneme_ids.py": "f2fe709eabe45ad5f4663fccc0b075cedceee4274a897818193442a6adbb832d",
+    "src/piper/phonemize_espeak.py": "d5ff275d847502345821898efa15e3e4e956fe884cea7c78ae87102d539e6594",
+    "src/piper/phonemize_hebrew.py": "ebc60c33b41b3fedd24b130de4c7a50ae688fafb33b0f69fed723ef3466d0045",
+    "src/piper/phonemize_thai.py": "41aa2c20ebda22545ced009d262773d3d710827d9f206dba644e7fccfae2a13d",
+    "src/piper/tashkeel/__init__.py": "1517463424d069a8bd5f4efbbe5361e2d14ebd6826d54da521482740a3b9ab4b",
+    "src/piper/voice.py": "3d6ce0415dda785396af3000f89d59cb6307eeee31711c9d671a7d2c0e5f8b19"
+  },
+  "upstream": {
+    "authoring_inputs": [
+      {
+        "bytes": 24276117,
+        "name": "piper-tts",
+        "sha256": "830588aded347df579c91a32703e0fc2a3685d84f1e3533b14f2de69135d4904",
+        "url": "https://files.pythonhosted.org/packages/02/cc/95b18b58d9c235d8e0bcece7321b7a7347873c14f9fea2c734b31ef04ff2/piper_tts-1.8.0.tar.gz",
+        "version": "1.8.0"
+      },
+      {
+        "bytes": 34131442,
+        "name": "piper-tts",
+        "sha256": "25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3",
+        "url": "https://files.pythonhosted.org/packages/84/81/0112a7d510911f33018dc24023d1655bb772f84a4e95fe7f0180f66bbd17/piper_tts-1.8.0-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl",
+        "version": "1.8.0"
+      },
+      {
+        "bytes": 23113193,
+        "name": "onnxruntime",
+        "sha256": "85f8e8406c52658735fe5c7fbfd3ebaa1ed340768324f6252e4274e374580a23",
+        "url": "https://files.pythonhosted.org/packages/3b/91/a66cd77f28379ede419672edda3184f1eb286db215dce1e7b976fae2d63b/onnxruntime-1.29.0-cp311-cp311-manylinux_2_28_x86_64.whl",
+        "version": "1.29.0"
+      }
+    ],
+    "piper": {
+      "commit": "639388b6317fc4731e91d53da42aea68fd4166ff",
+      "license": "GPL-3.0-or-later",
+      "url": "https://github.com/OHF-Voice/piper1-gpl",
+      "version": "1.8.0"
+    }
+  },
+  "verified": {
+    "actual_hermes_tts_consumer": {
+      "actual_types": [
+        "standalone.local_piper_voice.PiperVoice",
+        "standalone.local_piper_model.PiperModel"
+      ],
+      "behaviors": [
+        "registry.dispatch with actual original text_to_speech entry and its availability check",
+        "pm.extras available/extra_supported",
+        "loaded/cached warm paths and original three-entry LRU",
+        "two real lease holders, idempotence, retained cache and final synchronous release",
+        "profile override, populated legacy cache, default voice and explicit voices_dir",
+        "explicit unsupported CUDA rejection without a cache slot",
+        "no installed/fake Piper, numpy, ORT, torch or soundfile namespace; no native-library loading or runtime child process"
+      ],
+      "files": [
+        {
+          "bytes": 16598,
+          "path": "tests/test_piper_tts_consumer.py",
+          "sha256": "222cf8d29847454c65d012bc1230d2d0192746e0aa90b68c4fb1dfddcba5d04b"
+        }
+      ],
+      "original_native_inference_arguments_exact": true,
+      "original_native_wav_cases": 8,
+      "owned_downloader_child_boundary": {
+        "actual_owned_module_command": true,
+        "failure_cases": [
+          "TimeoutExpired translated to original RuntimeError",
+          "nonzero helper exit preserves original bounded stderr",
+          "zero helper exit without model remains explicit error"
+        ],
+        "launch_profile_credentials_removed": true,
+        "partial_timeout_file_retained": true,
+        "process_boundary_seam_cases": 4,
+        "routed_profile_home_bound": true,
+        "scope": "The process seam observes generated commands/env/deadline and injects deterministic process results. Downloader wire/filesystem behavior is independently exercised by actual HTTP peers in test_local_piper_downloader.py. Copied artifact acceptance exercises the actual owned module child.",
+        "stderr_limit": 400,
+        "timeout_seconds": 300
+      },
+      "shared_payload": "write_piper_consumer_payload(scratch)",
+      "shared_worker": "PIPER_CONSUMER_WORKER",
+      "strict_speaker_coercion_cases": 3,
+      "validation": {
+        "local-piper-consumer-child311": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-piper-consumer-child311-du4765k5.log",
+          "seconds": 34.43617820739746,
+          "status": "validation-logs/hermes-local-piper-consumer-child311-du4765k5.log.status.json"
+        },
+        "local-piper-consumer-child314": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-piper-consumer-child314-x0upcqfh.log",
+          "seconds": 34.44290852546692,
+          "status": "validation-logs/hermes-local-piper-consumer-child314-x0upcqfh.log.status.json"
+        },
+        "local-piper-original-tts-trained314": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-piper-original-tts-trained314-_caz4i58.log",
+          "seconds": 169.08679604530334,
+          "status": "validation-logs/hermes-local-piper-original-tts-trained314-_caz4i58.log.status.json"
+        }
+      },
+      "whole_trained_registry_consumer": {
+        "actual_original_registry": true,
+        "blocked_events": [],
+        "max_pcm_error_lsb": 1,
+        "native_fixture_sha256": "05a8df121c9b765f7ea164d6f6ee52a0abc5bff804893857eb162bd0bd296b85",
+        "sample_rate": 22050,
+        "samples": 14592,
+        "snapshot_sha256": "992675c7a77fa8835e26b2879d49ff3ab972cd7b6c673f1a4b4aa9b799bc2652",
+        "text": "Hello.",
+        "trained_model_sha256": "5efe09e69902187827af646e1a6e9d269dee769f9877d17b16b1b46eeaaf019f",
+        "warm_cache_release": true,
+        "wav_sha256": "9a4da764d313a4b27b2a3b90928dbf3ab189d02d263c0d4b1a5db41091c74e48",
+        "worker_sha256": "b0f907ede691cc240b1654a04a30af9bff0b7b53481c7c01e6ff182f2b3a2e9f"
+      }
+    },
+    "contract_max_float_error": 5.960464477539063e-08,
+    "contract_pcm_and_wav_exact": true,
+    "inference_inputs": "Tests observe original IDs/int64 lengths/float32 scales/speaker tensors and compare every argument to the native original, while still running the actual pure graph. Original chunk metadata/IDs/alignments/PCM and WAV bytes are compared exactly.",
+    "original_default_map_and_multi_id_cases": 12,
+    "original_real_phonemizer_composition_cases": 54,
+    "original_text_graph_voice_cases": 44,
+    "original_thai_composition_cases": 40,
+    "phonemizer_languages": [
+      "en-us",
+      "en",
+      "de",
+      "fr",
+      "sq",
+      "ko",
+      "cmn",
+      "hu",
+      "nl",
+      "ga",
+      "tr",
+      "ml",
+      "ar",
+      "he",
+      "th"
+    ],
+    "thai_facade": {
+      "native_cases": 40,
+      "native_dependency_binding": "Unmodified original complete PiperVoice and ThaiPhonemizer source; isolated authoring imports resolve to genuine original TLTK1.10 th2ipa/nlp and unicode-rbnf2.4.0. Runtime tests use the actual reviewed owned package, without transcript stubs.",
+      "native_fixture_sha256": "46b074644710c8c8c77deede8af56ae431b6d40573992c2987fb4b10d800ece2",
+      "phase_cc_conservative_ast_upper_bounds": {
+        "_append_espeak_text_part": 7,
+        "_append_raw_phonemes": 6,
+        "_phonemize_espeak": 5,
+        "any_voice_function_maximum": 14,
+        "phonemize": 5
+      },
+      "validations": {
+        "local-piper-voice-thai-original2": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-piper-voice-thai-original2-jjjvvl69.log",
+          "seconds": 16.928271532058716,
+          "status": "validation-logs/hermes-local-piper-voice-thai-original2-jjjvvl69.log.status.json"
+        },
+        "local-piper-voice-thai-public311": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-piper-voice-thai-public311-bk6_dbm9.log",
+          "seconds": 97.27725219726562,
+          "status": "validation-logs/hermes-local-piper-voice-thai-public311-bk6_dbm9.log.status.json"
+        },
+        "local-piper-voice-thai-public314": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-local-piper-voice-thai-public314-tzoherl7.log",
+          "seconds": 63.39323306083679,
+          "status": "validation-logs/hermes-local-piper-voice-thai-public314-tzoherl7.log.status.json"
+        }
+      }
+    },
+    "thai_per_voice_backend_cache_exact": true,
+    "trained_graph": "Separate local-piper-model-provenance.json records complete trained lessac graph intermediate/native-vector comparisons and VCTK 109-speaker data. The following actual original whole-voice checks use the real public eSpeak facade, full trained lessac graph and standard-library PCM conversion without phonemizer or inference stubs.",
+    "whole_original_trained_voice": {
+      "cases": "Actual Hello text, original default stochastic noise and zero-noise profiles, original fixed random seed. No phrase/output cache, text phonemizer stub or native runtime in the candidate.",
+      "exact_fields": [
+        "phonemes",
+        "phoneme IDs",
+        "output shape",
+        "alignment samples",
+        "alignment metadata",
+        "WAV frame count and sample rate"
+      ],
+      "float_tolerance": 0.0001,
+      "independent_native_fixture_sha256": "05a8df121c9b765f7ea164d6f6ee52a0abc5bff804893857eb162bd0bd296b85",
+      "model": {
+        "bytes": 63201294,
+        "name": "en_US-lessac-medium.onnx",
+        "sha256": "5efe09e69902187827af646e1a6e9d269dee769f9877d17b16b1b46eeaaf019f"
+      },
+      "pcm_s16_max_error_lsb": 1,
+      "python311": [
+        {
+          "max_float_error": 3.218650817871094e-05,
+          "max_pcm_error": 1,
+          "name": "word-zero",
+          "samples": 14592,
+          "seconds": 194.4615599180106
+        },
+        {
+          "max_float_error": 3.0338764190673828e-05,
+          "max_pcm_error": 1,
+          "name": "word-default",
+          "samples": 15360,
+          "seconds": 187.394111201982
+        }
+      ],
+      "python314": [
+        {
+          "max_float_error": 3.218650817871094e-05,
+          "max_pcm_error": 1,
+          "name": "word-zero",
+          "samples": 14592,
+          "seconds": 130.54373440495692
+        },
+        {
+          "max_float_error": 3.0338764190673828e-05,
+          "max_pcm_error": 1,
+          "name": "word-default",
+          "samples": 15360,
+          "seconds": 109.49821833398892
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,48 @@
+Piper Arabic/Hebrew auxiliary backend source and model data
+
+These original Piper1.8.0 package resources and adapted backend controllers
+are distributed with OHF-Voice/piper1-gpl, commit
+639388b6317fc4731e91d53da42aea68fd4166ff, GPL-3.0-or-later.
+The complete GNU GPLv3 license is in piper-gpl3.txt.
+Source archive URL:
+https://codeload.github.com/OHF-Voice/piper1-gpl/tar.gz/639388b6317fc4731e91d53da42aea68fd4166ff
+Package source archive SHA256:
+830588aded347df579c91a32703e0fc2a3685d84f1e3533b14f2de69135d4904
+
+Nakdimon source/model: https://github.com/elazarg/nakdimon
+Original Piper source records the upstream project in piper/hebrew/SOURCE.
+Copyright 2022 Elazar Gershuni. The MIT text is preserved in
+piper-nakdimon-mit.txt. The original model bytes and all character mappings
+are retained without quantization or transcription substitution.
+
+Arabic diacritization is Piper's Python port of libtashkeel:
+https://github.com/mush42/libtashkeel
+Its model is exactly the resource distributed by pinned Piper1.8.0;
+the original numeric weights and three JSON maps are unchanged.
+The libtashkeel project MIT license is preserved below.
+
+MIT License
+
+Copyright (c) 2023 Musharraf
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+ONNX Runtime1.29.0 native reference kernels are used only in authoring.
+Their MIT license is preserved in local-piper-model-notices.txt.
+The runtime recurrence and graph interpreter use only the Python standard library.

@@ -1,0 +1,219 @@
+{
+  "constants": {
+    "count": 252,
+    "headers": {
+      "numbers.h": "dab5af1259b1466adca72a95403f9df40a90033c327d8b4a3e3c18071b335a8d",
+      "phoneme.h": "9f9d91ed07885b227cce551cdbad9cf620c2945d44a8e90edf910af9646d7d75",
+      "synthesize.h": "f061af0d5109abed46517b367ef4256e5ee38f4ff4adc7ef166f734e2bf853ce",
+      "translate.h": "8ff32baadc5a45e502e3151f8804a704916d9d9d27ac8a74a78e7e484185d271"
+    },
+    "original_macro_program_sha256": "4b9eec6e09155918097825b540119e613622defe0e90e5ade1298ebaf5cd00e0",
+    "sha256": "bad9a144c0a17ad61c91e9c3c43f067c37818ce5810861279bfab7b8bb624c27"
+  },
+  "fixture_sha256": "55fae4dd0e40c7883dc3a90879c7ef48c8287938bf3d56648eac72fe78425923",
+  "interfaces": {
+    "controller": "ClauseController.from_session(session,reader=None); controller.reader.bind_text(text) preserves original retained reader/global state. translate_clause(tr)->ClauseResult(tone,terminator,voice_change,words,buffer,phoneme_list).",
+    "retention": "One session owns explicit speech state, 1000 FirstItem slots and a retained output buffer of 1001 VM Items. Final logical phonemes share those output slots; native-tail and interpreter mutations survive subsequent clauses. Every original source field name and storage width is preserved.",
+    "shared_globals": "Say-as changes flow through the Translator option_sayas setter into both session state and NumberTranslator. Temporary replacement buffers are marked separately from the actual caller-stack sbuf so source FLAG_ATEND semantics are preserved.",
+    "unicode": "The exact original UCD11 compat/wctype.h classifications and original UTF8 codec are reused. Source character replacements are ordered UTF8 byte pairs from the actual dictionary binary resource.",
+    "words": "WordBuilder(controller,raw_translate_word).translate(tr,buffer,cursor,words,index,pause) preserves original UTF8 byte cursors, mutable WordTab records, signed32 flags, primary/secondary language selection, embedding and first-stage phoneme state."
+  },
+  "licenses": {
+    "local-piper-phoneme-text-notices.txt": "48a94fb84f5c4202b5f97d67d2c16a0e731e4ce98bceefe78a590c4fa1f120b0",
+    "piper-gpl3.txt": "0ae0485a5bd37a63e63603596417e4eb0e653334fa6c7f932ca3a0e85d4af227"
+  },
+  "limits": [
+    "The actual Piper bridge runs option_ssml0; this slice does not enable SSML synthesis/voice stacks. The Reader explicitly refuses unsupported nonzero SSML instead of inventing behavior.",
+    "This slice composes the original no-Klatt Piper1.8.0 binary profile; VoiceProfile.klatt is passed explicitly from the qualified loader. It does not claim behavior of a differently compiled eSpeak library.",
+    "Pure glyph/token/word/list orchestration is independent of optional Piper PINYIN/JAPANESE/THAI backends and VITS inference. Provider activation must follow complete original PiperVoice consumer verification.",
+    "The original fixed data catalog has four advertised voices without their required dictionary resource; actual dictionary consumption preserves an explicit failure, never invented pronunciation.",
+    "Native libraries, ctypes, subprocesses, installations, runtime package/model fetching and fixed-phrase caches are absent from this implementation."
+  ],
+  "original_source_observer": {
+    "command": [
+      "/usr/bin/cc",
+      "-O2",
+      "-shared",
+      "-fPIC",
+      "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/include",
+      "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/include/compat",
+      "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/ucd-tools/src/include",
+      "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/libespeak-ng",
+      "standalone/.cache/local_piper_clause_work/word_trace.c",
+      "-o",
+      "standalone/.cache/local_piper_clause_work/word_trace.so"
+    ],
+    "fragment_sha256": "82bd5b8778010b4d1f3bcf36f1b15f8db21090b2fd57a83ffc78ee357ea5dd00",
+    "functions": [
+      "ReadClause",
+      "EmbeddedCommand",
+      "TranslateChar",
+      "UpperCaseInWord",
+      "TranslateWord2",
+      "Word_EmbeddedCmd",
+      "MakePhonemeList",
+      "Eof",
+      "IsAlpha",
+      "IsDigit",
+      "IsDigit09",
+      "IsSpace",
+      "IsBracket",
+      "lookupwchar",
+      "utf8_in",
+      "utf8_in2",
+      "utf8_out",
+      "towlower2",
+      "isspace2",
+      "TranslateWord",
+      "SetTranslator2",
+      "SelectPhonemeTable",
+      "EncodePhonemes",
+      "LookupPhonemeTable"
+    ],
+    "globals": [
+      "embedded_ix",
+      "embedded_read",
+      "pre_pause",
+      "count_words",
+      "count_sentences",
+      "count_characters",
+      "clause_start_char",
+      "clause_start_word",
+      "max_clause_pause",
+      "skip_sentences",
+      "skip_words",
+      "option_sayas2",
+      "count_sayas_digits",
+      "word_emphasis",
+      "option_phoneme_input",
+      "n_ph_list2",
+      "dictionary_skipwords",
+      "option_endpause",
+      "n_phoneme_list",
+      "any_stressed_words",
+      "skipping_text",
+      "new_sentence",
+      "embedded_flag",
+      "option_sayas",
+      "option_emphasis",
+      "option_capitals",
+      "source",
+      "ph_list2",
+      "embedded_list",
+      "phoneme_list",
+      "word_phonemes",
+      "dictionary_name",
+      "phoneme_tab",
+      "current_alphabet",
+      "translator",
+      "translator2",
+      "voice"
+    ],
+    "observer_sha256": "375c2fba2a7600997ce52ecff6c4b7f5ae8db6496ed745c55ff3760a1af56e41",
+    "source_sha256": "8ce75a2e76ff5c0216d2eb938d6a6bc7794daab5c72afa958627429c51b298b6",
+    "wide_functions": [
+      "ucd_isalnum",
+      "ucd_isalpha",
+      "ucd_isdigit",
+      "ucd_isspace",
+      "ucd_isupper",
+      "ucd_islower"
+    ]
+  },
+  "runtime_modules_sha256": {
+    "local_piper_phoneme_text.py": "d275e818ff310cf6d47a5b5698b98b67169328b358084dcebcc12cdc8d0636fe",
+    "local_piper_phoneme_text_characters.py": "0083ed7e59f8830f15171b8b1ed1df23f0633b58a7424b696e2b6a2a58d3e85e",
+    "local_piper_phoneme_text_tables.py": "bad9a144c0a17ad61c91e9c3c43f067c37818ce5810861279bfab7b8bb624c27",
+    "local_piper_phoneme_text_tokenizer.py": "a8c90a73b33780806483d6528272846f4b666fa80d6dc4f7e2ee0fe2ad83000b",
+    "local_piper_phoneme_words.py": "53e4326a8069950e78f4a5463aeab1896304c4d50461744d3fd0a481e06cb803"
+  },
+  "schema": 1,
+  "scope": "Original TranslateClauseWithTerminator UTF8-to-WORD_TAB tokenizer, embedded commands, TranslateChar/.replace/case handling, TranslateWord2 phoneme/context construction and full clause state orchestration. The runtime composes actual qualified Reader, dictionary/rule/word translators, numbers, persistent language slots and final phoneme-list construction.",
+  "source_contract_sha256": {
+    "src/CMakeLists.txt": "0fe2ec0b7c600c15b082213862f5302b64ddf1d199a9ff6198ed34016f6de03b",
+    "src/include/compat/wctype.h": "f8ab95de710053139fab05fc57fdd6c41b020126051ca540dbb64e81cfaecf06",
+    "src/libespeak-ng/numbers.h": "dab5af1259b1466adca72a95403f9df40a90033c327d8b4a3e3c18071b335a8d",
+    "src/libespeak-ng/phoneme.h": "9f9d91ed07885b227cce551cdbad9cf620c2945d44a8e90edf910af9646d7d75",
+    "src/libespeak-ng/synthesize.h": "f061af0d5109abed46517b367ef4256e5ee38f4ff4adc7ef166f734e2bf853ce",
+    "src/libespeak-ng/translate.c": "8ce75a2e76ff5c0216d2eb938d6a6bc7794daab5c72afa958627429c51b298b6",
+    "src/libespeak-ng/translate.h": "8ff32baadc5a45e502e3151f8804a704916d9d9d27ac8a74a78e7e484185d271"
+  },
+  "upstream": {
+    "espeak_ng": {
+      "archive_sha256": "7d8ebd78201923a443245362a928999977d1721c3eeba596eafc6ea8db7e243c",
+      "archive_url": "https://codeload.github.com/espeak-ng/espeak-ng/tar.gz/724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+      "commit": "724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+      "license": "GPL-3.0-or-later",
+      "url": "https://github.com/espeak-ng/espeak-ng"
+    },
+    "piper": {
+      "bridge_sha256": "7ec4a80efda263303c257e77749c18f1d544b5ea3f5102c06b2c4fe2a6323fe6",
+      "commit": "639388b6317fc4731e91d53da42aea68fd4166ff",
+      "version": "1.8.0",
+      "wheel_sha256": "25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3"
+    }
+  },
+  "verified": {
+    "active_phone_slots_per_call": 256,
+    "callbacks": "Every observed raw-word input, WordTab record, original preceding state, language selection and encode input is asserted before the original dependency output is applied in the isolated Word2 test. Whole consumer tests execute the actual pure Reader, Numbers, Dictionary, Rules, Word3 and phonemelist without dependency stubs.",
+    "fixture": "Canonical original JSON documents are deterministically interned as shared structural nodes and zlib/base64 encoded. Public tests restore and hash every original document to verify the transformation loses no input or expected output.",
+    "oracle": "An exact original translate.c fragment with mechanical symbol aliases observes tokenizer/Word2 boundaries; every final original-source output is independently cross-checked against the shipped untouched bridge. Whole retained outputs, all1001 output-slot hashes and all256 selected phoneme entries are captured directly from that untouched native library. Candidate code is never imported by expected-data producers.",
+    "retained_languages": [
+      "en-us",
+      "hu",
+      "nl",
+      "ga",
+      "ko",
+      "cmn",
+      "ar",
+      "ml",
+      "tr",
+      "hi",
+      "bn",
+      "sq"
+    ],
+    "retained_output_slots_per_call": 1001,
+    "retained_whole_clauses": 288,
+    "stdlib_tests": {
+      "jobs": {
+        "candidate": [
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-text-candidate311-v2-15awzk_3.log",
+            "seconds": 62.57077407836914,
+            "status": "validation-logs/hermes-local-piper-text-candidate311-v2-15awzk_3.log.status.json"
+          },
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-text-candidate314-v2-wuxzwvqj.log",
+            "seconds": 69.4438636302948,
+            "status": "validation-logs/hermes-local-piper-text-candidate314-v2-wuxzwvqj.log.status.json"
+          }
+        ],
+        "public": [
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-text-public311-v7ima2qd.log",
+            "seconds": 72.82729625701904,
+            "status": "validation-logs/hermes-local-piper-text-public311-v7ima2qd.log.status.json"
+          },
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-text-public314-0o4fbt71.log",
+            "seconds": 68.90561699867249,
+            "status": "validation-logs/hermes-local-piper-text-public314-0o4fbt71.log.status.json"
+          }
+        ]
+      },
+      "methods": 5,
+      "runtimes": [
+        "CPython3.11.2",
+        "CPython3.14.7"
+      ]
+    },
+    "tokenizer_contexts": 516,
+    "whole_languages": 12,
+    "whole_native_clauses": 516,
+    "word2_actual_caller_states": 6093
+  }
+}

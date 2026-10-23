@@ -1,0 +1,44 @@
+{
+  "adaptation": "Apart from the module documentation, complete parsed source AST is identical to the independently pinned original. The runtime is an owned standalone module rather than an installed piper SDK namespace.",
+  "fixture_sha256": "fb2e7ecc9eab63b3ed4877f139fa765b270ca9f3ddf9e9abb9000301c0adef2a",
+  "license_sha256": {
+    "local-piper-downloader-notices.txt": "d6c7085ba63bfe15db5f9b49a47974133b503cc64db99c32d8e985f6e9847aaf",
+    "piper-gpl3.txt": "0ae0485a5bd37a63e63603596417e4eb0e653334fa6c7f932ca3a0e85d4af227"
+  },
+  "limits": [
+    "Main voice model and JSON data are obtained only on original explicit first use or downloader invocation, not during import, requirement checks or build. The original algorithm does not pin hashes of remotely selected voice data.",
+    "The downloader preserves original two-stage direct writes and partial-file/cache semantics; it does not silently introduce transactional updates or alternative model sources.",
+    "The standalone Hermes caller retains its original separate 300-second helper timeout by re-entering the allowlisted owned module in isolated Python. The module itself retains the original urllib timeout behavior.",
+    "No SDK installation, pip/uv invocation, native extension, remote synthesis fallback or trained model resource is shipped by this module."
+  ],
+  "runtime_sha256": {
+    "local_piper_download_voices.py": "227404a485d0c87eec95bde8c47bbe76a07c2e8e2d5682ed4526c1b0c5ebc507"
+  },
+  "schema": 1,
+  "scope": "Original Piper1.8.0 voice-model/config downloader, voice listing and CLI aliases, using stdlib urllib and shutil; used only for explicitly selected original model data.",
+  "test_sha256": "21224a229ab8a95ea28cdc19d74d78f2b047c16aa43da74503c2f4fc704743e8",
+  "upstream": {
+    "commit": "639388b6317fc4731e91d53da42aea68fd4166ff",
+    "independent_wheel_sha256": "25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3",
+    "license": "GPL-3.0-or-later",
+    "project": "OHF-Voice/piper1-gpl",
+    "source": "src/piper/download_voices.py",
+    "source_archive_sha256": "830588aded347df579c91a32703e0fc2a3685d84f1e3533b14f2de69135d4904",
+    "source_sha256": "e074abd38bd652b4a8433b9d92a595f1a6eb2237e9ed697a12fbfed412d55c82",
+    "url": "https://github.com/OHF-Voice/piper1-gpl",
+    "version": "1.8.0"
+  },
+  "verified": {
+    "actual_owned_http_requests": 55,
+    "behaviors": [
+      "Original voice regex/name trimming/locale/quality URL mapping.",
+      "Original nonempty-cache hit, missing/empty individual file retry and forced two-file overwrite order.",
+      "Original HTTP 404/503 failures, redirects, zero-length responses and partial Content-Length file behavior.",
+      "Original directory creation belongs to main; direct download_voice does not create its directory.",
+      "Sorted voices.json listing, invalid JSON, all four directory aliases and both force aliases, multiple voices, debug output and argument errors."
+    ],
+    "original_cases": 37,
+    "original_source_observation": "Unmodified source from original independently pinned wheel; actual urllib GETs against owned 127.0.0.1 peers, observing every intermediate file size/SHA, request path/order, exception, stdout, stderr and directory effect.",
+    "stdlib_only": "Public tests install a guard against native/SDK/installer imports; endpoints are owned loopback peers and no user config/model/cache path is consulted."
+  }
+}

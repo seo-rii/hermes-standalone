@@ -1,0 +1,129 @@
+{
+  "constants": {
+    "count": 53,
+    "sha256": "efff2b34021fcaa6bdc7b3bdda0b4ea11c38a9417e9bc0e2d8cc217288475f3c",
+    "sources": {
+      "src/libespeak-ng/readclause.c": "5d110a4478727f16509519de3c4c11c536577ae83c967a04ddd92d01bc712432",
+      "src/libespeak-ng/translate.h": "8ff32baadc5a45e502e3151f8804a704916d9d9d27ac8a74a78e7e484185d271",
+      "src/ucd-tools/src/include/ucd/ucd.h": "4d0f07930384e2a57a4abeb433bd3fef35a5904b2c5ce6ad6ee30f72ddfde67f"
+    }
+  },
+  "fixture_sha256": "f856d0879fa985e6839ab812c0c1a2faaf3255c6992e9bcf600aa896f5763c6a",
+  "interfaces": {
+    "read": "read(tr,n_buf=800)->ClauseResult(buffer:bytes,charix:tuple[int16],charix_top,terminator,tone,voice_change,cursor:int|None). Source TranslateClause uses N_TR_SOURCE800 with source backing+40 and charix+4; the port preserves those margins. Buffer contains a NUL-terminated UTF8 prefix and zero-filled unused scratch storage. Terminators/character mappings/ungot characters and options are preserved.",
+    "reader": "ClauseReader(text=b\"\",soundicons=None,option_ssml=0); bind_text(text,cursor=0) rebinds only the UTF8 decoder and preserves source global reader state. initialize() matches InitText2 explicitly; a fresh original Piper bridge starts with count_characters0 and speech parameters0, distinct from InitText2 count-1 and parameter defaults.",
+    "translator": "Original langopts, chars_ignore, clause_upper_count/clause_lower_count/phonemes_repeat_count, pure lookup_dict_list/translate_rules(initial=prior_phones)/set_word_stress/decode_phonemes, and english_translator() owned persistent translator2. Numbers LookupLetter independently owns translator3. The controller retains all original translator field names.",
+    "unicode": "Actual original UCD11 compat/wctype.h mappings and original UTF8 codecs are reused from local_piper_phoneme_unicode; no host libc/Python Unicode substitution."
+  },
+  "licenses": {
+    "local-piper-phoneme-clause-notices.txt": "6ca9e65ea953b256dc3314588c93b56d11cdd0439f39f92339897ee17b198a5e",
+    "piper-gpl3.txt": "0ae0485a5bd37a63e63603596417e4eb0e653334fa6c7f932ca3a0e85d4af227"
+  },
+  "limits": [
+    "SSML synthesis is not enabled by the actual Piper bridge (option_ssml0). ProcessSsmlTag, SSML voice/audio stacks and SAPI AddNameData are not provided by this slice; nonzero option_ssml is explicitly rejected instead of silently accepted. Literal markup remains literal text under the original Piper option0.",
+    "Dictionary/rule/word translation, final phoneme list construction and IPA rendering are independently owned and must be fully integrated before the Piper provider is activated. This port alone does not claim complete eSpeak/Piper functionality.",
+    "Reader input is valid UTF8 text without embedded NUL, matching the Python bridge string boundary. The qualified API rejects invalid cursors, insufficient caller margins and writes outside the owned backing storage rather than emulating invalid native pointers or memory corruption.",
+    "Soundicons are an explicit mapping of already validated loaded soundicon indices; the original bundled Piper data has none. This slice does not load or synthesize soundicon audio.",
+    "No native library, subprocess, installation, hosted TTS, runtime model fetch or fixed-phrase pronunciation cache is used."
+  ],
+  "runtime_modules_sha256": {
+    "local_piper_phoneme_clause.py": "70daf054574612780f39a0580b6581f2f69d6a19ced07810bd7d6cc3ee820eff",
+    "local_piper_phoneme_clause_tables.py": "efff2b34021fcaa6bdc7b3bdda0b4ea11c38a9417e9bc0e2d8cc217288475f3c"
+  },
+  "schema": 1,
+  "scope": "Qualified standard-library ReadClause plain-text and embedded-control path actually used by Piper1.8.0 espeak_TextToPhonemesWithTerminator, with original name lookup helpers and retained reader state. This independent slice does not activate the incomplete full Piper provider.",
+  "source_contract_sha256": {
+    "src/CMakeLists.txt": "0fe2ec0b7c600c15b082213862f5302b64ddf1d199a9ff6198ed34016f6de03b",
+    "src/include/compat/wctype.h": "f8ab95de710053139fab05fc57fdd6c41b020126051ca540dbb64e81cfaecf06",
+    "src/libespeak-ng/readclause.c": "5d110a4478727f16509519de3c4c11c536577ae83c967a04ddd92d01bc712432",
+    "src/libespeak-ng/soundicon.c": "5e8bf4217f493ad47c4ce05a5ea7d0d34a8b6c68ae39501a0db779991270342c",
+    "src/libespeak-ng/soundicon.h": "77746328853f96051508aeca1ab4aec724ec95441290f9c9d6d9ded4751f1f30",
+    "src/libespeak-ng/translate.c": "8ce75a2e76ff5c0216d2eb938d6a6bc7794daab5c72afa958627429c51b298b6",
+    "src/libespeak-ng/translate.h": "8ff32baadc5a45e502e3151f8804a704916d9d9d27ac8a74a78e7e484185d271",
+    "src/ucd-tools/src/include/ucd/ucd.h": "4d0f07930384e2a57a4abeb433bd3fef35a5904b2c5ce6ad6ee30f72ddfde67f"
+  },
+  "upstream": {
+    "espeak_ng": {
+      "archive_sha256": "7d8ebd78201923a443245362a928999977d1721c3eeba596eafc6ea8db7e243c",
+      "archive_url": "https://codeload.github.com/espeak-ng/espeak-ng/tar.gz/724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+      "commit": "724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+      "license": "GPL-3.0-or-later",
+      "url": "https://github.com/espeak-ng/espeak-ng"
+    },
+    "piper": {
+      "bridge_sha256": "7ec4a80efda263303c257e77749c18f1d544b5ea3f5102c06b2c4fe2a6323fe6",
+      "commit": "639388b6317fc4731e91d53da42aea68fd4166ff",
+      "version": "1.8.0",
+      "wheel_sha256": "25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3"
+    }
+  },
+  "verified": {
+    "core_clause_states": 8421,
+    "core_languages": 6,
+    "core_text_option_cases": 4008,
+    "name_helper_cases": 2547,
+    "name_helper_languages": 9,
+    "name_helper_original_source_observer": {
+      "command": [
+        "/usr/bin/cc",
+        "-O2",
+        "-shared",
+        "-fPIC",
+        "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/include",
+        "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/include/compat",
+        "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/ucd-tools/src/include",
+        "-Istandalone/.cache/local_piper_work/espeak-ng-724808c5a83f9ef95fdd0db886ba7ba537ff224a/src/libespeak-ng",
+        "standalone/.cache/local_piper_readclause_work/helpers_trace.c",
+        "-o",
+        "standalone/.cache/local_piper_readclause_work/helpers_trace.so"
+      ],
+      "fragment_sha256": "c67cafec72be04a11f264cfb301adcd152829ba7dab7aa00f83003b6ef6671ba",
+      "shim_sha256": "2fd856235d33fb6672cd86ab27f74e7cbd9c156adff7e3e9f2843f439f202c70",
+      "source_sha256": "5d110a4478727f16509519de3c4c11c536577ae83c967a04ddd92d01bc712432"
+    },
+    "native_output_buffers_indices_cursors_terminators_options_counters_exact": true,
+    "oracle": "All expected clauses and state come directly from the unmodified shipped native SDK. Helper callback transcripts come from an exact original source fragment and every final helper output is separately cross-checked against that same shipped SDK. Explicit finite original dictionary helper dependencies are confined to tests; production executes the real qualified Translator callbacks. Candidate code is not imported to author expected outputs.",
+    "retained_state_clauses": 589,
+    "retained_state_scenarios": 156,
+    "stdlib_tests": {
+      "jobs": {
+        "candidate": [
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-clause-initial-candidate311-z54y0050.log",
+            "seconds": 5.1307127475738525,
+            "status": "validation-logs/hermes-local-piper-clause-initial-candidate311-z54y0050.log.status.json"
+          },
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-clause-initial-candidate314-5hx8ifag.log",
+            "seconds": 3.8952441215515137,
+            "status": "validation-logs/hermes-local-piper-clause-initial-candidate314-5hx8ifag.log.status.json"
+          }
+        ],
+        "public": [
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-clause-initial-public311-zwk92d55.log",
+            "seconds": 5.349201917648315,
+            "status": "validation-logs/hermes-local-piper-clause-initial-public311-zwk92d55.log.status.json"
+          },
+          {
+            "exit_code": 0,
+            "log": "validation-logs/hermes-local-piper-clause-initial-public314-xz8zw2vl.log",
+            "seconds": 5.748828172683716,
+            "status": "validation-logs/hermes-local-piper-clause-initial-public314-xz8zw2vl.log.status.json"
+          }
+        ]
+      },
+      "methods": 4,
+      "runtimes": [
+        "CPython3.11.2",
+        "CPython3.14.7"
+      ]
+    },
+    "translate_rules_initial_buffer_observed_and_preserved": true,
+    "unicode_clause_sha256": "631d20b7f36a339d522ed93b64535df3917b7de784d2c42ee5501b66f86e1df7",
+    "unicode_clause_values": 1114112
+  }
+}

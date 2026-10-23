@@ -1,0 +1,26 @@
+eSpeakNG number/ordinal/letter source port
+
+Source: https://github.com/espeak-ng/espeak-ng
+Immutable commit:724808c5a83f9ef95fdd0db886ba7ba537ff224a
+The actual bridge/data reference is the unmodified Piper1.8.0 Linux wheel,
+SHA25625b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3.
+
+Adapted original: src/libespeak-ng/numbers.c, numbers.h, translate.h, phoneme.h.
+Copyright (C)2005 to2015 Jonathan Duddington <jonsd@users.sourceforge.net>
+Copyright (C)2015-2016,2020 Reece H.Dunn
+Copyright (C)2018 Juho Hiltunen (numbers.h)
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version3 of the License, or (at your option)
+any later version. This program is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See piper-gpl3.txt
+in this directory for the complete GNU GPLv3 license.
+
+Numeric dictionaries and phoneme tables are interpreted by the separately
+owned qualified eSpeak port. The numeric algorithm, literal original
+accent/superscript tables, emitted raw phoneme codes, and mutable word state
+are retained. No executable/native payload or fixed-phrase replay is shipped.
+Full original source is identified by the immutable archive and per-file
+hashes in local-piper-numbers-provenance.json.

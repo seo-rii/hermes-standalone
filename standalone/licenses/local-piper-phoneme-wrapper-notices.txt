@@ -1,0 +1,18 @@
+Piper eSpeak phonemizer consumer
+
+Adapted from the original Piper1.8.0 phonemize_espeak.py and espeakbridge.c,
+and eSpeak NG commit 724808c5a83f9ef95fdd0db886ba7ba537ff224a.
+Piper source: https://github.com/OHF-Voice/piper1-gpl
+Pinned Piper commit: 639388b6317fc4731e91d53da42aea68fd4166ff.
+
+This Python adaptation and the original Piper/eSpeak sources are licensed
+under the GNU General Public License, version3 or (at your option) any later
+version. The complete license is in piper-gpl3.txt. The underlying
+dictionary/phoneme resource and primitive-module notices are retained in
+their separate piper-espeak and local-piper-phoneme notices.
+
+The original native bridge and original Python wrapper are used only to
+author frozen test expectations. Shipped runtime and tests use the owned
+qualified Python reader, translator, rules, number/stress algorithms,
+phoneme-list construction and instruction interpreter. No native SDK,
+executable payload or word/sentence result cache is shipped by this unit.

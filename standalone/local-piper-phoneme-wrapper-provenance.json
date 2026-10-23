@@ -1,0 +1,90 @@
+{
+  "coverage": {
+    "actual_phonemize_calls": 338,
+    "actual_sayas193_and18_reset_and_emphasis": true,
+    "base_voices": 119,
+    "empty_text_and_unicode_bom": true,
+    "long_text_multiple_clauses": true,
+    "maximum_allowed_difference": 0,
+    "native_import_guard": true,
+    "native_named_klatt_variants": true,
+    "native_refusals": 16,
+    "original_final_nfd_vowel_cluster_outputs": true,
+    "raw_ipa_terminator_sentence_tuples": true,
+    "same_owned_reader_across_text_and_voice_calls": true,
+    "unicode_symbols_and_foreign_alphabets": true
+  },
+  "dependencies": [
+    "local-piper-phoneme-word-provenance.json",
+    "local-piper-phoneme-data-vm-provenance.json",
+    "piper-espeak-resources-provenance.json",
+    "local-piper-phoneme-unicode-provenance.json"
+  ],
+  "fixture_sha256": "cb013c88dd962f034feceb045217389178710ee23f48b3aa286db777ebbf0d69",
+  "format_version": 1,
+  "licenses": {
+    "local-piper-phoneme-wrapper-notices.txt": "96f9323518cd89a87f024b05b93723070380f52ff2d274476e5bb1ee60d241c0"
+  },
+  "limitations": [
+    "This implements the actual plain-text eSpeak consumer exposed by pinned Piper, not a generic eSpeak waveform or SSML synthesis SDK.",
+    "Voice-model neural inference and separate Japanese/Chinese/Thai phonemizer engines are distinct Piper layers; this unit does not silently substitute them.",
+    "Original bundled eSpeak resources are required and are included separately with pinned digests. Missing original dictionary resources refuse actual consumption.",
+    "Native authoring payloads stay in ignored cache. Runtime and tests use only standard-library code and qualified owned modules."
+  ],
+  "native_reference": {
+    "bridge_sha256": "7ec4a80efda263303c257e77749c18f1d544b5ea3f5102c06b2c4fe2a6323fe6",
+    "build_options": {
+      "USE_KLATT": false,
+      "USE_MBROLA": false
+    },
+    "cross_object_pointer_order": "Pinned raw-heap and actual TranslateClause caller-stack profiles only; not a generic allocator/platform claim.",
+    "untouched_original_python_wrapper_executed": true,
+    "wheel_sha256": "25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3",
+    "wrapper_sha256": "d5ff275d847502345821898efa15e3e4e956fe884cea7c78ae87102d539e6594"
+  },
+  "runtime_modules_sha256": {
+    "local_piper_phoneme.py": "924f5d207e5f8ec2e6f00f74a45efb26684ff0f41fe13c386ef151f25009cfa5"
+  },
+  "source": {
+    "espeak_commit": "724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+    "files_sha256": {
+      "piper/CMakeLists.txt": "cda01f6b8f8ed8fc748397e4ea687933c7141cfd051bdef0a33478bcae3f5a8e",
+      "piper/espeakbridge.c": "660dd64017208798ee47fcdc9613ad9fc59ec6c359cb22afaad82be8858ad432",
+      "piper/phonemize_espeak.py": "d5ff275d847502345821898efa15e3e4e956fe884cea7c78ae87102d539e6594"
+    },
+    "piper_commit": "639388b6317fc4731e91d53da42aea68fd4166ff",
+    "piper_source_archive_sha256": "830588aded347df579c91a32703e0fc2a3685d84f1e3533b14f2de69135d4904",
+    "piper_version": "1.8.0"
+  },
+  "validation": {
+    "pending": false,
+    "public_stdlib_tests": {
+      "python3.11": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phonemizer-public-311-a88ne_d3.log",
+        "methods": 1,
+        "seconds": 7.324713468551636
+      },
+      "python3.14": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phonemizer-public-314-qjg0jtig.log",
+        "methods": 1,
+        "seconds": 8.101542949676514
+      }
+    },
+    "stdlib_tests": {
+      "python3.11": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phonemizer-candidate-311-5bf5vruk.log",
+        "methods": 1,
+        "seconds": 10.008369445800781
+      },
+      "python3.14": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phonemizer-candidate-314-w91kqp18.log",
+        "methods": 1,
+        "seconds": 10.450762033462524
+      }
+    }
+  }
+}

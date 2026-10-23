@@ -1,0 +1,146 @@
+{
+  "coverage": {
+    "actual_unicode11_callbacks": true,
+    "alphabet_transposition": 6862,
+    "compiled_rule_matches": 34494,
+    "decode_phonemes": 18595,
+    "encode_phonemes": 30147,
+    "maximum_allowed_difference": 0,
+    "native_voices": 119,
+    "numbers_nonempty_lookup_input_preserved": true,
+    "original_ascii_and_ipa_clause_renderings": 80,
+    "raw_dictionary_lookup": 27448,
+    "separate_persistent_translator2_and3_slots": true,
+    "temporary_buffer_origins_preserved": true,
+    "vowel_stress": 18916,
+    "whole_rule_translations": 15860,
+    "whole_word_calls": 62104,
+    "word_flags_buffer_table_and_mutable_state": true,
+    "word_stress": 28310
+  },
+  "fixtures_sha256": {
+    "codec_native.json.zlib": "8ee96910253f4e4280f00ab10cf9dd3297cf8c57c44fa4e49dd2d0b7ac7755b4",
+    "dictionary_lookup_native.json.zlib": "2d94c6a0431885fd0e06006e95fa20b5f01246d70ec86d743e09abd2accf92e9",
+    "phoneme_context_native.json.zlib": "fa4da18088f06c38d19d3b08ddef58d6029a76bb13b14c8e1e4bbc2f93d44d08",
+    "rules_native.json.zlib": "7aeee782c893ce4d4112c2e780712e460a2497014905bf52b1af0d93d34f13ad",
+    "rules_translate_native.json.zlib": "2ab6806882f8ec2893c1cbe252959ed091f7d284147d1134f32e479d7aa48713",
+    "stress_native.json.zlib": "a103a398972b51f99e23e0e5a113752277eb62688d2df93655fa1df906194eb5",
+    "word_native.json.zlib": "7d859c8cdd3e2ea88d8f0b6e82a5a88d8e6c64a165f44a368eedf58e64b2d9fa"
+  },
+  "format_version": 1,
+  "licenses": {
+    "local-piper-phoneme-word-notices.txt": "e6f222acafb442556201758f018c0245bc960243af7a05d003a437d6d91e3d40"
+  },
+  "limitations": [
+    "This complete word-pronunciation unit is a dependency of the full eSpeak clause controller; its publication alone does not activate the Piper factory.",
+    "Missing original dictionary resources fail on actual consumption, including source-default hbs aliases absent from the pinned wheel.",
+    "The original C compares pointers belonging to different buffer objects. The port preserves the observed pinned caller profiles: raw authoring calls use an external heap source, while actual TranslateClause owns a caller-stack sbuf and nested temporary words precede its end. This is not an allocator-wide or platform-wide equivalence claim.",
+    "Runtime uses only qualified owned modules and original bundled data. Native authoring libraries and scripts stay in ignored cache; tests consume frozen expected results only."
+  ],
+  "native_reference": {
+    "bridge_sha256": "7ec4a80efda263303c257e77749c18f1d544b5ea3f5102c06b2c4fe2a6323fe6",
+    "cross_object_pointer_comparison": {
+      "actual_clause_source": "TranslateClause caller-stack sbuf",
+      "generic_allocator_or_platform_equivalence_claim": false,
+      "owned_origin_marker": "state.clause_buffer",
+      "raw_function_source": "external heap buffer in isolated authoring fixture"
+    },
+    "piper_version": "1.8.0",
+    "runtime_or_test_native_loading": false,
+    "wheel_sha256": "25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3"
+  },
+  "resource_provenance": "piper-espeak-resources-provenance.json",
+  "runtime_modules_sha256": {
+    "local_piper_phoneme_codec.py": "f94aab09ee97adef62bffe068758d36361372fe168857ad6d663f71589b9f967",
+    "local_piper_phoneme_dictionary.py": "d42e9365b41c1581656742aab487643879a61778a2832a385b1b85d92efe6498",
+    "local_piper_phoneme_ipa.py": "e07fda84707a5834340e1d9a35d7ff3369e01af5cef9680cfc9403e86561b2d2",
+    "local_piper_phoneme_letters.py": "6f6a84afbc8f98865636188c08816e84439a12f08d5fe4be7adbd8c29d500d86",
+    "local_piper_phoneme_render.py": "3f62eb042a716458f3f1382974b91ca3ea1b071a69a45cc5c51d5ccd8137f01f",
+    "local_piper_phoneme_rules.py": "975016605c305dd7ca1868eeb9bd72304e6296fc346e8bfa8b40718814b12ca9",
+    "local_piper_phoneme_session.py": "c99baa0e87968999233c8cc5c4fe9b1e0e57c17b0379935c65034d2fd734a0b4",
+    "local_piper_phoneme_stress.py": "3b2264c580348be7379935fb61f46e8a4904651575666b055d68121464d03803",
+    "local_piper_phoneme_word.py": "bcb89e8fe1e8bd1e7c3905a911ac4865b4f491473ef6c996aa254477beb7fbb0",
+    "local_piper_phoneme_word_helpers.py": "53f8239349f3dd0a40c8b33011316613b3d73c1f7d2c7404f1d152538d20adfc",
+    "local_piper_phoneme_word_letter.py": "a11608999511b7ca20f34ef0c7d60be01ac8e2112a6db7575cfc8e426f867804"
+  },
+  "source": {
+    "archive_sha256": "7d8ebd78201923a443245362a928999977d1721c3eeba596eafc6ea8db7e243c",
+    "commit": "724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+    "files_sha256": {
+      "src/libespeak-ng/dictionary.c": "1339d284ec273956d7a5beaa1cf7f3a0cfd0c81dcb168df7e3f7903ca6f9763b",
+      "src/libespeak-ng/numbers.c": "7aea9adb38afd5e54422abb4de54ce64c8579f407f8c813775546a807c3c9509",
+      "src/libespeak-ng/phoneme.h": "9f9d91ed07885b227cce551cdbad9cf620c2945d44a8e90edf910af9646d7d75",
+      "src/libespeak-ng/phonemelist.c": "11617fc57bdf5e41f9b1a5f4336d8c2a00c69e3af997fd8dc54847600986876c",
+      "src/libespeak-ng/speech.c": "999f4b244823c6491a8f8c6d193228eb59c78d8326845cf3163f8a05ed7e570f",
+      "src/libespeak-ng/translate.c": "8ce75a2e76ff5c0216d2eb938d6a6bc7794daab5c72afa958627429c51b298b6",
+      "src/libespeak-ng/translate.h": "8ff32baadc5a45e502e3151f8804a704916d9d9d27ac8a74a78e7e484185d271",
+      "src/libespeak-ng/translateword.c": "de264097dfbd40178576e1339fd4e6935a3f3a7ccee0acf8bae1f1be24576ae3"
+    },
+    "project": "espeak-ng"
+  },
+  "validation": {
+    "caller_origin_change_regressions": {
+      "python3.11": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phoneme-public-word-context-311-i299fnop.log",
+        "methods": 4
+      },
+      "python3.14": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phoneme-public-word-context-314-5hi3wgrh.log",
+        "methods": 4
+      }
+    },
+    "native_import_guards": true,
+    "pending": false,
+    "public_stdlib_tests": {
+      "python3.11": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phoneme-word-public-311-pqzem6c0.log",
+        "methods": 13
+      },
+      "python3.14": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phoneme-word-public-314-fryrjizt.log",
+        "methods": 13
+      }
+    },
+    "source_phase_refactor": {
+      "full_clause_and_piper_facade_consumers_included": true,
+      "maximum_conservative_ast_complexity": 20,
+      "metrics_note": "Counts IfExp in addition to McCabe statement decisions; this is a conservative upper bound rather than an installed Ruff measurement.",
+      "purpose": "Bound original opcode, dictionary, stress, spelling and morphology phases while preserving public APIs and all independently observed native results.",
+      "staged_public_stdlib_tests": {
+        "python3.11": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-piper-phoneme-refactor-staged-311-z2fw100s.log",
+          "methods": 30,
+          "native_import_guards": true,
+          "seconds": 855.5708346366882
+        },
+        "python3.14": {
+          "exit_code": 0,
+          "log": "validation-logs/hermes-piper-phoneme-refactor-staged-314-71jb6fls.log",
+          "methods": 30,
+          "native_import_guards": true,
+          "seconds": 811.1760549545288
+        }
+      },
+      "tests_and_native_fixtures_unchanged": true
+    },
+    "stdlib_tests": {
+      "python3.11": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phoneme-word-candidate-311-m5ds8i1v.log",
+        "methods": 13,
+        "seconds": 105.73719644546509
+      },
+      "python3.14": {
+        "exit_code": 0,
+        "log": "validation-logs/hermes-piper-phoneme-word-candidate-314-5sz5c8r6.log",
+        "methods": 13,
+        "seconds": 100.31142234802246
+      }
+    }
+  }
+}

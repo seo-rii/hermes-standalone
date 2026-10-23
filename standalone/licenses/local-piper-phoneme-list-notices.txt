@@ -1,0 +1,25 @@
+Original eSpeak-NG phonemelist.c algorithm, ported to owned Python state.
+Source commit: 724808c5a83f9ef95fdd0db886ba7ba537ff224a
+https://github.com/espeak-ng/espeak-ng/tree/724808c5a83f9ef95fdd0db886ba7ba537ff224a
+
+Copyright (C) 2005 to 2014 Jonathan Duddington
+Copyright (C) 2015-2016 Reece H. Dunn
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. The complete license is retained in piper-gpl3.txt.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+more details.
+
+The implementation preserves the original phoneme substitutions, regression,
+stress promotion, insertion/linking, active table transitions, clause markers
+and caller-owned retained output buffer. Native observations are independent
+regression inputs and expected results, never a production phrase lookup.
+All compiled pronunciation data remain original reviewed package resources.
+No native library, external program or compiler is used at runtime or in
+public tests. Source and observation hashes are retained in
+local-piper-phoneme-list-provenance.json.

@@ -1,0 +1,245 @@
+{
+  "fixtures_sha256": {
+    "local_piper_model.json": "26c4e2116b392a21088efafd849509c4f9db85a790cc5424ca399cde50888b79"
+  },
+  "interfaces": {
+    "arithmetic": "Float32/int32/int64/bool tensor storage and broadcasting;50 operator types used by the original graph plus Identity/Constant. Convolution groups/strides/dilation, transposed convolution, relative attention, duration rational quadratic spline, latent flow and vocoder are executed by standard-library code.",
+    "model": "PiperModel(model_path).run({name:owned Tensor}) -> list[Tensor]; whitelisted ONNX data operations, schema13-17, no custom function/library execution. Session normal-generator state is serialized across calls."
+  },
+  "licenses": {
+    "local-piper-model-notices.txt": "66f35f6fcca7d307f44498091703f1a2cf0a2ad891322d39c1028a0beb555b2e",
+    "piper-gpl3.txt": "0ae0485a5bd37a63e63603596417e4eb0e653334fa6c7f932ca3a0e85d4af227"
+  },
+  "limits": [
+    "Only the listed float32 VITS operator/schema subset is implemented. Quantized/custom-domain/unsupported ONNX operators, external tensor files and unsupported schema versions fail explicitly. This is not the complete ONNX Runtime API.",
+    "The separately owned eSpeak/other phonemizers and source PiperVoice/Hermes factory integration are not activated by this inference-only slice. Additional original Piper phoneme backends/diacritization require their own qualified ports.",
+    "Numerical equivalence is measured against pinned CPU native float implementations. This is not bit-exact GPU inference; valid output PCM differs by at most1LSB in the measured six original voice configurations.",
+    "CPU cost is material: actual Hello. emits0.66-0.70s audio in84-89s on Python3.14 and approximately130s per case on Python3.11 in the authoring environment. No native/hosted acceleration is substituted."
+  ],
+  "native_authoring_only": {
+    "additional_inputs": [
+      {
+        "bytes": 63201294,
+        "name": "en_US-lessac-medium.onnx",
+        "sha256": "5efe09e69902187827af646e1a6e9d269dee769f9877d17b16b1b46eeaaf019f",
+        "url": "https://huggingface.co/rhasspy/piper-voices/resolve/5512791644e2148e4be301d4c7fc2a4bf51a5057/en/en_US/lessac/medium/en_US-lessac-medium.onnx"
+      },
+      {
+        "bytes": 4885,
+        "name": "en_US-lessac-medium.onnx.json",
+        "sha256": "efe19c417bed055f2d69908248c6ba650fa135bc868b0e6abb3da181dab690a0",
+        "url": "https://huggingface.co/rhasspy/piper-voices/resolve/5512791644e2148e4be301d4c7fc2a4bf51a5057/en/en_US/lessac/medium/en_US-lessac-medium.onnx.json"
+      },
+      {
+        "bytes": 351,
+        "name": "MODEL_CARD",
+        "sha256": "ce49eb457742208166d399a40cdec2c7fa9db77960930031564ab56f12882645",
+        "url": "https://huggingface.co/rhasspy/piper-voices/resolve/5512791644e2148e4be301d4c7fc2a4bf51a5057/en/en_US/lessac/medium/MODEL_CARD"
+      },
+      {
+        "bytes": 24738952,
+        "name": "piper-source.tar.gz",
+        "sha256": "a7045b7ef4268d1088047c20a69ae447b552e579dacb42d3dc18f53576aa54ce",
+        "url": "https://codeload.github.com/OHF-Voice/piper1-gpl/tar.gz/639388b6317fc4731e91d53da42aea68fd4166ff"
+      },
+      {
+        "bytes": 16740,
+        "path": "onnxruntime/core/providers/cpu/generator/random.cc",
+        "sha256": "ccc40c6b91150bb2bf3254e49894b4cf3066813ae85c4ca66aa7eff37b46c5c0",
+        "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/2e2543fbe9fae542f921d47a72d21d5a4ef0b710/onnxruntime/core/providers/cpu/generator/random.cc"
+      },
+      {
+        "bytes": 8271,
+        "path": "onnxruntime/core/providers/cpu/generator/random.h",
+        "sha256": "3f1b3be5f1404c78950c4cb032079f015652d094c7af42df50ff1c209cf7efc6",
+        "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/2e2543fbe9fae542f921d47a72d21d5a4ef0b710/onnxruntime/core/providers/cpu/generator/random.h"
+      },
+      {
+        "bytes": 105864,
+        "name": "gcc-random.tcc",
+        "sha256": "183fcbfa16e8972eec3eef6427dac091c7a1d11ee28cd0f594214e26b57b143a",
+        "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/2ee5e4300186a92ad73f1a1a64cb918dc76c8d67/libstdc++-v3/include/bits/random.tcc"
+      },
+      {
+        "bytes": 3324,
+        "name": "gcc-runtime-exception.txt",
+        "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+        "url": "https://raw.githubusercontent.com/gcc-mirror/gcc/2ee5e4300186a92ad73f1a1a64cb918dc76c8d67/COPYING.RUNTIME"
+      },
+      {
+        "bytes": 1073,
+        "name": "ort-LICENSE.txt",
+        "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c",
+        "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/2e2543fbe9fae542f921d47a72d21d5a4ef0b710/LICENSE"
+      }
+    ],
+    "build": {
+      "build": "ORT Build Info: git-branch=HEAD, git-commit-id=2e2543fbe9, fp8-kv-cache=1, build type=Release",
+      "numpy": "1.24.2",
+      "ort": "1.29.0"
+    },
+    "inputs": [
+      {
+        "bytes": 24276117,
+        "name": "piper-tts",
+        "sha256": "830588aded347df579c91a32703e0fc2a3685d84f1e3533b14f2de69135d4904",
+        "url": "https://files.pythonhosted.org/packages/02/cc/95b18b58d9c235d8e0bcece7321b7a7347873c14f9fea2c734b31ef04ff2/piper_tts-1.8.0.tar.gz",
+        "version": "1.8.0"
+      },
+      {
+        "bytes": 34131442,
+        "name": "piper-tts",
+        "sha256": "25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3",
+        "url": "https://files.pythonhosted.org/packages/84/81/0112a7d510911f33018dc24023d1655bb772f84a4e95fe7f0180f66bbd17/piper_tts-1.8.0-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl",
+        "version": "1.8.0"
+      },
+      {
+        "bytes": 23113193,
+        "name": "onnxruntime",
+        "sha256": "85f8e8406c52658735fe5c7fbfd3ebaa1ed340768324f6252e4274e374580a23",
+        "url": "https://files.pythonhosted.org/packages/3b/91/a66cd77f28379ede419672edda3184f1eb286db215dce1e7b976fae2d63b/onnxruntime-1.29.0-cp311-cp311-manylinux_2_28_x86_64.whl",
+        "version": "1.29.0"
+      }
+    ],
+    "restriction": "Native wheels/shared libraries, source archives and the trained63.2MB model remain in ignored cache. Neither runtime nor public tests execute/download/install external code or use a native numerical/codec/process fallback."
+  },
+  "runtime_modules_sha256": {
+    "local_piper_model.py": "f7e2a32ec015255fcd6c0ec64b87d39b22daf2943d419dc28ffe024f36fd161f",
+    "local_piper_random.py": "70997ddcf41362df8fabe872c3e80265f35caae2ab5a5cae1aef35bebb005ff1",
+    "local_piper_tensor.py": "1092e50e730a31d99259a2b5e40c888c5cf2c06fc405f384e2edd6d5f2599040"
+  },
+  "schema": 1,
+  "scope": "Qualified standard-library VITS graph data reader and inference for the original Piper1.8.0 voice model. This slice does not install or impersonate piper/onnxruntime, and does not activate the Hermes Piper provider.",
+  "source_contract_sha256": {
+    "gcc-random.tcc": "183fcbfa16e8972eec3eef6427dac091c7a1d11ee28cd0f594214e26b57b143a",
+    "gcc-runtime-exception.txt": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+    "onnxruntime/core/providers/cpu/generator/random.cc": "ccc40c6b91150bb2bf3254e49894b4cf3066813ae85c4ca66aa7eff37b46c5c0",
+    "onnxruntime/core/providers/cpu/generator/random.h": "3f1b3be5f1404c78950c4cb032079f015652d094c7af42df50ff1c209cf7efc6",
+    "ort-LICENSE.txt": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c",
+    "piper/config.py": "ea60d6d94ffa2724573c9e945b6b942d260b458180f52717b0b284224d4437ae",
+    "piper/const.py": "9bf578c2823ccd3e51c266fdcbf061d52e9c87a1c3a31ef05bde58dbc48a6aec",
+    "piper/phoneme_ids.py": "f2fe709eabe45ad5f4663fccc0b075cedceee4274a897818193442a6adbb832d",
+    "piper/train/vits/attentions.py": "19c756757eef8b2b14affc84facc2549414888b8b86593aec61bff0ce32e7d49",
+    "piper/train/vits/models.py": "a27efdfeb4ccccd2c68037741b15ea4bb56b61615d33c27561b962ae6e4bff03",
+    "piper/train/vits/modules.py": "0cc35ebf9836de0912ab510fd0647e8c3237d03be8cb7df9938ab8cd828ed58d",
+    "piper/voice.py": "3d6ce0415dda785396af3000f89d59cb6307eeee31711c9d671a7d2c0e5f8b19"
+  },
+  "upstream": {
+    "gcc": {
+      "commit": "2ee5e4300186a92ad73f1a1a64cb918dc76c8d67",
+      "version": "12.2.0"
+    },
+    "onnxruntime": {
+      "commit": "2e2543fbe9fae542f921d47a72d21d5a4ef0b710",
+      "version": "1.29.0"
+    },
+    "piper": {
+      "commit": "639388b6317fc4731e91d53da42aea68fd4166ff",
+      "license": "GPL-3.0-or-later",
+      "url": "https://github.com/OHF-Voice/piper1-gpl",
+      "version": "1.8.0"
+    }
+  },
+  "verified": {
+    "actual_original_model": {
+      "bytes": 63201294,
+      "default_noise_checkpoints": 147,
+      "default_noise_final_float_max_error": 5.681067705154419e-08,
+      "default_noise_hidden_max_error": 5.340576171875e-05,
+      "initializers": 401,
+      "native_scope": "Independent actual original ORT1.29.0 intermediate tensors, then original optimized Piper chunk normalization/volume/PCM/alignment output. Trained graph is not copied into the public test fixture.",
+      "nodes": 2755,
+      "sha256": "5efe09e69902187827af646e1a6e9d269dee769f9877d17b16b1b46eeaaf019f",
+      "weight_bytes": 62602544,
+      "zero_noise_checkpoints": 145,
+      "zero_noise_final_float_max_error": 1.7508864402770996e-06,
+      "zero_noise_hidden_max_error": 0.00011205673217773438
+    },
+    "alignments": "Native phoneme ID sample counts and original phoneme alignments exact. Source eSpeak phonemes are explicit inference test inputs, and do not constitute a completed text phonemizer port.",
+    "authoring_exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "authoring_logs": [
+      "validation-logs/hermes-local-piper-full314-vmij01rg.log",
+      "validation-logs/hermes-local-piper-full-noise314-z3wtq8nn.log",
+      "validation-logs/hermes-local-piper-voice-short314-2-u373hfym.log",
+      "validation-logs/hermes-local-piper-voice-word314-ajb6c3zo.log",
+      "validation-logs/hermes-local-piper-voice-short311-r39adbfv.log",
+      "validation-logs/hermes-local-piper-voice-word311-grya_n9q.log"
+    ],
+    "final_input_metadata_smoke": {
+      "checkpoints": 49,
+      "exit_code": 0,
+      "log": "validation-logs/hermes-local-piper-final-metadata-prefix314-i9l56905.log",
+      "original_model_prefix_nodes": 886
+    },
+    "native_operator_cases": 137,
+    "native_operator_types": 51,
+    "native_rng_invocations": 108,
+    "native_rng_values": 20736,
+    "original_voice_configs3_11": [
+      "short-zero",
+      "word-zero",
+      "word-default"
+    ],
+    "original_voice_configs3_14": [
+      {
+        "name": "short-zero",
+        "pcm_max_lsb": 1,
+        "samples": 2560
+      },
+      {
+        "name": "short-default",
+        "pcm_max_lsb": 1,
+        "samples": 3072
+      },
+      {
+        "name": "short-speed",
+        "pcm_max_lsb": 0,
+        "samples": 1536
+      },
+      {
+        "name": "short-alignment",
+        "pcm_max_lsb": 1,
+        "samples": 3072
+      },
+      {
+        "name": "word-zero",
+        "pcm_max_lsb": 1,
+        "samples": 14592,
+        "text": "Hello."
+      },
+      {
+        "name": "word-default",
+        "pcm_max_lsb": 1,
+        "samples": 15360,
+        "text": "Hello."
+      }
+    ],
+    "public_tests": {
+      "exit_codes": [
+        0,
+        0
+      ],
+      "logs": [
+        "validation-logs/hermes-local-piper-model-public311-final-10xetmjp.log",
+        "validation-logs/hermes-local-piper-model-public314-final-gob918fk.log"
+      ],
+      "methods": 4,
+      "no_native_guard": true,
+      "python_versions": [
+        "3.11.2",
+        "3.14.7"
+      ],
+      "source_data_contract": "Unknown/missing inputs, wrong tensor types, wrong fixed dimensions, unsupported custom operators, malformed protobuf and external tensor storage fail explicitly.",
+      "stdlib_only": true
+    },
+    "rng_exact_values": 20700,
+    "rng_max_error": 1.1920928955078125e-07
+  }
+}

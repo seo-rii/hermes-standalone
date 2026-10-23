@@ -1,0 +1,18 @@
+Piper voice-model downloader source port
+
+Original project: https://github.com/OHF-Voice/piper1-gpl
+Immutable commit: 639388b6317fc4731e91d53da42aea68fd4166ff
+Pinned release: piper-tts 1.8.0
+Original source: src/piper/download_voices.py
+Source archive SHA256: 830588aded347df579c91a32703e0fc2a3685d84f1e3533b14f2de69135d4904
+Independent wheel SHA256: 25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3
+
+Original license: GNU General Public License version 3 or, at your option,
+any later version. This program comes WITHOUT ANY WARRANTY. See piper-gpl3.txt
+for the complete license and source-distribution terms.
+
+The original downloader algorithm uses only the Python standard library.
+The port changes its module documentation and applies deterministic AST source
+serialization. All other parsed statements are identical to the pinned original.
+User-selected voice ONNX/JSON data remain separate model resources. This module
+never installs Python packages or downloads executable/native dependencies.

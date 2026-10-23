@@ -1,0 +1,138 @@
+{
+  "coverage": {
+    "all_256_active_phone_slots": true,
+    "all_first_stage_mutations": true,
+    "all_phoneme_fields": true,
+    "edge_cases": 2076,
+    "edge_voices": 12,
+    "first_stage_capacity_cases": [
+      999,
+      1000
+    ],
+    "foreign_table_switches": [
+      0,
+      8,
+      12,
+      70,
+      79
+    ],
+    "ordered_replacement_flags": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "output_slots_checked_per_retained_call": 1001,
+    "real_clause_derived_cases": 1815,
+    "real_voices": 121,
+    "retained_buffer_groups": 12,
+    "retained_calls": 72,
+    "stress_regression_pause_and_gap_flags": true
+  },
+  "fixture": {
+    "all_documents_byte_exact_after_inverse": true,
+    "bytes": 1905009,
+    "encoding": "Lossless shared PHONEME_TAB pool plus deterministic JSON and zlib; all three independent original native documents reconstruct byte for byte. Public tests recompute their original SHA-256 values.",
+    "packed_bytes": 1905009,
+    "packed_sha256": "e6968e9b47657d938e64a40da80587cd722a578660b2a7d53cafe19334f8bb45",
+    "path": "tests/fixtures/local_piper_phoneme_list.json.zlib",
+    "phone_records": 2845,
+    "sha256": "e6968e9b47657d938e64a40da80587cd722a578660b2a7d53cafe19334f8bb45",
+    "source_documents": {
+      "edges": {
+        "canonical_bytes": 110301600,
+        "canonical_sha256": "335a5f8120ab8634f69943b702602861a2aa570c2801f78cdc9be127f7e4004a",
+        "compressed_bytes": 1826653,
+        "compressed_sha256": "8bdf14d1b30936fb791d413083f0852b7ea34e39a5fcaae5682380de4319d1f9"
+      },
+      "real": {
+        "canonical_bytes": 129203987,
+        "canonical_sha256": "871b2db685cd59b12d0a8fa8a80f1b6fae2ec2b276e4df5018cbfa9664f72ccc",
+        "compressed_bytes": 5024388,
+        "compressed_sha256": "78cab639e0249b70d2bbfda9acbdf7d671ac5d9664a1dfb76f2052bf0ca659ae"
+      },
+      "retained": {
+        "canonical_bytes": 6869952,
+        "canonical_sha256": "e8b0298964cefadd6c1d20ba6e01407a0f14fd7562e6ad426cf28523f9922e8c",
+        "compressed_bytes": 796244,
+        "compressed_sha256": "29aea94b7cb76e2281cab191ab865751ba5431ed1b3e1b51e933704d0a692fe7"
+      }
+    }
+  },
+  "licenses": {
+    "local-piper-phoneme-list-notices.txt": "a29365aed6aa8f02846878ae1a57be8333ea302c06275800a8ab855cf0b37456",
+    "piper-gpl3.txt": "0ae0485a5bd37a63e63603596417e4eb0e653334fa6c7f932ca3a0e85d4af227"
+  },
+  "limits": [
+    "Full dictionary/rule/word/clause orchestration and the original PiperVoice/Hermes factory remain separately gated until complete combined native comparisons pass.",
+    "Original eSpeak waveform/audio-device synthesis is outside this Piper phonemizer component.",
+    "Inputs are valid controller-created first-stage lists with two terminating pauses; truncated counts and output capacity are rejected explicitly.",
+    "Retained buffer caller writes exercise the ownership contract; they are defined test inputs and are not presented as a complete eSpeak waveform consumer."
+  ],
+  "native_authoring_only": {
+    "bridge_sha256": "7ec4a80efda263303c257e77749c18f1d544b5ea3f5102c06b2c4fe2a6323fe6",
+    "expected_generation": "Actual unmodified packaged MakePhonemeList and original compiled phoneme programs. The candidate implementation was never used to produce expected output.",
+    "output_initialization": "All final output slots are explicitly zeroed for the isolated clause and edge corpora, so every compared field is defined. The independent retained-state corpus uses defined nonzero initial buffers and controlled subsequent caller writes.",
+    "piper_version": "1.8.0",
+    "real_input_boundary": "Capture actual first-stage lists after the packaged full text call, then call original MakePhonemeList again on that defined state. These are real clause-derived inputs; this proof does not claim observation before the original initial MakePhonemeList call.",
+    "resources": "All original compiled phoneme data from the reviewed wheel; no phrase-output table used by production.",
+    "runtime_native_payloads": false,
+    "wheel_sha256": "25b4d3f31ff70c8fa7151908e00aaa5650cbdf16bca8fcf21299f3941b89a7d3"
+  },
+  "preserved": [
+    "Original caller mutation and backing-array compaction order, including deleted source offsets and table-switch flags.",
+    "Regressive voicing, ordered conditional replacements, word stress promotion, reduction, linking and inserted phonemes.",
+    "Source phoneme VM callbacks with mutable previous-vowel state and original selected-table semantics.",
+    "Two original final clause markers and all assigned scalar fields with original integer casts.",
+    "Persistent output slot identity: interpreter-owned fields and unassigned terminal fields survive clauses; later caller mutations through logical output references update the same owned slots."
+  ],
+  "runtime_modules_sha256": {
+    "local_piper_phoneme_list.py": "f6c473b7058740332f11567f801b24bdc3c6439d6163a5e534108c5d3364fcc2"
+  },
+  "schema": 1,
+  "scope": "Original MakePhonemeList, SubstitutePhonemes, SetRegressiveVoicing and re-interpretation with caller-owned first-stage state, active phoneme maps and retained output buffers. This is a phonemizer component, not an enabled complete Piper provider.",
+  "source": {
+    "archive_sha256": "7d8ebd78201923a443245362a928999977d1721c3eeba596eafc6ea8db7e243c",
+    "archive_url": "https://codeload.github.com/espeak-ng/espeak-ng/tar.gz/724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+    "commit": "724808c5a83f9ef95fdd0db886ba7ba537ff224a",
+    "files_sha256": {
+      "src/libespeak-ng/phoneme.h": "9f9d91ed07885b227cce551cdbad9cf620c2945d44a8e90edf910af9646d7d75",
+      "src/libespeak-ng/phonemelist.c": "11617fc57bdf5e41f9b1a5f4336d8c2a00c69e3af997fd8dc54847600986876c",
+      "src/libespeak-ng/phonemelist.h": "bc6542ab4aa332c1542de765de73f7731d239b52d4026ab0c0963b63890a6f79",
+      "src/libespeak-ng/synthdata.c": "001c5efde1b6ccd12f7dc78a2889270ab411a189145160acd03e4aa28eb34fe8",
+      "src/libespeak-ng/synthesize.h": "f061af0d5109abed46517b367ef4256e5ee38f4ff4adc7ef166f734e2bf853ce",
+      "src/libespeak-ng/translate.h": "8ff32baadc5a45e502e3151f8804a704916d9d9d27ac8a74a78e7e484185d271"
+    },
+    "project": "espeak-ng"
+  },
+  "verification": {
+    "3.11.2": {
+      "combined_methods": 12,
+      "exit_code": 0,
+      "log": "validation-logs/hermes-piper-phonemelist-voices-final311-ip3u_04g.log",
+      "methods": 5,
+      "native_import_guard": true,
+      "seconds": 36.035622119903564,
+      "status": "validation-logs/hermes-piper-phonemelist-voices-final311-ip3u_04g.log.status.json",
+      "stdlib_only": true
+    },
+    "3.14.7": {
+      "combined_methods": 12,
+      "exit_code": 0,
+      "log": "validation-logs/hermes-piper-phonemelist-voices-final314-58d80r_y.log",
+      "methods": 5,
+      "native_import_guard": true,
+      "seconds": 23.88831663131714,
+      "status": "validation-logs/hermes-piper-phonemelist-voices-final314-58d80r_y.log.status.json",
+      "stdlib_only": true
+    }
+  },
+  "verification_structure": {
+    "largest_function_decision_count": 17,
+    "original_stages_and_owned_linking_state": true
+  }
+}
